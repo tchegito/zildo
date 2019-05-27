@@ -207,7 +207,7 @@ public class SoundPlay {
 						float dx = 0f;
 						float dy = 0f;
 						if (sound.location != null) {
-							dx = (sound.location.x - listeningPoint.x) / 16f / 16f;
+							dx = (sound.location.x - listeningPoint.x) / 16f / 2f;
 							dy = (sound.location.y - listeningPoint.y) / 16f / 8f;
 						}
 						if (sound.isSoundFX && ((BankSound)sound.name).isLooping()) {

@@ -157,7 +157,7 @@ public class PathFinder {
         }
 
         // Most of the characters can face up to 4 angles, but some can face 8 (scorpion for example)
-        if (mobile.getDesc().is8Angles()) {
+        if (mobile.getDesc() != null && mobile.getDesc().is8Angles()) {
         	a = Angle.fromDirection((int) Math.signum(delta.x),  (int) Math.signum(delta.y));
         }
         
