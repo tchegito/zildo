@@ -65,7 +65,7 @@ public class CheckIntensiveScript extends EngineUT {
 	
 	// Check a cutscene where a character (Maltus) follows hero during a map scroll
 	// We ensure that he isn't removed during the scroll
-	@Test
+	@Test @DisableFreezeMonitor
 	public void sceneWithSwitchingMap() {
 		mapUtils.loadMap("foretg2");
 		spawnZildo(463,510);
