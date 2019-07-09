@@ -152,21 +152,21 @@ public class CollideManagement {
         
         // Break with the client/server paradigm: we deal with a single hero, as multiplayer isn't supported anymore
         PersoPlayer hero = p_states.iterator().next().zildo;
-        Collision zildoFeetCollision = new Collision(new Point(hero.x, hero.y), new Point(6,4), hero, null, null);	
-
-        
-        for (int i = 0; i < tab_floorColli.size(); i++) {
-            // We know that we only deal with collision on the ground damaging the hero
-            Collision collider = tab_floorColli.get(i);
-
-            Perso damager = collider.perso;
-
-            if ((collider.perso == null || !collider.perso.isWounded()) && checkColli(collider, zildoFeetCollision)) {
-            	if (collider.perso == null || (collider.isMultifloor() || hero.floor == collider.perso.floor)) {
-            		// Zildo gets wounded
-            		hit(collider, zildoFeetCollision);
-            	}
-            }
+        if (hero != null) {
+	        Collision zildoFeetCollision = new Collision(new Point(hero.x, hero.y), new Point(6,4), hero, null, null);	
+	
+	        
+	        for (int i = 0; i < tab_floorColli.size(); i++) {
+	            // We know that we only deal with collision on the ground damaging the hero
+	            Collision collider = tab_floorColli.get(i);
+	
+	            if ((collider.perso == null || !collider.perso.isWounded()) && checkColli(collider, zildoFeetCollision)) {
+	            	if (collider.perso == null || (collider.isMultifloor() || hero.floor == collider.perso.floor)) {
+	            		// Zildo gets wounded
+	            		hit(collider, zildoFeetCollision);
+	            	}
+	            }
+	        }
         }
     }
 
