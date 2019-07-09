@@ -78,56 +78,67 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 	}
 	
 	@Test @ClientMainLoop
-	public void navigateToIllegalPage() {
-		// GIVEN
-		PlatformDependentPlugin pdp = org.mockito.Mockito.spy(Zildo.pdPlugin);
-		doAnswer(new Answer<File[]>() {
-			// Simulate 11 savegames
-			public File[] answer(org.mockito.invocation.InvocationOnMock invocation) throws Throwable {
-				File[] files = new File[11];
-				Arrays.fill(files, new File("1 coucou"));
-				return files;
-			};
-		}).when(pdp).listFiles(anyString(), any(FilenameFilter.class));
-		
-		// Unbelievable here ! We are going to set a static final member !
-		// In fact, that is preferrable than removing final keyword in given class. But don't tell anyone.
+	public void navigateToIllegalPage() throws IllegalAccessException {
+		Field field = null;
+		PlatformDependentPlugin notMocked = Zildo.pdPlugin;
+
 		try {
-			final Field field = Zildo.class.getDeclaredField("pdPlugin");
-			// Allow modification on the field
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-			field.set(null, pdp);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+			// GIVEN
+			PlatformDependentPlugin pdp = org.mockito.Mockito.spy(Zildo.pdPlugin);
+			doAnswer(new Answer<File[]>() {
+				// Simulate 11 savegames
+				public File[] answer(org.mockito.invocation.InvocationOnMock invocation) throws Throwable {
+					File[] files = new File[11];
+					Arrays.fill(files, new File("1 coucou"));
+					return files;
+				};
+			}).when(pdp).listFiles(anyString(), any(FilenameFilter.class));
+			
+			// Unbelievable here ! We are going to set a static final member !
+			// In fact, that is preferrable than removing final keyword in given class. But don't tell anyone.
+	
+			try {
+				field = Zildo.class.getDeclaredField("pdPlugin");
+				// Allow modification on the field
+				Field modifiersField = Field.class.getDeclaredField("modifiers");
+				modifiersField.setAccessible(true);
+				modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+	
+				field.set(null, pdp);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			
+			PersoPlayer hero = spawnZildo(0, 0);
+			waitEndOfScripting();
+			clientState.zildoId = hero.getId();
+			// Game is started => get in savegame menu
+			simulatePressButton(Keys.ESCAPE, 2); 
+			Client client = ClientEngineZildo.getClientForMenu();
+			pickItem("m7.save");
+			renderFrames(2);
+	
+			Menu currentMenu = client.getCurrentMenu();
+			Assert.assertNotNull(currentMenu);
+			ItemMenu nextButton = currentMenu.items.get(10);
+			// Click on next
+			pickItem(nextButton.getKey());
+			// Then click again (this should be impossible)
+			client.setAction(nextButton);
+			renderFrames(2);
+			
+			// Now, the same with 'previous' button
+			ItemMenu prevButton = currentMenu.items.get(2);
+			Assert.assertEquals("global.prec", prevButton.getKey()  );
+			pickItem(prevButton.getKey());
+			// Then click again (this should be impossible)
+			client.setAction(prevButton);
+			renderFrames(2);
+		} finally {
+			if (field != null) {
+				// Get back to a non-mocked object, to avoid huge memory leak !
+				field.set(null, notMocked);
+			}
 		}
-		
-		PersoPlayer hero = spawnZildo(0, 0);
-		waitEndOfScripting();
-		clientState.zildoId = hero.getId();
-		// Game is started => get in savegame menu
-		simulatePressButton(Keys.ESCAPE, 2); 
-		Client client = ClientEngineZildo.getClientForMenu();
-		pickItem("m7.save");
-		renderFrames(2);
-
-		Menu currentMenu = client.getCurrentMenu();
-		Assert.assertNotNull(currentMenu);
-		ItemMenu nextButton = currentMenu.items.get(10);
-		// Click on next
-		pickItem(nextButton.getKey());
-		// Then click again (this should be impossible)
-		client.setAction(nextButton);
-		renderFrames(2);
-		
-		// Now, the same with 'previous' button
-		ItemMenu prevButton = currentMenu.items.get(2);
-		Assert.assertEquals("global.prec", prevButton.getKey()  );
-		pickItem(prevButton.getKey());
-		// Then click again (this should be impossible)
-		client.setAction(prevButton);
-		renderFrames(2);
 	}
 }
