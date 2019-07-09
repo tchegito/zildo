@@ -10,9 +10,8 @@ targetCompatibility = 1.8
 // Accept environment variable to define DATA folder
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
-	maxParallelForks = 1
+	maxParallelForks = 2
 	maxHeapSize = "1024m"
-	jvmArgs "-XX:MaxPermSize=256m"
 }
 
 dependencies {
