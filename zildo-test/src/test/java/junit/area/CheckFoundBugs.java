@@ -740,6 +740,7 @@ public class CheckFoundBugs extends EngineUT {
 		waitEndOfScroll();
 		System.out.println(hero);
 		Assert.assertFalse(hero.x < 0);
+		Assert.assertFalse(hero.isUnstoppable());
 
 	}
 }

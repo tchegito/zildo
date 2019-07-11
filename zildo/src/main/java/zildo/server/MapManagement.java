@@ -739,11 +739,10 @@ public class MapManagement {
 						}
 						if (correctedDest != null) {
 							dest = new Pointf(correctedDest);
+							zildo.setUnstoppable(true);
 						}
-						System.out.println("arg !");
 					}
 					zildo.setTarget(dest);
-
 				} else {
 					// Translate everybody to the new map reference
 					shiftPreviousMap(mapScrollAngle, true);
@@ -1168,6 +1167,12 @@ public class MapManagement {
 			currentMapTrigger = TriggerElement.createLocationTrigger(adjustedMapName, null, null, -1);
 			EngineZildo.scriptManagement.trigger(currentMapTrigger);
 			EngineZildo.scriptManagement.prepareMapSubTriggers(name);
+			
+			if (!EngineZildo.scriptManagement.isScripting()) {
+				// On a map scroll, we may activate unstoppable flag on particular situations
+				// So we make sure that we're done with it after the scroll
+				EngineZildo.persoManagement.getZildo().setUnstoppable(false);
+			}
 		}
 
 	}
