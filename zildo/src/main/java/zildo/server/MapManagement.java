@@ -700,22 +700,50 @@ public class MapManagement {
 				if (!zildo.isOnPlatform()) {
 					Pointf dest = new Pointf(zildo.x, zildo.y);
 					zildo.y = (int) zildo.y;
+					Angle chosen = null;
 					if (zildo.y > previousDimY * 16 - 16) {
 						zildo.setY(8 - 8);
 						dest.y = (int) zildo.y + 8;
+						chosen = Angle.SUD;
 					} else if (zildo.y < 4) {
-						zildo.setY(currentMap.getDim_y() * 16 - 8 + 8);
+						zildo.setY(currentMap.getDim_y() * 16);
 						dest.y = (int) zildo.y - 8;
+						chosen = Angle.NORD;
 					} else if (zildo.x < 4) {
-						zildo.setX(currentMap.getDim_x() * 16 - 16 + 16);
+						zildo.setX(currentMap.getDim_x() * 16);
 						dest.x = (int) zildo.x - 16;
+						chosen = Angle.OUEST;
 					} else if (zildo.x > previousDimX * 16 - 16) {
 						zildo.setX(8 - 16);
 						dest.x = (int) zildo.x + 16;
+						chosen = Angle.EST;
 					}
 					// Translate everyone but Zildo because we just did it
 					shiftPreviousMap(mapScrollAngle, false);
+					if (collide(dest.x, dest.y, zildo) && chosen != null) {
+						// Hero will be on a unreachable location after the scroll
+						// So we try to move him laterally
+						final int delta = 6;
+						Point[] points = {new Point(0, -delta), new Point(0, delta)};
+						if (chosen.isVertical()) {
+							points[0] = new Point(-delta, 0);
+							points[1] = new Point(delta, 0);
+						}
+						Point correctedDest = null;
+						for (int i=0;i<2;i++) {
+							correctedDest = new Point(dest.x + points[i].x, dest.y + points[i].y);
+							if (!collide(correctedDest.x, correctedDest.y, zildo)) {
+								break;
+							}
+							correctedDest = null;
+						}
+						if (correctedDest != null) {
+							dest = new Pointf(correctedDest);
+						}
+						System.out.println("arg !");
+					}
 					zildo.setTarget(dest);
+
 				} else {
 					// Translate everybody to the new map reference
 					shiftPreviousMap(mapScrollAngle, true);

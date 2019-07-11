@@ -692,10 +692,54 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		renderFrames(2);
 		// Check that player is switching map
-		System.out.println(zildo);
 		Assert.assertNotNull(zildo.getTarget());
 		waitEndOfScroll();
 		System.out.println(zildo);
 		Assert.assertNull(zildo.getTarget());
+	}
+	
+	/** Issue 175 from Josh: hit by a monster, map scroll leads player out of the map**/
+	@Test
+	public void unreachablePlace() {
+		mapUtils.loadMap("buchforet");
+		PersoPlayer hero = spawnZildo(678,279);
+		Perso rabbit = persoUtils.persoByName("rabbit");
+		rabbit.setAlerte(true);
+		// Wait for rabbit to hit the hero
+		while (rabbit.x < 640) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 1);
+		while (hero.y < 328) {
+			renderFrames(1);
+		}
+		rabbit.setX(678);
+		rabbit.setY(313);
+		simulateDirection(0, -1);
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		renderFrames(5);
+		// Check that player is switching map
+		Assert.assertNotNull(hero.getTarget());
+
+		waitEndOfScroll();
+		Assert.assertFalse(hero.x < 0);
+		System.out.println(hero);
+	}
+	
+	@Test
+	public void unreachablePlaceSimpler() {
+		mapUtils.loadMap("buchforet");
+		PersoPlayer hero = spawnZildo(678,339);
+		simulateDirection(1, 0);
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		renderFrames(10);
+		waitEndOfScroll();
+		System.out.println(hero);
+		Assert.assertFalse(hero.x < 0);
+
 	}
 }
