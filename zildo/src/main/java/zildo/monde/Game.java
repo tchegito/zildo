@@ -287,6 +287,10 @@ public class Game implements EasySerializable {
             game.mapName = p_buffer.readString();
             Point loc = new Point(p_buffer.readInt(), p_buffer.readInt());
             if (!p_minimal) {
+            	// Issue 175: bugfix about a case found by Josh. Negative value leads to "fff8" = -8. Unsigned=>65528
+            	if (loc.x > 64*16*2) {	// Value way too high
+            		loc.x = 8;
+            	}
 	            zildo.setX(loc.x);
 	            zildo.setY(loc.y);
 	            zildo.setFloor(1);
