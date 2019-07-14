@@ -106,7 +106,7 @@ public class StatsPanel extends JPanel {
 		MapDialog dialogs = map.getMapDialog();
 		int nbDial = dialogs == null ? 0 : dialogs.getN_phrases();
 		dim.setText(map.getDim_x() + " x " + map.getDim_y());
-		nFloors.setText("" + (map.getHighestFloor()+1));
+		nFloors.setText("" + (map.getHighestFloor() - map.getLowestFloor() + 1));
 		nPerso.setText(String.valueOf(nbPerso));
 		nPerso.setToolTipText( "<html>" + getPersoNames() + "</html>");
 		nSpr.setText(String.valueOf(nbSpr - nbPerso));

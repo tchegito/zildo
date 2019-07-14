@@ -23,7 +23,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
 import zeditor.core.Options;
@@ -46,8 +46,6 @@ import zildo.monde.map.accessor.HighestFloorAccessor;
 import zildo.monde.map.accessor.SpecificFloorAreaAccesor;
 import zildo.server.EngineZildo;
 
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
-
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
  * Builder, which is free for non-commercial use. If Jigloo is being used
@@ -58,7 +56,7 @@ import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-@SuppressWarnings({ "serial", "deprecation" })
+@SuppressWarnings({ "serial" })
 public class MasterFrame extends javax.swing.JFrame {
 
 	private JMenuBar menuBar;
@@ -139,9 +137,14 @@ public class MasterFrame extends javax.swing.JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(new NimbusLookAndFeel());
-				} catch (UnsupportedLookAndFeelException e) {
-
+				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				        if ("Nimbus".equals(info.getName())) {
+				            UIManager.setLookAndFeel(info.getClassName());
+				            break;
+				        }
+				    }
+				} catch (Exception e) {
+				    // If Nimbus is not available, you can set the GUI to another look and feel.
 				}
 
 				Zildo.screenX = 640;
