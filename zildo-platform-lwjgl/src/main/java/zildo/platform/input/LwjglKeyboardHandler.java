@@ -24,8 +24,11 @@ import java.util.EnumMap;
 
 import org.lwjgl.input.Keyboard;
 
+import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.monde.util.Vector2f;
+import zildo.resource.KeysConfiguration;
 
 /**
  * @author Tchegito
@@ -79,7 +82,20 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	}
 
 	public boolean isKeyDown(int p_code) {
-		return Keyboard.isKeyDown(p_code);		
+		if (Zildo.replayMovements) {
+			KeysConfiguration keyCode = null;
+			switch (p_code) {
+			case KEY_LEFT: keyCode = KeysConfiguration.PLAYERKEY_LEFT; break;
+			case KEY_RIGHT: keyCode = KeysConfiguration.PLAYERKEY_RIGHT; break;
+			case KEY_UP: keyCode = KeysConfiguration.PLAYERKEY_UP; break;
+			case KEY_DOWN: keyCode = KeysConfiguration.PLAYERKEY_DOWN; break;
+			
+			}
+			if (keyCode == null) return false;
+			return ClientEngineZildo.client.getKbInstant().isKeyDown(keyCode);
+		} else {
+			return Keyboard.isKeyDown(p_code);
+		}
 	}
 	
 	public void poll() {
