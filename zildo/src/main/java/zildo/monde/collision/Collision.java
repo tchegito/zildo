@@ -76,7 +76,7 @@ public class Collision {
     
     // Special case: dragon cause damage whatever the floor is
     public boolean isMultifloor() {
-    	if (perso != null) {
+    	if (perso != null && perso.getDesc() != null) {
 	    	switch (perso.getDesc()) {
 	    	case CHAUVESOURIS:
 	    	case DRAGON:
