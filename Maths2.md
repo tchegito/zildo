@@ -16,4 +16,4 @@ b<sub>0</sub><sup>2</sup> (t) = (1-t)² b<sub>0</sub> (t) + (t(1-t))².b<sub>1</
 
 We just replace each b by x,y coordinates and it's ok.
 
-Basically, in the code, this is implemented by [Bezier3 class](https://github.com/tchegito/zildo/blob/master/zildo/src/zildo/monde/Bezier3.java)
+Basically, in the code, this is implemented by [Bezier3 class](https://github.com/tchegito/zildo/blob/master/zildo/src/main/java/zildo/monde/Bezier3.java)
