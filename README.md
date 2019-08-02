@@ -15,7 +15,8 @@ Interesting docs:
    * [Snippets](https://github.com/tchegito/zildo/blob/wiki/Snippets.md)
    * [Cursor](https://github.com/tchegito/zildo/blob/wiki/ScriptCursor.md)
  * Math:
-   *  [Movement anticipation and Bezier curves](https://github.com/tchegito/zildo/blob/wiki/Maths.md)
+   *  [Movement anticipation](https://github.com/tchegito/zildo/blob/wiki/Maths.md)
+   *  [Bezier curves](https://github.com/tchegito/zildo/blob/wiki/Maths2.md)
    *  [Clipping function for Shader](https://github.com/tchegito/zildo/blob/wiki/MathLinearFunction.md)
  * Sprites:
    *  [Storage specifics](https://github.com/tchegito/zildo/blob/wiki/SpriteStorageMisc.md)
