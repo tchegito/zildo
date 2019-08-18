@@ -18,6 +18,11 @@ public class CheckDisplaySorter extends EngineUT {
 	public void carryingItem() {
 		mapUtils.loadMap("valori");
 		PersoPlayer hero = spawnZildo(998,772);
+		
+		// Kill close mole
+		persoUtils.removePerso("taupe2");
+		waitEndOfScripting();
+		
 		simulateDirection(0, 1);
 		renderFrames(20);
 		simulateDirection(0, 0);
