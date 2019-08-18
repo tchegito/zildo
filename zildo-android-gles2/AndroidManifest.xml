@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.alembrum"
-      android:versionCode="67"
-      android:versionName="2.57"
+      android:versionCode="68"
+      android:versionName="2.58"
       android:launchMode = "singleInstance">
     <uses-sdk android:targetSdkVersion="26" android:minSdkVersion="10" />
 	<!-- targetSdkVersion:12 for real but 26 to meet Google requirement-->
