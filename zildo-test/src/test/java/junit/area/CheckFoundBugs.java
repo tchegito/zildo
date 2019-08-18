@@ -679,7 +679,6 @@ public class CheckFoundBugs extends EngineUT {
 		// Check that player is switching map
 		Assert.assertNotNull(zildo.getTarget());
 		waitEndOfScroll();
-		System.out.println(zildo);
 		Assert.assertNull(zildo.getTarget());
 	}
 	
@@ -710,7 +709,6 @@ public class CheckFoundBugs extends EngineUT {
 
 		waitEndOfScroll();
 		Assert.assertFalse(hero.x < 0);
-		System.out.println(hero);
 	}
 	
 	@Test
@@ -723,7 +721,6 @@ public class CheckFoundBugs extends EngineUT {
 		}
 		renderFrames(10);
 		waitEndOfScroll();
-		System.out.println(hero);
 		Assert.assertFalse(hero.x < 0);
 		Assert.assertFalse(hero.isUnstoppable());
 	}
@@ -737,6 +734,18 @@ public class CheckFoundBugs extends EngineUT {
 		hero.floor = 0;
 		simulateDirection(-1, 0);
 		waitAndAssertChangingMap(hero);
+		renderFrames(10);
+		mapUtils.assertCurrent("prison9");
+		waitEndOfScroll();
+		Assert.assertEquals(0, hero.floor);
+		
+		// Then go back
+		simulateDirection(1,0);
+		waitAndAssertChangingMap(hero);
+		renderFrames(10);
+		mapUtils.assertCurrent("prison10");
+		waitEndOfScroll();
+		Assert.assertEquals(0, hero.floor);
 	}
 	
 	@Test
@@ -748,7 +757,19 @@ public class CheckFoundBugs extends EngineUT {
 		hero.floor = 2;
 		simulateDirection(-1, 0);
 		waitAndAssertChangingMap(hero);
+		renderFrames(10);
+		mapUtils.assertCurrent("prison9");
 		waitEndOfScroll();
+		Assert.assertEquals(2, hero.floor);
+		
+		// Then go back
+		simulateDirection(1,0);
+		waitAndAssertChangingMap(hero);
+		renderFrames(10);
+		mapUtils.assertCurrent("prison10");
+		waitEndOfScroll();
+		Assert.assertEquals(2, hero.floor);
+
 	}
 	
 	private void waitAndAssertChangingMap(PersoPlayer hero) {
@@ -756,6 +777,8 @@ public class CheckFoundBugs extends EngineUT {
 		while (i-- > 0 && !EngineZildo.mapManagement.isChangingMap(hero)) {
 			renderFrames(1);
 		}
+		System.out.println(hero);
+
 		Assert.assertTrue(EngineZildo.mapManagement.isChangingMap(hero));
 	}
 }
