@@ -73,6 +73,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
@@ -746,5 +747,22 @@ public abstract class EngineUT {
 	protected SpriteEntity findEntityByDesc(SpriteDescription desc) {
 		List<SpriteEntity> entities = findEntitiesByDesc(desc);
 		return entities.isEmpty() ? null : entities.get(0);
+	}
+	
+	
+	/** Wait for a specific projectile to be thrown. Be careful, because wait is unlimited. **/
+	protected SpriteEntity waitForSpecificEntity(ElementDescription desc) {
+		SpriteEntity found = null;
+		while (found == null) {
+			List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+			for (SpriteEntity entity : entities) {
+				if (entity.getDesc() == desc && entity.isVisible()) {
+					found = entity;
+					break;
+				}
+			}
+			renderFrames(1);
+		}
+		return found;
 	}
 }

@@ -196,7 +196,7 @@ public class CheckFoundBugs extends EngineUT {
 		int initialHeroPv = zildo.getPv();
 		
 		// Wait for snake to launch some projectile
-		SpriteEntity projectile = waitForProjectile(ElementDescription.BROWNSPHERE1);
+		SpriteEntity projectile = waitForSpecificEntity(ElementDescription.BROWNSPHERE1);
 	
 		zildo.setPos(new Vector2f(102, 162));
 		// Now we wait for projectile to be just in front of hero
@@ -229,7 +229,7 @@ public class CheckFoundBugs extends EngineUT {
 		int pv = zildo.getPv();
 		
 		// Wait serpent to throw a projectile
-		SpriteEntity projectile = waitForProjectile(ElementDescription.BROWNSPHERE1);
+		SpriteEntity projectile = waitForSpecificEntity(ElementDescription.BROWNSPHERE1);
 		boolean touchHero = false;
 		// Wait for projectile to hit hero
 		int previousDist = 10000;
@@ -385,21 +385,6 @@ public class CheckFoundBugs extends EngineUT {
 		Assert.assertFalse(EngineZildo.scriptManagement.isScripting());
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestDone("vert_seen"));
 
-	}
-	
-	/** Wait for a specific projectile to be thrown. Be careful, because wait is unlimited. **/
-	private SpriteEntity waitForProjectile(ElementDescription desc) {
-		SpriteEntity projectile = null;
-		while (projectile == null) {
-			for (SpriteEntity entity : sprites()) {
-				if (entity.getDesc() == desc && entity.isVisible()) {
-					projectile = entity;
-					break;
-				}
-			}
-			renderFrames(1);
-		}
-		return projectile;
 	}
 	
 	/**After some regression, hero went upstairs, but was blocked behind a crate. 
