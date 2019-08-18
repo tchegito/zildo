@@ -514,7 +514,8 @@ public class Area implements EasySerializable {
 				}
 				// Area's borders
 				border = isAlongBorder((int) x, (int) y);
-				if (chPoint.isCollide(ax, ay, border) && chPoint.getFloor() == fromFloor) {
+				int chFloor = chPoint.getFloor();	// 255 (or -1 in ZEditor) means on any floor
+				if (chPoint.isCollide(ax, ay, border) && (chFloor == 255 || chFloor == fromFloor)) {
 					candidates.add(chPoint);
 				}
 			}

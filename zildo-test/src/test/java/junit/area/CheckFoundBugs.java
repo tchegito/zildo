@@ -726,6 +726,36 @@ public class CheckFoundBugs extends EngineUT {
 		System.out.println(hero);
 		Assert.assertFalse(hero.x < 0);
 		Assert.assertFalse(hero.isUnstoppable());
+	}
+	
+	@Test
+	public void chainingMultiFloor1() {
+		mapUtils.loadMap("prison10");
+		PersoPlayer hero = spawnZildo(47, 113);
+		waitEndOfScripting();
+		
+		hero.floor = 0;
+		simulateDirection(-1, 0);
+		waitAndAssertChangingMap(hero);
+	}
+	
+	@Test
+	public void chainingMultiFloor2() {
+		mapUtils.loadMap("prison10");
+		PersoPlayer hero = spawnZildo(47, 287);
+		waitEndOfScripting();
 
+		hero.floor = 2;
+		simulateDirection(-1, 0);
+		waitAndAssertChangingMap(hero);
+		waitEndOfScroll();
+	}
+	
+	private void waitAndAssertChangingMap(PersoPlayer hero) {
+		int i=40;
+		while (i-- > 0 && !EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+		}
+		Assert.assertTrue(EngineZildo.mapManagement.isChangingMap(hero));
 	}
 }
