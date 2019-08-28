@@ -8,6 +8,7 @@ import org.junit.runners.model.Statement;
 
 import tools.annotations.ClientMainLoop;
 import tools.annotations.DisableFreezeMonitor;
+import tools.annotations.DisableSpyGuiDisplay;
 import tools.annotations.InfoPersos;
 import tools.annotations.SoundEnabled;
 import tools.annotations.SpyHero;
@@ -16,12 +17,14 @@ import tools.annotations.SpyMapManagement;
 /**
  * Runner allowing us to benefit from custom annotations. Then code gets clearer than a bunch of 'if' inside test methods.
  * 
- * For now, there is 4 annotations:<ul>
+ * For now, there is 7 annotations:<ul>
  * <li>{@link DisableFreezeMonitor}</li>
  * <li>{@link InfoPersos}</li>
  * <li>{@link SpyHero}</li>
  * <li>{@link SpyMapManagement}</li>
  * <li>{@link ClientMainLoop}</li>
+ * <li>{@link DisableSpyGuiDisplay}</li>
+ * <li>{@link SoundEnabled}</li>
  * </ul>
  * 
  * @author tchegito
@@ -33,7 +36,6 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 		super(klass);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected Statement withBefores(FrameworkMethod method, Object target, Statement statement) {
 		// Check if test method has any custom annotations
@@ -64,6 +66,8 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 				testClass.clientMainLoop = true;
 			} else if (clazz == SoundEnabled.class) {
 				testClass.soundEnabled = true;
+			} else if (clazz == DisableSpyGuiDisplay.class) {
+				testClass.disableGuiDisplay = true;
 			}
 		}
 	}

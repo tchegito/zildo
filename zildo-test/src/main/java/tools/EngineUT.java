@@ -38,6 +38,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import zildo.Zildo;
 import zildo.client.Client;
@@ -124,6 +125,7 @@ public abstract class EngineUT {
 	boolean disableFreezeMonitor = false;
 	boolean clientMainLoop = false;
 	boolean soundEnabled = false;
+	boolean disableGuiDisplay = false;
 	
 	boolean displayNFrame = false;	// To enable "frame: x" display ==> very disk consuming !
 	
@@ -317,13 +319,23 @@ public abstract class EngineUT {
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
-			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class);
-			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class);
+			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class, Mockito.withSettings().stubOnly());
 			ClientEngineZildo.spriteDisplay = new SpriteDisplayMocked(ClientEngineZildo.spriteEngine);
-			ClientEngineZildo.guiDisplay = spy(new GUIDisplay());
+			GUIDisplay gd = null;
+			if (disableGuiDisplay) {
+				gd = new GUIDisplay() {
+					@SuppressWarnings("unused")
+					void setToDisplay_generalGui() {	// Just to neutralize the methods
+					}
+				};
+			} else {
+				gd = spy(new GUIDisplay());
+				when(gd.skipDialog()).thenReturn(true);
+				doNothing().when(gd).endMenu();
+			}
+			ClientEngineZildo.guiDisplay = gd;
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
-			when(ClientEngineZildo.guiDisplay.skipDialog()).thenReturn(true);
-			doNothing().when(ClientEngineZildo.guiDisplay).endMenu();
 			
 			fakeClient.setOpenGLGestion(ClientEngineZildo.openGLGestion);
 			//fakeClient.askStage(stage);

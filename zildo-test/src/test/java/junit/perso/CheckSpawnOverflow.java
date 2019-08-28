@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import testable.TestableIdGenerator;
 import tools.EngineUT;
+import tools.annotations.DisableSpyGuiDisplay;
 import zildo.fwk.db.Identified;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
@@ -21,7 +22,7 @@ public class CheckSpawnOverflow extends EngineUT {
 
 	TestableIdGenerator seGenerator;
 	
-	@Test 
+	@Test @DisableSpyGuiDisplay
 	public void sewer() {
 		System.gc();
 		System.runFinalization();
@@ -47,9 +48,9 @@ public class CheckSpawnOverflow extends EngineUT {
 				renderFrames(1);
 				zildo.setPv(40);
 				zildo.setPx(0);
-				zildo.setPy(0);
+				zildo.setPy(0); 
 			}
-			//System.out.println(countEntities()+ " hero: "+zildo.getPv()+"HP");
+			System.out.println(i+": "+countEntities()+ " hero: "+zildo.getPv()+"HP");
 		}
 	}
 	
