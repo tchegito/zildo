@@ -1084,7 +1084,7 @@ public class MapManagement {
 		float testY = p.y;
 		int shift = 4;
 		EngineZildo.spriteManagement.updateCollisions();
-		while (collide(testX, testY, p) && shift < MAX_SHIFT) {
+		while (isBlocked(testX, testY, p) && shift < MAX_SHIFT) {
 			// Second try: check increasing radius around hero for better location
 			testX = p.x + a.coords.x * shift;
 			testY = p.y + a.coords.y * shift;
@@ -1129,6 +1129,17 @@ public class MapManagement {
 		}
 	}
 
+	private boolean isBlocked(float x, float y, Perso perso) {
+		for (Angle a : Angle.values()) {
+			Point coord = a.coords;
+			if (!collide(x + coord.x, y + coord.y, perso)) {
+				return false;
+			}
+			
+		}
+		return true;
+	}
+	
 	public Area getCurrentMap() {
 		return currentMap;
 	}

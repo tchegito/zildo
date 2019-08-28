@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.DisableFreezeMonitor;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -17,6 +18,9 @@ import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -217,5 +221,40 @@ public class Inconsistencies extends EngineUT {
 		Assert.assertNotNull(goodies);
 		Assert.assertEquals(1, goodies.getFloor());
 		
+	}
+	
+	@Test @DisableFreezeMonitor
+	public void heroInWall() {
+		mapUtils.loadMap("prison");
+		PersoPlayer zildo = spawnZildo(100, 100);
+		// We try to place hero in every location in Igor's room and see if the saved game get broken
+		for (int y=41;y<103;y+=2) {
+			for (int x=56;x<119;x+=2) {
+				zildo.x = x;
+				zildo.y = y;
+				zildo.walkTile(false);
+				if (isBlocked(zildo)) continue;
+				// Save the game and reload
+				EasyBuffering buffer = new EasyBuffering(5000);
+				EngineZildo.game.serialize(buffer);
+				EngineZildo.persoManagement.clearPersos(true);
+				EngineZildo.spriteManagement.clearSprites(true);
+
+				SaveGameMenu.loadGameFromBuffer(buffer, false);
+		    	zildo = EngineZildo.persoManagement.getZildo();
+		    	assertNotBlocked(zildo);
+			}
+		}
+	}
+	
+	private boolean isBlocked(Perso perso) {
+		for (Angle a : Angle.values()) {
+			Point coord = a.coords;
+			Pointf loc = perso.tryMove(coord.x, coord.y);
+			if (loc.x != perso.x || loc.y != perso.y) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
