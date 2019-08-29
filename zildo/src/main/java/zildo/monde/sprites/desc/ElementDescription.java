@@ -376,5 +376,17 @@ public enum ElementDescription implements SpriteDescription {
 			return valueOf(s);
 		}
 	}
+
+	public boolean hasShadow() {
+		switch(this) {
+		case NOTE:
+		case NOTE2:
+		case ZZZ1:
+		case ZZZ2:
+			return false;
+		default:
+			return true;
+		}
+	}
 	
 }

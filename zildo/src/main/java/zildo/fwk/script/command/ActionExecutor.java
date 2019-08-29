@@ -1073,7 +1073,9 @@ public class ActionExecutor extends RuntimeExecutor {
 			elem.flying = true;
 			elem.setAngle(Angle.fromDelta(elem.vx, elem.vy));
 			elem.relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) elem.x / 16, (int) elem.y / 16);
-			if (!elem.hasShadow()) {
+			SpriteDescription dd = elem.getDesc();
+			ElementDescription desc = dd != null && dd instanceof ElementDescription ? (ElementDescription) dd : null;
+			if (!elem.hasShadow() && (desc == null || desc.hasShadow())) {
 				elem.addShadow(ElementDescription.SHADOW_SMALL);
 			}
 		}
