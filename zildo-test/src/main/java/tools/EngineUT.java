@@ -763,15 +763,18 @@ public abstract class EngineUT {
 	
 	
 	/** Wait for a specific projectile to be thrown. Be careful, because wait is unlimited. **/
-	protected SpriteEntity waitForSpecificEntity(ElementDescription desc) {
+	protected SpriteEntity waitForSpecificEntity(ElementDescription... desc) {
 		SpriteEntity found = null;
 		while (found == null) {
 			List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 			for (SpriteEntity entity : entities) {
-				if (entity.getDesc() == desc && entity.isVisible()) {
-					found = entity;
-					break;
+				for (ElementDescription d : desc) {
+					if (entity.getDesc() == d && entity.isVisible()) {
+						found = entity;
+						break;
+					}
 				}
+				if (found != null) break;
 			}
 			renderFrames(1);
 		}
