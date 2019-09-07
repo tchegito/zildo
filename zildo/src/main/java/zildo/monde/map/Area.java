@@ -1049,7 +1049,7 @@ public class Area implements EasySerializable {
 				p_file.put((byte) perso.getInfo().ordinal());
 				p_file.put(perso.getDialogSwitch());
 				// p_file.put((byte) 0); //(byte) perso.getEn_bras());
-				p_file.put((byte) perso.getQuel_deplacement().ordinal());
+				p_file.put((byte) perso.getQuel_deplacement().valeur);
 				p_file.put((byte) perso.getAngle().ordinal());
 				p_file.put(perso.getName());
 			}

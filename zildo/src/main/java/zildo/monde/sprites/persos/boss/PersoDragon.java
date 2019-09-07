@@ -87,13 +87,6 @@ public class PersoDragon extends PersoNJ {
 			neck.elems.get(11).floor++;
 			neck.elems.get(12).floor++;
 			
-			// Name each part (to be able to use them in scripts)
-			int nbSprite = 0;
-			/*
-			for (Element element : neck.elems) {
-				element.setName("s" + (nbSprite++) );
-			}
-			*/
 			for (Element e : neck.elems) {
 				if (e != this) {	// Element 0 is the dragon itself
 					addPersoSprites(e);
@@ -103,11 +96,7 @@ public class PersoDragon extends PersoNJ {
 
 		super.animate(compteur_animation);
 		
-		int nth=0;
-		double beta = gamma;
-		double iota = 0;
-		float xx=x, yy=y, zz=z; 
-		
+		float yy=y; 
 		
 		float addYWounded = 0f;
 		float addXWounded = 0f;
@@ -126,11 +115,7 @@ public class PersoDragon extends PersoNJ {
 		if (cnt % FOCUS_TIME == 0) {
 			zildo = EngineZildo.persoManagement.lookForOne(this, 18, PersoInfo.ZILDO, false);
 			if (zildo != null) {
-				Vector2f dist = new Vector2f(headPoint, new Pointf(zildo.x, zildo.y));
-				float norme = dist.norm();
-				float ratio = HEAD_ELONGATION / norme;
-				headPoint.add(new Vector2f(2, 0)); //dist.mul(ratio));
-				//System.out.println(headPoint);
+				headPoint.add(new Vector2f(2, 0));
 			}
 			focusedEnemy = zildo;
 		}
@@ -139,15 +124,13 @@ public class PersoDragon extends PersoNJ {
 		
 		vz += az;
 		z += vz;
-
-		
-		//System.out.println("az="+az+" vz="+vz+"z="+z);
 		
 		int wingAddX =0;
 		int floorHead = 1;
 		if (getQuel_deplacement() == MouvementPerso.RETRACTED) {
 			wingAddX += 20;
 			floorHead = 0;
+			setVisible(z > -150);	// Hide dragon when he's really far under the lava
 		}
 		neck.elems.get(6).floor = floorHead;
 		neck.elems.get(7).floor = floorHead;
@@ -155,6 +138,7 @@ public class PersoDragon extends PersoNJ {
 		neck.elems.get(11).floor = floorHead;
 		neck.elems.get(12).floor = floorHead;
 		
+		Angle headAngle = Angle.SUD;
 		for (int i=0;i<neck.elems.size()-1;i++) {
 			Element e = neck.elems.get(i+1);
 			e.setAddSpr(seq[i]);
@@ -191,27 +175,20 @@ public class PersoDragon extends PersoNJ {
 				Pointf interpolated = bz.interpol(i / 5f);
 				e.x = interpolated.x;
 				e.z = interpolated.y + z;
-				//e.x = xx + (float) (3 * Math.cos(beta * 0.7) + 12 * Math.sin(iota));
-				//e.z = zz + 20 - (float) (2 * Math.sin(beta) + 2 * Math.cos(iota));
 				if (i == 5) {	// Head
-					/*
-					e.z -= 30;
-					e.x -= 10;
-					*/
-					//e.setForeground(true);
 					// Mesure distance with center
 					float shiftHead = neck.elems.get(2).x - e.x;
 					if (focusedEnemy != null) {
 						shiftHead = focusedEnemy.x - e.x;
 					}
-					//System.out.println(shiftHead);
 					if (shiftHead < -12) {	// Head looking left
 						e.setAddSpr(0);
 						e.reverse = Reverse.NOTHING;
+						headAngle = Angle.OUEST;
 					} else if (shiftHead > 12) {	// Head looking right
 						e.setAddSpr(0);
 						e.reverse = Reverse.HORIZONTAL; 
-							//neckPoint.x < headPoint.x ? Reverse.HORIZONTAL : Reverse.NOTHING;
+						headAngle = Angle.EST;
 					} else  {
 						e.setAddSpr(9);
 						yy+=10;
@@ -235,22 +212,16 @@ public class PersoDragon extends PersoNJ {
 				}
 				e.y = yy;
 			}
-			xx = e.x;
 			yy = e.y;
-			zz = e.z;
-			beta += 0.01;
-			iota += 0.001;
-			nth++;
 		}
 		neck.elems.get(1).visible = false;
-		//refElement.setAddSpr(1);
-		//visible = false;
 		alpha = 0;
 		
 		if (cnt++ % 150 == 0) {
 			Element h = neck.elems.get(6);
+			int deltaX = headAngle.coords.x * 15;
 			Element elem = EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.SEWER_SMOKE,
-					(int) h.x, (int) (h.y + z),
+					(int) h.x+deltaX, (int) (h.y + z),
 					0, 2, this, null);
 			elem.z = h.z + 10;
 			elem.setLinkedPerso(this);

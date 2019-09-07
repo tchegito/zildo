@@ -1117,7 +1117,7 @@ public class Element extends SpriteEntity {
 	
 	@Override
 	public int getFloorForSort() {
-		if (linkedPerso!=null && !flying) {
+		if (linkedPerso!=null && linkedPerso.isZildo()) { // && !flying) {
 			// For example, if hero is carrying an object above his head, they should be displayed at the same floor
 			return linkedPerso.getFloorForSort();
 		} else {

@@ -774,6 +774,15 @@ public class ActionExecutor extends RuntimeExecutor {
 	            			float finalT = distance / p_action.speed;
 	            			elem.vz = -(finalT * elem.az) / 2;
 	                	}
+	                	if (elem.getDesc() == ElementDescription.FIRE_BALL) {
+	                		// Reverse fireball accordingly to its target
+	                		if (elem.vx < 0) {
+	                			elem.reverse = Reverse.HORIZONTAL;
+	                		}
+	                		if (elem.vy < 0) {
+	                			elem.reverse = elem.reverse.flipVertical();
+	                		}
+	                	}
 	                	elem.setLinkedPerso(perso);
 	                	elem.flying = true;
 	                	elem.setAngle(Angle.EST);

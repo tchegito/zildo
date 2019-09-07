@@ -21,21 +21,16 @@
 package zildo.fwk.gfx.engine;
 
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import zildo.Zildo;
-import zildo.fwk.bank.SpriteBank;
-import zildo.fwk.gfx.Occluder;
 import zildo.fwk.gfx.primitive.SpritePrimitive;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.SpriteStore;
 import zildo.monde.sprites.elements.Element;
-import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
-import zildo.monde.util.Zone;
+import zildo.monde.util.Vector4f;
 import zildo.resource.Constantes;
 
 // SpriteEngine.cpp: implementation of the SpriteEngine class.
@@ -56,6 +51,8 @@ public abstract class SpriteEngine {
 
 	protected final Vector3f peopleNameColor = new Vector3f(0.9f, 0.5f, 0.2f);
 
+	protected Vector4f randomVector= new Vector4f(0,0,0,0);
+	
 	//////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
 	//////////////////////////////////////////////////////////////////////
@@ -179,6 +176,9 @@ public abstract class SpriteEngine {
 		// Because foreground display will continue rendering just after it.
 		for (int i=0;i<Constantes.NB_SPRITEBANK;i++)
 			meshSprites[i].initRendering();
+		
+		// Init random values, for people being hurt
+		randomVector.set((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
 	}
 	
 	/**

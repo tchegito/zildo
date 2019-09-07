@@ -2044,7 +2044,7 @@
 			    <script who="self" value="19"/>
    				<lookFor who="self" info="ZILDO" radius="18">
    	   	            <for var="loc:i" value="5">
-	   	                <!-- Remains to reverse fireball sprites, if targeted on the left -->
+	   	                <!-- Fireball are reversed accordingly to their target, in Java ActionExecutor#render-->
 					    <throw who="dragon" pos="loc:dragonX, loc:dragonY-60" to="zildo.x,zildo.y" speed="1.8" floor="2"
 						      		 	   type="FIRE_BALL" zoom="127" foreground="true"/>
 	   				    <wait value="3"/>
@@ -2222,9 +2222,12 @@
 	    </if>
    	    <speak what="camera" text="ep3.end.3"/>
 	    <speak what="camera" text="ep3.end.4"/>
+	    <!-- closure
    	    <speak what="camera" text="ep3.end.5"/>
   	    <speak what="camera" text="ep2.ending.cut.1"/>
 	   	<end type="0"/>
+  	    -->
+  	   	<exec script="intro_episode4"/>
 	</scene>
 	
 	<tileAction id="fountain">

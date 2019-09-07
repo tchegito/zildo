@@ -383,6 +383,7 @@ public enum ElementDescription implements SpriteDescription {
 		case NOTE2:
 		case ZZZ1:
 		case ZZZ2:
+		case DROP_SMALL:
 			return false;
 		default:
 			return true;

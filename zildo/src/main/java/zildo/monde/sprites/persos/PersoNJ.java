@@ -337,6 +337,7 @@ public class PersoNJ extends Perso {
 					}
 					break;
 				case WAKEUP:
+					pos_seqsprite++;
 					break;
 				case FOLLOW:
 					pathFinder.determineDestination();

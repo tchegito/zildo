@@ -64,7 +64,7 @@ public class SpriteBank {
 	protected int nSprite;
 	protected String name;
 	
-	private boolean toModif = false;	// For optimization reason : pnj.spr will be modified
+	private boolean toModif = true;	// For optimization reason : pnj.spr will be modified
 	
 	public SpriteBank()
 	{

@@ -310,7 +310,7 @@
         </action>
     </quest>
         
-    <quest name="borisWait">
+    <quest name="borisWait" locked="false">
         <!-- This quest is just a way of simulating wait once hero has given his bag to Boris -->
         <trigger>
             <questDone name="giveSawdust"/>
@@ -768,10 +768,12 @@
 	    <condition name="prison">
 	    	<var name="allowedDynamite" value="no"/>
 	    </condition>
-	    <condition name="!chateaucoucou1-!chateaucoucou2-!voleursg1-!voleursg2-!voleursg3-!voleursg4-!voleursg5-!voleursg6-!voleursg7" exp="trig_echange-!zildoDream">
+	    <condition name="!chateaucoucou1-!chateaucoucou2-!voleursg1-!voleursg2-!voleursg3-!voleursg4-!voleursg5-!voleursg6-!voleursg7-!nature1" exp="trig_echange-!zildoDream,hero_princess">
+	        <!-- Night -->
 	        <filter type="1"/>
 	    </condition>
-	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6,voleursg7">
+	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6,voleursg7,nature1">
+	        <!-- Day -->
 	        <filter type="0"/>
 	    </condition>
 	    <condition name="voleursg5">

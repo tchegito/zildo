@@ -283,6 +283,38 @@
    		<sound name="MoonFusion"/>
   	</scene>
    	
+   	<scene id="intro_episode4">
+   	    <wait value="30"/>
+   	    <music/>
+   	    <wait value="50"/>
+   	    <map name="voleurs"/>
+   	    <pos who="zildo" pos="79,377"/>
+   	    <angle who="zildo" value="2"/>
+   	    <script who="zildo" text="VIDE"/>
+    	<speak what="camera" text="ep4.beginning.0"/>
+      	<fadeIn value="0"/>
+      	<wait value="100"/>
+   	    <moveTo who="zildo" pos="0,24" delta="true"/>
+   	    <wait value="20"/>
+   	    <sound name="ZildoAttaque" pos="0,100"/>
+   	    <angle who="zildo" value="3"/>
+   	    <wait value="46"/>
+   	    <sound name="ZildoAttaque" pos="20,10"/>
+   	    <wait value="25"/>
+   	    <sound name="MenuMove" pos="-20,10"/>
+   	    <wait value="7"/>
+   	    <sound name="ZildoAttaque" pos="-10,140"/>
+   	    <wait value="14"/>
+   	    <sound name="Explosion" pos="-60,50"/>
+   	    <wait value="20"/>
+   	    <sound name="ZildoAttaque" pos="0,50"/>
+    	<speak what="camera" text="ep4.beginning.1"/>
+   	    <sound name="ZildoAttaque" pos="-10,140"/>
+    	<speak what="camera" text="ep4.beginning.2"/>
+    	<speak who="synthe" text="info.episode4" unblock="true"/>
+    	<music name="Nuit"/>
+    </scene>
+   		
    	<persoAction id="bitey">
         <loop>
             <var name="loc:found" value="0"/>

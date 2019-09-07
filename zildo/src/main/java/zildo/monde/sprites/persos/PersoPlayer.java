@@ -349,7 +349,6 @@ public class PersoPlayer extends Perso {
 				boolean allowed = true;
 				if (elementForked != null) {
 					allowed = !EngineZildo.mapManagement.collide(elementForked.x, elementForked.y, elementForked);
-					System.out.println("collide="+allowed);
 				}
 				if (!allowed) {
 					// dzoing
