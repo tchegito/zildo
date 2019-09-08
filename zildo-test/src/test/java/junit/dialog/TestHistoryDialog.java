@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import zildo.fwk.ZUtils;
+import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.ui.UIText;
 import zildo.monde.Game;
 import zildo.monde.dialog.HistoryRecord;
@@ -29,9 +30,6 @@ import zildo.server.EngineZildo;
  *
  */
 public class TestHistoryDialog extends EngineUT {
-
-	// TODO: Tester les phrases qui redirigent vers les autres
-	// TODO: Check if we need to remove repeated sentences
 
 	PersoPlayer hero;
 	
@@ -107,6 +105,17 @@ public class TestHistoryDialog extends EngineUT {
     	hero.setAppearance(ControllablePerso.ZILDO);
 		EngineZildo.dialogManagement.launchDialog(clientState, null, new ScriptAction(sentence, "zildo"));
 		assertDialog(3, "hero", sentence);
+	}
+	
+	@Test
+	public void encoding() {
+		HistoryRecord record = new HistoryRecord("key",  "Grand-père", "wherever");
+		EasyBuffering buffer = new EasyBuffering(150); 
+		record.serialize(buffer);
+		buffer.getAll().flip();
+		
+		HistoryRecord read = HistoryRecord.deserialize(buffer);
+		Assert.assertEquals(record.who, read.who);
 	}
 	
 	/**

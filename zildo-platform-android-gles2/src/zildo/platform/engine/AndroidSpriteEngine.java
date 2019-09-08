@@ -113,7 +113,7 @@ public class AndroidSpriteEngine extends SpriteEngine {
                 	case PERSO_HURT:
 						// A sprite has been hurt
 						shaders.setCurrentShader(GLShaders.wounded);
-						shaders.setWoundedColor(new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
+						shaders.setWoundedColor(randomVector);
                 		/*
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
 						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", );

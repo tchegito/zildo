@@ -29,6 +29,8 @@
             <remove what="stars"/>
             <script who="zildo" value="0"/>
             <music name="Nuit"/>
+            
+            <markQuest name="promenade_flute_once" value="true"/>
         </action>
     </quest>
     
@@ -490,6 +492,13 @@
         </action>
     </quest>
     
+    <quest name="gp_talk_about_flut" locked="false">
+        <trigger>
+            <location name="prison"/>
+            <dialog name="papy" num="5"/>
+        </trigger>
+    </quest>
+
     <quest name="igor_promise_sword" locked="false">
         <trigger>
             <location name="prison"/>

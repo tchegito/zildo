@@ -27,7 +27,6 @@ public class HistoryRecord implements EasySerializable {
 	public void serialize(EasyBuffering p_buffer) {
 		p_buffer.put(key);
 		p_buffer.put(who);
-		
 		p_buffer.put(mapName);
 	}
 
@@ -38,7 +37,7 @@ public class HistoryRecord implements EasySerializable {
 	}
 	
 	public static String getDisplayString(List<HistoryRecord> records) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("\n");
 		Region currentRegion = null;
 		if (records.isEmpty()) {
 			return UIText.getMenuText("dialogRecords.empty");
@@ -48,7 +47,7 @@ public class HistoryRecord implements EasySerializable {
 			Region region = Region.fromMapName(record.mapName);
 			if (currentRegion != region) {
 				currentRegion = region;
-				sb.append(region.getName()).append("\n\n");
+				sb.append(TXT_CHANGE_COLOR).append(region.getName()).append(TXT_CHANGE_COLOR+"\n\n");
 			}
 			if (!ZUtils.isEmpty(record.who)) {	// Eliminate name for text without speaker (sign, scenario)
 				sb.append(TXT_CHANGE_COLOR).append(record.who).append(TXT_CHANGE_COLOR).append(": ");

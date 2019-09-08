@@ -407,6 +407,13 @@
 		</action>
 	</quest>
 	
+	<quest name="talk_about_voyante">
+       	<trigger>
+       	    <location name="d4m7"/>
+       	    <dialog name="vi" num="2"/>
+       	</trigger>
+    </quest>
+	
 	<quest name="voyante">
 		<trigger>
 		    <dialog name="vipere" num="2" immediate="false"/>
@@ -417,12 +424,27 @@
 		</action>
 	</quest>
 	
+	<quest name="talk_about_witch">
+		<trigger>
+		    <dialog name="aaaaaaaa" num="0"/>
+		    <location name="d4m4"/>
+		</trigger>
+	</quest>
+	
+	<quest name="talk_about_witch2">
+		<trigger>
+		    <dialog name="hezia" num="2"/>
+		    <location name="d4m3"/>
+		</trigger>
+	</quest>
+	
 	<quest name="sorciere_coucou_moon" repeat="true">
 		<trigger>
 		    <dialog name="hezia" num="3"/>
 		    <location name="d4m3"/>
 		</trigger>	    
 		<action>
+		    <markQuest name="sorciere_once" value="true"/>
 		    <take value="-50"/>
 		    <exec script="moonfusion"/>
 		    <music name="Village"/>

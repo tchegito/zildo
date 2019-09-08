@@ -160,6 +160,7 @@ public class GUIDisplay {
 	final int buttonSizeX;
 	
 	int texterHeight;	// Max Y coordinates in texter frame
+	int texterSizeY;
 	
 	// ////////////////////////////////////////////////////////////////////
 	// Construction/Destruction
@@ -235,6 +236,9 @@ public class GUIDisplay {
 		scriptLegibility[transcoChar.indexOf("d")] = 1;
 		scriptLegibility[transcoChar.indexOf("l")] = 1;
 		scriptLegibility[transcoChar.indexOf("A")] = 1;
+		scriptLegibility[transcoChar.indexOf("u")] = 1;
+		scriptLegibility[transcoChar.indexOf("g")] = 1;
+
 		for (int i=0;i<scriptLegibility.length;i++) {
 			scriptBigLegibility[i] = scriptLegibility[i] * 2;
 		}
@@ -318,8 +322,14 @@ public class GUIDisplay {
 
 		if (toDisplay_dialogMode == DialogMode.TEXTER) {
 			// Frame under texter
-			drawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
-					sc.BIGTEXTER_WIDTH, Zildo.viewPortY - 38, false);
+			if (texterSizeY < 200) {
+				// Note: this is not vertically centered because drawBox adds 10 to height.
+				drawBox(sc.BIGTEXTER_X-10, (Zildo.viewPortY - texterSizeY)/2, 
+						sc.BIGTEXTER_WIDTH, texterSizeY, false);
+			} else {
+				drawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
+						sc.BIGTEXTER_WIDTH, Zildo.viewPortY - 38, false);
+			}
 		}
 		
 		drawConsoleMessages();
@@ -437,7 +447,6 @@ public class GUIDisplay {
 		for (i = 0; i <= texte.length(); i++) {
 			char a;
 			boolean signAlone = false; // Detect if a punctuation sign is alone (? or !)
-			boolean increase = true;
 			if (i == texte.length()) {
 				a = 0;
 			} else {
@@ -451,15 +460,15 @@ public class GUIDisplay {
 				if (sizeCurrentLine + sizeCurrentWord > width
 						|| a == '\n') {
 					// We must cut the line before the current word
-					if (a == '\n' && sizeCurrentLine + sizeCurrentWord <= width) {
+					if (a == '\n' && sizeCurrentLine + sizeCurrentWord <= width) {	// Current line has enough space to fit the last word
 						sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
 						sizeCurrentWord = 0;
 						nSpr[nLettre] = TXT_END_OF_LINE;
-					} else {
+					} else {	// Not enough space on this line, break line before last word
 						sizesLine[nLigne] = sizeCurrentLine;
 						if (lastSpacePosition != -1) { // Put 'ENDOFLINE' at the last space
 							nSpr[lastSpacePosition] = TXT_END_OF_LINE;
-							if (a == '\n') increase=false;
+							nSpr[nLettre] = TXT_END_OF_LINE;
 						} else { // No space from the beginning of the message
 							nSpr[nLettre] = TXT_END_OF_LINE;
 						}
@@ -495,7 +504,7 @@ public class GUIDisplay {
 					sizeCurrentWord-= getLegibility(nSpr[nLettre]);
 				}
 			}
-			if (increase) nLettre++;
+			nLettre++;
 		}
 		sizesLine[nLigne] = sizeCurrentLine + sizeCurrentWord;
 
@@ -765,6 +774,13 @@ public class GUIDisplay {
 				maxY = Math.max(maxY, entity.getScrY());
 			}
 			texterHeight = Math.max(maxY - sc.BIGTEXTER_HEIGHT, 0);
+			// Move all sprites inside the future frame
+			texterSizeY = maxY + sc.TEXTER_SIZELINE - sc.BIGTEXTER_Y;
+			if (texterSizeY < sc.BIGTEXTER_HEIGHT) {
+				for (SpriteEntity entity : creditSequence) {
+					entity.y += (Zildo.viewPortY - texterSizeY - sc.TEXTER_SIZELINE)/2;
+				}			
+			}
 		}
 		for (SpriteEntity entity : creditSequence) {
 			// In texter mode, we display only fonts inside the texter frame
@@ -1048,7 +1064,7 @@ public class GUIDisplay {
 	}
 
 	private void displayAdventureMenu() {
-		drawBox(50, (Zildo.viewPortY - 16 *4) / 2, 200, 16 * 3, false);
+		drawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
 		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
 			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			adventureSequence.clear();
@@ -1088,7 +1104,7 @@ public class GUIDisplay {
 		if (isToDisplay_dialoguing())
 			return false;
 		PersoPlayer hero = (PersoPlayer) ClientEngineZildo.spriteDisplay.getZildo();
-		return hero != null && hero.getDialoguingWith() == null;
+		return hero != null && hero.getDialoguingWith() == null && !hero.isInventoring();
 	}
 	
 	public boolean isToRemove_dialoguing() {

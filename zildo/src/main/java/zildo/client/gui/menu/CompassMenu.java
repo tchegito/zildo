@@ -12,6 +12,13 @@ public class CompassMenu extends Menu {
 
 	public CompassMenu() {
 		items = new ArrayList<ItemMenu>();
+		items.add(new ItemMenu("m13.quests") {
+			@Override
+			public void run() {
+				client.askStage(new TexterStage(TexterKind.QUEST_LOG));
+				client.handleMenu(null);
+			}
+		});
 		items.add(new ItemMenu("m13.map") {
 			@Override
 			public void run() {

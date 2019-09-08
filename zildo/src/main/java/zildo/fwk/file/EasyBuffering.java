@@ -21,6 +21,7 @@
 package zildo.fwk.file;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 /**
  * Class which encapsulates the read/write operations into a ByteBuffer.<p/>
@@ -126,9 +127,9 @@ public class EasyBuffering {
 		if (p_nCharacters == -1) {
 			len=p_str.length();
 		}
-		data.put((byte) p_str.length());
-		byte[] bStr=p_str.getBytes();
-		for (int i=0;i<p_str.length();i++) {
+		byte[] bStr=p_str.getBytes(Charset.forName("UTF-8"));
+		data.put((byte) bStr.length);
+		for (int i=0;i<bStr.length;i++) {
 			data.put(bStr[i]);
 		}
 		for (int i=0;i<len-p_str.length()-1;i++) {
@@ -157,15 +158,19 @@ public class EasyBuffering {
 			length=nChars-1;
 		}
 		boolean reachEnd=false;
+		byte[] bytes = new byte[length];
+		int i=0;
 		for (;length>0;length--) {
 			byte a=data.get();
 			if (a==0) {
 				reachEnd=true;
 			}
 			if (!reachEnd && result.length()!=lengthPertinent) {
-				result+=(char) ((short)0xff & a);	// Remove sign bit
+				//result+=(char) ((short)0xff & a);	// Remove sign bit
+				bytes[i++] = a;
 			}
 		}
+		result = new String(bytes);
 		if (nullString.equals(result)) {
 			result=null;
 		}

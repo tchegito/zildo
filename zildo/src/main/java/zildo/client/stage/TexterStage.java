@@ -12,6 +12,7 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.ui.UIText;
 import zildo.monde.dialog.HistoryRecord;
+import zildo.monde.quest.QuestLog;
 import zildo.server.EngineZildo;
 
 public class TexterStage extends GameStage {
@@ -23,11 +24,15 @@ public class TexterStage extends GameStage {
 	
 	public enum TexterKind {
 		LAST_DIALOGS,
-		GUIDE
+		GUIDE,
+		QUEST_LOG
 	}
 	
 	public TexterStage(TexterKind kind) {
 		switch (kind) {
+		case QUEST_LOG:
+			wholeText = new QuestLog().getDisplayString();
+			break;
 		case LAST_DIALOGS:
 			List<HistoryRecord> records = EngineZildo.game.getLastDialog();
 			wholeText = HistoryRecord.getDisplayString(records);

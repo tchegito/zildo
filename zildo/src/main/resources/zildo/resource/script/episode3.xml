@@ -1359,7 +1359,7 @@
 		<perso who="zildo" vz="2.1"/>
 		<angle who="zildo" value="2"/>
 		
-		<wait value="57"/>
+		<wait value="67"/>
 		<visible who="zildo" value="false"/>
 		<perso who="zildo" vz="0.1" az="0.1"/>
 		<zoom who="zildo" value="0"/>

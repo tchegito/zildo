@@ -20,20 +20,14 @@
 
 package zildo.platform.engine;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.EngineFX;
-import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.monde.sprites.SpriteStore;
-import zildo.monde.sprites.desc.Outfit;
-import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
 import zildo.server.SpriteManagement;
@@ -109,7 +103,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
                 	case PERSO_HURT:
 						// A sprite has been hurt
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(1));
-						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", new Vector4f((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
+						ClientEngineZildo.pixelShaders.setParameter(1, "randomColor", randomVector);
 						break;
                 	case YELLOW_HALO:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(2));
@@ -221,64 +215,5 @@ public class LwjglSpriteEngine extends SpriteEngine {
 		// n_Texture++;
 	}
 	
-	/**
-     * Create a new texture from a given one, and replace colors as specified by
-     * the {@link Outfit} class.<br/>
-     * 
-     * @param p_originalTexture
-     * @param p_replacements
-     *            list of replacements : for a point (x,y), color-index <b>x</b>
-     *            become color-index <b>y</b>.
-     */
-	private void createTextureFromAnotherReplacement(int p_originalTexture,
-			Class<? extends Outfit> p_outfitClass) {
-
-		GFXBasics surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
-
-		// 1) Store the color indexes once for all
-		textureEngine.getTextureImage(p_originalTexture);
-		Map<Integer, Integer> colorIndexes = new HashMap<Integer, Integer>();
-		int i, j;
-		for (j = 0; j < 256; j++) {
-			for (i = 0; i < 256; i++) {
-				Vector4f color = surfaceGfx.getPixel(i, j);
-				if (color.w != 0) {
-					/*
-					colorIndexes
-							.put(j * 256 + i, surfaceGfx.getPalIndex(color));
-							*/
-				}
-			}
-		}
-
-		// 2) Create all textures according to the outfits
-		boolean textureReady = true;
-		Outfit[] outfits = p_outfitClass.getEnumConstants();
-		for (Outfit outfit : outfits) {
-			Point[] replacements = outfit.getTransforms();
-			if (replacements.length == 0) {
-				continue; // No replacements
-			}
-			if (!textureReady) {
-				surfaceGfx = textureEngine.prepareSurfaceForTexture(true);
-			}
-			surfaceGfx.StartRendering();
-			for (j = 0; j < 256; j++) {
-				for (i = 0; i < 256; i++) {
-					Integer palIndex = colorIndexes.get(j * 256 + i);
-					if (palIndex != null) {
-						for (Point p : replacements) {
-							if (palIndex == p.x) {
-								surfaceGfx.pset(i, j, p.y, null);
-							}
-						}
-					}
-				}
-			}
-
-			textureEngine.generateTexture();
-			textureReady = false;
-		}
-	}
 
 }

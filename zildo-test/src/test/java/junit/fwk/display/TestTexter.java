@@ -53,8 +53,8 @@ public class TestTexter extends EngineUT {
 		nbSprites = seq.size();
 		int nbVisibleAfter = countVisible(seq);
 		System.out.println(nbVisibleAfter+"/"+nbSprites);
-		Assert.assertTrue("We should have less visible sprites after a line scrolled down ! ("+nbVisibleAfter+" <= "+nbVisible+")",
-				nbVisibleAfter < nbVisible);
+		Assert.assertTrue("We should have more visible sprites after a line scrolled down ! ("+nbVisibleAfter+" > "+nbVisible+")",
+				nbVisibleAfter > nbVisible);
 		
 	}
 	
@@ -88,7 +88,7 @@ public class TestTexter extends EngineUT {
 		Assert.assertTrue(text.indexOf("$") == -1);
 		Assert.assertTrue(text.indexOf("@") == -1);
 		System.out.println(nbVisible + "/" +countCharacters + " ==> " + rapport);
-		Assert.assertTrue(rapport < 2);
+		Assert.assertTrue(nbVisible < countCharacters);
 	}
 
 	private int countVisible(GUISpriteSequence seq) {

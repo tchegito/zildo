@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import tools.annotations.DisableFreezeMonitor;
+import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Game;
@@ -115,5 +116,18 @@ public class SavegameTest extends EngineUT {
 		System.out.println(retrieved.y);
 		Assert.assertEquals(ElementDescription.BOMBS3, area.getCaseItem(2, 5).desc);
 		System.out.println(retrieved.getEntityType()+" "+retrieved.getClass());
+	}
+	
+	@Test 
+	public void saveReload() {
+		mapUtils.loadMap("coucou");
+		spawnZildo(951, 283);
+		waitEndOfScripting();
+		
+		// Save the game and reload
+		EasyBuffering buffer = new EasyBuffering(5000);
+		EngineZildo.game.serialize(buffer);
+		// 2) Reload this game
+    	SaveGameMenu.loadGameFromBuffer(buffer, false);
 	}
 }

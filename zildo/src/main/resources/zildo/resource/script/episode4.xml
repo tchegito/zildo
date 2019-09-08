@@ -80,6 +80,12 @@
 	    </condition>
    	</mapScript>
     
+   	<quest name="visit_valori" locked="false">
+   	    <trigger>
+   	        <location name="valori"/>
+   	    </trigger>
+   	</quest>
+   	
    	<quest name="charles_fork" locked="false">
    	    <trigger>
    	        <location name="ferme"/>
