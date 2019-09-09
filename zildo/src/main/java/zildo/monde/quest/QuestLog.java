@@ -1,11 +1,12 @@
 package zildo.monde.quest;
 
+import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.ui.UIText;
 import zildo.monde.sprites.persos.ControllablePerso;
@@ -20,7 +21,10 @@ public class QuestLog {
 	        String filename = "zildo/resource/script/questLog.properties";
 	        questLog = new Properties();
 	        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
-	        try {
+	        if (stream == null) {
+	        	stream = QuestLog.class.getClassLoader().getResourceAsStream(filename);
+	        }
+	        try { 
 	        	questLog.load(stream);
 	        } catch (IOException e) {
 	        	
