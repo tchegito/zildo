@@ -240,13 +240,13 @@ public class ZildoActivity extends Activity {
             if (event.getRepeatCount() == 0) {
             	switch (keyCode) {
             		case KeyEvent.KEYCODE_BUTTON_X:
-            			touchListener.pressGameButton(KeyLocation.VP_BUTTON_X, press);
-            			return true;
-            		case KeyEvent.KEYCODE_BUTTON_Y:
             			touchListener.pressGameButton(KeyLocation.VP_BUTTON_Y, press);
             			return true;
-            		case KeyEvent.KEYCODE_BUTTON_A:
+            		case KeyEvent.KEYCODE_BUTTON_Y:
             			touchListener.pressGameButton(KeyLocation.VP_INVENTORY, press);
+            			return true;
+            		case KeyEvent.KEYCODE_BUTTON_A:
+            			touchListener.pressGameButton(KeyLocation.VP_BUTTON_X, press);
             			return true;
             		case KeyEvent.KEYCODE_BUTTON_B:
             			touchListener.pressBackButton(press);
@@ -258,6 +258,7 @@ public class ZildoActivity extends Activity {
             			touchListener.pressMenuButton(press);
             			return true;
             	}
+
             }
             return true;
     	}

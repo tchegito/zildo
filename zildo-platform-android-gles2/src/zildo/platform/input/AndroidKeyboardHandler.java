@@ -152,8 +152,8 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.TOUCH_MENU, KEY_TOUCH_MENU);
 		platformKeys.put(Keys.TOUCH_BACK, KEY_TOUCH_BACK);
 		platformKeys.put(Keys.COMPASS, KEY_COMPASS);
-		platformKeys.put(Keys.PAGEUP, KEY_UP);	// No pageup/pagedown on touchscreen
-		platformKeys.put(Keys.PAGEDOWN, KEY_DOWN);
+		platformKeys.put(Keys.PAGEUP, 254);	// No pageup/pagedown on touchscreen
+		platformKeys.put(Keys.PAGEDOWN, 253);
 	}
 	
 	TouchPoints polledTouchedPoints;
