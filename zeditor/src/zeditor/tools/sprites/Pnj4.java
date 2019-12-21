@@ -65,13 +65,14 @@ public class Pnj4 extends SpriteBanque {
 			new ZoneO(242, 1, 28, 29, 0, 0, 6), new ZoneO(271, 0, 28, 32, 0, 0, 8),
 			new ZoneO(242,33, 25, 29, 0, 0, 7), new ZoneO(268, 33, 27, 22, 3, 0, 0),
 			new ZoneO(242, 63, 23, 24, 0, 0, 4), new ZoneO(268, 56, 29, 26, 0, 0, 1),
-			// Taupe (69) + 4
+			// Taupe (73)
 			new Zone(0, 263, 7, 6), new Zone(10, 263, 14, 15), new Zone(/**46**/ 61, 263, 14, 15),
 			new Zone(29, 263, 14, 17),	// Attack
 			new Zone(78, 263, 8, 4),	// Hole
 			new Zone(46, 263, 8, 8),	// Head popping out
-			new Zone(46, 263, 8, 14)	// Head popping out
-			
+			new Zone(46, 263, 8, 14),	// Head popping out
+			// Dynamite thrower (80)
+			new Zone(254, 43, 20, 32)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),
@@ -79,7 +80,8 @@ public class Pnj4 extends SpriteBanque {
 				new GraphChange("squirrel", 23, 0),
 				new GraphChange("dragonpal", 29, 0),
 				new GraphChange("bitey", 37, 0),
-				new GraphChange("exteria10",66, 0)
+				new GraphChange("exteria10", 66, 0),
+				new GraphChange("dragonpal", 80, 0)
 		});
 	}
 }

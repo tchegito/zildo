@@ -137,6 +137,7 @@ public enum PersoDescription implements SpriteDescription {
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
 	MOLE(441, 442, 443, 444, 445, 446, 447),
+	DARKGUY(448),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

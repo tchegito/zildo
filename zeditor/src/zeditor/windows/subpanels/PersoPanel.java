@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -82,7 +83,8 @@ public class PersoPanel extends JPanel {
 	JSpinner spinner;
 	JTextField dialogZone;
 	JTextField dialogSwitch;
-
+	JScrollPane scrollPane;
+	
 	Perso currentPerso;
 	Behavior behavior;
 
@@ -92,7 +94,13 @@ public class PersoPanel extends JPanel {
 
 	public PersoPanel(MasterFrameManager p_manager) {
 		setLayout(new BorderLayout());
-		add(new SpriteSet(true, p_manager), BorderLayout.CENTER);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.setViewportView(new SpriteSet(true, p_manager));
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBar(new TweekedScrollbar());
+		add(scrollPane, BorderLayout.CENTER);
 		add(getSouthPanel(), BorderLayout.SOUTH);
 
 		manager = p_manager;

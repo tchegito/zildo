@@ -52,6 +52,7 @@ public class ZPersoLibrary extends ArrayList<SpriteDescription> {
 		case CHAUVESOURIS:
 		case FIRE_ELEMENTAL:
 		case FIRETHING:
+		case DARKGUY:
 			info=PersoInfo.ENEMY;
 			break;
 		default:
