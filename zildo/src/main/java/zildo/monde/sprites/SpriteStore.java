@@ -147,7 +147,15 @@ public class SpriteStore {
 		// Just to initialize "desc" field
 		entity.getDesc();
 		
+		if (entity.getId() == -1 && entity.getEntityType() != EntityType.FONT) {
+			// Initialize ID if it's not done yet
+			entity.initializeId(SpriteEntity.class);
+		}
 		addSpriteEntities(entity);
+		
+		if (Element.class.isAssignableFrom(entity.getClass())) {
+			((Element)entity).spawnShadow();
+		}
 	}
 	
 	/**

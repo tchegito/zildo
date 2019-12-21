@@ -37,7 +37,7 @@ public class ShotArrowAction implements PersoAction {
 
 	public ShotArrowAction(Perso p_perso) {
 		perso = p_perso;
-		perso.setAttente(48);
+		perso.setAttente(60 + EngineZildo.hasard.rand(30));
 	}
 	
 	@Override

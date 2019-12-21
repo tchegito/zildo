@@ -255,7 +255,9 @@ public class PathFinder {
 					if (!mobile.isGhost()) {
 						if (nbShock >= 3) {
 							target=null;
-							mobile.setAlerte(false);
+							if (mobile.getQuel_deplacement() != MouvementPerso.ZONEARC) {
+								mobile.setAlerte(false);
+							}
 							nbShock=0;
 						}
 					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW) {

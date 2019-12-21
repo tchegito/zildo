@@ -588,6 +588,7 @@ public class Element extends SpriteEntity {
 	/**
 	 * Called when the object fall on the floor, whatever kind of floor.
 	 * This method handles behavior when element/perso hits the floor, but doesn't remove it. For this, call {@link #die()}.
+	 * If it returns TRUE, element should be removed.
 	 */
 	@Override
 	public boolean fall() {
@@ -604,7 +605,6 @@ public class Element extends SpriteEntity {
 		
 		
 		// 1: get the landing point nature
-		Area area = EngineZildo.mapManagement.getCurrentMap();
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
 		TileNature nature = getCurrentTileNature();
@@ -1018,10 +1018,17 @@ public class Element extends SpriteEntity {
 		shadow.nSpr = p_typeShadow.ordinal();
 		shadow.setSprModel(p_typeShadow);
 		shadow.linkedPerso = this;
-		EngineZildo.spriteManagement.spawnSprite(shadow);
+		spawnShadow();
 		return shadow;
 	}
 
+	/** Only element itself has access to its shadow **/
+	public void spawnShadow() {
+		if (shadow != null && shadow.getId() == -1) {
+			EngineZildo.spriteManagement.spawnSprite(shadow);
+		}
+	}
+	
 	public boolean hasShadow() {
 		return shadow != null;
 	}
@@ -1090,9 +1097,9 @@ public class Element extends SpriteEntity {
 	public String toString() {
 		String s = (name != null ? (name+"\n") : "") + x + ", " + y;
 		if (nBank == SpriteBank.BANK_ELEMENTS) {
-			return s + " (" + ElementDescription.fromInt(nSpr) + ")";
+			return s + " (id=" + id+", " + ElementDescription.fromInt(nSpr) + ")";
 		}
-		return s + " (" + nSpr + " - bank " + nBank + ")";
+		return s + " (id=" + id + ", " + nSpr + " - bank " + nBank + ")";
 	}
 	
 	public Point getDefaultSize() {

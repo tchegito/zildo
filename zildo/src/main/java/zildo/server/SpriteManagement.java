@@ -47,6 +47,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
 import zildo.monde.sprites.elements.ElementClouds;
+import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementFireballs;
 import zildo.monde.sprites.elements.ElementGear;
 import zildo.monde.sprites.elements.ElementGoodies;
@@ -138,6 +139,8 @@ public class SpriteManagement extends SpriteStore {
 			element = new ElementGear(x, y);
 			element.setAjustedX(x);
 			element.setAjustedY(y);
+		} else if (desc == ElementDescription.DYNAMITE) {
+			element = new ElementDynamite(x, y, z, null);
 		} else {
     		if (desc == ElementDescription.PORTAL_KEY) {
     			// Handle this in a more generic way
@@ -183,7 +186,9 @@ public class SpriteManagement extends SpriteStore {
 		// Spawn connected sprites
 		if (perso.getPersoSprites().size() != 0) {
 			for (Element element : perso.getPersoSprites()) {
-				spawnSprite(element);
+				if (element.getId() == -1) {	// Some entities are already spawned, like shadow
+					spawnSprite(element);
+				}
 			}
 		}
 
@@ -689,7 +694,7 @@ public class SpriteManagement extends SpriteStore {
 		for (SpriteEntity entity : toDelete) {
 			if (entity.getEntityType().isPerso()) {
 				persoColli.notifyDeletion((Perso) entity);
-			} else {
+			} else if (entity.getId() != -1){
 				sprColli.notifyDeletion(entity);
 			}
 		}

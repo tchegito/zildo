@@ -571,7 +571,11 @@ public class MapManagement {
 		case 512+160:
 		case 512+161:
 			result = angle;	// Bed
-		break;
+			break;
+		case 256*4 + 160:	// Castle white wall
+		case 256*4 + 164:
+			result = Angle.SUD;
+			break;
 		default:
 			// Saut latéral}
 			switch (angle) {

@@ -302,7 +302,7 @@ public abstract class EngineUT {
 		@SuppressWarnings("unchecked")
 		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
 		for (Class<ScreenFilter> clazz : filterClasses) {
-			ScreenFilter cloudFilter = (ScreenFilter) mock(clazz);
+			ScreenFilter cloudFilter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
 			Zildo.pdPlugin.filters.put(clazz, cloudFilter);
 		}
 
@@ -346,8 +346,8 @@ public abstract class EngineUT {
 
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
 			//doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
-			ClientEngineZildo.tileEngine = mock(TileEngine.class);
-			ClientEngineZildo.ortho = mock(Ortho.class);
+			ClientEngineZildo.tileEngine = mock(TileEngine.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.ortho = mock(Ortho.class, Mockito.withSettings().stubOnly());
 			
 		}
 
@@ -765,6 +765,7 @@ public abstract class EngineUT {
 	/** Wait for a specific projectile to be thrown. Be careful, because wait is unlimited. **/
 	protected SpriteEntity waitForSpecificEntity(ElementDescription... desc) {
 		SpriteEntity found = null;
+		int safetyCheckFrame=0;
 		while (found == null) {
 			List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 			for (SpriteEntity entity : entities) {
@@ -777,6 +778,10 @@ public abstract class EngineUT {
 				if (found != null) break;
 			}
 			renderFrames(1);
+			safetyCheckFrame++;
+			if (safetyCheckFrame > MAX_WAIT_FRAMES) {
+				throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
+			}
 		}
 		return found;
 	}

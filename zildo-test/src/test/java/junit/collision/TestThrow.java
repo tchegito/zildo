@@ -40,7 +40,7 @@ public class TestThrow extends EngineUT {
 	@Test
 	public void removeObsoleteProjectile() {
 		EngineZildo.scriptManagement.accomplishQuest("fromPrison13", false);
-		// Start in prison12 (map with 2 bow-hanging gards)
+		// Start in prison12 (map with 2 bow-carrying gards)
 		mapUtils.loadMap("prison12");
 		spawnZildo(22, 133);
 		waitEndOfScripting();
@@ -61,7 +61,7 @@ public class TestThrow extends EngineUT {
 		garde.setAngle(Angle.OUEST);
 		garde.attack();
 		renderFrames(10);
-		simulateDirection(new Vector2f(-0.5f, 0f));
+		simulateDirection(new Vector2f(-0.1f, 0f));
 		renderFrames(30 + 20);
 		Element arrow = (Element) findEntityByDesc(ElementDescription.ARROW_LEFT);
 		Assert.assertNotNull(arrow);

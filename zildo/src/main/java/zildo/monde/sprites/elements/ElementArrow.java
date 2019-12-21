@@ -71,8 +71,6 @@ public class ElementArrow extends ElementThrown  {
         shadow.nBank = SpriteBank.BANK_ELEMENTS;
         shadow.nSpr = ElementDescription.SHADOW_SMALL.ordinal();
         shadow.setSprModel(ElementDescription.SHADOW_SMALL);
-        EngineZildo.spriteManagement.spawnSprite(shadow);
-
     }
 
     @Override
@@ -100,7 +98,7 @@ public class ElementArrow extends ElementThrown  {
         // Shadow effect
         Area area = EngineZildo.mapManagement.getCurrentMap();
 		int altitude=area.readAltitude((int) x/16, (int) y/16);
-		boolean highFlying = area.readmap((int)x, (int)y, false, floor) == null;
+		boolean highFlying = area.readmap((int)x/16, (int)y/16, false, floor) == null;
 		if (!highFlying && altitude == relativeZ-1) {
 			// The arrow seems to fly under a high place
 			int secondAltitude=area.readAltitude((int) x/16,1+(int) (y/16));

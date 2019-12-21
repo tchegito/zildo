@@ -49,9 +49,11 @@ public class ElementDynamite extends Element {
 		// Add a shadow
 		addShadow(ElementDescription.SHADOW_SMALL);
 
-		floor = p_shooter.getFloor();
-		
-		EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
+		if (p_shooter != null) {	// shooter may be initialized later
+			floor = p_shooter.getFloor();
+			
+			EngineZildo.soundManagement.broadcastSound(BankSound.PlanteBombe, this);
+		}
 	}
 
 	@Override

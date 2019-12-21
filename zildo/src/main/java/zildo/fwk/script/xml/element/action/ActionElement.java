@@ -64,6 +64,8 @@ public class ActionElement extends LanguageElement {
 	public String impact;	// For 'spawn' => describe a ImpactKind element
 	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
 	
+	public boolean changeContext;	// For lookFor only
+	
 	// Only used for 'spawn' on 'chained' attribute
 	public int chainCount = -1;
 	public FloatExpression chainDelay;
@@ -271,6 +273,10 @@ public class ActionElement extends LanguageElement {
 		case herospecial:			
 			text = readAttribute("arg");
 			val = readInt("value");
+			break;
+		case lookFor:
+			Boolean cc = readBoolean("changeContext");
+			changeContext = cc == null ? true : cc;
 		default:
 			break;
 		}

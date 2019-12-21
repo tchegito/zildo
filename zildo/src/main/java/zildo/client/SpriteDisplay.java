@@ -63,12 +63,14 @@ public class SpriteDisplay extends SpriteStore {
 	    
 	public void setEntities(List<SpriteEntity> p_entities) {
 		for (SpriteEntity entity : p_entities) {
-			if (entity.dying) {
-				// This entity should be removed
-				arrayEntities[entity.getId()] = null;
-			} else {
-				// Update or create this one
-				arrayEntities[entity.getId()] = entity;
+			if (entity.getId() != -1) {
+				if (entity.dying) {
+					// This entity should be removed
+					arrayEntities[entity.getId()] = null;
+				} else {
+					// Update or create this one
+					arrayEntities[entity.getId()] = entity;
+				}
 			}
 		}
 		for (Iterator<SpriteEntity> it=spriteEntities.iterator();it.hasNext();) {

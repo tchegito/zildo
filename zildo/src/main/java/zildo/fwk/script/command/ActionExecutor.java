@@ -268,6 +268,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	                    String param = p_action.effect;
 	                    switch (script) {
 	                    case ZONE:
+	                    case ZONEARC:
 	                    	int size = param == null ? 5 : Integer.valueOf(param);
 	        				perso.setZone_deplacement(EngineZildo.mapManagement.range(perso.getX() - 16 * size, 
 	        																	perso.getY() - 16 * size,
@@ -579,7 +580,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 		EngineZildo.spriteManagement.blockNonHero();
                 		break;
                 	case 2:
-                		// Block every non-hero characters
+                		// Unblock every non-hero characters
                 		EngineZildo.spriteManagement.unblockNonHero();
                 		break;
                 	case 3:
@@ -617,6 +618,14 @@ public class ActionExecutor extends RuntimeExecutor {
                 		break;
                 	case 9:
                 		EngineZildo.mapManagement.arrangeLocation(zildo);
+                		break;
+                	case 10:	// Alert location
+                		Point alertPos = Point.fromString(p_action.text);
+                		EngineZildo.mapManagement.getCurrentMap().alertAtLocation(alertPos);
+                		break;
+                	case 11:
+                		Perso p = EngineZildo.persoManagement.getNamedPerso(p_action.text);
+                		p.setAlerte(true);
                 		break;
                 	}
                 	achieved = true;
@@ -735,7 +744,7 @@ public class ActionExecutor extends RuntimeExecutor {
                 	}
                 	if (found != null ^ lookFor.negative) {	// XOR !
                 		IEvaluationContext lookForContext;
-                		if (found == null) {
+                		if (found == null || !p_action.changeContext) {
                 			lookForContext = context;
                 		} else {
                 			lookForContext = new SpriteEntityContext(found, context);
@@ -783,6 +792,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	                			elem.reverse = elem.reverse.flipVertical();
 	                		}
 	                	}
+	                	elem.setFloor(perso.getFloor());
 	                	elem.setLinkedPerso(perso);
 	                	elem.flying = true;
 	                	elem.setAngle(Angle.EST);

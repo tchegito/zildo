@@ -103,7 +103,7 @@ public abstract class Identified {
 	 * Allocate an ID and assign it to the current object.
 	 * @param p_clazz
 	 */
-	protected void initializeId(Class<? extends Identified> p_clazz) {
+	public void initializeId(Class<? extends Identified> p_clazz) {
 		Class<? extends Identified> refClass=this.getClass();
 		if (p_clazz != null) {
 			refClass=p_clazz;

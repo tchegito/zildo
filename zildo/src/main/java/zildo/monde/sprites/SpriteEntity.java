@@ -276,11 +276,6 @@ public class SpriteEntity extends Identified implements Cloneable,
 		specialEffect = EngineFX.NO_EFFECT;
 
 		reverse = Reverse.NOTHING;
-
-		if (id == -1) {
-			// Initialize ID if it's not done yet
-			initializeId(SpriteEntity.class);
-		}
 	}
 
 	public boolean isZildo() {

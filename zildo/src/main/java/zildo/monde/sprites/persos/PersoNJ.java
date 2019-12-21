@@ -27,6 +27,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -34,6 +35,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementGuardWeapon;
 import zildo.monde.sprites.elements.ElementGuardWeapon.GuardWeapon;
 import zildo.monde.sprites.elements.ElementImpact;
@@ -256,6 +258,10 @@ public class PersoNJ extends Perso {
 			reachAvoidTarget(zildo, fear);
 			walkTile(true);
 		} else {
+			Area area = EngineZildo.mapManagement.getCurrentMap();
+			if (!isAlerte() && quel_deplacement.isAlertable() && area.isAnAlertAtLocation(x, y)) {
+				setAlerte(true);
+			}
 			// Common moves
 			if (zildo != null) {
 				switch (quel_deplacement) {
@@ -323,14 +329,33 @@ public class PersoNJ extends Perso {
 						if (deltaX <= 1 || deltaY <= 1) {
 							// Get sight on Zildo and shoot !
 							sight(zildo, false);
-							action = new ShotArrowAction(this);
+							// First, assure that no obstacle is on the way
+							Point deltaCheck = angle.coords.multiply(16);
+							ElementArrow simulatedArrow = new ElementArrow(angle, (int)getEn_bras().x, (int)getEn_bras().y, 0, this);
+							Point arrowPrevisionPos = new Point(simulatedArrow.x, simulatedArrow.y);
+							boolean obstacle = false;
+							for (int pas=0;pas<5 && !obstacle;pas++) {
+								arrowPrevisionPos.add(deltaCheck);
+								if (arrowPrevisionPos.distance(new Point(zildo.getX(), zildo.getY())) < 8) {
+									break;
+								}
+								if (EngineZildo.mapManagement.collide(arrowPrevisionPos.x, arrowPrevisionPos.y, this)) {
+									obstacle = true;
+								}
+							}
+							if (!obstacle) {
+								action = new ShotArrowAction(this);
+							} else {
+								setAttente(30);
+							}
 							break;
-						}
-						// Gets on a right position to shoot Zildo
-						if (deltaX <= deltaY) {
-							pathFinder.setTarget(new Pointf(zildo.x, yy));
-						} else {
-							pathFinder.setTarget(new Pointf(xx, zildo.y));
+						} else if (pathFinder.hasNoTarget()) {
+							// Gets on a right position to shoot Zildo
+							if (deltaX <= deltaY) {
+								pathFinder.setTarget(new Pointf(zildo.x-2, yy));
+							} else {
+								pathFinder.setTarget(new Pointf(xx, zildo.y));
+							}
 						}
 					} else if (lookForZildo(angle)) {
 						setAlerte(true);
@@ -803,6 +828,7 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case MOLE:
+		case DARKGUY:
 			break;
 		case SCORPION:
 			Reverse r = Reverse.NOTHING;
@@ -1006,7 +1032,7 @@ public class PersoNJ extends Perso {
 				}
 				break;
 			case EST:
-				if (dix > 0 && dix < DISTANCEMAX) {
+				if (dix < 0 && dix > -DISTANCEMAX) {
 					r = true;
 				}
 				break;
@@ -1016,7 +1042,7 @@ public class PersoNJ extends Perso {
 				}
 				break;
 			case OUEST:
-				if (dix < 0 && dix > -DISTANCEMAX) {
+				if (dix > 0 && dix < DISTANCEMAX) {
 					r = true;
 				}
 			default:

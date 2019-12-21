@@ -78,8 +78,42 @@
 		    <spawn what="scepter" pos="208,99" type="SCEPTER"/>
 	        <visible who="pano" value="false"/>
 	    </condition>
+	    
+	    <condition name="prisonext" exp="findDragonPortalKey">
+	        <remove who="gardenord"/>
+	        <spawn who="black1" pos="349,221" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
+	        <spawn who="black2" pos="510,46" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+   	        <herospecial value="1"/> <!-- Block everybody -->
+	        <script who="black1" value="7"/>
+	        <script who="black2" value="7"/>
+	        <spawn who="thrower1" type="DARKGUY" floor="2" pos="267,178" info="ENEMY"/>
+	        <script who="thrower1" value="0"/>
+	        <perso who="thrower1" action="darkGuy"/>
+<!-- 	        <speak who="gard" text="coucou"/> -->
+	    </condition>
    	</mapScript>
-    
+
+   	<quest name="prisonext">
+   	    <trigger>
+   	        <location name="prisonext"/>
+   	        <questDone name="findDragonPortalKey" />
+   	    </trigger>
+   	    <action>
+   	        <moveTo who="zildo" pos="0,48" delta="true"/>
+   	        
+   	        <!-- Place blocking invisible sprite to the only exit -->
+   	        <spawn what="nopasaran" type="CAVE_SIMPLEDOOR" pos="369,28"/>
+   	        <visible what="nopasaran" value="false"/>
+	        <speak who="gard" text="pext.gardecatch1"/>
+	        <herospecial value="11" arg="black1"/>
+	        <herospecial value="11" arg="black2"/>
+	        <sound name="MonstreTrouve"/>
+	       	<speak who="gard" text="pext.gardecatch2"/>
+	        <!-- <herospecial value="10" arg="402,93"/> -->
+	        <herospecial value="2"/>
+   	    </action>
+   	</quest>
+   	
    	<quest name="visit_valori" locked="false">
    	    <trigger>
    	        <location name="valori"/>
@@ -530,6 +564,22 @@
 			<wait value="2"/>
 
 		</loop>
+   	</persoAction>
+   	
+   	<persoAction id="darkGuy">
+   	    <loop>
+   	        <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
+   	            <!-- Determine a spot to throw dynamite -->
+   	            <sound name="ZildoLance"/>
+   	            <throw who="self" way="BELL" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
+   	            
+   	            <!-- 
+   	            	   	            <throw who="self" pos="x,y" to="loc:zx,loc:zy" 
+					    type="POISONBALL" z="16" vz="loc:r" speed="1.5" az="-0.04"/>
+   	            -->
+   	        	        </lookFor>
+			<wait value="150"/>
+   	    </loop>
    	</persoAction>
 
    	<!-- Rotate a mole sprite named loc:arg0, doing sound if loc:arg1 is set to 1 -->
