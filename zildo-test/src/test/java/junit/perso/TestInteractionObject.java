@@ -12,6 +12,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
@@ -97,14 +98,9 @@ public class TestInteractionObject extends EngineUT {
 		// Spawn hero and a boulder
 		Element boulder = EngineZildo.spriteManagement.spawnElement(ElementDescription.STONE_HEAVY, 170, 100, 0, Reverse.NOTHING, Rotation.NOTHING);
 		// Blow the wall
-		zildo.setPos(new Vector2f(heroPos.x, heroPos.y));
-		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
-		zildo.setCountBomb(4);
-		zildo.attack();
+		Element dynamite = plantDynamite(heroPos);
 		Assert.assertEquals(3,  zildo.getCountBomb());	// Be sure dynamite is planted
-		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
 		Assert.assertNotNull(dynamite);
-		//.forEach(k -> System.out.println(k));;
 
 		// Wait for dynamite to explode
 		while (true) {
@@ -116,6 +112,36 @@ public class TestInteractionObject extends EngineUT {
 		// Check that boulder is projected to the right side
 		Assert.assertTrue(boulder.flying);
 		Assert.assertTrue("Boulder should have been projected on the "+message, predicate.test(boulder));
+	}
+	
+	private Element plantDynamite(Point heroPos) {
+		zildo.setPos(new Vector2f(heroPos.x, heroPos.y));
+		zildo.setWeapon(new Item(ItemKind.DYNAMITE));
+		zildo.setCountBomb(4);
+		zildo.attack();
+		return (Element) findEntityByDesc(ElementDescription.DYNAMITE);
+	}
+	
+	@Test
+	public void plantAntThrow() {
+		waitEndOfScripting();
+		zildo = spawnZildo(160, 100);
+		
+		Element dynamite = plantDynamite(new Point(zildo.x, zildo.y));
+		renderFrames(98);
+		// Pick and throw it
+		zildo.pickItem(ItemKind.DYNAMITE, dynamite);
+		renderFrames(5);
+		Assert.assertEquals(dynamite, zildo.getEn_bras());
+		zildo.throwSomething();
+		while (!dynamite.dying) {
+			renderFrames(1);
+		}
+		// Ensure that dynamite is still in the air
+		Assert.assertTrue(dynamite.z > 8);
+		SpriteEntity entity = findEntityByDesc(ElementDescription.EXPLO1);
+		Assert.assertNotNull(entity);
+		Assert.assertTrue(Math.abs(dynamite.z - entity.z) < 2);
 	}
 	
 	@Test

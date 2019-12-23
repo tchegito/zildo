@@ -226,8 +226,10 @@ public class ElementImpact extends Element {
 					for (int i=0;i<4;i++) {
 						int dx=(int) (Math.random()*32 - 16);
 						int dy=(int) (Math.random()*32 - 16);
-                        EngineZildo.spriteManagement.spawnSprite(new ElementImpact(startX + dx, startY + dy, ImpactKind.FIRESMOKE,
-                                (Perso) linkedPerso));
+						ElementImpact smoke = new ElementImpact(startX + dx, startY + dy, ImpactKind.FIRESMOKE,
+                                (Perso) linkedPerso);
+						smoke.z = z;
+                        EngineZildo.spriteManagement.spawnSprite(smoke);
                     }
 				} else {
 					addSpr=kind.seq[valCounter];
