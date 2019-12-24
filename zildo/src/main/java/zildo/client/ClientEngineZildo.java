@@ -195,7 +195,7 @@ public class ClientEngineZildo {
 			}
 		}
 		for (int floor = lowestFloor ; floor <= 2; floor++) {
-			boolean lastTurn = floor == highestFloor;
+			boolean lastTurn = floor == 2;
 			
 			// Display BACKGROUND tiles
 			if (mapDisplay.foreBackController.isDisplayBackground()) {
