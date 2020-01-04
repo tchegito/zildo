@@ -792,7 +792,6 @@ public class ActionExecutor extends RuntimeExecutor {
 	                			elem.reverse = elem.reverse.flipVertical();
 	                		}
 	                	}
-	                	elem.setFloor(perso.getFloor());
 	                	elem.setLinkedPerso(perso);
 	                	elem.flying = true;
 	                	elem.setAngle(Angle.EST);
