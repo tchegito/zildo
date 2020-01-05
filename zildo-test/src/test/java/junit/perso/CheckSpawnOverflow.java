@@ -25,7 +25,6 @@ public class CheckSpawnOverflow extends EngineUT {
 	@Test @DisableSpyGuiDisplay
 	public void sewer() {
 		System.gc();
-		System.runFinalization();
 		retrieveCounter();
 
 		countEntities();
@@ -50,7 +49,7 @@ public class CheckSpawnOverflow extends EngineUT {
 				zildo.setPx(0);
 				zildo.setPy(0); 
 			}
-			System.out.println(i+": "+countEntities()+ " hero: "+zildo.getPv()+"HP");
+			//System.out.println(i+": "+countEntities()+ " hero: "+zildo.getPv()+"HP");
 		}
 	}
 	
@@ -59,7 +58,7 @@ public class CheckSpawnOverflow extends EngineUT {
 		int countEntity = EngineZildo.spriteManagement.getSpriteEntities(null).size();
 		int idAvailable = seGenerator.getAvailable();
 		int total = idAvailable+countEntity;
-		System.out.println("available: "+idAvailable+" entities: "+countEntity+" total: "+total);
+		//System.out.println("available: "+idAvailable+" entities: "+countEntity+" total: "+total);
 		// Reduce the condition because on Jenkins total equals 513 at some time (no explanation yet)
 		Assert.assertEquals(Identified.DEFAULT_MAX_ID, total);
 		return countEntity;		

@@ -24,6 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
@@ -135,7 +136,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		renderFrames(1);
 		
 		// Check with circles (both radius = 7)
-		Assert.assertTrue( EngineZildo.collideManagement.checkCollisionCircles((int) turtle.x, (int) turtle.y, (int) hero.x, (int) hero.y, 7, 7));
+		Assert.assertTrue( Collision.checkCollisionCircles((int) turtle.x, (int) turtle.y, (int) hero.x, (int) hero.y, 7, 7));
 		// Check with circle and zone
 		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Point(hero.x, hero.y), 7) );
 		
