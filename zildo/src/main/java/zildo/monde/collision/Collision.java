@@ -99,6 +99,32 @@ public class Collision {
     	return sb.toString();
     }
     
+    ///////////////////////////////////////////////////////////////////////////////
+    // check_colli
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // IN:(x,y) coordinates of the first character
+    // (a,b) coordinates of the second character
+    // r : radius of the first character
+    // rayon: radius of the second character
+    // /////////////////////////////////////////////////////////////////////////////////////
+    // Return true if two characters are colliding.
+    // It's called with potential location in a move. Usually, if this method returns true,
+    // previous coordinates will be kept.
+    // /////////////////////////////////////////////////////////////////////////////////////
+    public static boolean checkCollisionCircles(int x, int y, int a, int b, int r, int rayon) {
+        // Juste des maths...
+        int c = Math.abs(x - a);
+        int d = Math.abs(y - b);
+        if (c < 50 && d < 50) {
+            c = c * c;
+            c += d * d;
+            c = (int) Math.sqrt(c);
+            return (c < (r + rayon));
+        } else {
+            return false;
+        }
+    }
+    
     @Override
     public int hashCode() {
     	int n = cx << 20;

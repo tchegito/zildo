@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.db.Identified;
 import zildo.fwk.gfx.EngineFX;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -154,7 +155,10 @@ public class SpriteStore {
 		addSpriteEntities(entity);
 		
 		if (Element.class.isAssignableFrom(entity.getClass())) {
-			((Element)entity).spawnShadow();
+			Element e = (Element) entity;
+			if (e.desc instanceof ElementDescription && ((ElementDescription)e.desc).hasShadow()) {
+				((Element)entity).spawnShadow();
+			}
 		}
 	}
 	
@@ -185,11 +189,11 @@ public class SpriteStore {
 					// Oui c'est le cas donc on supprime aussi l'autre élément
 					deleteSprite(element.getLinkedPerso());
 				}
-				element.finalize();
+				element.destroy();
 			} else if (entity.getEntityType().isPerso()) {
 				Perso perso=(Perso)entity;
 				EngineZildo.persoManagement.removePerso(perso);
-				perso.finalize();
+				perso.destroy();
 			}
 			entity.setVisible(false);
 			Identified.remove(SpriteEntity.class, entity.getId());

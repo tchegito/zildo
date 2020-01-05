@@ -31,6 +31,7 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.collection.ListMerger;
 import zildo.fwk.file.EasyBuffering;
+import zildo.monde.collision.Collision;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.collision.SpriteCollision;
 import zildo.monde.items.ItemKind;
@@ -116,19 +117,6 @@ public class SpriteManagement extends SpriteStore {
 		// And for the 'getName*' we need to find the entity wherever it is.
 		mergedEntities = new ListMerger<SpriteEntity>(spriteEntities, spriteEntitiesToAdd);
 
-	}
-
-	@Override
-	public void finalize() {
-		// When whe got here, everything is deleted in 'spriteEntities' but
-		// Zildo.
-		// So we just have to delete him, and turn is play !
-		// PersoZildo zildo=EngineZildo.persoManagement.get_zildo();
-		// delete zildo;
-
-		// Delete the sort objects
-		// delete lastInBank;
-		// delete quadOrder;
 	}
 
 	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
@@ -791,7 +779,7 @@ public class SpriteManagement extends SpriteStore {
 	            if (entity != quelElement) {
 	                int tx = (int) entity.x;
 	                int ty = (int) entity.y;
-	                if (EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, radius, radius)) {
+	                if (Collision.checkCollisionCircles(x, y, tx, ty, radius, radius)) {
 	                    if (perso != null && perso.isZildo() && perso.linkedSpritesContains(entity)) {
 	                    	// Collision between hero and object he's carrying => let it go
 	                    } else if (quelElement == null || quelElement.getLinkedPerso() != entity) {

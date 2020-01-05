@@ -156,8 +156,7 @@ public class Element extends SpriteEntity {
 
 	}
 
-	@Override
-	public void finalize() {
+	public void destroy() {
 		linkedPerso = null;
 	}
 

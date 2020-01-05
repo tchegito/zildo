@@ -64,15 +64,7 @@ public abstract class TextureEngine {
 		textureTab=new int[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
 		alphaTab=new boolean[Constantes.NB_MOTIFBANK + Constantes.NB_SPRITEBANK];
     }
-    
-    @Override
-	public void finalize() {
-		// Free the allocated textures
-		for (int i=0;i<n_Texture;i++) {
-			//SafeRelease(ppTexture[i]);
-		}
-    }
-    
+        
     public GFXBasics prepareSurfaceForTexture(boolean p_alpha) {
     	return prepareSurfaceForTexture(p_alpha, 256);
     }

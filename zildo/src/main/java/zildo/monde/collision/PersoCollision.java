@@ -31,7 +31,6 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
-import zildo.server.EngineZildo;
 
 /**
  * Perso specific collision engine. The goal was to avoid a huge amount of 'for each' to determine
@@ -200,7 +199,7 @@ public class PersoCollision {
         } else if (size2 != null) {
         	colli = new Rectangle(size2).isCrossingCircle(new Point(tx, ty), rayonPersoToCompare);
         } else {
-        	colli = EngineZildo.collideManagement.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare);
+        	colli = Collision.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare);
         }
         if (colli) {
             if (perso != null && perso.isZildo() && perso.linkedSpritesContains(quelPerso)) {

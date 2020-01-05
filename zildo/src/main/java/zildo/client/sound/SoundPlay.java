@@ -71,7 +71,7 @@ public class SoundPlay {
 			// Release all allocated buffer for samples
 			for (Sound sound : tabSounds.values()) {
 				if (sound != null) {
-					sound.finalize();
+					sound.destroy();
 				}
 				sound = null;
 			}

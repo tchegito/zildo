@@ -27,7 +27,6 @@ import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.xml.element.TriggerElement;
-import zildo.monde.collision.Collision;
 import zildo.monde.items.Item;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
@@ -53,6 +52,7 @@ import zildo.monde.sprites.persos.ia.PathFinderFreeFlying;
 import zildo.monde.sprites.persos.ia.PathFinderSquirrel;
 import zildo.monde.sprites.persos.ia.PathFinderStraightFlying;
 import zildo.monde.sprites.persos.ia.mover.Mover;
+import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.sprites.utils.SoundGetter;
@@ -402,8 +402,7 @@ public abstract class Perso extends Element {
 		super(id);
 	}
 	
-	@Override
-	public void finalize() {
+	public void destroy() {
 		// Delete linked elements
 		if (persoSprites != null && persoSprites.size() > 0) {
 			for (Element e : persoSprites) {

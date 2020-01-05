@@ -317,32 +317,6 @@ public class CollideManagement {
         }
     }
     
-    ///////////////////////////////////////////////////////////////////////////////
-    // check_colli
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // IN:(x,y) coordinates of the first character
-    // (a,b) coordinates of the second character
-    // r : radius of the first character
-    // rayon: radius of the second character
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // Return true if two characters are colliding.
-    // It's called with potential location in a move. Usually, if this method returns true,
-    // previous coordinates will be kept.
-    // /////////////////////////////////////////////////////////////////////////////////////
-    public boolean checkCollisionCircles(int x, int y, int a, int b, int r, int rayon) {
-        // Juste des maths...
-        int c = Math.abs(x - a);
-        int d = Math.abs(y - b);
-        if (c < 50 && d < 50) {
-            c = c * c;
-            c += d * d;
-            c = (int) Math.sqrt(c);
-            return (c < (r + rayon));
-        } else {
-            return false;
-        }
-    }
-
     // Returns TRUE if both collision collapses
     public boolean checkColli(Collision p_collider, Collision p_collided) {
 		int x1=p_collider.cx;
@@ -365,7 +339,7 @@ public class CollideManagement {
         // Check for each
         if (size1 == null && size2 == null) {
             // Collision between 2 circles
-            return checkCollisionCircles(x1, y1, x2, y2, radius1, radius2);
+            return Collision.checkCollisionCircles(x1, y1, x2, y2, radius1, radius2);
         } else if (size2 == null) {
             // Collision between 1 rectangle and 1 circle
             return new Rectangle(new Point(x1, y1), size1).isCrossingCircle(new Point(x2, y2), radius2);

@@ -26,8 +26,7 @@ package zildo.fwk.opengl;
  */
 public abstract class Sound {
 	
-	@Override
-	public abstract void finalize();
+	public abstract void destroy();
 	public abstract void play();
 	public abstract void playAt(float x, float y);
 	public abstract void stop();
