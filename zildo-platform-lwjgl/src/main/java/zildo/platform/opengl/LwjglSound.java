@@ -46,7 +46,7 @@ public class LwjglSound extends Sound {
 	int soundId;
 	
 	@Override
-	public void finalize() {
+	public void destroy() {
 		AL.destroy();
 	}
 	

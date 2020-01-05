@@ -33,7 +33,7 @@ public class AndroidSound extends Sound {
 	private int streamId;
 	
 	@Override
-	public void finalize() {
+	public void destroy() {
 		
 	}
 	
