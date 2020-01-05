@@ -646,7 +646,6 @@ public abstract class EngineUT {
 		Assert.assertEquals(key, ZUtils.listTail(dials()).key);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@After
 	public void tearDown() {
 		EngineZildo.spriteManagement.clearSprites(true);
@@ -658,14 +657,14 @@ public abstract class EngineUT {
 		simulateDirection(new Vector2f(0, 0));
 		if (freezeMonitor != null) {
 			freezeMonitor.cutItOut();
-	
+	/*
 			try {
-				freezeMonitor.join();
+				//freezeMonitor.join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			freezeMonitor.stop();
+			*/
+			//freezeMonitor.stop();
 		}
 	}
 	
