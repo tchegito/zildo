@@ -28,6 +28,7 @@ public enum BankMusic implements AudioBank {
 	 Surprise("Surprise"),
 	 PianoBar("PianoBar"),
 	 Chateau("Chateau"),
+	 ChateauAttaque("ChateauAttack"),
 	 Vitesse("Vitesse"),
 	 ZildoMort("ZildoMort"),
 	 Nuit("Nuit"),

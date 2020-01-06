@@ -509,6 +509,8 @@ public class PersoNJ extends Perso {
 				// Default color for this guard : blue
 				setSpecialEffect(EngineFX.GUARD_BLUE);
 			}
+		} else if ("fire".equals(getEffect())) {
+			addFire();
 		} else {
 			setSpecialEffect(EngineFX.NO_EFFECT);
 		}

@@ -118,7 +118,9 @@ public class PersoGarde extends PersoNJ {
     		List<Perso> found = EngineZildo.persoManagement.lookFor(this, 7, PersoInfo.ENEMY, false);
     		if (found != null) {
     			for (Perso p : found) {
-    				p.setAlerte(true);
+    				if (p.getQuel_deplacement().isAlertable()) {
+    					p.setAlerte(true);
+    				}
     			}
     		}
 		}

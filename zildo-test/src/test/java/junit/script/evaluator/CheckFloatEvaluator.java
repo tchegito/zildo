@@ -236,6 +236,13 @@ public class CheckFloatEvaluator {
 		Assert.assertTrue(!expr.isImmediate());
 	}
 
+	@Test
+	public void builtInFunctions() {
+		FloatExpression exp = new FloatExpression("fun:mapFloor(15,36)=2");
+		
+		Assert.assertEquals("EQUALS(mapFloor(15, 36), 2.0)", exp.toString());
+	}
+
 	@Before
 	public void setup() {
 		FloatExpression.OPTIMIZE = true;		

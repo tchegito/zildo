@@ -61,6 +61,8 @@ public class SpriteEntityContext extends LocaleVarContext {
 				return perso.getAttente();
 			} else if ("angle".equals(key)) {
 				return (float) perso.getAngle().value;
+			} else if ("floor".equals(key)) {
+				return perso.floor;
 			}
 		}
 		// Don't crash ! But result could be weird

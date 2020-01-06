@@ -226,4 +226,14 @@ public class ZUtils {
     public static String hexa(long v) {
     	return String.format("0x%08X", v);
     }
+    
+    @SafeVarargs
+	public static <T> String arrayToString(T... values) {
+    	StringBuilder sb = new StringBuilder();
+    	for (T v : values) {
+    		if (sb.length() != 0) sb.append(", ");
+    		sb.append(v);
+    	}
+    	return sb.toString();
+    }
 }

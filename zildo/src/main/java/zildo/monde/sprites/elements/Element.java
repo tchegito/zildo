@@ -1079,6 +1079,8 @@ public class Element extends SpriteEntity {
 		if (burningFire == null) {
 			burningFire = new ElementFire((int) x, (int) y);
 			EngineZildo.spriteManagement.spawnSprite(burningFire);
+			// In order to access the fire element in script
+			burningFire.setName(this.name +"_f");
 		}
 		burningFire.x = x;
 		burningFire.y = y;

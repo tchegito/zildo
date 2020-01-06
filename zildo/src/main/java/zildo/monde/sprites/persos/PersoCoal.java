@@ -40,7 +40,6 @@ public class PersoCoal extends PersoNJ {
 			// Coal animation
 			if (burningFire == null) {
 				addFire();
-				burningFire.setForeground(true);
 				burningFire.zoom = 120;
 			}
 			attente = 200;	// Wait for next burn

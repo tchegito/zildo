@@ -159,7 +159,9 @@ public enum ElementDescription implements SpriteDescription {
 	STRAW, STRAWF1, STRAWF2, STRAWF3,
 	// Sand projection
 	SAND1, SAND2, SAND3, SAND4, SAND5,
-	AMPHORA;
+	AMPHORA,
+	// Bag of sand
+	BAGSAND;
 	
 	Boolean damage;
 	
@@ -210,6 +212,7 @@ public enum ElementDescription implements SpriteDescription {
 		case STONE_HEAVY:
 		case ROCK_PILLAR:
 		case FORESTAY_PILLAR:
+		case BAGSAND:
 			return true;
 		default:
 			return false;

@@ -194,6 +194,19 @@ public class Area implements EasySerializable {
 		return c;
 	}
 
+	public int getHighestCaseFloor(int x, int y) {
+		int value = -1;
+		if (x >= 0 && x < dim_x
+		 && y >= 0 && y < dim_y) {
+			value = highestFloor;
+			while (value>=0) {
+				if (mapdata[value][y][x] != null) break;
+				value--;
+			}
+		}
+		return value;
+	}
+	
 	public Case get_mapcase(int x, int y, int floor) {
 		if (x < 0 || x >= dim_x) {
 			return null;

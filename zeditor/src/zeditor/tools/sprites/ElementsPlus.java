@@ -369,7 +369,9 @@ public class ElementsPlus extends SpriteBanque {
 				new ZoneO(23, 282, 11, 16, 0, 0, -5), new ZoneO(38, 287, 16, 9, 0, 0, -7),
 				new ZoneO(55, 286, 26, 9, 0, 0, -8),
 				// Amphora
-				new Zone(82, 144, 12, 16)
+				new Zone(82, 144, 12, 16),
+				// Bag of sand
+				new Zone(0, 303, 16, 14)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -397,7 +399,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("bitey", 271, 0),
 				new GraphChange("exteria10", 276,  0),
 				new GraphChange("elem", 278, 0),
-				new GraphChange("exteria10", 282, 0)
+				new GraphChange("exteria10", 282, 0),
+				new GraphChange("elem", 288, 0)
 		});
 	}
 }

@@ -36,6 +36,7 @@ public class FloatExpression {
 	protected static final String RESERVED_WORD_ZILDOANGLEY = "zildo.angle.y";
 	protected static final String RESERVED_WORD_ZILDOMONEY = "zildo.money";
 	protected static final String RESERVED_WORD_ZILDONETTLE = "zildo.nettle";
+	protected static final String RESERVED_WORD_FUN = "fun:";
 	
 	private FloatASTNode entireExp;
 	
@@ -107,7 +108,11 @@ public class FloatExpression {
 				leftNode = new FloatOperator(op, leftNode, rightNode);
 			// Look for parentheses
 			} else if ("(".equals(val)) {
-				leftNode = parse(scan, null, true);
+				FloatASTNode temp = parse(scan, null, true);
+				if (leftNode == null) 
+					leftNode = temp;
+				else 
+					leftNode = new FloatBuiltIn(leftNode.toString(), temp.toString());
 			} else if (")".equals(val)) {
 				if (!parenthese) {
 					scan.goBack();

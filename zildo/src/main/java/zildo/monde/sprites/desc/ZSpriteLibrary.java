@@ -98,6 +98,9 @@ public class ZSpriteLibrary {
 			case BULLET:
 			case HEARTH2: case HEARTH3: case HEARTH4: case HEARTH5: case HEARTH6:
 			case FIREWIND1: case FIREWIND2: case FIREWIND3:
+			case GNAP1: case GNAP2: case GNAP3: case GNAP4: case GNAP5:
+			case SAND1: case SAND2: case SAND3: case SAND4: case SAND5:
+			case STRAWF1: case STRAWF2: case STRAWF3:
 				break;
 			default:
 				list.add(desc);

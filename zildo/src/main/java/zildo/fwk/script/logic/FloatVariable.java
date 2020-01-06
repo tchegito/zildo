@@ -19,9 +19,9 @@
 
 package zildo.fwk.script.logic;
 
+import static zildo.server.EngineZildo.hasard;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
-import static zildo.server.EngineZildo.hasard;
 import zildo.monde.sprites.persos.Perso;
 import zildo.server.EngineZildo;
 
@@ -33,7 +33,7 @@ import zildo.server.EngineZildo;
 public class FloatVariable implements FloatASTNode {
 
 	@SuppressWarnings("serial")
-	public class NoContextException extends RuntimeException {
+	public static class NoContextException extends RuntimeException {
 		
 	}
 	String variable;
