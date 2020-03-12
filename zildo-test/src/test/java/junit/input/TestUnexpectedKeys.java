@@ -9,6 +9,7 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,17 +17,22 @@ import org.mockito.stubbing.Answer;
 
 import tools.EngineWithMenuUT;
 import tools.annotations.ClientMainLoop;
+import tools.annotations.DisableSpyGuiDisplay;
 import zildo.Zildo;
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
+import zildo.client.gui.GUIDisplay;
+import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.resource.KeysConfiguration;
+import zildo.server.EngineZildo;
 
 public class TestUnexpectedKeys extends EngineWithMenuUT {
 
@@ -140,5 +146,61 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 				field.set(null, notMocked);
 			}
 		}
+	}
+	
+	@Test @ClientMainLoop @DisableSpyGuiDisplay
+	public void crashMenu() {
+		/* We arrive with ingame menu + compass displayed
+		key pressed:COMPASS at frame 22875
+		key pressed:DOWN at frame 22892
+		key pressed:DOWN at frame 22901
+		key pressed:ESCAPE at frame 22934
+		key pressed:COMPASS at frame 22937
+		key pressed:RETURN at frame 22946
+		key pressed:ESCAPE at frame 22947
+		key pressed:COMPASS at frame 22947
+		*/
+		
+		// We need hero to get menu working
+		PersoPlayer hero = spawnZildo(0, 0);
+		waitEndOfScripting();
+		clientState.zildoId = hero.getId();
+		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+		ClientEngineZildo.spriteDisplay.setEntities(entities);
+		
+		GUIDisplay gd = ClientEngineZildo.guiDisplay;
+		gd.setToDisplay_dialogMode(DialogMode.CLASSIC);
+		
+		// Start the buggy sequence
+		simulatePressButton(Keys.COMPASS, 1);
+		renderFrames(15);
+		Assert.assertNotNull(ClientEngineZildo.getClientForMenu().getCurrentMenu());
+		Assert.assertEquals(DialogMode.ADVENTURE_MENU, gd.getToDisplay_dialogMode());
+		simulatePressButton(Keys.DOWN, 2);
+		simulatePressButton(Keys.DOWN, 2);
+
+		simulatePressButton(Keys.ESCAPE, 2);
+		simulatePressButton(Keys.COMPASS, 9);
+		simulatePressButton(Keys.RETURN, 0);	// With 1 it's ok !
+		// BUG occurs because there's just one frame between the two actions below and above
+		Assert.assertEquals(DialogMode.CLASSIC, gd.getToDisplay_dialogMode());
+		System.out.println("2 a la fois");
+		simulateKeyPressed(Keys.RETURN, Keys.COMPASS);
+		//Assert.assertEquals(DialogMode.TEXTER, gd.getToDisplay_dialogMode());
+
+		renderFrames(1);
+		simulateKeyPressed();
+		renderFrames(1);
+		
+		System.out.println(ClientEngineZildo.getClientForMenu().getCurrentStages());
+		renderFrames(1);
+		System.out.println(ClientEngineZildo.getClientForMenu().getCurrentStages());
+		renderFrames(1);
+		System.out.println(ClientEngineZildo.getClientForMenu().getCurrentStages());
+		//Assert.assertEquals(DialogMode.ADVENTURE_MENU, gd.getToDisplay_dialogMode());
+		/*
+		simulatePressButton(Keys.ESCAPE, 2);
+		simulatePressButton(Keys.COMPASS, 2);
+		*/
 	}
 }

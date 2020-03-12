@@ -20,6 +20,7 @@
 package tools;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -39,6 +40,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
 
 import zildo.Zildo;
 import zildo.client.Client;
@@ -51,6 +53,7 @@ import zildo.client.SpriteDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
 import zildo.client.sound.SoundPlay;
+import zildo.client.stage.GameStage;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.ZUtils;
 import zildo.fwk.bank.TileBank;
@@ -61,7 +64,6 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
-import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
@@ -89,6 +91,7 @@ import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.platform.input.AndroidInputInfos;
 import zildo.platform.input.AndroidKeyboardHandler;
+import zildo.platform.input.LwjglKeyboardHandler;
 import zildo.platform.input.TouchPoints;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
@@ -236,6 +239,14 @@ public abstract class EngineUT {
 	        
 	        if (clientMainLoop) {
 	        	ClientEngineZildo.client.mainLoop();
+
+	        	doAnswer(invocation -> {
+		    		for (GameStage stage : ClientEngineZildo.getClientForGame().getCurrentStages()) {
+		    			stage.renderGame();
+		    		}
+		    		return null;
+	        	}).when(ClientEngineZildo.openGLGestion).render(false);
+
 	        }
 	        
 	        clientEngine.renderFrame(false);
@@ -372,7 +383,7 @@ public abstract class EngineUT {
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
 		// We have to neutralize pdPlugin.kbHandler, then recreate a handle. Because reset() is not satisfying
-		fakedKbHandler = spy(new CommonKeyboardHandler() {
+		fakedKbHandler = spy(new LwjglKeyboardHandler() {
 			
 			@Override
 			public void poll() {
@@ -402,11 +413,11 @@ public abstract class EngineUT {
 			public char getEventCharacter() {
 				return 0;
 			}
-			
+			/*
 			@Override
 			public int getCode(Keys k) {
 				return 0;
-			}
+			} */
 		});
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
@@ -544,9 +555,14 @@ public abstract class EngineUT {
 		reset(fakedKbHandler);
 		if (keys == null || keys.length == 0) {
 			doReturn(false).when(fakedKbHandler).isKeyDown(anyInt());
+			doReturn(false).when(fakedKbHandler).next();
 		} else {
 			if (keys.length == 1) {
 				doReturn(true).when(fakedKbHandler).isKeyDown(keys[0]);
+				// Mock for Menu class
+				when(fakedKbHandler.next()).thenReturn(true).thenReturn(false);
+				doReturn(true).when(fakedKbHandler).getEventKeyState();
+				doReturn(fakedKbHandler.getCode(keys[0])).when(fakedKbHandler).getEventKey();
 			} else {
 				// Multiple value matching
 				doReturn(true).when(fakedKbHandler).isKeyDown(Matchers.argThat(new ArgumentMatcher<Keys>() {
@@ -560,6 +576,25 @@ public abstract class EngineUT {
 						return false;
 					}
 				}));
+				// Mock for menu class (mandatory to loop twice, because Mockito got mixed up otherwise)
+				OngoingStubbing<Boolean> osNext = null;
+				doReturn(true).when(fakedKbHandler).getEventKeyState();
+				for (Keys k : keys) {
+					if (osNext == null) {
+						osNext = when(fakedKbHandler.next());
+					}
+					osNext = osNext.thenReturn(true);
+				}
+				osNext.thenReturn(false);
+				OngoingStubbing<Integer> osEventKey = null;
+				for (Keys k : keys) {
+					if (osEventKey == null) {
+						osEventKey = when(fakedKbHandler.getEventKey());
+					}
+					
+					osEventKey = osEventKey.thenReturn(new LwjglKeyboardHandler().getCode(k));
+				}
+				osEventKey.thenReturn(0);
 			}
 		}
 		instant.update();
