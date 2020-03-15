@@ -73,7 +73,7 @@
  When an element falls on a tile.
  
  * **type** : member of ElementDescription
- * **nature** : member of TileNature
+ * **nature** : member of TileNature (optional)
  * **name** : name of fallen element
  
 ## chainingpoint ##
