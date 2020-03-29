@@ -35,7 +35,7 @@ public class DefaultMenuListener implements MenuListener {
 			asked = null;
 			return dobble;
 		}
-		return actSpe(menu);
+		return null;
 	}
 	
 	/**

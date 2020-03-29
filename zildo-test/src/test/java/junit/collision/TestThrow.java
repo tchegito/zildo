@@ -7,9 +7,11 @@ import tools.EngineUT;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
@@ -31,7 +33,6 @@ public class TestThrow extends EngineUT {
 		// Wait for peeble to disappear
 		while (!peeble.dying) {
 			renderFrames(1);
-			System.out.println(peeble.x);
 		}
 		// Check its location => must be in lava
 		Assert.assertTrue("Peeble should have been landed in lava ! But x="+peeble.x, peeble.x < 198);
@@ -71,5 +72,22 @@ public class TestThrow extends EngineUT {
 		mapUtils.assertCurrent("prison13");
 	}
 
+	@Test
+	public void dynamiteHitWall() {
+		mapUtils.loadMap("prisonext");
+		spawnZildo(219, 67);
+		Perso thrower = spawnPerso(PersoDescription.DARKGUY, "dark", 190, 98);
+		thrower.setAction(new ScriptedPersoAction(thrower, "darkGuy", null));
+		renderFrames(30);
+		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
+		Assert.assertEquals(Angle.NORD, dynamite.getAngle());
+		Assert.assertNotNull(dynamite);
+		System.out.println(dynamite);
+		while (!dynamite.dying) {
+			Assert.assertTrue("dynamite shouldn't have been here ! "+dynamite+" floor="+dynamite.floor+" z="+dynamite.z, dynamite.y > 55);
+			renderFrames(1);
+		}
+		Assert.assertEquals("Dynamite should have fallen on the floor !", 0, (int) dynamite.z);
+	}
 
 }

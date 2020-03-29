@@ -26,11 +26,15 @@ import tools.EngineUT;
 import tools.MapUtils;
 import zildo.fwk.file.EasyBuffering;
 import zildo.monde.Hasard;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Pointf;
@@ -303,6 +307,25 @@ public class TestCollision extends EngineUT {
 			Assert.assertTrue("Monster should not be able to pass through that chaining point !", fireThing.getX() > 30);
 			//System.out.println(fireThing);
 		}
+	}
+	
+	// Hero swings his sword as an enemy is in front of it, but at a different floor.
+	@Test
+	public void hitOnWrongFloor() {
+		mapUtils.loadMap("prisonext");
+		waitEndOfScripting();
+		Perso darkGuy = spawnPerso(PersoDescription.DARKGUY, "dark", 356, 140);
+		darkGuy.setFloor(2);
+		darkGuy.setPv(4);
+		darkGuy.setInfo(PersoInfo.ENEMY);
+		PersoPlayer zildo = spawnZildo(356,  160);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		zildo.setAngle(Angle.NORD);
+		zildo.attack();
+		renderFrames(20);
+		
+		// He shouldn't be hit
+		Assert.assertEquals(4, darkGuy.getPv());
 	}
 	
 }

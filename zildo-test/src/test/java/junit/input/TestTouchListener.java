@@ -39,7 +39,7 @@ public class TestTouchListener extends EngineUT {
 				}
 			}
 		}.start();
-		gui.displayMenu(new SaveGameMenu(false, null));
+		gui.displayMenu(new SaveGameMenu(false, null), 255);
 		
 	}
 	

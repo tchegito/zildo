@@ -713,7 +713,7 @@
     <quest name="fallRockA" locked="false" repeat="true">
 	    <trigger>
 	        <location name="dragon"/>
-		    <fall type="STONE_HEAVY" name="rockA" nature="BOTTOMLESS"/>
+		    <fall type="STONE_HEAVY" name="rockA"/>
   		    <wound who="!dragon"/>
 	    </trigger>
 	    <action>

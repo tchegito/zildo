@@ -20,6 +20,7 @@
 package zildo.fwk.input;
 
 import zildo.monde.util.Vector2f;
+import zildo.server.EngineZildo;
 
 
 /**
@@ -30,6 +31,13 @@ public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	
 	boolean[] keyPressed = new boolean[256];
 	
+	boolean[] keyNext = new boolean[256];
+	
+	@Override
+	public void poll() {
+		System.arraycopy(keyNext, 0, keyPressed, 0 , 256);
+	}
+	
 	public boolean isKeyDown(Keys key) {
 		return isKeyDown(getCode(key));
 	}
@@ -39,14 +47,19 @@ public abstract class CommonKeyboardHandler implements KeyboardHandler{
 	}
 	
 	/**
-	 * Returns TRUE if given key is just being pressed. Meaning that if this method returns TRUE, the next
-	 * call should return FALSE (unless player is not human ;) )
+	 * Returns TRUE if given key is just being pressed. Meaning that if this method returns TRUE, calling it
+	 * on next frame should return FALSE (unless player is not human ;) )
 	 */
 	public final boolean isKeyPressed(Keys key) {
 		boolean down = isKeyDown(key);
 		int value = key.ordinal();
 		boolean pressed = down && !keyPressed[value];
-		keyPressed[value] = down;
+		keyNext[value] = down;
+		/*
+		if (pressed) {
+			System.out.println("key pressed:"+key+" at frame "+EngineZildo.nFrame);
+		}
+		*/
 		return pressed;
 	}
 }

@@ -6,6 +6,8 @@ import static zildo.client.gui.GUIDisplay.TXT_CHANGE_COLOR;
 import java.util.List;
 
 import zildo.Zildo;
+import zildo.client.Client;
+import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.GUISequence;
 import zildo.fwk.input.KeyboardHandler;
@@ -21,6 +23,7 @@ public class TexterStage extends GameStage {
 	KeyboardHandler kbHandler;
 	int position;
 	int texterHeight;	// Denormalisation of GUIDisplay.getTexterHeight()
+	Client client;
 	
 	public enum TexterKind {
 		LAST_DIALOGS,
@@ -46,6 +49,7 @@ public class TexterStage extends GameStage {
 		}
 		kbHandler = Zildo.pdPlugin.kbHandler;
 		position = 0;
+        client = ClientEngineZildo.getClientForGame();
 	}
 	
 	@Override
@@ -56,7 +60,7 @@ public class TexterStage extends GameStage {
 	@Override
 	public void renderGame() {
 		if (!done) {
-			guiDisplay.displayTexter(wholeText, position);
+			guiDisplay.displayTexter(wholeText, position, client.getMenuTransition().getFadeLevel());
 			texterHeight = guiDisplay.getTexterHeight();
 		}
 	}
@@ -65,6 +69,7 @@ public class TexterStage extends GameStage {
 	public void endGame() {
 		guiDisplay.clearSequences(GUISequence.CREDIT, GUISequence.FRAME_DIALOG);
 		guiDisplay.setToDisplay_dialogMode(DialogMode.CLASSIC);
+		done = true;
 	}
 	
 	@Override
@@ -73,9 +78,13 @@ public class TexterStage extends GameStage {
     	boolean askQuit = kbHandler.isKeyPressed(Keys.ESCAPE);
     	askQuit |= kbHandler.isKeyPressed(Keys.COMPASS);
     	askQuit |= kbHandler.isKeyPressed(Keys.TOUCH_BACK);
+    	
+		if (client.getMenuTransition().isCurrentOver()) {
+			endGame();
+		}
+		
     	if (askQuit) {
-    		endGame();
-    		done = true;
+    		client.getMenuTransition().askForStage(null);
     	}
     	
     	// Move the texter

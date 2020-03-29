@@ -16,7 +16,6 @@ public class CompassMenu extends Menu {
 			@Override
 			public void run() {
 				client.askStage(new TexterStage(TexterKind.QUEST_LOG));
-				client.handleMenu(null);
 			}
 		});
 		items.add(new ItemMenu("m13.map") {
@@ -30,7 +29,6 @@ public class CompassMenu extends Menu {
 			public void run() {
 				// Game should be blocked, until texter stage is over
 				client.askStage(new TexterStage(TexterKind.LAST_DIALOGS));
-				client.handleMenu(null);
 			}
 		});
 		items.add(new ItemMenu("m13.guide") {
@@ -38,7 +36,6 @@ public class CompassMenu extends Menu {
 			public void run() {
 				// Game should be blocked, until texter stage is over
 				client.askStage(new TexterStage(TexterKind.GUIDE));
-				client.handleMenu(null);
 			}
 		});
 		setMenu(items);

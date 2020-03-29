@@ -42,6 +42,7 @@ import zildo.client.stage.MenuStage;
 import zildo.client.stage.TitleStage;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.gfx.GFXBasics;
 import zildo.fwk.gfx.Ortho;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -141,7 +142,6 @@ public class GUIDisplay {
 	private GUISpriteSequence textMenuSequence; // All fonts displayed in menu
 	private GUISpriteSequence frameDialogSequence; // Yellow frame for display dialog
 	private GUISpriteSequence guiSpritesSequence; // All sprites designing the GUI
-	private GUISpriteSequence menuSequence; // Cursors for menu
 	private GUISpriteSequence creditSequence; // Credits
 	private GUISpriteSequence infoSequence; // For displaying infos	(see TitleStage)
 	private GUISpriteSequence adventureSequence; // For displaying adventure menu
@@ -627,22 +627,28 @@ public class GUIDisplay {
 		}
 	}
 
-	/** Draw a frame with transparent blue box inside **/
+	/** Draw a frame with transparent blue box inside, according to the current fade level **/
 	private void drawBox(int x, int y, int width, int height, boolean arrow) {
 		int x2 = x + width + 10;
 		int y2 = y + height + 10;
 		Ortho ortho = ClientEngineZildo.ortho;
+		ortho.enableBlend();
 		ortho.initDrawBox(false);
+		int fadeLevel = ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevel();
 		for (int i = 0; i < 5; i++) {
 			int col = couleur_cadre[i];
-			ortho.boxOpti(x+7, y + i, width+4, 1, col, null);
-			ortho.boxOpti(x+6, y2+6 - i, width+4, 1, col, null);
-			ortho.boxOpti(x + i, y+7, 1, height+3, col, null);
-			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, col, null);
+			Vector4f v = new Vector4f(GFXBasics.getColor(col));
+			v.w = fadeLevel;
+			v = v.scale(1.0f / 256.0f);
+			ortho.boxOpti(x+7, y + i, width+4, 1, 0, v);
+			ortho.boxOpti(x+6, y2+6 - i, width+4, 1, 0, v);
+			ortho.boxOpti(x + i, y+7, 1, height+3, 0, v);
+			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, 0, v);
 		}
+		ortho.disableBlend();
 		ortho.endDraw();
 		ortho.enableBlend();
-		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.2f, 0.1f, 0.7f));
+		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.15f, 0.12f, 0.7f * fadeLevel / 256f));
 		ortho.disableBlend();
 		
 		// Draw corner frame
@@ -657,6 +663,10 @@ public class GUIDisplay {
 						0,300,	// No matters coordinates, they will be update by dialogDisplay#animateArrow 
 						false, 255);
 			}
+		}
+		
+		for (SpriteEntity se : frameDialogSequence) {
+			se.setAlpha(fadeLevel);
 		}
 	}
 	
@@ -762,7 +772,7 @@ public class GUIDisplay {
 		
 	}
 	
-	public void displayTexter(String text, int pos) {
+	public void displayTexter(String text, int pos, int fadeLevel) {
 		clearSequences(GUISequence.GUI);
 
 		setToDisplay_dialogMode(DialogMode.TEXTER);
@@ -788,6 +798,8 @@ public class GUIDisplay {
 			int y = (int) entity.getScrY();
 			boolean vis = y > 8 && y < (sc.BIGTEXTER_HEIGHT + sc.BIGTEXTER_Y);
 			entity.setVisible(vis);
+			// Do the fade process
+			entity.setAlpha(fadeLevel);
 		}
 	}
 	
@@ -808,12 +820,12 @@ public class GUIDisplay {
 	}
 	
 	/**
-	 * Display a menu (only used by {@link MenuStage})
+	 * Display a menu (only used by {@link MenuStage}). Called each frame during the phase where a menu is proposed to the user.
 	 * 
 	 * @param p_menu
 	 *            (can't be null)
 	 */
-	public void displayMenu(Menu p_menu) {
+	public void displayMenu(Menu p_menu, int fadeLevel) {
 		int titleSize = p_menu.title == null ? 4 : 2;
 		int sizeY = (p_menu.items.size() + titleSize) * sc.TEXTER_MENU_SIZEY;
 		int startY = (Zildo.viewPortY - sizeY) / 2;
@@ -870,13 +882,19 @@ public class GUIDisplay {
 				se.zoom = 255 + variation;
 				int distFromCenter = se.getAjustedX() - Zildo.viewPortX / 2;
 				se.setScrX(Zildo.viewPortX / 2 + (int) (distFromCenter * (1f + variation / 500f)) );
-				se.light=0xff0000;
 				se.setSpecialEffect(EngineFX.YELLOW_HALO);
 			} else {
 				se.setSpecialEffect(EngineFX.FOCUSED);
-				se.light=0xffffff;
 				se.zoom = 255;
 			}
+			
+
+		}
+		// Do the fade process
+		for (SpriteEntity se : seq) {
+			if (se.getAlpha() == fadeLevel)
+				break;
+			se.setAlpha(fadeLevel);
 		}
 		if (p_menu instanceof CompassMenu) {
 			setToDisplay_adventureMenu(true);
@@ -1136,9 +1154,6 @@ public class GUIDisplay {
 	}
 	public void setToDisplay_adventureMenu(boolean p_active) {
 		toDisplay_adventureMenu = p_active;
-	}
-	public void toggleToDisplay_adventureMenu() {
-		toDisplay_adventureMenu = !toDisplay_adventureMenu;
 	}
 	
 	/**

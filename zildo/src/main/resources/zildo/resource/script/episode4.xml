@@ -95,7 +95,9 @@
 	        <perso who="thrower2" action="darkGuy"/>
 	        <spawn who="black3" pos="347,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
 	        <spawn who="black4" pos="385,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
-			<!-- Crates and immobile thrower 3 -->
+	        <script who="black3" value="13"/>
+	        <script who="black4" value="13"/>
+	        <!-- Crates and immobile thrower 3 -->
 			<spawn what="c1" type="CRATE" pos="210,353"/>
 			<spawn what="c2" type="CRATE" pos="225,361"/>
 			<spawn what="c3" type="CRATE2" pos="223,378"/>

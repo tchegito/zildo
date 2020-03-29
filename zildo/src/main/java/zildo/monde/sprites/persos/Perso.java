@@ -202,6 +202,7 @@ public abstract class Perso extends Element {
 			Pointf target = pathFinder.getTarget();
 			switch (p_script) {
 			case IMMOBILE:
+			case WAITING:
 			case MOLE:
 				setAlerte(false);
 			case ZONE:
@@ -761,11 +762,14 @@ public abstract class Perso extends Element {
 				break;
 			case 177 + 256*3:	// Access to the north 2
 			case 178 + 256*3:
-			case 111 + 256*3:
-			case 112 + 256*3:
+
 			case 192 + 256*5: case 193 + 256*5:	// Desert cave
 			case 224 + 256*4:
 				coeffWhiteLight = tileLight.north(2, x, y);
+				break;
+			case 111 + 256*3:
+			case 112 + 256*3:
+				coeffWhiteLight = tileLight.north(0, x, y);
 				break;
 			case 179 + 256*3:	// Access to the south 2
 			case 180 + 256*3:

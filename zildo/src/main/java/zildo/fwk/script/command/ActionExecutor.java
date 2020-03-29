@@ -794,7 +794,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	                	}
 	                	elem.setLinkedPerso(perso);
 	                	elem.flying = true;
-	                	elem.setAngle(Angle.EST);
+	                	elem.setAngle(Angle.fromDelta(elem.vx, elem.vy));
                 	}
         			achieved = true;
         		default:

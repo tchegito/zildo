@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import zildo.client.Client;
 import zildo.client.ClientEngineZildo;
+import zildo.client.gui.MenuTransitionProgress;
 import zildo.client.stage.GameStage;
 import zildo.client.stage.MenuStage;
 import zildo.fwk.ui.ItemMenu;
@@ -23,9 +24,7 @@ public class EngineWithMenuUT extends EngineUT {
 				((MenuStage) stage).askForItemMenu(item);
 			}
 		}
-		//currentMenu.selectItem(item);
-		//client.setAction(item);
-		renderFrames(2);
+		renderFrames(2 + MenuTransitionProgress.BLOCKING_FRAMES_ON_MENU_INTERACTION);
 	}
 	
 	protected void pickItemAndCheckDifferentMenu(String id) {
@@ -34,6 +33,7 @@ public class EngineWithMenuUT extends EngineUT {
 		pickItem(id);
 		
 		// Item has been activated, we should be in another menu
+		renderFrames(MenuTransitionProgress.BLOCKING_FRAMES_ON_MENU_INTERACTION);
 		Menu nextMenu = client.getCurrentMenu();
 		Assert.assertNotNull(nextMenu);
 		// Check that we're in a different menu

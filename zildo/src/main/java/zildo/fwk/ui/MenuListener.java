@@ -27,6 +27,7 @@ package zildo.fwk.ui;
 public interface MenuListener {
 
 	public ItemMenu act(Menu menu);
+	public ItemMenu actSpe(Menu menu);
 	public void askFor(ItemMenu item);
 	
 }

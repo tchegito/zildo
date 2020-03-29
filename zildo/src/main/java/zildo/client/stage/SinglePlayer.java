@@ -133,8 +133,6 @@ public class SinglePlayer extends GameStage {
         // Focus on zildo
         SpriteEntity zildo=EngineZildo.persoManagement.getZildo();
         ClientEngineZildo.mapDisplay.setFocusedEntity(zildo);
-        
-        client.askStage(this);
     }
     
     /**

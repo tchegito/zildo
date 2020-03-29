@@ -1,5 +1,7 @@
 package junit.fwk.display;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import org.junit.Assert;
@@ -7,8 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.ClientMainLoop;
 import zildo.client.ClientEngineZildo;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
@@ -105,5 +109,64 @@ public class TestSpriteDisplay extends EngineUT {
 		Assert.assertNotEquals("Hero isn't on the displayed area !", -1, posZildo);
 		Assert.assertNotEquals("Other entity ("+other+") isn't on the displayed area !", -1, posOther);
 		Assert.assertTrue("Hero should have been after entity to be displayed correctly !", posZildo > posOther);
+	}
+	
+	
+	@Test @ClientMainLoop
+	public void spritesOverFont() {
+		accomplishQuest("gardelaitier, gardelaitier_win, findDragonPortalKey");
+		mapUtils.loadMap("coucou");
+		spawnZildo(368, 985);
+		simulateDirection(0, 1);
+		renderFrames(100);
+		Assert.assertEquals("prisonext", EngineZildo.mapManagement.getCurrentMap().getName());
+		Perso darkGuy = (Perso) findEntityByDesc(PersoDescription.DARKGUY);
+		Assert.assertNotNull(darkGuy);
+		// Wait for the dialog
+		while (EngineZildo.dialogManagement.getQueue().isEmpty()) {
+			renderFrames(1);
+		}
+		Assert.assertEquals(2, darkGuy.getFloorForSort());
+		renderFrames(10);
+		
+		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+		sd.setEntities(entities);
+		renderFrames(100);
+		
+		// Find a displayed font
+
+		List<SpriteEntity> fonts = sd.getEntities().stream()
+				.filter(entity -> entity.getEntityType().isFont())
+				.collect(toList());
+ 		System.out.println(fonts.size());
+ 		System.out.println(fonts.get(0).getFloorForSort());
+ 		for (SpriteEntity font : fonts) {
+ 	 		Assert.assertTrue(fonts.get(0).isVisible());
+ 			checkOrderDarkGuy(darkGuy, font);
+ 		}
+	}
+	
+	/** Check that hero is displayed after another entity. **/
+	private void checkOrderDarkGuy(SpriteEntity first, SpriteEntity second) {
+		SpriteEntity[][] order = sd.getTabTri();
+		int posSecond = -1;
+		int posFirst = -1;
+		for (int i=0;i<order.length;i++) {
+			for (int j=0;j<order[i].length;j++) {
+				SpriteEntity ent = order[i][j];
+				if (ent != null) {
+					if (ent == first) {
+						posFirst = i;
+						System.out.println("First: "+ent.y);
+					} else if (ent == second) {
+						posSecond = i;
+						System.out.println("Second: "+ent.y);
+					}
+				}
+			}
+		}
+		Assert.assertNotEquals("First isn't on the displayed area !", -1, posFirst);
+		Assert.assertNotEquals("Second entity ("+second+") isn't on the displayed area !", -1, posSecond);
+		Assert.assertTrue("First should have been after second to be displayed correctly !", posFirst < posSecond);
 	}
 }

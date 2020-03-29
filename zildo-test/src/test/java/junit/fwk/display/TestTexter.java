@@ -36,7 +36,7 @@ public class TestTexter extends EngineUT {
 		System.out.println(text);
 		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
 
-		ClientEngineZildo.guiDisplay.displayTexter(text, 0);
+		ClientEngineZildo.guiDisplay.displayTexter(text, 0, 0);
 		
 		// Count sprites
 		GUISpriteSequence seq = getPrivateMember(guiDisplay, "creditSequence");
@@ -49,7 +49,7 @@ public class TestTexter extends EngineUT {
 		Assert.assertTrue("Some sprites should be visible !", nbVisible > 0);
 		
 		// Move cursor and check visibility again
-		ClientEngineZildo.guiDisplay.displayTexter(text, 16);
+		ClientEngineZildo.guiDisplay.displayTexter(text, 16, 0);
 		nbSprites = seq.size();
 		int nbVisibleAfter = countVisible(seq);
 		System.out.println(nbVisibleAfter+"/"+nbSprites);
@@ -71,7 +71,7 @@ public class TestTexter extends EngineUT {
 
 		GUIDisplay guiDisplay = ClientEngineZildo.guiDisplay;
 
-		guiDisplay.displayTexter(text, 0);
+		guiDisplay.displayTexter(text, 0, 0);
 		GUISpriteSequence seq = getPrivateMember(guiDisplay, "creditSequence");
 
 		int countCharacters = 0;

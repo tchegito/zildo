@@ -277,7 +277,7 @@ public class Element extends SpriteEntity {
 					// Stops the movement, just let the element falling
 					x = ancX;
 					y = ancY;
-					z = ancZ;
+					//z = ancZ;
 					vx = 0;
 					vy = 0;
 					return true;

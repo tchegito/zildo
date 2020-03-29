@@ -289,6 +289,9 @@ public class MapManagement {
 					return false;
 				}
 				Tile tile = currentMap.readmap(cx, cy, false, quelElement.floor);
+				if (tile == null && quelElement.floor > 0) {
+					tile = currentMap.readmap(cx, cy, false, quelElement.floor-1);
+				}
 				if (tile == null) {
 					return false;
 				}

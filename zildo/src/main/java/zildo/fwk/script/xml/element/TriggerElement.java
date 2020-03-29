@@ -160,7 +160,8 @@ public class TriggerElement extends AnyElement {
 			item = ItemKind.fromString(readAttribute("item"));
 			break;
 		case FALL:
-			tileNature = TileNature.valueOf(readAttribute("nature"));
+			String strNature = readAttribute("nature");
+			tileNature = strNature == null ? null : TileNature.valueOf(strNature);
 			desc = SpriteDescription.Locator.findNamedSpr(readAttribute("type"));
 			name = readAttribute("name");
 		case TILEATTACK:
@@ -260,7 +261,7 @@ public class TriggerElement extends AnyElement {
 		case USE:
 			return item == p_another.item;
 		case FALL:
-			return desc == p_another.desc && tileNature == p_another.tileNature &&
+			return desc == p_another.desc && (tileNature == null || tileNature == p_another.tileNature) &&
 			(name == null || name.equals(p_another.name));
 		case TILEATTACK:
 			return tileLocation.equals(p_another.tileLocation);

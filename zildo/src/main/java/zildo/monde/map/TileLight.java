@@ -5,7 +5,9 @@ import zildo.monde.sprites.Rotation;
 public class TileLight {
 
 	public int north(int level, float x, float y) {
-		if (level == 1) {
+		if (level == 0) {
+			return (int)y % 16;
+		} else if (level == 1) {
 			return 8 + Math.min((int) y % 16, 7);
 		} else {
 			return ((int) y % 16) / 2;

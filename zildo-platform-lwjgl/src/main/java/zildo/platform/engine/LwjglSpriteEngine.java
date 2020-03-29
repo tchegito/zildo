@@ -94,6 +94,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 				int texId=textureEngine.getNthTexture(numBank);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
 
+				ambient4f.w = alpha / 256f;
 				// Select the right pixel shader (if needed)
                 if (pixelShaderSupported) {
                 	switch (currentFX) {
@@ -107,7 +108,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						break;
                 	case YELLOW_HALO:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(2));
-						ClientEngineZildo.pixelShaders.setParameter(2, "factor", new Vector4f((float) (0.6+0.4*Math.cos(3*gamma)), 0, 0, 1));
+						ClientEngineZildo.pixelShaders.setParameter(2, "factor", new Vector4f((float) (0.6+0.4*Math.cos(3*gamma)), 0, 0, alpha / 255f));
 						break;
                 	case STAR:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(3));
@@ -116,7 +117,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
                 	case CLIP:
 	                case FONT_PEOPLENAME:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(5));
-						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", ambient4f); //new Vector4f(1f, 1f, 1f, 1f));
+						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", ambient4f);
 						break;
                 	case FIRE:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(4));
@@ -176,7 +177,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
                 	byte lightRed = (byte) (light >> 16);
                 	byte lightGreen = (byte) ((light >> 8) & 255);
                 	byte lightBlue = (byte) (light & 255);
-            		GL11.glColor4ub(lightRed, lightGreen, lightBlue, (byte) (255.0f));
+            		GL11.glColor4ub(lightRed, lightGreen, lightBlue, (byte) alpha);
             		//GL11.glColor4ub((byte)255, (byte)1, (byte)1, (byte) (255.0f));
             		//GL11.glColor4f(1f, 1f, 0f, 1f);
                 }

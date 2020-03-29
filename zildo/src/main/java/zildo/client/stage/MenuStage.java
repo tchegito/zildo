@@ -40,29 +40,32 @@ public class MenuStage extends GameStage {
 	Client client;
 	Menu menu;
 	
-	public MenuStage(Menu menu, MenuListener menuListener) {
+	public MenuStage(Menu menu) {
 		this.menu = menu;
-		this.menuListener = menuListener;
+        client = ClientEngineZildo.getClientForGame();
+		this.menuListener = client.getMenuListener();
 		guiDisplay = ClientEngineZildo.guiDisplay;
 		launchGame();
 	}
 	
 	@Override
 	public void launchGame() {
-        client = ClientEngineZildo.getClientForGame();
         menu.refresh();
 	}
 	
 	@Override
 	public void updateGame() {
 		item = menuListener.act(menu);
+		if (item == null && client.getMenuTransition().isReadyToInteract()) {	// No move during a fade
+			item = menuListener.actSpe(menu);
+		}
 		if (item != null && item.isSelectable()) {
 			// Terminates menu and schedule selected action to execute
-			guiDisplay.endMenu();
-			menu.displayed = false;
 			client.setAction(item);
-			
-			done = true;
+		}
+		
+		if (client.getMenuTransition().isCurrentOver()) {
+			endGame();
 		}
 	}
 
@@ -71,13 +74,15 @@ public class MenuStage extends GameStage {
 	  */
 	@Override
 	public void renderGame() {
-		if (item == null) {
-			guiDisplay.displayMenu(menu);
+		if (!done && item == null) {
+			guiDisplay.displayMenu(menu, client.getMenuTransition().getFadeLevel());
 		}
 	}
 
 	@Override
 	public void endGame() {
+		guiDisplay.endMenu();
+		done = true;
 		guiDisplay.clearSequences(GUISequence.TEXT_MENU);
 	}
 

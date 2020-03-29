@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import zildo.Zildo;
+import zildo.client.gui.MenuTransitionProgress;
 import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.CompassMenu;
 import zildo.client.gui.menu.InGameMenu;
@@ -75,7 +76,6 @@ public class Client {
 	boolean connected = false; // TRUE so as a connection with a server is
 								// established
 	boolean lan = false;
-	private Menu currentMenu;
 	NetClient netClient;
 	boolean multiplayer;
 	boolean music = Zildo.soundEnabled;
@@ -99,10 +99,11 @@ public class Client {
 	KeyboardHandler kbHandler = Zildo.pdPlugin.kbHandler;
 
 	MenuListener menuListener;
+	MenuTransitionProgress menuTransition = new MenuTransitionProgress(this);
 	
 	List<GameStage> stages;
 	List<GameStage> ongoingStages;
-	
+
 	public enum ClientType {
 		SERVER_AND_CLIENT, CLIENT, ZEDITOR;
 	}
@@ -129,6 +130,8 @@ public class Client {
 		menuListener = new DefaultMenuListener();
 		
 		ingameMenu = new InGameMenu();
+		
+		connected = true;
 	}
 
 	void initializeDisplay() {
@@ -185,7 +188,6 @@ public class Client {
 	public boolean mainLoop() {
 		// Render current stage and remove those which are finished
 		//long t1 = ZUtils.getTime();
-		
 		List<GameStage> toRemove = new ArrayList<GameStage>();
 		for (GameStage stage : stages) {
 			if (stage.isDone()) {
@@ -203,8 +205,11 @@ public class Client {
 						if (ss instanceof SinglePlayer && !ss.isDone())
 							throw new RuntimeException("Impossible to have 2 unfinished singleplayer stages !");
 					}
+					stage.launchGame();
 				}
 				stages.add(stage);
+				System.out.println("* stage "+stage+" added at frame "+EngineZildo.nFrame);
+				
  			}
 			ongoingStages.clear();
 		}
@@ -216,6 +221,7 @@ public class Client {
 				break;
 			}
 		}
+		// Display walls around the screen during ingame menu
 		ClientEngineZildo.filterCommand.active(FitToScreenFilter.class, stillMenu, null);
 		if (!stillMenu) {
 			setCurrentMenu(null);
@@ -269,7 +275,10 @@ public class Client {
 
 		}
 
+        menuTransition.mainLoop();
+        
 		// Display scene
+        connected = !isIngameMenu();
 		glGestion.render(connected);
 	}
 
@@ -277,62 +286,65 @@ public class Client {
 	 * Handle system keys : ESCAPE for computer, BACK/MENU for touchscreen devices
 	 */
 	private void handleKeys() {
-		boolean compassMenu = currentMenu instanceof CompassMenu;
-		DialogMode dm = ClientEngineZildo.guiDisplay.getToDisplay_dialogMode();
-		if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
-			// Escape is pressed and no fade is running
-			if (connected) {
-				if (!EngineZildo.spriteManagement.isBlockedNonHero() && dm != DialogMode.INFO) {
-					handleMenu(ingameMenu);
-				}
-			} else if (compassMenu) {
-				askForItemMenu(END_MENU_ITEM);
-			} else if (currentMenu != ingameMenu) {
-				done = true;
-			} else {
-				askForItemMenu(ingameMenu, "m7.continue");
-			}
-		}
-		
-		if (kbHandler.isKeyPressed(Keys.TOUCH_MENU)) {
-			// Don't allow in game menu when player is in texter (it would make too much overlapping text on screen)
-			if (connected && !isIngameMenu() && dm != DialogMode.TEXTER && dm != DialogMode.INFO) {
-				handleMenu(ingameMenu);
-			}
-		}
-		
-		if (kbHandler.isKeyPressed(Keys.TOUCH_BACK)) {
-			if (!connected) {
-				if (currentMenu == ingameMenu) {
-					askForItemMenu(ingameMenu, "m7.quit");
+		if (menuTransition.isReadyToInteract()) {
+			Menu currentMenu = menuTransition.getCurrentMenu();
+			boolean compassMenu = currentMenu instanceof CompassMenu;
+			DialogMode dm = ClientEngineZildo.guiDisplay.getToDisplay_dialogMode();
+			if (kbHandler.isKeyPressed(Keys.ESCAPE)) {
+				// Escape is pressed and no fade is running
+				if (connected) {
+					if (!EngineZildo.spriteManagement.isBlockedNonHero() && dm != DialogMode.INFO) {
+						handleMenu(ingameMenu);
+					}
 				} else if (compassMenu) {
 					askForItemMenu(END_MENU_ITEM);
-				} else if (currentMenu != null) {
-					if ("m7.quitConfirm".equals(currentMenu.getKey())) {
-						askForItemMenu(currentMenu, "global.yes");
-					} else if ("m1.title".equals(currentMenu.getKey())) {
-						done = true;
-					}
+				} else if (currentMenu != ingameMenu) {
+					done = true;
 				} else {
+					askForItemMenu(ingameMenu, "m7.continue");
+				}
+			}
+			
+			if (kbHandler.isKeyPressed(Keys.TOUCH_MENU)) {
+				// Don't allow in game menu when player is in texter (it would make too much overlapping text on screen)
+				if (connected && !isIngameMenu() && dm != DialogMode.TEXTER && dm != DialogMode.INFO) {
+					handleMenu(ingameMenu);
+				}
+			}
+			
+			if (kbHandler.isKeyPressed(Keys.TOUCH_BACK)) {
+				if (!connected) {
+					if (currentMenu == ingameMenu) {
+						askForItemMenu(ingameMenu, "m7.quit");
+					} else if (compassMenu) {
+						askForItemMenu(END_MENU_ITEM);
+					} else if (currentMenu != null) {
+						if ("m7.quitConfirm".equals(currentMenu.getKey())) {
+							askForItemMenu(currentMenu, "global.yes");
+						} else if ("m1.title".equals(currentMenu.getKey())) {
+							done = true;
+						}
+					} else {
+						askForItemMenu(ingameMenu, "m7.quit");
+					}
+				} else if (dm != DialogMode.INFO) {
+					handleMenu(ingameMenu);
 					askForItemMenu(ingameMenu, "m7.quit");
 				}
-			} else if (dm != DialogMode.INFO) {
-				handleMenu(ingameMenu);
-				askForItemMenu(ingameMenu, "m7.quit");
 			}
-		}
-		if (kbHandler.isKeyPressed(Keys.COMPASS) && 
-				connected &&	// Inside the game, not in main menu
-				ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
-				dm != DialogMode.TEXTER &&
-				dm != DialogMode.INFO &&
-				// Forbid access when dialoguing => too much characters on screen (issue 109)
-				ClientEngineZildo.guiDisplay.isToDisplay_compassItem()
-				) {
-			if (currentMenu instanceof CompassMenu) {
-				askForItemMenu(END_MENU_ITEM);
-			} else {
-				handleMenu(new CompassMenu());
+			if (kbHandler.isKeyPressed(Keys.COMPASS) && 
+					connected &&	// Inside the game, not in main menu
+					ClientEngineZildo.guiDisplay.isToDisplay_generalGui() && 
+					dm != DialogMode.TEXTER &&
+					dm != DialogMode.INFO &&
+					// Forbid access when dialoguing => too much characters on screen (issue 109)
+					ClientEngineZildo.guiDisplay.isToDisplay_compassItem()
+					) {
+				if (currentMenu instanceof CompassMenu) {
+					askForItemMenu(END_MENU_ITEM);
+				} else {
+					handleMenu(new CompassMenu());
+				}
 			}
 		}
 	}
@@ -387,16 +399,18 @@ public class Client {
 		}
 	}
 
+	/**
+	 * A new menu is asked. So we take time to remove the current one, during when a fade out is processed. Then the new one comes with a fade in
+	 * @param p_menu
+	 */
 	public void handleMenu(Menu p_menu) {
-		setCurrentMenu(p_menu);
-		if (p_menu == null) {
-			connected = true;
-		} else {
-			askStage(new MenuStage(p_menu, menuListener));
-			connected = false;
-		}
+		menuTransition.askForMenu(p_menu);
 	}
 
+	public MenuTransitionProgress getMenuTransition() {
+		return menuTransition;
+	}
+	
 	public void cleanUp() {
 		if (netClient != null) {
 			netClient.close();
@@ -455,7 +469,8 @@ public class Client {
 	}
 
 	public boolean isIngameMenu() {
-		return currentMenu != null && ingameMenu != null;
+		return (menuTransition.getCurrentMenu() != null && ingameMenu != null) ||
+				(isMenuDisplayed());
 	}
 
 	public boolean isMusic() {
@@ -523,11 +538,13 @@ public class Client {
 	}
 	
 	public Menu getCurrentMenu() {
-		return currentMenu;
+		return menuTransition.getCurrentMenu();
 	}
 	
+	// TODO: voir si on peut virer cette méthode quand tout sera bon
 	public void setCurrentMenu(Menu menu) {
-		currentMenu = menu;
+		if (menu != menuTransition.getCurrentMenu()) System.out.println(" set current menu "+menu+" at frame "+EngineZildo.nFrame);
+		menuTransition.forceMenu(menu);
 	}
 	
 	public boolean isReady() {
@@ -541,20 +558,30 @@ public class Client {
 	}
 	
 	private boolean isMenuDisplayed() {
-		if (currentMenu != null) {
+		if (menuTransition.getCurrentMenu() != null) {
 			return true;
 		}
 		// Check if a menu is still active, iterating over stages
 		// Because with Android, we use threads and this introduces different behavior than PC
+		return isStageMenuDisplayed();
+	}
+	
+	// TODO: see if this method and the previous could be merged in one
+	private boolean isStageMenuDisplayed() {
 		for (GameStage stage : stages) {
-			if (stage instanceof MenuStage) {
+			if (stage instanceof MenuStage && !stage.isDone()) {
 				return true;
 			}
 		}
 		return false;
 	}
+	
 	public void setMenuListener(MenuListener p_menuListener) {
 		menuListener = p_menuListener;
+	}
+	
+	public MenuListener getMenuListener() {
+		return menuListener;
 	}
 	
 	public List<GameStage> getCurrentStages() {
@@ -562,7 +589,13 @@ public class Client {
 	}
 	
 	public void askStage(GameStage stage) {
-		ongoingStages.add(stage);
+		if (isStageMenuDisplayed()) {
+			System.out.println("* ask stage "+stage+" at frame "+EngineZildo.nFrame+" but a menu should fade before");
+			menuTransition.askForStage(stage);
+		} else {
+			System.out.println("* ask stage "+stage+" at frame "+EngineZildo.nFrame);
+			ongoingStages.add(stage);
+		}
 	}
 	
 	/**

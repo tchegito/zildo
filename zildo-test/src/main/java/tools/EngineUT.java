@@ -19,9 +19,9 @@
 
 package tools;
 
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -64,6 +64,7 @@ import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
+import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
@@ -239,14 +240,6 @@ public abstract class EngineUT {
 	        
 	        if (clientMainLoop) {
 	        	ClientEngineZildo.client.mainLoop();
-
-	        	doAnswer(invocation -> {
-		    		for (GameStage stage : ClientEngineZildo.getClientForGame().getCurrentStages()) {
-		    			stage.renderGame();
-		    		}
-		    		return null;
-	        	}).when(ClientEngineZildo.openGLGestion).render(false);
-
 	        }
 	        
 	        clientEngine.renderFrame(false);
@@ -343,7 +336,6 @@ public abstract class EngineUT {
 			} else {
 				gd = spy(new GUIDisplay());
 				when(gd.skipDialog()).thenReturn(true);
-				doNothing().when(gd).endMenu();
 			}
 			ClientEngineZildo.guiDisplay = gd;
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.screenX, Zildo.screenY);
@@ -362,8 +354,6 @@ public abstract class EngineUT {
 			
 		}
 
-		// Tells client that we're done with menu and inside the game
-		fakeClient.handleMenu(null);
 		/*
 		new CloudFilter(null) {
 			
@@ -383,11 +373,9 @@ public abstract class EngineUT {
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
 		// We have to neutralize pdPlugin.kbHandler, then recreate a handle. Because reset() is not satisfying
-		fakedKbHandler = spy(new LwjglKeyboardHandler() {
+		fakedKbHandler = spy(new CommonKeyboardHandler() {
 			
-			@Override
-			public void poll() {
-			}
+			LwjglKeyboardHandler justForCodes = new LwjglKeyboardHandler();
 			
 			@Override
 			public boolean next() {
@@ -413,14 +401,24 @@ public abstract class EngineUT {
 			public char getEventCharacter() {
 				return 0;
 			}
-			/*
+			
 			@Override
 			public int getCode(Keys k) {
-				return 0;
-			} */
+				return justForCodes.getCode(k);
+			}
 		});
 		Zildo.pdPlugin.kbHandler = fakedKbHandler;
 		
+		if (clientMainLoop) {
+
+        	doAnswer(invocation -> {
+	    		for (GameStage stage : ClientEngineZildo.getClientForGame().getCurrentStages()) {
+	    			stage.renderGame();
+	    		}
+	    		return null;
+        	}).when(ClientEngineZildo.openGLGestion).render(anyBoolean());
+
+		}
 		// Create a thread wich monitors any freeze
 		if (!disableFreezeMonitor) {
 			freezeMonitor = new FreezeMonitor(this);
@@ -588,11 +586,12 @@ public abstract class EngineUT {
 				osNext.thenReturn(false);
 				OngoingStubbing<Integer> osEventKey = null;
 				for (Keys k : keys) {
+					int code = fakedKbHandler.getCode(k);
 					if (osEventKey == null) {
 						osEventKey = when(fakedKbHandler.getEventKey());
 					}
 					
-					osEventKey = osEventKey.thenReturn(new LwjglKeyboardHandler().getCode(k));
+					osEventKey = osEventKey.thenReturn(code);
 				}
 				osEventKey.thenReturn(0);
 			}

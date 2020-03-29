@@ -29,7 +29,7 @@ public enum MouvementPerso {
 	ZONE(0),
 	HEN(1),	// Poule
 	OBSERVE(2),
-	IMMOBILE(3),
+	IMMOBILE(3),	// Not alertable
 	VOLESPECTRE(4),
 	RAT(5),
 	ZONELANCE(6),
@@ -39,7 +39,7 @@ public enum MouvementPerso {
 	BIRD(10),
 	SQUIRREL(11),
 	WAKEUP(12),
-	//INVOKE(13),	// addSpr = 1
+	WAITING(13),	// like IMMOBILE, but alertable
 	CAT(14),
 	SLEEPING(15),
 	FOLLOW(16),
@@ -111,6 +111,7 @@ public enum MouvementPerso {
 	 */
 	public boolean isMobileZone() {
 		return this != IMMOBILE &&
+		this != WAITING &&
 		this != OBSERVE &&
 		this != WAKEUP &&
 		this != MOBILE_WAIT &&

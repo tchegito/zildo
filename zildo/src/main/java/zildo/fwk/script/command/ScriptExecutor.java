@@ -98,8 +98,12 @@ public class ScriptExecutor {
 	public String verbose() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(scripts.size()).append(" scripts running {[");
-		for (ScriptProcess s : scripts) {
-			sb.append(s.scene.id).append(s).append(",");
+		for (ScriptProcess process : scripts) {
+			ScriptProcess s = process;
+			while (s != null) {
+				sb.append(s.scene.id).append(s).append(",");
+				s = s.subProcess;
+			}
 		}
 		sb.append("}");
 		return sb.toString();

@@ -66,7 +66,8 @@ public class LwjglFitToScreenFilter extends FitToScreenFilter {
         }
 		// This filter is in charge to alter all screen colors
 		Vector3f v = ClientEngineZildo.ortho.getFilteredColor();
-		GL11.glColor3f(v.x, v.y, v.z);
+		int fadeLevel = getFadeLevel();
+		GL11.glColor4f(v.x, v.y, v.z, fadeLevel / 255f);
 		
 		// Draw texture with depth
 		super.render();

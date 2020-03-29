@@ -99,6 +99,7 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	}
 	
 	public void poll() {
+		super.poll();
 		Keyboard.poll();
 	}
 	

@@ -19,6 +19,7 @@
 
 package zildo.fwk.gfx.filter;
 
+import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
 
 /**
@@ -32,6 +33,10 @@ public abstract class FitToScreenFilter extends ScreenFilter {
 	 */
 	public FitToScreenFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
+	}
+	
+	protected int getFadeLevel() {
+		return ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevel();
 	}
 
 }

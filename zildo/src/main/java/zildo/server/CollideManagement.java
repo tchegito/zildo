@@ -247,7 +247,8 @@ public class CollideManagement {
         	// Check that collision doesn't happen on a projectile (not inside persoSprites)
         	List<Element> persoSprites = p_collided.perso.getPersoSprites();
         	if (p_collided.weapon == null || persoSprites == null || persoSprites.contains(p_collided.weapon)) {
-        		hit(p_collider, p_collided);
+        		if (p_collided.isMultifloor() || (p_collider.perso != null && p_collider.perso.floor == p_collided.perso.floor))
+        			hit(p_collider, p_collided);
         	}
         }
     }

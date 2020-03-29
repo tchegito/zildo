@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasyWritingFile;
@@ -219,8 +220,9 @@ public class SaveGameMenu extends PageableMenu {
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 		mapMgmt.arrangeLocation(zildo);
 		
-		singlePlay.launchGame();
+		ClientEngineZildo.getClientForMenu().askStage(singlePlay);
 		
+		// TODO: why not do that in SinglePlayer#launchGame ???
 		mapMgmt.postLoadMap(false);
 		
 		return true;	// success

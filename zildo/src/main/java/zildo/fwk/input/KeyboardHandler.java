@@ -32,6 +32,7 @@ public interface KeyboardHandler {
 	public boolean isKeyDown(Keys key);
 	public boolean isKeyPressed(Keys key);
 	
+	// Called once per frame
 	public void poll();
 	
 	/**
