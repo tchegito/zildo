@@ -989,56 +989,70 @@ public class ActionExecutor extends RuntimeExecutor {
     				entity = elem;
     			} else {
 	        		SpriteDescription desc = SpriteDescription.Locator.findNamedSpr(p_action.getSpawnType());
-	        		elem = null;
-	        		// Chained
-	        		if (ElementDescription.isPlatform(desc)) {
-	        			entity = EngineZildo.spriteManagement.createSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
-	            		if (entity.getEntityType().isElement()) {
-	            			elem = (Element) entity;
-	            		}
+	        		// Is this inside a chest ?
+	        		int ax = location.x / 16;
+	        		int ay = location.y / 16;
+            		Area area = EngineZildo.mapManagement.getCurrentMap();
+	        		int tileDesc = area.readmap(ax, ay);
+	        		if (Tile.isOpenedChest(tileDesc)) {
+	        			// Nothing to display: item is already taken from the chest
+	        			System.out.println("r");
+	        		} else if (Tile.isLinkableToItem(tileDesc) && Tile.isClosedChest(tileDesc)) {
+						area.setCaseItem(ax, ay, desc.getNSpr(), name);
 	        		} else {
-	        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
-	        			entity = elem;
-	            		if (desc instanceof FontDescription) {
-	            			// Particular case=> animation on GUI
-	            			entity.setDesc(desc);
-	            			entity.setEntityType(EntityType.FONT);
-	            		}
+		        		elem = null;
+		        		// Chained
+		        		if (ElementDescription.isPlatform(desc)) {
+		        			entity = EngineZildo.spriteManagement.createSprite(desc, location.x, location.y, Boolean.TRUE == p_action.foreground, rev, false);
+		            		if (entity.getEntityType().isElement()) {
+		            			elem = (Element) entity;
+		            		}
+		        		} else {
+		        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
+		        			entity = elem;
+		            		if (desc instanceof FontDescription) {
+		            			// Particular case=> animation on GUI
+		            			entity.setDesc(desc);
+		            			entity.setEntityType(EntityType.FONT);
+		            		}
+		        		}
 	        		}
     			}
-        		if (p_action.z != null) {
-        			entity.z = p_action.z.evaluate(context);
-        		}
-        		if (p_action.chainCount > 0) {
-        			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
-        			// ChainedElement#animate()
-        			if (elem == null) {
-        				throw new RuntimeException("Unable to spawn a chain of non element !");
-        			}
-        			Element chain = new CustomizableElementChained(elem, p_action.chainCount, (int) p_action.chainDelay.evaluate(context));
-        			EngineZildo.spriteManagement.spawnSprite(chain);
-        			entity = chain;
-        			elem = chain;
-        		} else {
-        			// Really spawn it
-        			EngineZildo.spriteManagement.spawnSprite(entity);
-        		}
-        		
-        		entity.setFloor((int) p_action.floor.evaluate(context));
-        		entity.rotation = rot;
-        		entity.setName(name);
-        		if (p_action.effect != null) {
-        			entity.setSpecialEffect(EngineFX.valueOf(p_action.effect));
-        		}
-
-        		if (p_action.foreground != null) {
-        			entity.setForeground(p_action.foreground);
-        		}
-        		if (elem != null) {	// Element specific
-	        		if (p_action.shadow != null) {
-	            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
-	        			elem.addShadow(descShadow);
+    			if (entity != null) {
+	        		if (p_action.z != null) {
+	        			entity.z = p_action.z.evaluate(context);
 	        		}
+	        		if (p_action.chainCount > 0) {
+	        			// With chained elements, we must not spawn the "matrix" element. It will be spawned by
+	        			// ChainedElement#animate()
+	        			if (elem == null) {
+	        				throw new RuntimeException("Unable to spawn a chain of non element !");
+	        			}
+	        			Element chain = new CustomizableElementChained(elem, p_action.chainCount, (int) p_action.chainDelay.evaluate(context));
+	        			EngineZildo.spriteManagement.spawnSprite(chain);
+	        			entity = chain;
+	        			elem = chain;
+	        		} else {
+	        			// Really spawn it
+	        			EngineZildo.spriteManagement.spawnSprite(entity);
+	        		}
+        		
+	        		entity.setFloor((int) p_action.floor.evaluate(context));
+	        		entity.rotation = rot;
+	        		entity.setName(name);
+	        		if (p_action.effect != null) {
+	        			entity.setSpecialEffect(EngineFX.valueOf(p_action.effect));
+	        		}
+	
+	        		if (p_action.foreground != null) {
+	        			entity.setForeground(p_action.foreground);
+	        		}
+	        		if (elem != null) {	// Element specific
+		        		if (p_action.shadow != null) {
+		            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
+		        			elem.addShadow(descShadow);
+		        		}
+	    			}
         		}
 
     		}

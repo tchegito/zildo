@@ -849,12 +849,14 @@
    		    <perso who="gard4" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
    		    <perso who="gard5" type="GARDE_CANARD" effect="noir" info="ENEMY" pv="4"/>
    		    <script who="gardenord" value="3"/>
-   		    <script who="gard2" value="3"/>
    		    <script who="gard3" value="3"/>
-   		    <script who="gard4" value="3"/>
-   		    <script who="gard5" value="3"/>
-   		    <!-- Open the prison -->
-   		  	<remove what="prisondoor"/>
+	   		<script who="gard4" value="3"/>
+   		    <!-- Open the prison and block gard before episode 4 castle attack-->
+   		    <if expQuest="!findDragonPortalKey">
+   		    	<script who="gard2" value="3"/>
+   		        <script who="gard5" value="3"/>
+   		        <remove what="prisondoor"/>
+   		    </if>
    		</condition>
    		<condition name="prisonext" exp="retour_trion-!hector_call3">
    		  	<tile pos="56,32" back="512"/>

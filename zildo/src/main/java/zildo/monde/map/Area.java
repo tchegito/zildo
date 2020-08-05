@@ -1225,38 +1225,29 @@ public class Area implements EasySerializable {
 					int ax = x / 16;
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
-					switch (tileDesc) {
-					case 512 + 238: // Opened chest (don't spawn the linked item)
-					case 512 + 48: case 512 + 58: case 512+60:
-						break;
-					case 512 + 231: // Chest
-					case 512 + 49: case 512 + 59: case 512 + 61:
-					case 165: // Bushes
-					case 167: // Stone
-					case 169: // Heavy stone
-					case 751: // Jar
-					case 256*5+195:	// Amphora
+					boolean linkable = Tile.isLinkableToItem(tileDesc);
+					if (linkable) {
 						map.setCaseItem(ax, ay, nSpr, entName);
-						if (!zeditor) { // We have to see the sprites in ZEditor
-							break;
+					}
+					boolean openedChest = Tile.isOpenedChest(tileDesc);
+					// We have to see the sprites in ZEditor
+					SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
+					boolean shouldSpawn = (!linkable && !openedChest)|| zeditor;
+					if (desc == GearDescription.GREEN_DOOR ||	// Opened door ?
+						desc == GearDescription.CAVE_KEYDOOR ||
+						desc == GearDescription.CAVE_MASTERDOOR) {
+						ChainingPoint ch = map.getCloseChainingPoint(ax, ay);
+						if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
+							shouldSpawn = false;
 						}
-					default: // else, show it as a regular element
-						SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
-						if (desc == GearDescription.GREEN_DOOR ||	// Opened door ?
-							desc == GearDescription.CAVE_KEYDOOR ||
-							desc == GearDescription.CAVE_MASTERDOOR) {
-							ChainingPoint ch = map.getCloseChainingPoint(ax, ay);
-							if (ch != null && EngineZildo.scriptManagement.isOpenedDoor(map.getName(), ch)) {
-								break;
-							}
-						}
+					}
+					if (shouldSpawn) {
 						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
 								false);
 						addedEntities.add(entity);
 						if (desc instanceof GearDescription && ((GearDescription)desc).isExplodable()) {	// Exploded wall ?
 							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {
 								map.explodeTile(new Point(x, y), false, (Element) entity);
-								break;
 							}
 						}
 						if ((multi & SpriteEntity.FOREGROUND) != 0) {
@@ -1267,7 +1258,6 @@ public class Area implements EasySerializable {
 							entity.repeatX = repX;
 							entity.repeatY = repY;
 						}
-						break;
 					}
 					if (entity != null) {
 						entity.setName(entName);

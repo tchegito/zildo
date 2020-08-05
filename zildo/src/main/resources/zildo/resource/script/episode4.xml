@@ -84,7 +84,6 @@
 	        <remove who="gardenord"/>
 	        <spawn who="black1" pos="349,221" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
 	        <spawn who="black2" pos="510,46" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-   	        <herospecial value="1"/> <!-- Block everybody -->
 	        <script who="black1" value="7"/>
 	        <script who="black2" value="7"/>
 	        <spawn who="thrower1" type="DARKGUY" floor="2" pos="267,178" info="ENEMY"/>
@@ -140,6 +139,27 @@
 	        <script who="black5" value="7"/>
 			<spawn who="black6" pos="640,329" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
 	        <script who="black6" value="7"/>
+	        
+	       	<spawn who="black7" pos="770,333" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	       	<script who="black7" value="0"/>
+	        <spawn who="black8" pos="807,391" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	        <script who="black8" value="0"/>
+	        
+	        <spawn who="black9" pos="921,633" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	        <script who="black9" value="7"/>
+	        
+	       	<spawn who="black10" pos="500,789" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	        <script who="black10" value="0"/>
+	        
+	        <script who="gard2" value="0"/>
+	        <script who="gard5" value="0"/>
+	
+	       	<tile pos="38,41" back2="561"/>
+	        <if expQuest="prisonext(38, 41)">
+			    <tile pos="38,41" back2="560"/>
+	        </if>
+	        <spawn type="GOLDPURSE1" pos="616,664" value="100"/>
+	        
 	     </condition>
    	</mapScript>
 
@@ -150,6 +170,8 @@
    	    </trigger>
    	    <action>
    	        <music/>
+   	        <herospecial value="1"/> <!-- Block everybody -->
+   	        
    	        <moveTo who="zildo" pos="0,48" delta="true"/>
    	        
    	        <!-- Place blocking invisible sprite to the only exit -->
@@ -164,6 +186,9 @@
 	        <herospecial value="2"/>
 	        <music name="ChateauAttaque"/>
    	    </action>
+   	    <history>
+	        <zikReplace what="Chateau" name="ChateauAttaque"/>
+   	    </history>
    	</quest>
    	
    	<quest name="visit_valori" locked="false">

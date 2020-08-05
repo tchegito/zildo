@@ -217,4 +217,30 @@ public class Tile implements Cloneable {
 			return false;
 		}
 	}
+	
+	public static boolean isOpenedChest(int tileDesc) {
+		switch (tileDesc) {
+			case 512 + 238: // Opened chest (don't spawn the linked item)
+			case 512 + 48: case 512 + 58: case 512+60:
+				return true;
+			default:
+				return false;
+		}
+	}
+		
+	public static boolean isLinkableToItem(int tileDesc) {
+		if (isClosedChest(tileDesc)) {
+			return true;
+		}
+		switch (tileDesc) {
+			case 165: // Bushes
+			case 167: // Stone
+			case 169: // Heavy stone
+			case 751: // Jar
+			case 256*5+195:	// Amphora
+				return true;
+			default:
+				return false;
+		}
+	}
 }
