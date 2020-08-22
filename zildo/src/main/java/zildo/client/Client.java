@@ -208,7 +208,6 @@ public class Client {
 					stage.launchGame();
 				}
 				stages.add(stage);
-				System.out.println("* stage "+stage+" added at frame "+EngineZildo.nFrame);
 				
  			}
 			ongoingStages.clear();
@@ -224,7 +223,7 @@ public class Client {
 		// Display walls around the screen during ingame menu
 		ClientEngineZildo.filterCommand.active(FitToScreenFilter.class, stillMenu, null);
 		if (!stillMenu) {
-			setCurrentMenu(null);
+			menuTransition.forceMenu(null);
 		}
 		
 		// Is there some deletion asked ?
@@ -541,12 +540,6 @@ public class Client {
 		return menuTransition.getCurrentMenu();
 	}
 	
-	// TODO: voir si on peut virer cette méthode quand tout sera bon
-	public void setCurrentMenu(Menu menu) {
-		if (menu != menuTransition.getCurrentMenu()) System.out.println(" set current menu "+menu+" at frame "+EngineZildo.nFrame);
-		menuTransition.forceMenu(menu);
-	}
-	
 	public boolean isReady() {
 		return glGestion != null;
 	}
@@ -590,10 +583,8 @@ public class Client {
 	
 	public void askStage(GameStage stage) {
 		if (isStageMenuDisplayed()) {
-			System.out.println("* ask stage "+stage+" at frame "+EngineZildo.nFrame+" but a menu should fade before");
 			menuTransition.askForStage(stage);
 		} else {
-			System.out.println("* ask stage "+stage+" at frame "+EngineZildo.nFrame);
 			ongoingStages.add(stage);
 		}
 	}

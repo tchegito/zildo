@@ -91,7 +91,6 @@ public class MenuTransitionProgress {
 		}
 		currentStage = nextStage;
 		nextStage = null;
-		System.out.println("currentmenu="+currentMenu+" currentstage="+currentStage);
 	}
 	
 	public void mainLoop() {
