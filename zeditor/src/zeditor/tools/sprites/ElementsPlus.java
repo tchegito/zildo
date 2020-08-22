@@ -371,7 +371,11 @@ public class ElementsPlus extends SpriteBanque {
 				// Amphora
 				new Zone(82, 144, 12, 16),
 				// Bag of sand
-				new Zone(0, 303, 16, 14)
+				new Zone(0, 303, 16, 14),
+				// Flower vase
+				new Zone(249, 85, 18, 22),
+				// Chair
+				new Zone(40, 126, 14, 22),
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
