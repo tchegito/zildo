@@ -33,7 +33,7 @@ public enum Region {
 
 	Lugdunia("coucou", "d4m*", "ferme*", "bucherons", "d5*"),
 	LugduniaForest("foret", "foretb", "bosquet", "promenade", "buchforet", "igorlily"),
-	LugduniaCastle("prisonext", "chateaucoucou1", "chateaucoucou2", "chateausud"),
+	LugduniaCastle("prisonext", "chateaucoucou1", "chateaucoucou2", "chateausud", "chatcou*"),
 	LugduniaCave("foretg", "foretg2", "lugduniag", "bucheronsg"),
 	Fishermen("igorvillage", "igorv*"),
 	LugduniaPrison("prison*"),

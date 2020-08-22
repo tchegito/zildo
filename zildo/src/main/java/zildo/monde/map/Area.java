@@ -1033,8 +1033,9 @@ public class Area implements EasySerializable {
 				int foreground = entity.isForeground() ? SpriteEntity.FOREGROUND : 0;
 				int repeated = (entity.repeatX > 1 || entity.repeatY > 1 || entity.rotation != Rotation.NOTHING) ? SpriteEntity.REPEATED_OR_ROTATED : 0;
 				int pushable = (elem != null && elem.isPushable()) ? SpriteEntity.PUSHABLE : 0;
+				// FIXME: Warning ! PUSHABLE has 64 as value, but reverse could be 64 too ! (means VERTICAL)
 				p_file.put((byte) (entity.getNBank() | entity.reverse.getValue() | foreground | repeated | pushable));
-				p_file.put((byte) entity.getNSpr());
+				p_file.put(entity.getNSpr());
 				if (repeated > 0) {
 					if (entity.rotation != Rotation.NOTHING) {
 						p_file.put((byte) (entity.rotation.value | 128));
@@ -1194,15 +1195,15 @@ public class Area implements EasySerializable {
 				if (nbFloors > 1) {
 					floor = p_buffer.readByte();
 				}
-				short nSpr;
 				short multi = p_buffer.readUnsignedByte();
 				// Multi contains many information : 0--15 : bank
 				// 16 : REPEATED or ROTATED
 				// 32 : FOREGROUND
 				// 64 : PUSHABLE
+				// 128 : TWO-bytes for index
 				int nBank = multi & 15;
 				int reverse = multi & Reverse.ALL.getValue();
-				nSpr = p_buffer.readUnsignedByte();
+				int nSpr = p_buffer.readInt();
 				SpriteEntity entity = null;
 				
 				Rotation rot = Rotation.NOTHING;
@@ -1749,6 +1750,10 @@ public class Area implements EasySerializable {
 		}
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 	  coords.y * 16 * mapReference.getDim_y());
+		
+		if (nextMap.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
+			scrollOffset.x = 0;
+		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props
 		ret.sub(scrollOffset);
 		return ret;

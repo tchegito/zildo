@@ -161,6 +161,16 @@
 	        <spawn type="GOLDPURSE1" pos="616,664" value="100"/>
 	        
 	     </condition>
+	     
+		<condition name="chateaucoucou1"  exp="findDragonPortalKey">
+		    <remove who="gard3"/>
+			<spawn type="BAGSAND" pos="464,173"/>
+			<spawn type="BAGSAND" pos="476,176" reverse="128"/>
+			<spawn type="BAGSAND" pos="488,172"/>
+			<spawn type="BAGSAND" pos="500,174" reverse="128" />
+			<spawn type="BAGSAND" pos="513,169" reverse="128"/>
+			<spawn type="BAGSAND" pos="525,171"/>
+		</condition>
    	</mapScript>
 
    	<quest name="prisonext">
