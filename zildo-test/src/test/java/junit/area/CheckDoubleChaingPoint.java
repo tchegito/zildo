@@ -129,4 +129,13 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		assertMapIsChangingToward("prison13");
 	}
 	
+	@Test
+	public void doubleHorizontal() {
+		mapUtils.loadMap("chateaucoucou3");
+		spawnZildo(559, 58);
+		waitEndOfScripting();
+		simulateDirection(0, -1);
+		assertMapIsChangingToward("chatcou5");
+	}
+	
 }
