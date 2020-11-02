@@ -69,6 +69,14 @@ It is possible to use both attributes <code>exp</code> and <code>expQuest</code>
   * **dice10** : returns a integer x as followed: 0 <= x < 10
   * **random** : returns a float f as followed: 0 <= f < 1
 
+<p>There's also functions with parameters, for example:</p>
+
+ * **mapFloor(x, y)** : returns the floor at given location (in pixel coordinates)
+ 
+ To use such functions, you have to prefix it by "fun:" keyword. Here's an usage:
+ ```xml
+    <if exp="fun:mapFloor(zildo.x,zildo.y)=zildo.floor">
+```
 ### Special functions ###
 
 In a circular `moveTo` action (see tileAction 'fireflies' just above) we can use **bell** keyword. It provides a smooth function for going from one value to another one, describing a kind of bell, with a simple sinus function.
