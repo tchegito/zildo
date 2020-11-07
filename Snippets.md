@@ -61,3 +61,19 @@ Actually, 'tileAction' induces a specific context around a given tile (a [TileLo
 	<perso who="self" reverse="zildo.x &gt; x : 128, 0"/>
 ```
 Condition is "zildo.x < x" (we have to escape the minus operator because we're inside XML (bad choice, I know ...))
+
+## 4) Animate character in oneliner
+
+ ```xml
+   	<seq who="self" addSpr="1,2,3" wait="6"/>
+```
+That means character will be animated with sprites index 1, 2 then 3, waiting 6 frames between each one. That's the same than:
+ ```xml
+   	<seq who="self" addSpr="1"/>
+	<wait value="6"/>
+	<seq who="self" addSpr="1"/>
+	<wait value="6"/>
+	<seq who="self" addSpr="1"/>
+	<wait value="6"/>
+ ```
+
