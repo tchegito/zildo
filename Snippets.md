@@ -71,9 +71,11 @@ That means character will be animated with sprites index 1, 2 then 3, waiting 6 
  ```xml
 	<seq who="self" addSpr="1"/>
 	<wait value="6"/>
-	<seq who="self" addSpr="1"/>
+	<seq who="self" addSpr="2"/>
 	<wait value="6"/>
-	<seq who="self" addSpr="1"/>
+	<seq who="self" addSpr="3"/>
 	<wait value="6"/>
  ```
+ 
+ 
 
