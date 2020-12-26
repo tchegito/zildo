@@ -364,18 +364,20 @@ public class ElementsPlus extends SpriteBanque {
 				// Flying straw (279)
 				new Zone(12, 278, 8, 6), new Zone(21, 278, 10, 7),new Zone(32, 278, 14, 7),
 				//new Zone(11, 264, 21, 14)
-				// Sand projection
+				// Sand projection (282)
 				new Zone(0, 292, 6, 11), new ZoneO(11, 285, 7, 16, 0, 0, -2),
 				new ZoneO(23, 282, 11, 16, 0, 0, -5), new ZoneO(38, 287, 16, 9, 0, 0, -7),
 				new ZoneO(55, 286, 26, 9, 0, 0, -8),
-				// Amphora
+				// Amphora (287)
 				new Zone(82, 144, 12, 16),
 				// Bag of sand
 				new Zone(0, 303, 16, 14),
 				// Flower vase
 				new Zone(249, 85, 18, 22),
-				// Chair
+				// Chair (290)
 				new Zone(40, 126, 14, 22),
+				// Hook of the butcher
+				new Zone(1, 88, 5, 6), new Zone(0, 96, 7, 7)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -404,7 +406,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("exteria10", 276,  0),
 				new GraphChange("elem", 278, 0),
 				new GraphChange("exteria10", 282, 0),
-				new GraphChange("elem", 288, 0)
+				new GraphChange("elem", 288, 0),
+				new GraphChange("butcher", 291, 0)
 		});
 	}
 }

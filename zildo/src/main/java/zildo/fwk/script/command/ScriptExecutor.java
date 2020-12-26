@@ -310,6 +310,7 @@ public class ScriptExecutor {
 		boolean shouldGoOn = true;
 		while (node != null) {
 			boolean hadSubprocess = process.subProcess != null;
+			boolean wasWaiting = node.waiting;
 			if (!node.var) {
 				//System.out.print("action => "+node);
 				renderAction(process, node, moveCursor);
@@ -327,8 +328,8 @@ public class ScriptExecutor {
 					case _if:
 						if (node.done) {
 							node = process.getCurrentNode();
-							
-							//break;
+							shouldGoOn = wasWaiting;
+							break;
 						}
 					default:
 						shouldGoOn = false;

@@ -587,4 +587,11 @@ public class SpriteEntity extends Identified implements Cloneable,
 		}
 		return null;
 	}
+	
+	public String getTargetScene() {
+		return null;
+	}
+	public String getFallScene() {
+		return null;
+	}
 }

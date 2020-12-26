@@ -1,5 +1,6 @@
 package zildo.fwk.script.logic;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.logic.FloatVariable.NoContextException;
 
@@ -29,6 +30,7 @@ public class FloatExpression {
 	protected static final String RESERVED_WORD_ZILDOX = "zildo.x";
 	protected static final String RESERVED_WORD_ZILDOY = "zildo.y";
 	protected static final String RESERVED_WORD_ZILDOZ = "zildo.z";
+	protected static final String RESERVED_WORD_ZILDOLOC = "zildo.loc";
 	protected static final String RESERVED_WORD_ZILDOSCRX = "zildo.scrX";
 	protected static final String RESERVED_WORD_ZILDOSCRY = "zildo.scrY";
 	protected static final String RESERVED_WORD_ZILDOFLOOR = "zildo.floor";
@@ -165,11 +167,10 @@ public class FloatExpression {
 	 * @throws LogicParseException
 	 */
 	private FloatASTNode getFloatValue(String val) {
-		try {
+		if (ZUtils.isNumeric(val)) {
 			Float i = Float.parseFloat(val);
 			return new FloatValue(i);
-		} catch (NumberFormatException e) {
-			// It must be a variable
+		} else {
 			return new FloatVariable(val);
 		}
 	}

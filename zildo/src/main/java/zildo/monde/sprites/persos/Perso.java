@@ -1127,21 +1127,9 @@ public abstract class Perso extends Element {
 	 *            whenever target is
 	 */
 	public void sight(Element p_target, boolean p_shortRadius) {
-		int xx = (int) (getX() - p_target.getX());
-		int yy = (int) (getY() - p_target.getY());
-		if (Math.abs(yy) >= Math.abs(xx) || (p_shortRadius && (Math.abs(xx) > 96 || Math.abs(yy) > 96))) {
-			if (yy > 0) {
-				setAngle(Angle.NORD);
-			} else {
-				setAngle(Angle.SUD);
-			}
-		} else {
-			if (xx > 0) {
-				setAngle(Angle.OUEST);
-			} else {
-				setAngle(Angle.EST);
-			}
-		}
+		int xx = (int) (p_target.getX() - getX());
+		int yy = (int) (p_target.getY() - getY());
+		setAngle(Angle.fromDelta(xx,  yy));
 	}
 
 	@Override

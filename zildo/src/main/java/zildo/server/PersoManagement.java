@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import zildo.fwk.script.context.IEvaluationContext;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.PersoCollision;
 import zildo.monde.sprites.desc.ElementDescription;
@@ -147,6 +148,19 @@ public class PersoManagement {
         return null;
     }
     
+    /**
+     * Get character from his name, or 'self' if we're in a character's context.
+     */
+    public Perso getNamedPersoInContext(String name, IEvaluationContext context) {
+    	Perso perso;
+    	if (context != null && "self".equals(name)) {
+    		// Reserved word : perso himself, in case of a contextual script
+    		perso = (Perso) context.getActor();
+    	} else {
+    		perso = getNamedPerso(name);
+    	}
+    	return perso;
+    }
     /** Returns all characters of given type **/
     public List<Perso> getTypedPerso(PersoDescription desc) {
     	List<Perso> persos = new ArrayList<Perso>();

@@ -57,7 +57,8 @@ public class ZSCondition {
 	 *            expected to be "<expression>:<value>"
 	 */
 	public ZSCondition(String p_parseableString) {
-		String[] strExpr = p_parseableString.split(":");
+		// Exclude ':' if they're in a local variable definition ("loc:")
+		String[] strExpr = p_parseableString.split("(?<!loc):");
 		if (strExpr.length != 2) {
 			throw new RuntimeException(
 					"Condition should be <expression>:<value>");

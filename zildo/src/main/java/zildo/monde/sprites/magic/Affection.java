@@ -104,7 +104,7 @@ public class Affection {
 							+ ((int) (255-(255-poisonColor[1]) * factor) << 8)
 							+ ((int) (255-(255-poisonColor[2]) * factor));
 
-					System.out.println("Factor="+factor + ZUtils.hexa(color));
+					//System.out.println("Factor="+factor + ZUtils.hexa(color));
 				}
 				perso.setLight(color);
 				perso.setSpeed(0.5f);

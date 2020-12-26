@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class ZUtils {
 
@@ -235,5 +236,11 @@ public class ZUtils {
     		sb.append(v);
     	}
     	return sb.toString();
+    }
+    	
+    static final Pattern p = Pattern.compile("[0-9|\\.|\\-| ]*");
+    
+    public static boolean isNumeric(String p_text) {
+    	return p.matcher(p_text).matches();
     }
 }

@@ -80,6 +80,10 @@ public class Element extends SpriteEntity {
 	
 	public Point defaultSize = new Point(8, 4);
 	
+	// Scenes to trigger when element respectively 1) reach its target or 2) execute its fall() method
+	public String targetScene;
+	public String fallScene;
+	
 	// Soud shuffle for drops
 	private static final SoundGetter waterDropSound = new SoundGetter(BankSound.Goutte1, BankSound.Goutte3, 100, true);
 
@@ -323,6 +327,9 @@ public class Element extends SpriteEntity {
 			mover.reachTarget();
 		} else {
 			
+			if (mover!= null && !mover.isActive()) {
+				System.out.println("yes");
+			}
 			// Si ce sprite est valide, est-il un sprite fixe ?
 			if (getDesc().isNotFixe()) {
 				// On a trouvé un sprite valide non fixe
@@ -602,6 +609,11 @@ public class Element extends SpriteEntity {
 			return true;
 		}
 		
+		// 0: check if a scene has to be triggered
+		if (fallScene != null) {
+			EngineZildo.scriptManagement.execute(fallScene,  false);
+			return false;	// Bypass all other treatments
+		}
 		
 		// 1: get the landing point nature
 		int cx = (int) (x / 16);
@@ -1131,5 +1143,14 @@ public class Element extends SpriteEntity {
 		} else {
 			return super.getFloorForSort();
 		}
+	}
+	
+	@Override
+	public String getTargetScene() {
+		return targetScene;
+	}
+	@Override
+	public String getFallScene() {
+		return fallScene;
 	}
 }

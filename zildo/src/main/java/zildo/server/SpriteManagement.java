@@ -1040,6 +1040,23 @@ public class SpriteManagement extends SpriteStore {
     }
     
 	/**
+	 * Returned the entity with given name.
+	 * @param p_name
+	 * @return element
+	 */
+    public List<SpriteEntity> getNamedEntities(String p_name) {
+    	List<SpriteEntity> result = new ArrayList<>();
+        if (p_name != null && !"".equals(p_name)) {
+            for (SpriteEntity p : mergedEntities) {
+                if (p_name.equalsIgnoreCase(p.getName())) {
+                    result.add(p);
+                }
+            }
+        }
+        return result;
+    }
+    
+	/**
 	 * Return the first discovered character inside a circular zone around a given character.
 	 * @param p_looker Looking character
 	 * @param radius radius of the circular zone

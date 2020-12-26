@@ -326,6 +326,8 @@ public class PersoNJ extends Perso {
 						int yy = (int) getY();
 						int deltaX = Math.abs((int) (zildo.x - xx-2));
 						int deltaY = Math.abs((int) (zildo.y - yy));
+						// Alert potential allies
+						EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(zildo.x, zildo.y));
 						if (deltaX <= 1 || deltaY <= 1) {
 							// Get sight on Zildo and shoot !
 							sight(zildo, false);
@@ -774,6 +776,25 @@ public class PersoNJ extends Perso {
 				add_spr =3; reverse = Reverse.HORIZONTAL;
 			}
 			add_spr += seqp[computeSeq(3) % 4];
+			break;
+		case BUTCHER:
+			reverse = Reverse.NOTHING;
+			int s = computeSeqPositive(4);
+			switch (angle) {
+			case NORD:
+				add_spr = 5 + s % 2; 
+				reverse = s%4 > 1 ? Reverse.HORIZONTAL : Reverse.NOTHING; break;
+			case OUEST:
+				reverse = Reverse.HORIZONTAL;
+			case EST:
+				add_spr = 2; 
+				add_spr += seqv[s%4];
+				break;
+			case SUD:
+				add_spr = s % 2; 
+				reverse = s%4 > 1 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
+				break;
+			}
 			break;
 		case TURTLE:
 			reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;

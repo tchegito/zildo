@@ -45,6 +45,8 @@ public class ActionElement extends LanguageElement {
 	public IPoint target; // For 'launch' action
 	public int light = -1;
 	public String text;
+	public String targetScene;
+	public String fallScene;
 	public String way; // For 'launch' action
 	public int val;
 	public int flag = -1;	// Only for 'perso' action
@@ -116,6 +118,8 @@ public class ActionElement extends LanguageElement {
 		switch (kind) {
 		case sprite:
 			text = readAttribute("type");
+			targetScene = readAttribute("targetScene");
+			fallScene = readAttribute("fallScene");
 			if (strReverse != null) {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}

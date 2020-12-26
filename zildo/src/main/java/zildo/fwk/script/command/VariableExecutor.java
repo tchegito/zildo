@@ -77,7 +77,7 @@ public class VariableExecutor extends RuntimeExecutor {
 				break;
 			case _if:
 				boolean success = false;
-				success = p_elem.expression != null && ZSCondition.TRUE.equals(p_elem.expression.evaluate());
+				success = p_elem.expression != null && ZSCondition.TRUE.equals(p_elem.expression.evaluate(context));
 				success |= p_elem.value != null && p_elem.value.evaluate(context) == 1f;
 				if (success) {
 					executeSubProcess(p_elem.ifThenClause);

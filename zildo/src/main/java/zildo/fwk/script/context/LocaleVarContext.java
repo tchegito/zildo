@@ -47,6 +47,9 @@ public abstract class LocaleVarContext implements IEvaluationContext {
 	Map<String, String> locales = new HashMap<String, String>();
 	
 	public String registerVariable(String name) {
+		if (involvedVariables.contains(name)) {
+			return locales.get(name);
+		}
 		involvedVariables.add(name);
 		int id = localVariableNaming.pop();
 		String varName = VAR_IDENTIFIER + id;

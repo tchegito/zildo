@@ -3,6 +3,7 @@ package zildo.monde.sprites.persos.ia.mover;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.util.Pointf;
 
+/** Robotic movement with direction on PI/2 quarter **/ 
 public class BasicMoveOrder extends MoveOrder {
 
 	protected float speed = 1;
@@ -26,18 +27,23 @@ public class BasicMoveOrder extends MoveOrder {
 	
 	@Override
 	protected Pointf move() {
-		delta.x = speed * Math.signum( ( target.x - mobile.x));
-		delta.y = speed * Math.signum( ( target.y - mobile.y));
-		
+		calculateDelta();
+
 		mobile.x += delta.x;
 		mobile.y += delta.y;
 	
-		if (Math.round(mobile.x) == target.x && Math.round(mobile.y) == target.y) {
+		float dist = Pointf.distance(mobile.x, mobile.y, target.x, target.y);
+		if (dist < speed) {
 			// Mover has accomplished his duty. Fix float problems
 			mobile.x = target.x;
 			mobile.y = target.y;
 			active = false;
 		}
 		return delta;
+	}
+	
+	protected void calculateDelta() {
+		delta.x = speed * Math.signum( ( target.x - mobile.x));
+		delta.y = speed * Math.signum( ( target.y - mobile.y));
 	}
 }

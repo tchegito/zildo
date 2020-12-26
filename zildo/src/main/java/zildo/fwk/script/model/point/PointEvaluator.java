@@ -20,12 +20,17 @@
 package zildo.fwk.script.model.point;
 
 import zildo.fwk.script.context.IEvaluationContext;
-import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.logic.FloatExpression;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 /**
+ * Several expression are allowed:
+ * <ul>
+ * <li>"(37, 45)" with any immediate values separated with comma</li>
+ * <li>"(zildo.x, loc:i)" with any variables from context</li>
+ * <li>"(1532.0)" with single float value, whose X and Y components will be extracted with bitwise operation</li>
+ * </ul>
  * @author Tchegito
  *
  */
@@ -37,8 +42,13 @@ public class PointEvaluator extends IPoint {
 	public PointEvaluator(String str, IEvaluationContext ctx) {
 		context = ctx;
 		String[] strCoords = str.split(",");
-		exprX = new FloatExpression(strCoords[0]);
-		exprY = new FloatExpression(strCoords[1]);
+		if (strCoords.length == 1) {	// Expression is just one variable name
+			exprX = new FloatExpression(str + " % 1024");
+			exprY = new FloatExpression(str + " / 1024");
+		} else {
+			exprX = new FloatExpression(strCoords[0]);
+			exprY = new FloatExpression(strCoords[1]);
+		}
 	}
 		
 	@Override
@@ -53,4 +63,25 @@ public class PointEvaluator extends IPoint {
 		return new Point(x, y);
 	}
 
+	/** Convert a String which is a float which is a pair into that pair, to get a Point.
+	 *  
+	 * To quote a Patrick Rondat's title: 'why do you do things like that ?' **/
+	public static Point fromStrFloat(String strFloat) {
+		return fromFloat(Float.parseFloat(strFloat));
+	}
+	
+	public static Point fromFloat(float f) {
+		float x = (int)f & 1023;
+		float y = (int)f >> 10;
+		return new Point(x, y);
+	}
+	
+	
+	public static float toSingleFloat(Point p) {
+		return (float) ((int)p.x | ((int)p.y << 10));
+	}
+	
+	public static float toSingleFloat(Pointf p) {
+		return (float) ((int)p.x | ((int)p.y << 10));
+	}
 }

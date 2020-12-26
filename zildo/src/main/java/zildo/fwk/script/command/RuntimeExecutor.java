@@ -52,7 +52,8 @@ public abstract class RuntimeExecutor {
     	}
     	if (name.startsWith(LocaleVarContext.VAR_FUNC_IDENTIFIER)) {
     		String associated = context.getString(name);
-    		return EngineZildo.scriptManagement.getVarValue(associated);
+    		String resolved = EngineZildo.scriptManagement.getVarValue(associated);
+    		return resolved != null ? resolved : associated;
     	}
     	if (isLocal(name)) {
     		searchName = context.getString(name);
@@ -76,7 +77,10 @@ public abstract class RuntimeExecutor {
     	}
     	String result = name;
     	if (isLocal(name)) {
-    		result = context.registerVariable(name);
+    		result = context.getString(name);
+    		if (result == null) {
+    			result = context.registerVariable(name);
+    		}
     	}
     	return result;
     }

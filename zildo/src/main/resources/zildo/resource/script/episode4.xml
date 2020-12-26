@@ -171,6 +171,10 @@
 			<spawn type="BAGSAND" pos="513,169" reverse="128"/>
 			<spawn type="BAGSAND" pos="525,171"/>
 		</condition>
+		
+		<condition name="chatcou8" exp="!killButcher">
+		    <perso who="butcher" action="butcher"/>
+		</condition>
    	</mapScript>
 
    	<quest name="prisonext">
@@ -685,6 +689,100 @@
    	    </loop>
    	</persoAction>
 
+   	<persoAction id="butcher">
+
+   	    <!-- If distance from Zildo is too low, he tries to go back.
+   	    So he picks 3 locations on a circle whom he's the center.
+   	    Each one are on PI/2 quarters, starting from Zildo's axis (between him and hero).
+   	    We take the first one available, free from collision.
+   	    He has to be faster than hero.
+   	    
+   	    At a given time, he throws his hook on hero -->
+   	    <loop>
+   	        <script who="self" value="3"/>
+   	  		<perso who="self" speed="2.5"/>
+			<lookFor who="zildo" radius="5" changeContext="false">
+			    <!-- Get him away from hero -->
+			    <!-- 
+			    <moveTo pos="quarter(self, zildo, 7)"/>
+			    
+			    <var name="alpha" val="angle(self, zildo)"/>
+			    <var name="loc1" val="project(self, alpha, 7)"/>
+			    <var name="loc2" val="project(self, alpha+PI/2, 7)"/>
+			    <var name="loc2" val="project(self, alpha+3*PI/2, 7)"/>
+			    -->
+			    
+			    <var name="loc:iota" value="fun:angle(self, zildo)"/>
+			    <var name="loc:attemptsLeft" value="4.0"/>
+			    <var name="loc:fleeDistance" value="5*16"/>
+			    <loop when="loc:attemptsLeft>0 &amp; loc:fleeDistance>0">
+			        <var name="loc:iota" value="loc:iota + PI/2"/>
+			   		<var name="loc:freeLoc" value="fun:project(self, loc:iota, 64.0)"/>
+			   		<if exp="fun:collide(loc:freeLoc)=0.0 &amp; fun:dist(loc:freeLoc, zildo.loc) > loc:fleeDistance">
+			   		    <moveTo who="self" pos="loc:freeLoc"/>
+			   		    <var name="loc:attemptsLeft" value="0.0"/>"
+			   		</if>
+			   		<var name="loc:attemptsLeft" value="loc:attemptsLeft - 1"/>
+			   		<if exp="loc:attemptsLeft=0">
+			   		    <var name="loc:attemptsLeft" value="4.0"/>
+			   		    <var name="loc:fleeDistance" value="loc:fleeDistance-16"/>
+			   		</if>
+			    </loop>
+
+	   		</lookFor>
+	   		<!-- He should face hero and throw his hook on him -->
+	   		<script who="self" value="2"/>
+	   		<wait value="10"/>
+	   		
+	   		<!-- Throw hook at fixed location, standing still-->
+	   		<var name="loc:zx" value="zildo.x"/>
+	   		<var name="loc:zy" value="zildo.y"/>
+	   		<script who="self" value="2"/>		<!-- Sight on hero -->
+	   		<script who="self" value="3"/>		<!-- Stand still -->
+	   		<throw who="self" what="loc:hook" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOK" foreground="true"/>
+	   		
+	   		<!-- Create a chain outside of the for loop, to avoid local variable destroyed after for -->
+	   		<throw who="self" what="loc:chain" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
+	   		
+	   		<var name="loc:chainFinish" value="0"/>
+	   		<sprite what="loc:hook" fallScene="chainGoBack(loc:hook, loc:chain, x, y, loc:chainFinish)"/>   	 
+
+	   		<for var="loc:i" value="15">
+	   		    <!-- Each chain elements will have the same name => easy to track and command -->
+	   		    <if exp="loc:chainFinish=0">	<!-- Interrupt throw if the chain has already hit something -->
+			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
+			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
+	   		    </if>
+	   		    <!--  <wait value="0"/> -->	   		    
+	   		</for>
+
+	   		<var name="loc:count" value="10"/>
+	   		<loop when="loc:chainFinish&lt;2 &amp; loc:count>0">  
+	   			<wait value="4"/>
+	   			<var name="loc:count" value="loc:count-1"/>
+	   		</loop>
+	   		<if exp="loc:count=0 &amp; loc:chainFinish=1">
+	   		    <exec script="chainGoBack(loc:hook, loc:chain, x, y, loc:chainFinish)"/>
+	   		</if>
+	   		<wait value="50"/>
+
+   		</loop>
+   	</persoAction>
+   	
+   	<scene id="chainGoBack">	<!-- arg0:hook sprite, arg1:chain sprite, arg2-arg3: hero coordinates, arg4:flag to notify chain is entirely back -->
+   	    <if expQuest="E#loc:arg0">
+   	        <!-- make hook return if it still exists -->
+	  	    <var name="loc:arg4" value="1"/>
+		   	<moveTo what="loc:arg0" way="straight" speed="2.8" pos="loc:arg2,loc:arg3" unblock="true"/>
+		   	<moveTo what="loc:arg1" way="straight" speed="2.8" pos="loc:arg2,loc:arg3"/>
+		   	<actions>
+		 	   	<var name="loc:arg4" value="2"/>
+		   	    <remove what="loc:arg0"/>
+		   	    <remove what="loc:arg1"/>
+		   	</actions>
+	   	</if>
+   	</scene>
+   	
    	<!-- Rotate a mole sprite named loc:arg0, doing sound if loc:arg1 is set to 1 -->
    	<scene id="rotate">
    	    <loop>

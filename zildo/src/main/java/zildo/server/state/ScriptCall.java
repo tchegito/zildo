@@ -1,8 +1,10 @@
 package zildo.server.state;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.logic.FloatExpression;
+import zildo.fwk.script.logic.FloatVariable;
 import zildo.server.EngineZildo;
 
 /**
@@ -44,10 +46,18 @@ public class ScriptCall {
 			for (String arg : args) { 
 				String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
 				String value = arg.trim();
+				// Nothing to do because that's already a loc:v where v is a number
+				if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(value.substring(LocaleVarContext.VAR_IDENTIFIER.length()))) {
+					value = arg;
 				// If variable was local to the caller context, resolve it
-				if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && callerContext != null && callerContext.hasVariables()) {
+				} else if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && callerContext != null && callerContext.hasVariables()) {
 					// If variable was local to the caller context, resolve it
-					value = "" + new FloatExpression(value).evaluate(callerContext);
+					String realName = context.getString(value);
+					if (realName.startsWith(LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(realName.substring(LocaleVarContext.VAR_IDENTIFIER.length()))) {
+						value = realName;
+					} else {
+						value = "" + new FloatExpression(value).evaluate(callerContext);
+					}
 				} else 
 				
 				// 1) alphanumeric => store as string
@@ -62,5 +72,24 @@ public class ScriptCall {
 				nVar++;
 			}
 		}		
+	}
+	
+	public String resolveVariables() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(actionName).append("(");
+		for (int i=0;i<args.length;i++) {
+			String arg = args[i].trim();
+			String variableName = futureContext.getString(arg);
+			String value = variableName;
+			if (variableName == null) {
+				value = "" + new FloatVariable(arg).evaluate(futureContext);
+			}
+			sb.append(value);
+			if (i < args.length-1) {
+				sb.append(",");
+			}
+		}
+		sb.append(")");
+		return sb.toString();
 	}
 }

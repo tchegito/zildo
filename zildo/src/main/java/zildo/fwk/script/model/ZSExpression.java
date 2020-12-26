@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.script.context.IEvaluationContext;
+import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
@@ -47,6 +48,7 @@ public class ZSExpression {
 	private static final String RW_INIT = "init";
 	private static final String RW_MAP = "M#";
 	private static final String RW_PERSO = "P#";
+	private static final String RW_ELEMENT = "E#";
 	private static final String RW_STORE = "ooo";
 	private static final String RW_AFFECT = "aff";
 	
@@ -119,6 +121,17 @@ public class ZSExpression {
 		} else if (questName.startsWith(RW_PERSO)) {
 			String persoName = questName.substring(RW_PERSO.length());
 			result = EngineZildo.persoManagement.getNamedPerso(persoName) != null;
+		} else if (questName.startsWith(RW_ELEMENT)) {
+			String elementName = questName.substring(RW_ELEMENT.length());
+			while (elementName != null && elementName.startsWith(LocaleVarContext.VAR_IDENTIFIER)) {
+				String attemptContext = context.getString(elementName);
+				if (attemptContext == null) {
+					attemptContext = EngineZildo.scriptManagement.getVarValue(elementName);
+				}
+				if (attemptContext == null) break;
+				elementName = attemptContext;
+			}
+			result = EngineZildo.spriteManagement.getNamedElement(elementName) != null;
 		} else if (questName.startsWith(RW_STORE)) {
 			// Does merchant's store is empty ?
 			String persoName = questName.substring(RW_STORE.length());

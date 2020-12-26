@@ -20,9 +20,12 @@
 package zildo.fwk.script.logic;
 
 import static zildo.server.EngineZildo.hasard;
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.model.point.PointEvaluator;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 
@@ -37,13 +40,18 @@ public class FloatVariable implements FloatASTNode {
 		
 	}
 	String variable;
+	Float constant = null;
 	
 	public FloatVariable(String p_variable) {
 		variable = p_variable;
+		if (ZUtils.isNumeric(p_variable)) {	// To allow immediate values in builtin functions
+			constant = Float.parseFloat(p_variable);
+		}
 	}
 
 	@Override
 	public float evaluate(IEvaluationContext context) {
+		if (constant != null) return constant;
 		// Built-in functions
 		if (FloatExpression.RESERVED_WORD_RANDOM.equals(variable)) {
 			return (float) hasard.rand();
@@ -63,6 +71,8 @@ public class FloatVariable implements FloatASTNode {
 				return p.y;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOZ.equals(variable)) {
 				return p.z;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOLOC.equals(variable)) {
+				return PointEvaluator.toSingleFloat(new Point(p.x, p.y));
 			} else if (FloatExpression.RESERVED_WORD_ZILDOSCRX.equals(variable)) {
 				return p.getScrX();
 			} else if (FloatExpression.RESERVED_WORD_ZILDOSCRY.equals(variable)) {

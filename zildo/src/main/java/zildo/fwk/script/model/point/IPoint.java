@@ -19,6 +19,7 @@
 
 package zildo.fwk.script.model.point;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.sprites.SpriteEntity;
@@ -33,10 +34,6 @@ import zildo.monde.util.Point;
 public abstract class IPoint {
 
 	public abstract Point getPoint();
-	
-	public void setContextFromEntity(SpriteEntity entity) { 
-		// Default : do nothing (for PointFixed)
-	};
 
 	public void setContext(IEvaluationContext context) { 
 		// Default : do nothing (for PointFixed)
@@ -49,28 +46,25 @@ public abstract class IPoint {
 	 * @return IPoint
 	 */
 	public static IPoint fromString(String p_text) {
-		//TODO: program by exception is ugly. Maybe search for an alphanumeric character or - / * +. Maybe any FloatOperator defined
-    	try {
+    	if (ZUtils.isNumeric(p_text)) {
     		return new PointFixed(p_text);
-    	} catch (NumberFormatException e) {
+    	} else {
     		// Context will be provided later, when needed
-    		IPoint pGetter = new PointEvaluator(p_text, null);
-    		return pGetter;
+    		return new PointEvaluator(p_text, null);
     	}
-    }
-    
+	}    	
+
 	/**
 	 * Returns an IPoint object : either fixed, or runtime evaluated.<br/>
 	 * @param p_text
 	 * @return IPoint
 	 */
     public static IPoint fromString(String p_text, SpriteEntity p_entity) {
-    	try {
+    	if (ZUtils.isNumeric(p_text)) {
     		return new PointFixed(p_text);
-    	} catch (NumberFormatException e) {
+    	} else {
     		IEvaluationContext context = new SpriteEntityContext(p_entity);
-    		IPoint pGetter = new PointEvaluator(p_text, context);
-    		return pGetter;
+    		return new PointEvaluator(p_text, context);
     	}
     }
 }

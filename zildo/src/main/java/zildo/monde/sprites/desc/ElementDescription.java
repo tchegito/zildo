@@ -162,7 +162,9 @@ public enum ElementDescription implements SpriteDescription {
 	AMPHORA,
 	// Bag of sand
 	BAGSAND, FLOWERVASE,
-	CHAIR;
+	CHAIR,
+	// Hook of the butcher
+	HOOKCHAIN, HOOK;
 	
 	Boolean damage;
 	
@@ -296,6 +298,7 @@ public enum ElementDescription implements SpriteDescription {
 				case BULLET:
 				case POISONBALL:
 				case POISONGOOP:
+				case HOOKCHAIN: case HOOK:
 					damage = true;
 				default:
 					break;
@@ -350,6 +353,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BULLET: case GREEN_BUBBLE:
 		case FIREWIND1: case FIREWIND2: case FIREWIND3:
 		case DRAGON_KEY: case PORTAL_KEY:
+		case HOOKCHAIN: case HOOK:
 			return true;
 		default:
 			return false;

@@ -22,5 +22,6 @@
 	    <var name="Dizzie" type="_string" value="[[DYNAMITE, 1], 15, 20]"/>
 	    <var name="Carlo" type="_string" value="[[MOON, 1], 800, 1]"/>
 	    <var name="allowedTakeFork" type="_string" value="no"/>
+	    <var name="PI" value="3.1415926535"/>
     </scene>
 </adventure>
