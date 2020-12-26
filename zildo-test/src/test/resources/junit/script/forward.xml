@@ -94,4 +94,27 @@
 				        
         </loop>	    
 	</scene>
+	
+	<scene id='nestedIf'>
+	    <var name="nestedIf" value="1"/>
+	    <var name="loc:found" value="1"/>
+	    <perso name="zildo" angle="2"/>	<!-- action to block the cursor -->
+	    <if exp="loc:found=1">
+	   	    <var name="nestedIf" value="2"/>
+	   	    <perso name="zildo" angle="2"/>
+	    </if>
+	    <if exp="loc:found&lt;2">
+	    	<if exp="loc:found&lt;3">
+	    	    <var name="nestedIf" value="3"/>
+		   	    <perso name="zildo" angle="2"/>
+   	    	</if>
+	    </if>
+    	<if exp="loc:found&lt;4">
+    	    <var name="nestedIf" value="4"/>
+	   	    <perso name="zildo" angle="2"/>
+    	    <var name="nestedIf" value="5"/>
+	   	    <perso name="zildo" angle="2"/>
+   	    </if>
+	    
+	</scene>
 </adventure>

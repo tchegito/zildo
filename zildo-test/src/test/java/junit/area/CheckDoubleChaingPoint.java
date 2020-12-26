@@ -129,10 +129,12 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		assertMapIsChangingToward("prison13");
 	}
 	
+	@InfoPersos
 	@Test
 	public void doubleHorizontal() {
 		mapUtils.loadMap("chateaucoucou3");
-		spawnZildo(559, 58);
+		// We have to add 16 * 11 because that's the offset defined for this map
+		spawnZildo(559 + 16 * 11, 58);
 		waitEndOfScripting();
 		simulateDirection(0, -1);
 		assertMapIsChangingToward("chatcou5");

@@ -1,0 +1,25 @@
+<adventure>
+	<scene id="testAngle">
+		<spawn who="bandit" type="BANDIT_CHAPEAU" pos="160,100"/>
+	    <spawn who="hector" type="HECTOR" pos="200,100"/>
+	    
+	    <var name="alpha" value="fun:angle(bandit, hector)"/>
+	    
+	    <pos who="bandit" pos="200, 50"/>
+	    
+	   	<var name="beta" value="fun:angle(bandit, hector)"/>
+	   	
+	   	
+	   	<var name="loc:distance" value="64.0"/>
+	   	
+	   	<!-- All three commands should put the same value in freeLoc* -->
+	   	<var name="freeLoc" value="fun:project(bandit, beta, 64)"/>
+	   	<var name="freeLoc2" value="fun:project(bandit, beta, 64.0)"/>
+	   	<var name="freeLoc3" value="fun:project(bandit, beta, loc:distance)"/>
+	   		   	
+	   	<pos who="bandit" pos="freeLoc"/>
+	   	
+	   	<var name="col1" value="fun:collide(50, 50)"/>
+	   	<var name="col2" value="1-fun:collide(50, 50)"/>
+	</scene>
+</adventure>

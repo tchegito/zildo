@@ -862,7 +862,6 @@ public class ActionExecutor extends RuntimeExecutor {
 			case _throw:
 				if (perso != null) { // If thrower has been killed => don't
 										// throw NPE
-					if (p_action.what.equals("loc:hook")) System.out.println("Throw "+p_action);
 					Element elem = actionSpawn(p_action, location.toPoint(),
 							true); // Ignore 'who' because it's for the throw
 					location = new Pointf(p_action.target.getPoint());

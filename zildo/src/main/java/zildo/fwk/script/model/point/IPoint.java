@@ -60,7 +60,8 @@ public abstract class IPoint {
 	 * @return IPoint
 	 */
     public static IPoint fromString(String p_text, SpriteEntity p_entity) {
-    	if (ZUtils.isNumeric(p_text)) {
+    	String[] numbers = p_text.split(",");
+    	if (numbers.length == 2 && ZUtils.isNumeric(numbers[0]) && ZUtils.isNumeric(numbers[1])) {
     		return new PointFixed(p_text);
     	} else {
     		IEvaluationContext context = new SpriteEntityContext(p_entity);

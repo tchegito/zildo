@@ -19,6 +19,11 @@
 
 package junit.script;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,8 +37,10 @@ import zildo.fwk.script.logic.FloatVariable.NoContextException;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
+import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
@@ -226,5 +233,25 @@ public class CheckVariablesHandling extends EngineScriptUT {
 			}
 		}
 		Assert.assertEquals(Rotation.COUNTERCLOCKWISE, mole.rotation);
+	}
+	
+	@Test
+	public void sameVariableTwice() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/advanced"));
+		executeScene("sameVariable");
+		renderFrames(10);
+		
+		List<SpriteEntity> elements = EngineZildo.spriteManagement.getSpriteEntities(null).stream()
+			.filter(entity -> entity.getDesc() == ElementDescription.STRAW)
+			.collect(Collectors.toList());
+		Assert.assertEquals(2, elements.size());
+		Map<String, SpriteEntity> namedElements = new HashMap<>();
+		elements.forEach(e -> namedElements.put(e.getName(), e) );
+		// Ensure that elements has the same name
+		Assert.assertEquals(1, namedElements.size());
+		// Check that each sprite has been updated
+		for (SpriteEntity entity : elements) {
+			Assert.assertEquals(Reverse.HORIZONTAL, entity.reverse);
+		}
 	}
 }

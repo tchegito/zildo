@@ -327,9 +327,6 @@ public class Element extends SpriteEntity {
 			mover.reachTarget();
 		} else {
 			
-			if (mover!= null && !mover.isActive()) {
-				System.out.println("yes");
-			}
 			// Si ce sprite est valide, est-il un sprite fixe ?
 			if (getDesc().isNotFixe()) {
 				// On a trouvé un sprite valide non fixe

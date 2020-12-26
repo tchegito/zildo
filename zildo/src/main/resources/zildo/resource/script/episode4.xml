@@ -745,24 +745,18 @@
 	   		<throw who="self" what="loc:chain" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
 	   		
 	   		<var name="loc:chainFinish" value="0"/>
-	   		<sprite what="loc:hook" fallScene="chainGoBack(loc:hook, loc:chain, x, y, loc:chainFinish)"/>   	 
+	   		<sprite what="loc:hook" fallScene="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>   	 
 
-	   		<for var="loc:i" value="15">
+	   		<for var="loc:i" value="20">
 	   		    <!-- Each chain elements will have the same name => easy to track and command -->
 	   		    <if exp="loc:chainFinish=0">	<!-- Interrupt throw if the chain has already hit something -->
 			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
 			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
-	   		    </if>
-	   		    <!--  <wait value="0"/> -->	   		    
+	   		    </if>	    
 	   		</for>
-
-	   		<var name="loc:count" value="10"/>
-	   		<loop when="loc:chainFinish&lt;2 &amp; loc:count>0">  
-	   			<wait value="4"/>
-	   			<var name="loc:count" value="loc:count-1"/>
-	   		</loop>
-	   		<if exp="loc:count=0 &amp; loc:chainFinish=1">
-	   		    <exec script="chainGoBack(loc:hook, loc:chain, x, y, loc:chainFinish)"/>
+			<!-- pull back chain if not yet -->
+	   		<if exp="loc:chainFinish = 0">
+	   		    <exec script="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>
 	   		</if>
 	   		<wait value="50"/>
 

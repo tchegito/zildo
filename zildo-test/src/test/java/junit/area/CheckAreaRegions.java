@@ -46,6 +46,7 @@ public class CheckAreaRegions {
 		Assert.assertSame(Region.Fishermen, Region.fromMapName("igorv3b"));
 		Assert.assertSame(Region.CaveFlames, Region.fromMapName("voleursg1"));
 		Assert.assertSame(Region.Sousbois, Region.fromMapName("sousbois3"));
+		Assert.assertSame(Region.LugduniaCastle, Region.fromMapName("chatcou8"));
 	}
 	
 	@Test

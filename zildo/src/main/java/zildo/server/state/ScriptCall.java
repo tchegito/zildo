@@ -47,13 +47,15 @@ public class ScriptCall {
 				String varName = context.registerVariable(LocaleVarContext.VAR_IDENTIFIER + "arg"+nVar);
 				String value = arg.trim();
 				// Nothing to do because that's already a loc:v where v is a number
-				if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(value.substring(LocaleVarContext.VAR_IDENTIFIER.length()))) {
+				if (value.startsWith(LocaleVarContext.VAR_FUNC_IDENTIFIER)) {
+					value = "" + new FloatExpression(value).evaluate(callerContext);
+				} else if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(value.substring(LocaleVarContext.VAR_IDENTIFIER.length()))) {
 					value = arg;
 				// If variable was local to the caller context, resolve it
 				} else if (value.startsWith(LocaleVarContext.VAR_IDENTIFIER) && callerContext != null && callerContext.hasVariables()) {
 					// If variable was local to the caller context, resolve it
 					String realName = context.getString(value);
-					if (realName.startsWith(LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(realName.substring(LocaleVarContext.VAR_IDENTIFIER.length()))) {
+					if (realName.startsWith("*"+LocaleVarContext.VAR_IDENTIFIER) && ZUtils.isNumeric(realName.substring(1+LocaleVarContext.VAR_IDENTIFIER.length()))) {
 						value = realName;
 					} else {
 						value = "" + new FloatExpression(value).evaluate(callerContext);

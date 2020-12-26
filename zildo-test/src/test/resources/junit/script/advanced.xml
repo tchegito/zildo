@@ -27,4 +27,10 @@
 	    <perso who="loc:arg0" rotation="3"/>
 	</scene>
 	
+	<scene id="sameVariable">
+	    <spawn what="loc:arielle" type="STRAW" pos="160, 100"/>
+	    <spawn what="loc:arielle" type="STRAW" pos="200, 100"/>
+	    <!-- Set each sprite with that name to an horizontal reverse -->
+	    <sprite what="loc:arielle" reverse="128"/>
+	</scene>
 </adventure>

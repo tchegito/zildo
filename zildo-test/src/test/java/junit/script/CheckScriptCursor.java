@@ -1,6 +1,7 @@
 package junit.script;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineScriptUT;
@@ -20,8 +21,6 @@ public class CheckScriptCursor extends EngineScriptUT {
 	// Check that script's cursor moves forward when reaching some 'state' actions
 	@Test
 	public void checkAutoForward() {
-		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
-		waitEndOfScripting();
 		scriptMgmt.execute("caller",  false);
 		renderFrames(1);
 		// 1) Four variables should be set in one single frame
@@ -46,8 +45,6 @@ public class CheckScriptCursor extends EngineScriptUT {
 	
 	@Test
 	public void nestedAndActions() {
-		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
-		waitEndOfScripting();
 		scriptMgmt.execute("moreComplicated",  false);
 		
 		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
@@ -58,8 +55,6 @@ public class CheckScriptCursor extends EngineScriptUT {
 	
 	@Test
 	public void forAndTile() {
-		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
-		waitEndOfScripting();
 		scriptMgmt.execute("forAndTile",  false);
 		renderFrames(1);
 		Assert.assertEquals("3.0", scriptMgmt.getVarValue("j"));
@@ -67,8 +62,6 @@ public class CheckScriptCursor extends EngineScriptUT {
 	
 	@Test
 	public void doubleForAndTile() {
-		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
-		waitEndOfScripting();
 		scriptMgmt.execute("doubleForAndTile",  false);
 		renderFrames(1);
 		Assert.assertEquals("3.0", scriptMgmt.getVarValue("j"));
@@ -77,8 +70,6 @@ public class CheckScriptCursor extends EngineScriptUT {
 	
 	@Test
 	public void blockingFor() {
-		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
-		waitEndOfScripting();
 		scriptMgmt.execute("blockingFor",  true);
 		for (int i=0;i<10;i++) {
 			renderFrames(1);
@@ -88,5 +79,20 @@ public class CheckScriptCursor extends EngineScriptUT {
 		Assert.assertFalse(scriptMgmt.isScripting());
 	}
 	
+	@Test
+	public void nestedIfs() {
+		scriptMgmt.execute("nestedIf",  true);
+		Assert.assertEquals(null, scriptMgmt.getVarValue("nestedIf"));
+		for (int i=1;i<6;i++) {
+			renderFrames(1);
+			Assert.assertEquals(i+".0", scriptMgmt.getVarValue("nestedIf"));
+		}
+	}
+	
+	@Before
+	public void prepare() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/forward"));
+		waitEndOfScripting();
+	}
 	
 }

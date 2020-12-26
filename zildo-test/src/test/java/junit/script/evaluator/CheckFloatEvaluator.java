@@ -226,7 +226,7 @@ public class CheckFloatEvaluator {
 		expr = new FloatExpression(3.5f);
 		Assert.assertTrue(expr.isImmediate());
 
-		expr = new FloatExpression("3.5f");
+		expr = new FloatExpression("3.5");
 		Assert.assertTrue(expr.isImmediate());
 		
 		expr = new FloatExpression("3.5+1.2");

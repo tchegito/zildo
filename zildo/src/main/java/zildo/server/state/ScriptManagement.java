@@ -170,7 +170,6 @@ public class ScriptManagement {
     	if (Zildo.infoDebugScript) {
     		System.out.println("Execute scene "+p_name);
     	}
-		System.out.println("Execution "+p_name);
     	ScriptCall call = new ScriptCall(p_name, null);
     	SceneElement scene=adventure.getSceneNamed(call.actionName);
     	if (scene != null) {
