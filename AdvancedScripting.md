@@ -72,6 +72,10 @@ It is possible to use both attributes <code>exp</code> and <code>expQuest</code>
 <p>There's also functions with parameters, for example:</p>
 
  * **mapFloor(x, y)** : returns the floor at given location (in pixel coordinates)
+ * **collide(freeLoc)** : returns 0.0 or 1.0 wether given location is colliding
+ * **dist(loc1, loc2)** : calculates distance between two given location
+ * **angle(p1, p2)** : calculate angle between two characters
+ * **project(perso, angle, distance)** : returns location obtained when projecting given character with angle and distance
  
  To use such functions, you have to prefix it by "fun:" keyword. Here's an usage:
  ```xml
