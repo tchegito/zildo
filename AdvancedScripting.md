@@ -84,3 +84,17 @@ It is possible to use both attributes <code>exp</code> and <code>expQuest</code>
 ### Special functions ###
 
 In a circular `moveTo` action (see tileAction 'fireflies' just above) we can use **bell** keyword. It provides a smooth function for going from one value to another one, describing a kind of bell, with a simple sinus function.
+
+## Passing arguments in a call ##
+
+We can call function with three kind of data: immediate, variable or reference.
+ ```xml
+    <exec script="doSomethingWithImmediate(15.3)">
+```
+ ```xml
+    <exec script="doSomethingWithVariable(loc:maVariable, loc:arg0)">
+```
+ ```xml
+    <exec script="doSomethingWithReference(*loc:maRef)">
+```
+When a script is called, automatically, local variables named "loc:arg0", "loc:arg1" ... are created in the script execution context.
