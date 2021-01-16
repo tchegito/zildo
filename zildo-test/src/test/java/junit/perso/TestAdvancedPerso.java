@@ -6,10 +6,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import tools.annotations.InfoPersos;
+import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
@@ -216,5 +219,23 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isScripting());
 		// Before, we had an NPE just after the line under
 		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 2);
+	}
+	
+	@Test
+	@InfoPersos
+	public void turtleFollowHisRoute() {
+		mapUtils.loadMap("sousbois7");
+		PersoPlayer roxy = spawnZildo(116, 430);
+		roxy.setAppearance(ControllablePerso.PRINCESS_BUNNY);
+		waitEndOfScripting();
+		simulateDirection(-1, 0);
+		renderFrames(80);
+		Assert.assertEquals(0, (int) roxy.z);
+		simulatePressButton(Keys.W, 4);
+		Assert.assertTrue(roxy.z>0);
+		renderFrames(50);
+		Assert.assertTrue("Roxy should have been on platform !", roxy.isOnPlatform());
+		Perso turtle = persoUtils.persoByName("sacher");
+		Assert.assertFalse(turtle.isAlerte());
 	}
 }
