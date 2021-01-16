@@ -2141,7 +2141,7 @@
 	    <pos who="dragon" pos="230,567"/>
 	    <pos who="zildo" pos="496,23"/>
 	    <fadeIn type="0"/>
-	    <moveTo who="zildo" pos="0,32" delta="true"/>
+	    <moveTo who="zildo" pos="0,64" delta="true"/>
 	    <wait value="30"/>
 	    <moveTo who="zildo" pos="496,125" speed="1.5"/>
 	    <wait value="20"/>
@@ -2151,7 +2151,7 @@
 	    <wait value="20"/>
 	    <angle who="zildo" value="2"/>
 	    <wait value="30"/>
-	    <moveTo who="zildo" pos="496,185" unstoppable="true"/>
+	    <moveTo who="zildo" pos="496,205" unstoppable="true"/>
 	    <music name="Voleurs"/>
 	    <sound name="ZildoPousse"/>
 	    <filter type="4"/>

@@ -36,6 +36,7 @@ import zildo.client.stage.MenuStage;
 import zildo.client.stage.SinglePlayer;
 import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.EarthQuakeFilter;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
@@ -606,6 +607,7 @@ public class Client {
 		ClientEngineZildo.filterCommand.active(RedFilter.class, false, null);
 		ClientEngineZildo.filterCommand.active(LightningFilter.class, false, null);
 		ClientEngineZildo.filterCommand.active(CloudFilter.class, false, null);
+		ClientEngineZildo.filterCommand.active(EarthQuakeFilter.class, false, null);
 		ClientEngineZildo.mapDisplay.reset();
 
 		connected = false;
