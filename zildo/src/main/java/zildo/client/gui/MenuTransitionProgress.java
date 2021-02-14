@@ -76,8 +76,8 @@ public class MenuTransitionProgress {
 			client.askStage(new MenuStage(nextMenu));
 			nextMenu.displayed = false;
 			framesAwaiting = BLOCKING_FRAMES_ON_MENU_INTERACTION;
-			fadingOut = false;
 		}
+		//fadingOut = false;
 		currentMenu = nextMenu;
 		nextMenu = null;
 		
@@ -85,12 +85,13 @@ public class MenuTransitionProgress {
 		if (nextStage != null) {
 			client.askStage(nextStage);
 			// Next lines may not be necessary for singleplayer stage
-			fadingOut = false;
 			framesAwaiting = BLOCKING_FRAMES_ON_MENU_INTERACTION;
 
+			System.out.println("set stage to "+nextStage);
+			currentStage = nextStage;
+			nextStage = null;
 		}
-		currentStage = nextStage;
-		nextStage = null;
+		fadingOut = false;
 	}
 	
 	public void mainLoop() {
@@ -109,6 +110,7 @@ public class MenuTransitionProgress {
 	/** Returns 0..255 integer**/
 	public int getFadeLevel() {
 		if (framesAwaiting == 0) {
+			System.out.println(currentStage+" fadingOut="+fadingOut);
 			return currentMenu == null && (currentStage == null || fadingOut) ? 0 : 255;
 		} else {
 			int val = (int) (255 * (framesAwaiting / (float) BLOCKING_FRAMES_ON_MENU_INTERACTION));
