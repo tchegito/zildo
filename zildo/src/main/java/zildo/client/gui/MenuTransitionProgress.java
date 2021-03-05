@@ -110,7 +110,6 @@ public class MenuTransitionProgress {
 	/** Returns 0..255 integer**/
 	public int getFadeLevel() {
 		if (framesAwaiting == 0) {
-			System.out.println(currentStage+" fadingOut="+fadingOut);
 			return currentMenu == null && (currentStage == null || fadingOut) ? 0 : 255;
 		} else {
 			int val = (int) (255 * (framesAwaiting / (float) BLOCKING_FRAMES_ON_MENU_INTERACTION));
