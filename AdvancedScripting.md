@@ -76,6 +76,7 @@ It is possible to use both attributes <code>exp</code> and <code>expQuest</code>
  * **dist(loc1, loc2)** : calculates distance between two given location
  * **angle(p1, p2)** : calculate angle between two characters
  * **project(perso, angle, distance)** : returns location obtained when projecting given character with angle and distance
+ * **lineCollide(p1, p2)** or **lineCollide(x1, y1, x2, y2)** : returns 0.0 or 1.0 wether the way is free between the two given locations 
  
  To use such functions, you have to prefix it by "fun:" keyword. Here's an usage:
  ```xml
