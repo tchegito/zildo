@@ -314,4 +314,9 @@ public enum PersoDescription implements SpriteDescription {
 			return 16;	// Too high to get above it
 		}
 	}
+	
+	@Override
+	public boolean doesImpact() {
+		return false;
+	}
 }

@@ -192,7 +192,7 @@
     <!-- 420,282 -->
     <quest name="lily" repeat="true" locked="false">
 		<trigger>
-	    	<location name="igorlily|igorvillage" mover="leaf"/>
+	    	<location name="igorlily|igorvillage|promenade|chateausud|sousbois5|sousbois4" mover="leaf"/>
 	    	<use item="sword"/>
 	    </trigger>
 	    <action>
@@ -201,7 +201,7 @@
 	</quest>
     <quest name="lilyMidSword" repeat="true" locked="false">
 		<trigger>
-	    	<location name="igorlily|igorvillage" mover="leaf"/>
+	    	<location name="igorlily|igorvillage|promenade|chateausud|sousbois5|sousbois4" mover="leaf"/>
 	    	<use item="midsword"/>
 	    </trigger>
 	    <action>

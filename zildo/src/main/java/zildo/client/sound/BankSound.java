@@ -159,7 +159,9 @@ public enum BankSound implements AudioBank {
 	MoleBuried1("moleBuried1"),
 	MoleBuried2("moleBuried2"),
 	MoleOut("moleOut"),
-	MoleCry("molecry");
+	MoleCry("molecry"),
+	
+	Chain("chain");
 	
 	String filename;
 	
@@ -177,7 +179,8 @@ public enum BankSound implements AudioBank {
 	
 	/** Actually, looping is decided at sound definition itself, and can't be overriden in script **/
 	public boolean isLooping() {
-		return this == BankSound.Boiling || this == BankSound.Wind || this == BankSound.Fountain;
+		return this == BankSound.Boiling || this == BankSound.Wind || this == BankSound.Fountain ||
+				this == BankSound.Chain;
 	}
 	
 	public BankSound next() {

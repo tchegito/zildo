@@ -61,6 +61,11 @@ public class Pointf {
         this.y += p_yPlus;
     }
     
+    public void mul(float factor) {
+    	x *= factor;
+    	y *= factor;
+    }
+    
     @Override
 	public String toString() {
     	return "("+x+", "+y+")";

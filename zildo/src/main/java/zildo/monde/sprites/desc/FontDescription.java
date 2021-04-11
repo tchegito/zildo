@@ -91,4 +91,9 @@ public enum FontDescription implements SpriteDescription {
 	public int getRadius() {
 		return 0;
 	}
+
+	@Override
+	public boolean doesImpact() {
+		return false;
+	}
 }

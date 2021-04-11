@@ -120,7 +120,10 @@ public class Palais1 extends Banque {
 				
 				/* Coins diagonaux */
 				new Point(288, 0), new Point(304, 0),
-				new Point(288, 16), new Point(304, 16)
+				new Point(288, 16), new Point(304, 16),
+		
+				// Coin de tapis
+				new Point(208, 96)
 		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] {new GraphChange("interia4", 0, 0)});

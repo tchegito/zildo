@@ -217,6 +217,7 @@ public enum ElementDescription implements SpriteDescription {
 		case FORESTAY_PILLAR:
 		case BAGSAND:
 		case FLOWERVASE:
+		case CHAIR:
 			return true;
 		default:
 			return false;
@@ -376,6 +377,11 @@ public enum ElementDescription implements SpriteDescription {
 	@Override
 	public boolean isOnGround() {
 		return false;
+	}
+	
+	@Override
+	public boolean doesImpact() {
+		return this == PEEBLE || this == HOOK;
 	}
 	
 	/** Allow to find a desc even if it's a string containing NULL, for scripting purpose. **/

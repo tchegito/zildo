@@ -20,6 +20,9 @@
 
 package zildo.monde.sprites.persos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zildo.client.sound.BankSound;
 import zildo.fwk.gfx.EngineFX;
 import static zildo.server.EngineZildo.hasard;
@@ -29,6 +32,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.Reverse;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -138,7 +142,22 @@ public class PersoNJ extends Perso {
 	// /////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
+		List<Element> linked = new ArrayList<>();
+		// For butcher, remove progressively all his linked sprites
+		if (desc == PersoDescription.BUTCHER) {
+			for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+				if (e instanceof Element) {
+					Element ee = (Element) e;
+					if (ee.getLinkedPerso() == this) {
+						linked.add(ee);
+					}
+				}
+			}
+		}
 		project(cx, cy, 6);
+		for (Element e : linked) {
+			e.alphaA = -1;
+		}
 		setMouvement(MouvementZildo.TOUCHE);
 		setWounded(true);
 		if (quel_deplacement.isAlertable()) {

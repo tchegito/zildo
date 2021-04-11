@@ -172,9 +172,16 @@
 			<spawn type="BAGSAND" pos="525,171"/>
 		</condition>
 		
-		<condition name="chatcou8" exp="!killButcher">
-		    <perso who="butcher" action="butcher"/>
+		<condition name="chatcou8">
+		     <if expQuest="!killButcher">
+			 	<perso who="butcher" action="butcher"/>
+			 </if>
+			 <if expQuest="killButcher">
+			     <remove who="butcher"/>
+			     <activate what="exitDoor" value="true"/>
+			 </if>
 		</condition>
+		
    	</mapScript>
 
    	<quest name="prisonext">
@@ -405,6 +412,19 @@
    	    <action>
    	        <remove what="scepter"/>
    	        <take item="ITEM_SCEPTER"/>
+   	    </action>
+   	</quest>
+   	
+   	<quest name="killButcher">
+   	    <trigger>
+   	        <location name="chatcou8"/>
+   	        <dead who="butcher"/>
+   	    </trigger>
+   	    <action>
+   	        <focus what="exitDoor" delta="true" unblock="false"/>
+   	        <activate what="exitDoor" value="true"/>
+   	        <wait value="50"/>
+   	        <focus who="zildo" delta="true"/>
    	    </action>
    	</quest>
 
@@ -696,8 +716,8 @@
    	    Each one are on PI/2 quarters, starting from Zildo's axis (between him and hero).
    	    We take the first one available, free from collision.
    	    He has to be faster than hero.
-   	    
    	    At a given time, he throws his hook on hero -->
+   	    <perso who="self" pv="8"/> 
    	    <loop>
    	        <script who="self" value="3"/>
    	  		<perso who="self" speed="2.5"/>
@@ -714,12 +734,13 @@
 			    
 			    <var name="loc:iota" value="fun:angle(self, zildo)"/>
 			    <var name="loc:attemptsLeft" value="4.0"/>
-			    <var name="loc:fleeDistance" value="5*16"/>
+			    <var name="loc:fleeDistance" value="8*16"/>
 			    <loop when="loc:attemptsLeft>0 &amp; loc:fleeDistance>0">
 			        <var name="loc:iota" value="loc:iota + PI/2"/>
 			   		<var name="loc:freeLoc" value="fun:project(self, loc:iota, 64.0)"/>
-			   		<if exp="fun:collide(loc:freeLoc)=0.0 &amp; fun:dist(loc:freeLoc, zildo.loc) > loc:fleeDistance">
-			   		    <moveTo who="self" pos="loc:freeLoc"/>
+			   		<!-- If target location is reachable, go for it -->
+			   		<if exp="fun:collide(loc:freeLoc)=0.0 &amp; fun:dist(loc:freeLoc, zildo.loc) > loc:fleeDistance &amp; fun:lineCollide(zildo.loc, loc:freeLoc)=0">
+			   		    <moveTo who="self" pos="loc:freeLoc" skippable="true"/>
 			   		    <var name="loc:attemptsLeft" value="0.0"/>"
 			   		</if>
 			   		<var name="loc:attemptsLeft" value="loc:attemptsLeft - 1"/>
@@ -734,32 +755,44 @@
 	   		<script who="self" value="2"/>
 	   		<wait value="10"/>
 	   		
-	   		<!-- Throw hook at fixed location, standing still-->
-	   		<var name="loc:zx" value="zildo.x"/>
-	   		<var name="loc:zy" value="zildo.y"/>
-	   		<script who="self" value="2"/>		<!-- Sight on hero -->
-	   		<script who="self" value="3"/>		<!-- Stand still -->
-	   		<throw who="self" what="loc:hook" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOK" foreground="true"/>
+	   		<var name="loc:okForThrow" value="fun:lineCollide(x, y, zildo.x, zildo.y)=0"/>
 	   		
-	   		<!-- Create a chain outside of the for loop, to avoid local variable destroyed after for -->
-	   		<throw who="self" what="loc:chain" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
-	   		
-	   		<var name="loc:chainFinish" value="0"/>
-	   		<sprite what="loc:hook" fallScene="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>   	 
-
-	   		<for var="loc:i" value="20">
-	   		    <!-- Each chain elements will have the same name => easy to track and command -->
-	   		    <if exp="loc:chainFinish=0">	<!-- Interrupt throw if the chain has already hit something -->
-			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
-			    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
-	   		    </if>	    
-	   		</for>
-			<!-- pull back chain if not yet -->
-	   		<if exp="loc:chainFinish = 0">
-	   		    <exec script="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>
+	   		<if exp="loc:okForThrow=1">
+	   		    <var name="loc:l" value="fun:loc(x,y)"/>
+	   		    <var name="loc:okForThrow" value="fun:dist(loc:l, zildo.loc) &lt; (8*16-8)"/>
 	   		</if>
-	   		<wait value="50"/>
-
+	   		
+	   		<if exp="loc:okForThrow=1">
+		   		<!-- Throw hook at fixed location, standing still-->
+		   		<var name="loc:zx" value="zildo.x"/>
+		   		<var name="loc:zy" value="zildo.y"/>
+		   		<script who="self" value="2"/>		<!-- Sight on hero -->
+		   		<script who="self" value="3"/>		<!-- Stand still -->
+		   		<throw who="self" what="loc:hook" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOK" foreground="true"/>
+		   		
+		   		<!-- Create a chain outside of the for loop, to avoid local variable destroyed after for -->
+		   		<throw who="self" what="loc:chain" pos="x,y" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN" foreground="true"/>
+		   		
+		   		<var name="loc:chainFinish" value="0"/>
+		   		<sound name="Chain"/>
+		   		<sprite what="loc:hook" fallScene="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>   	 
+	
+	
+		   		<for var="loc:i" value="20">
+		   		    <!-- Each chain elements will have the same name => easy to track and command -->
+		   		    <if exp="loc:chainFinish=0">	<!-- Interrupt throw if the chain has already hit something -->
+				    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN"/>
+				    	<throw who="self" what="loc:chain" pos="x,y-1+random*3" to="loc:zx,loc:zy" speed="2.6" type="HOOKCHAIN"/>
+		   		    </if>	    
+		   		</for>
+				<!-- pull back chain if not yet -->
+		   		<if exp="loc:chainFinish = 0">
+		   		    <exec script="chainGoBack(*loc:hook, *loc:chain, x, y, *loc:chainFinish)"/>
+		   		</if>
+		   		<wait value="10"/>
+		   		    
+	   		</if>
+	   		
    		</loop>
    	</persoAction>
    	
@@ -767,13 +800,16 @@
    	    <if expQuest="E#loc:arg0">
    	        <!-- make hook return if it still exists -->
 	  	    <var name="loc:arg4" value="1"/>
-		   	<moveTo what="loc:arg0" way="straight" speed="2.8" pos="loc:arg2,loc:arg3" unblock="true"/>
-		   	<moveTo what="loc:arg1" way="straight" speed="2.8" pos="loc:arg2,loc:arg3"/>
+	  	    <actions>
+			   	<moveTo what="loc:arg1" way="straight" speed="2.8" pos="loc:arg2,loc:arg3"/>
+			   	<moveTo what="loc:arg0" way="straight" speed="2.8" pos="loc:arg2,loc:arg3" />
+			</actions>
 		   	<actions>
 		 	   	<var name="loc:arg4" value="2"/>
 		   	    <remove what="loc:arg0"/>
 		   	    <remove what="loc:arg1"/>
 		   	</actions>
+		    <sound name="Chain" mute="true"/>
 	   	</if>
    	</scene>
    	

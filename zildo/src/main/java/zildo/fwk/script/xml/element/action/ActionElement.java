@@ -83,6 +83,7 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression alpha;
 	public int deltaFloor;	// Only for 'moveTo' action
 	public int pv = DEFAULT_PV;
+	public boolean skippable;	// Only for 'moveTo' action
 	
 	public int back, back2, fore; // just for Tile action
 
@@ -208,6 +209,7 @@ public class ActionElement extends LanguageElement {
 			text = readAttribute("way");
 			zoom = getFloatExpr("zoom");
 			deltaFloor = readInt("deltaFloor", 0);
+			skippable = isTrue("skippable");
 		case pos:
 			// Position
 			if (!strPos.isEmpty()) {

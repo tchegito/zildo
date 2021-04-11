@@ -81,6 +81,8 @@ public class ScriptCall {
 		sb.append(actionName).append("(");
 		for (int i=0;i<args.length;i++) {
 			String arg = args[i].trim();
+			boolean ref = arg.startsWith("*");
+			if (ref) arg = arg.substring(1);
 			String variableName = futureContext.getString(arg);
 			String value = variableName;
 			if (variableName == null) {

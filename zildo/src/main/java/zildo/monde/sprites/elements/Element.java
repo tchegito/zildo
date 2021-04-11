@@ -970,8 +970,12 @@ public class Element extends SpriteEntity {
 	 * @return FALSE if element must disappear, TRUE otherwise.
 	 */
 	public boolean beingCollided(Perso p_perso) {
-		if (desc == ElementDescription.PEEBLE) {
-			if (z > 4 && p_perso == null) {
+		boolean doesImpact = desc != null && desc.doesImpact();
+		if (doesImpact) {
+			if (desc == ElementDescription.PEEBLE) {
+				doesImpact = (z > 4 && p_perso == null);
+			}
+			if (doesImpact) {
 				// Produce impact sound only on wall (not enemies)
 				Element impact = new ElementImpact((int) x, (int) y, ImpactKind.SIMPLEHIT, null);
 				impact.floor = floor;

@@ -344,6 +344,7 @@ public class ScriptExecutor {
 							break;
 						}
 					case _for:
+					case sound:
 					case tile:
 					case nameReplace:
 						if (node.done) {

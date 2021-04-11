@@ -167,4 +167,9 @@ public enum GearDescription implements SpriteDescription {
 	public int getRadius() {
 		return 7;
 	}
+	
+	@Override
+	public boolean doesImpact() {
+		return false;
+	}
 }

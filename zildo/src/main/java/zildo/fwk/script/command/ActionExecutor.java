@@ -860,16 +860,13 @@ public class ActionExecutor extends RuntimeExecutor {
 				achieved = true;
 				break;
 			case _throw:
-				if (perso != null) { // If thrower has been killed => don't
-										// throw NPE
-					Element elem = actionSpawn(p_action, location.toPoint(),
-							true); // Ignore 'who' because it's for the throw
+				if (perso != null) { // If thrower has been killed => don't throw NPE
+					Element elem = actionSpawn(p_action, location.toPoint(), true); // Ignore 'who' because it's for the throw
 					location = new Pointf(p_action.target.getPoint());
 					// Turn character in the right direction
 					perso.sight(EngineZildo.persoManagement.getZildo(), true);
 					// Normalize speed vector
-					float distance = Point.distance(elem.x, elem.y, location.x,
-							location.y);
+					float distance = Point.distance(elem.x, elem.y, location.x,	location.y);
 					elem.vx = p_action.speed * (location.x - elem.x) / distance;
 					elem.vy = p_action.speed * (location.y - elem.y) / distance;
 					if ("BELL".equals(p_action.way)) {
@@ -917,6 +914,14 @@ public class ActionExecutor extends RuntimeExecutor {
 			if (perso != null) {
 				achieved = (perso.getTarget() == null && perso.getTargetZ() == null)
 						|| perso.hasReachedTarget();
+				// Allow character to skip his movement if he's unable to reach it (with 'skippable' at true)
+				if (perso.getDelta().isEmpty() && p_action.skippable) {
+					if (p_runtimeAction.count == 10) {
+						achieved = true;
+					} else {
+						p_runtimeAction.count++;
+					}
+				}
 				if (achieved) {
 					// Make sure character is EXACTLY on desired target
 					if (perso.getTarget() != null) {
@@ -962,6 +967,9 @@ public class ActionExecutor extends RuntimeExecutor {
 			break;
 		case focus:
 			achieved = ClientEngineZildo.mapDisplay.getTargetCamera() == null;
+			if (achieved == true) {
+				System.out.println("finish");
+			}
 			break;
 		case speak:
 		case end:
@@ -1064,19 +1072,15 @@ public class ActionExecutor extends RuntimeExecutor {
 	 * 
 	 * @return spawned element
 	 */
-	private Element actionSpawn(ActionElement p_action, Point location,
-			boolean p_ignoreWho) {
+	private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
 		Element elem = null;
 		String name = null;
 		if (!p_ignoreWho && p_action.who != null) {
 			name = handleLocalVariable(p_action.who);
 			if (getNamedPerso(name) == null) {
-				// Spawn the character only if no one with the same name exists
-				// yet
-				PersoDescription desc = PersoDescription.valueOf(p_action
-						.getSpawnType());
-				elem = EngineZildo.persoManagement.createPerso(desc,
-						location.x, location.y, 0, name, p_action.val);
+				// Spawn the character only if no one with the same name exists yet
+				PersoDescription desc = PersoDescription.valueOf(p_action.getSpawnType());
+				elem = EngineZildo.persoManagement.createPerso(desc, location.x, location.y, 0, name, p_action.val);
 				Perso perso = (Perso) elem;
 				perso.setSpeed(p_action.speed);
 				perso.setEffect(p_action.effect);
@@ -1093,11 +1097,9 @@ public class ActionExecutor extends RuntimeExecutor {
 				}
 				perso.initPersoFX();
 				if (p_action.weapon != null) {
-					// TODO: not very clever ! setActiveWeapon and setWeapon
-					// should merge. So as
+					// TODO: not very clever ! setActiveWeapon and setWeapon should merge. So as
 					// guardWeapon and weapon attributes.
-					((PersoNJ) perso).setActiveWeapon(GuardWeapon
-							.valueOf(p_action.weapon));
+					((PersoNJ) perso).setActiveWeapon(GuardWeapon.valueOf(p_action.weapon));
 				}
 				if (p_action.z != null) {
 					perso.z = p_action.z.evaluate(context);

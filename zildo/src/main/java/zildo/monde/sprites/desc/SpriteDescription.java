@@ -104,5 +104,8 @@ public interface SpriteDescription {
 	 * Useful for lava patch **/
 	public boolean isOnGround();
 	
+	/** Returns TRUE if we should spawn an impact sprite when collided **/
+	public boolean doesImpact();
+	
 	public int getRadius();
 }

@@ -55,21 +55,48 @@ public class FloatBuiltIn implements FloatASTNode {
 			// 2) set a named variable, instead of returning something. Name could be provided in input,
 			//		"project(bandit, alpha, 64, 'returnVal')"
 			return PointEvaluator.toSingleFloat(p);
-		case "collide": // Returns TRUE is location (in pixel coordinate) is free from collision
+		case "collide": // Returns TRUE is location (in pixel coordinate) is free from collision args=(loc)
 			float loc = params[0].evaluate(context);
 			Point pointLoc = PointEvaluator.fromFloat(loc);
 			int result = EngineZildo.mapManagement.collide(pointLoc.x, pointLoc.y, (Element) context.getActor()) ? 1 : 0;
-			System.out.println("collision at "+pointLoc+" gives "+result);
+			//System.out.println("collision at "+pointLoc+" gives "+result);
 			return result;
-		case "dist": // Returns distance between two float locations
+		case "dist": // Returns distance between two float locations args=(loc1, loc2)
 			Point p1 = PointEvaluator.fromFloat(params[0].evaluate(context));
 			Point p2 = PointEvaluator.fromFloat(params[1].evaluate(context));
-			float dist = Point.distance(p1.x,  p1.y,  p2.x,  p2.y);;
-			System.out.println("Distance between "+p1+" and "+p2+" is "+dist);
-			return dist;
+			return distance(p1, p2);
+		case "loc":
+			float lx = params[0].evaluate(context);
+			float ly = params[1].evaluate(context);
+			return PointEvaluator.toSingleFloat(new Pointf(lx, ly));
+		case "lineCollide": // Returns TRUE if there's no obstacle between two locations args=(a.x, a.y, b.x, b.y)
+							// Also exists with (loc1, loc2)
+			if (params.length == 4) {
+				p1 = new Point(params[0].evaluate(context), params[1].evaluate(context));
+				p2 = new Point(params[2].evaluate(context), params[3].evaluate(context));
+			} else {
+				p1 = PointEvaluator.fromFloat(params[0].evaluate(context));
+				p2 = PointEvaluator.fromFloat(params[1].evaluate(context));
+			}
+			final int nbIterations = 10;
+			Pointf vec = new Pointf(p2.x - p1.x, p2.y - p1.y);
+			vec.mul(1 / (float)nbIterations);
+			Pointf point = new Pointf(p1);
+			for (int i=0;i<nbIterations;i++) {
+				if (EngineZildo.mapManagement.collide(point.x, point.y, null)) {
+					return 1;
+				}
+				point.add(vec);
+			}
+			return 0;
 			default:
 				throw new RuntimeException("Unable to find builtIn function "+funName);
 		}
+	}
+	
+	private float distance(Point p1, Point p2) {
+		float dist = Point.distance(p1.x,  p1.y,  p2.x,  p2.y);;
+		return dist;
 	}
 	
 	@Override
