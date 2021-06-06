@@ -215,7 +215,7 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 	}
 	
 	private void calculateOriginAndSize() {
-		origin = new Point(500, 500);
+		origin = new Point(1200, 1200);
 		corner = new Point(0, 0);
 		SpriteModel model;
 		for (SpriteEntity e : sprites) {
