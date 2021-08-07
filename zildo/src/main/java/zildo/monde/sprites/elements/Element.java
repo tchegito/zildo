@@ -1111,9 +1111,9 @@ public class Element extends SpriteEntity {
 	public String toString() {
 		String s = (name != null ? (name+"\n") : "") + x + ", " + y;
 		if (nBank == SpriteBank.BANK_ELEMENTS) {
-			return s + " (id=" + id+", " + ElementDescription.fromInt(nSpr) + ")";
+			return s + " (id=" + id+", " + desc + ")";
 		}
-		return s + " (id=" + id + ", " + nSpr + " - bank " + nBank + ")";
+		return s + " (id=" + id + ", " + desc + ")";
 	}
 	
 	public Point getDefaultSize() {

@@ -349,12 +349,16 @@ public class PersoNJ extends Perso {
 						EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(zildo.x, zildo.y));
 						if (deltaX <= 1 || deltaY <= 1) {
 							// Get sight on Zildo and shoot !
+							Angle previousAngle = angle;
 							sight(zildo, false);
+							// If character switched angle, we need to recalculate his bow location
+							if (angle != previousAngle) getEn_bras().animate();
 							// First, assure that no obstacle is on the way
 							Point deltaCheck = angle.coords.multiply(16);
 							ElementArrow simulatedArrow = new ElementArrow(angle, (int)getEn_bras().x, (int)getEn_bras().y, 0, this);
 							Point arrowPrevisionPos = new Point(simulatedArrow.x, simulatedArrow.y);
 							boolean obstacle = false;
+							arrowPrevisionPos.y -= (getSprModel().getTaille_y() >> 1) / 2;	// Adjust arrow hitbox
 							for (int pas=0;pas<5 && !obstacle;pas++) {
 								arrowPrevisionPos.add(deltaCheck);
 								if (arrowPrevisionPos.distance(new Point(zildo.getX(), zildo.getY())) < 8) {

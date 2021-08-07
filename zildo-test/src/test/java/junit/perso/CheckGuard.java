@@ -13,6 +13,7 @@ import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -45,22 +46,38 @@ public class CheckGuard extends EngineUT {
 	// Autre situation: garde en 490,69 target en 490,80 (il ne peut pas pas avancer à cause du mur
 	// Zildo est en 397,80 et doit pouvoir être touché par une flèche
 	
+	PersoPlayer zildo;
+	
 	@Test
 	public void shootArrowThroughObstacle() {
 		mapUtils.loadMap("prisonext");
 
-		Assert.assertNull(alertAndShootHero(394, 285));
-		Assert.assertNull(alertAndShootHero(401, 285));
-		Assert.assertNotNull(alertAndShootHero(377, 285));
+		Assert.assertFalse(alertAndShootHero(394, 285, null));
+		Assert.assertFalse(alertAndShootHero(401, 285, null));
+		Assert.assertTrue(alertAndShootHero(377, 285, null));
+	}
+	
+	@Test
+	public void shouldnShootArrow() {
+		mapUtils.loadMap("chateaucoucou3");
+		
+		// Another case with a flowerpot between hero and shooter
+		Assert.assertFalse(alertAndShootHero(609, 260, new Point(700, 261)));
 	}
 	
 	/** Spawn hero and black guard with a bow. Makes him shoot an arrow.
 	 * Return an arrow if exists after a 300 frames waiting **/
-	private SpriteEntity alertAndShootHero(int gardX, int gardY) {
+	private boolean alertAndShootHero(int gardX, int gardY, Point zildoLoc) {
+		Point loc = zildoLoc;
+		if (zildoLoc == null) loc =	new Point(gardX, 86);
+ 
+		if (zildo == null) {
+			zildo = spawnZildo(loc.x, loc.y);
+		} else {
+			zildo.x = loc.x;
+			zildo.y = loc.y;
+		}
 		
-		EngineZildo.spriteManagement.clearSprites(true);
-		
-		spawnZildo(gardX, 86);
 		Perso gard = spawnPerso(PersoDescription.GARDE_CANARD, "noir", gardX, gardY);
 		gard.setQuel_deplacement(MouvementPerso.ZONEARC, true);
 		gard.setSpecialEffect(EngineFX.GUARD_BLACK);
@@ -70,7 +87,15 @@ public class CheckGuard extends EngineUT {
 		waitEndOfScripting();
 		gard.setAlerte(true);
 		
-		renderFrames(200);
-		return findEntityByDesc(ElementDescription.ARROW_UP);
+		boolean foundArrow = false;
+		int nbFrames = 200;
+		while (nbFrames-- > 0) {
+			foundArrow = findEntityByDesc(ElementDescription.ARROW_UP) != null || 
+					findEntityByDesc(ElementDescription.ARROW_RIGHT) != null;
+			renderFrames(1);
+			if (foundArrow) break;
+		}
+
+		return foundArrow;
 	}
 }
