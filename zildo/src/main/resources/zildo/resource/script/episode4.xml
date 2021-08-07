@@ -172,6 +172,14 @@
 			<spawn type="BAGSAND" pos="525,171"/>
 		</condition>
 		
+		<condition name="chateaucoucou3">
+		    <perso who="noir" pv="4"/>
+		</condition>
+		
+		<condition name="chatcou6">
+		    <perso who="noir" pv="4"/>
+		</condition>
+		
 		<condition name="chatcou8">
 		     <if expQuest="!killButcher">
 			 	<perso who="butcher" action="butcher"/>
@@ -425,9 +433,23 @@
    	        <activate what="exitDoor" value="true"/>
    	        <wait value="50"/>
    	        <focus who="zildo" delta="true"/>
+   	        <wait value="100"/>
    	    </action>
    	</quest>
 
+   	<quest name="enterAttackedCastle">
+   	    <trigger>
+   	        <location name="chateaucoucou1"/>
+   	        <questDone name="findDragonPortalKey"/>
+   	    </trigger>
+   	    <action>
+		    <wait value="60"/>
+		    <moveTo who="zildo" pos="0,24" delta="true"/>
+		    <speak who="zildo" text="chatcou.attaque"/>
+		    <speak who="zildo" text="chatcou.attaque2"/>
+   	    </action>
+   	</quest>
+		
    	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>
