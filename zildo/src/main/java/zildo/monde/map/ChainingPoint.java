@@ -40,6 +40,7 @@ public class ChainingPoint implements EasySerializable {
 	public enum MapLink {
 		REGULAR(null, null), 
 		STAIRS_STRAIGHT("stairsUp", "stairsUpEnd"),
+		STAIRS_ROOF_STRAIGHT("stairsStraightUp", "stairsStraightUpEnd"),
 		STAIRS_CORNER_LEFT("stairsUpCornerLeft", "stairsUpCornerLeftEnd"), 
 		STAIRS_CORNER_RIGHT("stairsUpCornerRight", "stairsUpCornerRightEnd"),
 		STAIRS_CORNER_DOWN_LEFT("stairsDownCornerLeft", "stairsDownCornerLeftEnd"), 
@@ -146,6 +147,9 @@ public class ChainingPoint implements EasySerializable {
 		case 1024 + 249:
 		case 1024 + 250:
 			return MapLink.STAIRS_STRAIGHT;
+		case 7*256 + 159:	// up
+		case 7*256 + 155: case 7*256 + 156: // down
+			return MapLink.STAIRS_ROOF_STRAIGHT;
 		case 768 + 185:
 		case 768 + 186:
 			return MapLink.STAIRS_CORNER_DOWN_LEFT;

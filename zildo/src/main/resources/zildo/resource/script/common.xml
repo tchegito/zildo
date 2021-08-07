@@ -111,6 +111,23 @@
 		<moveTo who="zildo" pos="0,16" delta="true" speed="0.2" />
 	</scene>
 	
+	<scene id="stairsStraightUp">
+		<sound name="ZildoMonte" />
+		<fadeOut type="5" unblock="true" />
+		<moveTo who="zildo" pos="0,-4" delta="true" speed="0.1" />
+		<wait value="20"/>
+	</scene>
+	
+	<scene id="stairsStraightUpEnd">
+	    <pos who="zildo" pos="0,-8" delta="true"/>
+        <herospecial value="1"/>
+        <sound name="ZildoMonte" />
+		<fadeIn type="5" unblock="true"/>
+        <moveTo who="zildo" pos="0,12" delta="true" unstoppable="true" speed="0.2" />
+        <herospecial value="2"/>
+		<wait value="20"/>
+    </scene>
+	
 	<scene id="woodStairsUpCornerLeft">
         <herospecial value="1"/>
         <sound name="ZildoMonte" />
