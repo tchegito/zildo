@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.mockito.stubbing.Answer;
 
 import tools.EngineWithMenuUT;
@@ -79,6 +81,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 		ItemMenu save1 = currentMenu.items.get(0);
 		ItemMenu save2 = currentMenu.items.get(1);
 		// Load a game
+		Assert.assertTrue("We should have at least a saved game in the right folder !", currentMenu.items.size() > 1);
 		pickItem(save1.getKey());
 		//client.setAction(save1);
 		renderFrames(5 + MenuTransitionProgress.BLOCKING_FRAMES_ON_MENU_INTERACTION);
