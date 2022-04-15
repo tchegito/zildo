@@ -304,6 +304,8 @@ public class PlayerManagement {
 				// Useful with boomerang catching goodies.
 				EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
+				// Reset pushed object before collision could set one
+				heros.pushSomething(null);
 				adjustMovement(deltaX, deltaY);
 			}
 		}

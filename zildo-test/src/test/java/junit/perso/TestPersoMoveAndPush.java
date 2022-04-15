@@ -26,6 +26,7 @@ import org.junit.Test;
 import tools.EngineUT;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -172,5 +173,42 @@ public class TestPersoMoveAndPush extends EngineUT {
 		
 		waitEndOfScriptingPassingDialog();
 		Assert.assertNull(EngineZildo.persoManagement.getNamedPerso("christa"));
+	}
+	
+	
+	@Test
+	public void pushCrates() {
+		mapUtils.loadMap("chatcou5");
+		PersoPlayer zildo = spawnZildo(150, 135);
+		waitEndOfScripting();
+		
+		// 1) First crate
+		simulateDirection(-1,  0);
+		renderFrames(10);
+		SpriteEntity crate = zildo.getPushingSprite();
+		Assert.assertNotNull(crate);
+		
+		Point initialLocation = new Point(crate.x, crate.y);
+		while (zildo.getPushingSprite() != null) {
+			renderFrames(1);
+		}
+		
+		while (((Element)crate).vx != 0) {
+			renderFrames(1);
+		}
+		// Check that the moved crate is at the right place
+		Assert.assertEquals((int) initialLocation.x - 16, (int) crate.x);
+		
+		// 2) Next one
+		simulateDirection(0, 1);
+		renderFrames(2);
+		crate = zildo.getPushingSprite();
+		Assert.assertNotNull(crate);
+		
+		simulateDirection(0, -1);
+		renderFrames(10);
+		crate = zildo.getPushingSprite();
+		// This crate is not pushable !
+		Assert.assertNull(crate);
 	}
 }
