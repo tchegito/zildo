@@ -32,6 +32,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
@@ -195,13 +196,14 @@ public class TestPersoMoveAndPush extends EngineUT {
 		
 		while (((Element)crate).vx != 0) {
 			renderFrames(1);
+			Assert.assertEquals(MouvementZildo.POUSSE, zildo.getMouvement());
 		}
 		// Check that the moved crate is at the right place
 		Assert.assertEquals((int) initialLocation.x - 16, (int) crate.x);
 		
 		// 2) Next one
 		simulateDirection(0, 1);
-		renderFrames(2);
+		renderFrames(5);
 		crate = zildo.getPushingSprite();
 		Assert.assertNotNull(crate);
 		

@@ -85,7 +85,8 @@ public class PersoPlayer extends Perso {
 	private int acceleration; // from 0 to 10
 
 	private Angle sightAngle; // For boomerang
-
+	private Angle anglePush;
+	
 	private int touch; // number of frames zildo is touching something without moving
 
 	private boolean inventoring = false;
@@ -675,8 +676,13 @@ public class PersoPlayer extends Perso {
 				Element pushedElement = (Element) pushedEntity;
 				if (pushedElement.isPushable()) {
 					pushedElement.moveOnPush(getAngle());
-					// Break link between Zildo and pushed object
-					pushSomething(null);
+					pushedElement.setLinkedPerso(this);
+
+					setGhost(true);
+
+					Pointf loc = new Pointf(x + 32f * pushedElement.vx, y + 32f * pushedElement.vy);
+					setSpeed(0.5f);
+					setTarget(loc);
 				}
 			}
 		}
@@ -1718,12 +1724,30 @@ public class PersoPlayer extends Perso {
 	 * @param object
 	 */
 	public void pushSomething(Element object) {
+		if (object == null && pushingSprite == null) {
+			return;
+		}
 		if (object == null || object.isPushable()) {
+			if (object == null && pushingSprite != null) {
+				if (ghost) {
+					setMouvement(MouvementZildo.VIDE);
+					setGhost(false);
+					setSpeed(Constantes.ZILDO_SPEED);
+				}
+			}
 			pushingSprite = object;
 		}
 		if (object != null && object.getDesc().getBank() == SpriteBank.BANK_GEAR) {
 			((ElementGear) object).push(this);
 		}
+	}
+
+	public void setAnglePush(Angle angle) {
+		anglePush = angle;
+	}
+	
+	public Angle getAnglePush() {
+		return anglePush;
 	}
 
 	public int getTouch() {

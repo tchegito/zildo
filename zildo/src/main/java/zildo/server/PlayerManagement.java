@@ -305,6 +305,9 @@ public class PlayerManagement {
 				EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
 				// Reset pushed object before collision could set one
+				if (heros.getMouvement() == MouvementZildo.POUSSE && heros.getAngle() != heros.getAnglePush()) {
+					heros.setMouvement(MouvementZildo.VIDE);
+				}
 				heros.pushSomething(null);
 				adjustMovement(deltaX, deltaY);
 			}
@@ -312,6 +315,7 @@ public class PlayerManagement {
 		if (heros.getTouch()==16 && heros.getMouvement()==MouvementZildo.VIDE) {
 			heros.setTouch(15);
 			heros.setMouvement(MouvementZildo.POUSSE);
+			heros.setAnglePush(heros.getAngle());
 		}
 	
 		// Interpret animation paramaters to get the real sprite to display
@@ -355,8 +359,6 @@ public class PlayerManagement {
 
 			// -. Yes
 		    heros.setTouch(0);                          // Zildo n'est pas bloqué => 0
-			if (heros.getMouvement()==MouvementZildo.POUSSE)
-				heros.setMouvement(MouvementZildo.VIDE);
 
 			float diffx=xx - heros.x;
 			float diffy=yy - heros.y;

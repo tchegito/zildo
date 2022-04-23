@@ -359,15 +359,20 @@ public class Element extends SpriteEntity {
 						z = ancZ; // z-vz;
 						vz = vz - az;
 						if (az != 0) {
-							if (colli || az == 32) {
+							if (colli || az == 31) {	// field 'az' is used as a counter from 0 to 32 with a speed of 0.5 => 16 pixels movement
 								vx = 0;
 								vy = 0;
-								az = 32;
+								az = 0;
 								vz = 0;
 								// Trigger a push event
 								// Trigger an object being pushed
 								TriggerElement trig = TriggerElement.createPushTrigger(name, angle);
 								EngineZildo.scriptManagement.trigger(trig);
+								// Break link with pusher
+								if (getLinkedPerso() != null) {
+									((PersoPlayer)linkedPerso).pushSomething(null);
+									setLinkedPerso(null);
+								}
 							} else {
 								az = az + 1;
 							}
