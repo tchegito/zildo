@@ -19,6 +19,9 @@
 
 package junit.perso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,6 +30,7 @@ import tools.EngineUT;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -212,5 +216,27 @@ public class TestPersoMoveAndPush extends EngineUT {
 		crate = zildo.getPushingSprite();
 		// This crate is not pushable !
 		Assert.assertNull(crate);
+	}
+	
+	@Test
+	public void pushOneCrateAtATime() {
+		mapUtils.loadMap("chatcou5");
+		PersoPlayer zildo = spawnZildo(150, 144);
+		waitEndOfScripting();
+		
+		// 1) First crate
+		simulateDirection(-1,  0);
+		Map<Integer, SpriteEntity> crates = new HashMap<>();
+		for (int i=0;i<40;i++) {
+			renderFrames(1);
+			for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+				if (entity.getDesc() == ElementDescription.CRATE || entity.getDesc() == ElementDescription.CRATE2) {
+					if (entity.getEntityType().isElement() && ((Element)entity).getLinkedPerso() == zildo) {
+						crates.put(entity.getId(), entity);
+					}
+				}
+			}
+		}
+		Assert.assertEquals("We should only have 1 crate !", 1, crates.size());
 	}
 }

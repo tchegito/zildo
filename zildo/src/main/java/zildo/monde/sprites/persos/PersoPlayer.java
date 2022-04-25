@@ -1727,7 +1727,7 @@ public class PersoPlayer extends Perso {
 		if (object == null && pushingSprite == null) {
 			return;
 		}
-		if (object == null || object.isPushable()) {
+		if (object == null || (object.isPushable() && pushingSprite == null)) {
 			if (object == null && pushingSprite != null) {
 				if (ghost) {
 					setMouvement(MouvementZildo.VIDE);
