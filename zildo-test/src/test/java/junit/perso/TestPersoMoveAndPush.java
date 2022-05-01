@@ -31,6 +31,7 @@ import zildo.monde.collision.Collision;
 import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
@@ -238,5 +239,22 @@ public class TestPersoMoveAndPush extends EngineUT {
 			}
 		}
 		Assert.assertEquals("We should only have 1 crate !", 1, crates.size());
+	}
+	
+	@Test
+	public void cantPushCrateOnObstacle() {
+		mapUtils.loadMap("chatcou5");
+		PersoPlayer zildo = spawnZildo(150, 156);
+		waitEndOfScripting();
+		
+		// The crate should be blocked because of an obstacle just behind
+		simulateDirection(-1,  0);
+		renderFrames(30);
+		SpriteEntity entity = zildo.getPushingSprite();
+		Assert.assertNotNull(entity);
+		Assert.assertEquals(EntityType.ELEMENT, entity.getEntityType());
+		Element elem = (Element) entity;
+		Assert.assertEquals(0f, elem.vx, 0.1f);
+		
 	}
 }

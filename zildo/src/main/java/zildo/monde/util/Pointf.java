@@ -66,6 +66,10 @@ public class Pointf {
     	y *= factor;
     }
     
+    public Pointf multiply(float factor) {
+    	return new Pointf(x*factor, y*factor);
+    }
+    
     @Override
 	public String toString() {
     	return "("+x+", "+y+")";
@@ -119,5 +123,9 @@ public class Pointf {
 
     public Pointf translate(float addX, float addY) {
         return new Pointf(x + addX, y + addY);
+    }
+    
+    public Pointf translate(Point p) {
+        return new Pointf(x + p.x, y + p.y);
     }
 }

@@ -675,14 +675,19 @@ public class PersoPlayer extends Perso {
 			if (pushedEntity.getEntityType().isElement()) {
 				Element pushedElement = (Element) pushedEntity;
 				if (pushedElement.isPushable()) {
-					pushedElement.moveOnPush(getAngle());
-					pushedElement.setLinkedPerso(this);
-
-					setGhost(true);
-
-					Pointf loc = new Pointf(x + 32f * pushedElement.vx, y + 32f * pushedElement.vy);
-					setSpeed(0.5f);
-					setTarget(loc);
+					// Nothing behind ?
+					Pointf elemFinalLoc = angle.coordf.multiply(16f).translate(pushedElement.x, pushedElement.y - pushedElement.getSprModel().getTaille_y() / 2);
+					
+					if (!EngineZildo.mapManagement.collide(elemFinalLoc.x, elemFinalLoc.y, pushedElement)) {
+						pushedElement.moveOnPush(getAngle());
+						pushedElement.setLinkedPerso(this);
+	
+						setGhost(true);
+	
+						Pointf loc = new Pointf(x + 32f * pushedElement.vx, y + 32f * pushedElement.vy);
+						setSpeed(0.5f);
+						setTarget(loc);
+					}
 				}
 			}
 		}
