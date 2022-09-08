@@ -12,7 +12,7 @@ test {
 	maxParallelForks = 1
 	//jvmArgs '-XX:HeapBaseMinAddress'
 	jvmArgs '-XX:+UseConcMarkSweepGC'
-	maxHeapSize = "2048m"
+	maxHeapSize = "3G"
 }
 
 // We have to force this task to make a JAR from this android library
