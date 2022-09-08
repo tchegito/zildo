@@ -3,7 +3,6 @@
     package="zildo.platform"
     android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="11" />
 
     <!-- Tell the system this app requires OpenGL ES 2.0. -->
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />

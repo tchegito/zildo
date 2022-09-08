@@ -1,11 +1,10 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
 
 version = '1.0'
 
 // We allow Java 7 in tests, because we have no Android or whatever constraints here
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
 
 // Accept environment variable to define DATA folder
 test {
@@ -15,7 +14,10 @@ test {
 }
 
 dependencies {
-	implementation project(':zildo'), project(':zeditor'), project(':zildo-platform-android-gles2')
+	implementation project(':zildo'), 
+	project(':zildo-platform-lwjgl'),
+	files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
+	project(':zeditor')
 	implementation "junit:junit:4.12",
 				"org.mockito:mockito-all:1.10.19"
 }
