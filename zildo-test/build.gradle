@@ -10,8 +10,8 @@ version = '1.0'
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
-	jvmArgs "-XX:HeapBaseMinAddress"
-	maxHeapSize = "1024m"
+	//jvmArgs '-XX:HeapBaseMinAddress'
+	maxHeapSize = "2048m"
 }
 
 // We have to force this task to make a JAR from this android library
