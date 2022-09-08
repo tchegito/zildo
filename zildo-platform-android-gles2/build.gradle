@@ -31,7 +31,9 @@ repositories {
 
 dependencies {
     implementation project(':zildo')
-    implementation "com.google.android:android:2.3.3"
+    if (!project.hasProperty('IC')) {
+        implementation "com.google.android:android:2.3.3"
+    }
 }
 
 //jar.archiveName = "ZildoPlatformAndroidGles2.jar"
