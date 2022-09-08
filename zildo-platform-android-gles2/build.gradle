@@ -50,7 +50,12 @@ task makeJar(type: Copy) {
     into('build/outputs/')
     include('full.jar')
     rename ('full.jar', 'ZildoPlatformAndroidGles2.jar')
+    doLast {
+        println 'We make jar !'
+    }
 }
+
+tasks.named("build") { finalizedBy("makeJar") }
 
 makeJar.dependsOn(clearJar, build)
 //jar.archiveName = "ZildoPlatformAndroidGles2.jar"
