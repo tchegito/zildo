@@ -11,6 +11,7 @@ test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
 	//jvmArgs '-XX:HeapBaseMinAddress'
+	jvmArgs '-XX:+UseConcMarkSweepGC'
 	maxHeapSize = "2048m"
 }
 
