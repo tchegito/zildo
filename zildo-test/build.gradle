@@ -16,12 +16,13 @@ test {
 // We have to force this task to make a JAR from this android library
 // It will be used by the 'files' dependencies below, because Gradle can't figure out that
 // this jar is issued for this library compilation (...)
-tasks.compileJava.dependsOn ':zildo-platform-android-gles2:makeJar'
+//tasks.compileJava.dependsOn ':zildo-platform-android-gles2:makeJar'
 
 dependencies {
 	implementation project(':zildo'), 
 	project(':zildo-platform-lwjgl'),
-	files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
+	project(':zildo-platform-android-gles2'),
+	//files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
 	project(':zeditor')
 	implementation "junit:junit:4.12",
 				"org.mockito:mockito-all:1.10.19"

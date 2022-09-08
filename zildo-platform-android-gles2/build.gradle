@@ -1,16 +1,6 @@
-apply plugin: 'com.android.library'
+if (project.hasProperty('IC')) {
+    apply plugin: 'java'
 
-android {
-    compileSdkVersion 30
-
-    //applicationId 'zildo.platform'
-    sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
-    defaultConfig {
-        minSdk 16
-        //applicationId 'zildo.platform'
-    }
-    //minSdkVersion 16
-    //targetSdkVersion 30
     sourceSets {
         main {
             java {
@@ -18,9 +8,32 @@ android {
             }
         }
     }
+} else {
+    apply plugin: 'com.android.library'
 
-    lintOptions {
-        abortOnError false
+    android {
+        compileSdkVersion 30
+
+        //applicationId 'zildo.platform'
+        sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
+        defaultConfig {
+            minSdk 16
+            //applicationId 'zildo.platform'
+        }
+        //minSdkVersion 16
+        //targetSdkVersion 30
+        sourceSets {
+            main {
+                java {
+                    srcDirs = ['src']
+                }
+            }
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+
     }
 
 }
@@ -36,26 +49,5 @@ repositories {
 
 dependencies {
     implementation project(':zildo')
-    if (!project.hasProperty('IC')) {
-        implementation "com.google.android:android:2.3.3"
-    }
+    implementation "com.google.android:android:2.3.3"
 }
-
-task clearJar(type: Delete) {
-    delete 'build/outputs/ZildoPlatformAndroidGles2.jar'
-}
-
-task makeJar(type: Copy) {
-    from('build/intermediates/full_jar/debug/')
-    into('build/outputs/')
-    include('full.jar')
-    rename ('full.jar', 'ZildoPlatformAndroidGles2.jar')
-    doLast {
-        println 'We make jar !'
-    }
-}
-
-tasks.named("build") { finalizedBy("makeJar") }
-
-makeJar.dependsOn(clearJar, build)
-//jar.archiveName = "ZildoPlatformAndroidGles2.jar"
