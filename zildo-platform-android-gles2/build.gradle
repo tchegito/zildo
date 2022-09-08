@@ -1,28 +1,37 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'com.android.library'
 
-version = '1.0'
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
- 
-repositories {
-    mavenCentral()
-}
+android {
+    compileSdkVersion 30
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-        resources {
-            srcDirs = ['src']
+    //applicationId 'zildo.platform'
+    sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
+    defaultConfig {
+        minSdk 16
+        //applicationId 'zildo.platform'
+    }
+    //minSdkVersion 16
+    //targetSdkVersion 30
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
         }
     }
 }
 
-dependencies {
-	compile project(':zildo')
-	compileOnly "com.google.android:android:2.3.3"
+
+version = '1.0'
+
+
+
+repositories {
+    mavenCentral()
 }
 
-jar.archiveName = "ZildoPlatformAndroidGles2.jar"
+dependencies {
+    implementation project(':zildo')
+    implementation "com.google.android:android:2.3.3"
+}
+
+//jar.archiveName = "ZildoPlatformAndroidGles2.jar"

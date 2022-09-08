@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Zildo" parent="@android:style/Theme.Holo.NoActionBar">
+        <!--
+        <item name="android:windowDisablePreviewent">@drawable/splash480320_en</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        -->
+    </style>
+</resources>

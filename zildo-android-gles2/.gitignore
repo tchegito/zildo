@@ -3,3 +3,8 @@ bin/*
 /bin/
 /gen/
 .classpath
+/build/
+/.settings/
+/assets/
+.gitignore
+src/main/assets/resources/
