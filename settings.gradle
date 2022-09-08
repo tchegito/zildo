@@ -12,9 +12,11 @@
 // To declare projects as part of a multi-project build use the 'include' method
 include 'zildo'
 //include 'zildo-test'
-include 'zildo-android-gles2'
+if (false) {
+    include 'zildo-android-gles2'
+    include 'zildo-platform-android-gles2'
+}
 include 'zildo-platform-lwjgl'
-include 'zildo-platform-android-gles2'
 //include 'zeditor'
 // include "packaging-win"
 
