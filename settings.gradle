@@ -17,7 +17,7 @@ if (!isICBuild()) {
     include 'zildo-platform-android-gles2'
 }
 include 'zildo-platform-lwjgl'
-//include 'zeditor'
+include 'zeditor'
 // include "packaging-win"
 
 rootProject.name = 'zildo'
