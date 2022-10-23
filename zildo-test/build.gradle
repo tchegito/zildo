@@ -12,14 +12,30 @@ test {
 	maxParallelForks = 1
 	maxHeapSize = "4G"
 	jvmArgs("-XX:+UseParallelGC")
-	testLogging {
-		showExceptions true
-		exceptionFormat "full"
-		showCauses true
-		showStackTraces true
+}
+
+// add a collection to track failedTests
+ext.failedTests = []
+
+// add a testlistener to all tasks of type Test
+tasks.withType(Test) {
+	afterTest { TestDescriptor descriptor, TestResult result ->
+		if(result.resultType == org.gradle.api.tasks.testing.TestResult.ResultType.FAILURE){
+			failedTests << ["${descriptor.className}::${descriptor.name}"]
+		}
 	}
 }
 
+// print out tracked failed tests when the build has finished
+gradle.buildFinished {
+	if(!failedTests.empty){
+		println "Failed tests for ${project.name}:"
+		failedTests.each { failedTest ->
+			println failedTest
+		}
+		println ""
+	}
+}
 // We have to force this task to make a JAR from this android library
 // It will be used by the 'files' dependencies below, because Gradle can't figure out that
 // this jar is issued for this library compilation (...)
