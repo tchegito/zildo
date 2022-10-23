@@ -139,6 +139,7 @@ public class ScriptManagement {
     	
     	if (planComputeTriggers) {
     		computeTriggers();
+			cached_isScripting = null;	// News scripts could have been added
     		planComputeTriggers = false;
     	}
     }
@@ -182,7 +183,8 @@ public class ScriptManagement {
     		// Allow a script with arguments to be launched even if same name is already processing
     		 if (call.args != null || !scriptExecutor.isProcessing(call.actionName)) {
 				scriptExecutor.execute(new RuntimeScene(scene, p_locked, call), true, false, p_context, p_caller);
-    		 }
+			 	cached_isScripting = null;
+			 }
     	} else {
     		throw new RuntimeException("Scene "+call.actionName+" doesn't exist !");
     	}
@@ -211,7 +213,8 @@ public class ScriptManagement {
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
-    }
+		cached_isScripting = null;
+	}
     
     /**
      * Entry point for all identifiable action, which could target a trigger.<p/>

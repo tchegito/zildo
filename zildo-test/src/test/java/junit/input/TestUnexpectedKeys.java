@@ -112,6 +112,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 	
 			try {
 				field = Zildo.class.getDeclaredField("pdPlugin");
+				field.setAccessible(true);
 				// Allow modification on the field
 				Field modifiersField = Field.class.getDeclaredField("modifiers");
 				modifiersField.setAccessible(true);
