@@ -12,6 +12,12 @@ test {
 	maxParallelForks = 1
 	maxHeapSize = "4G"
 	jvmArgs("-XX:+UseParallelGC")
+	testLogging {
+		showExceptions true
+		exceptionFormat "full"
+		showCauses true
+		showStackTraces true
+	}
 }
 
 // We have to force this task to make a JAR from this android library
