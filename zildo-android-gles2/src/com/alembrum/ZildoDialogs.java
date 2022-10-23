@@ -103,6 +103,7 @@ public class ZildoDialogs {
         }
     }
 	public void askPlayerName(EditableItemMenu p_item) {
+		editText.setText("");
 		item = p_item;
 		playerNameDialog.show();
     	Button b = playerNameDialog.getButton(DialogInterface.BUTTON_POSITIVE);

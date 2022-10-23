@@ -44,7 +44,7 @@ public class SinglePlayerMenu extends Menu {
 				// Create single player game, with setting player name
 				String playerName = sb.toString();
 				UIText.setCharacterName(playerName);
-                new SinglePlayer(new Game(null, playerName)).launchGame();
+				client.askStage(new SinglePlayer(new Game(null, playerName)));
 			}
 		};
 

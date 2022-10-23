@@ -43,6 +43,7 @@ public class CreditStage extends GameStage {
         	askQuit = instant.isKeyDown(KeysConfiguration.PLAYERKEY_ACTION);
         	askQuit |= instant.isKeyDown(KeysConfiguration.PLAYERKEY_ATTACK);
         	askQuit |= instant.isKeyDown(KeysConfiguration.PLAYERKEY_DIALOG);
+			askQuit |= instant.isKeyDown(KeysConfiguration.PLAYERKEY_BACK);
         	if (askQuit) {
                 ClientEngineZildo.filterCommand.fadeOut(FilterEffect.FADE);
         	}

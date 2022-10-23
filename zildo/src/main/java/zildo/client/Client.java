@@ -327,7 +327,7 @@ public class Client {
 					} else {
 						askForItemMenu(ingameMenu, "m7.quit");
 					}
-				} else if (dm != DialogMode.INFO) {
+				} else if (dm != DialogMode.INFO && dm != DialogMode.CREDITS) {
 					handleMenu(ingameMenu);
 					askForItemMenu(ingameMenu, "m7.quit");
 				}

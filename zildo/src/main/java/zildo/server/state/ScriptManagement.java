@@ -131,7 +131,10 @@ public class ScriptManagement {
     	return scriptExecutor.verbose();
     }
     
+    Boolean cached_isScripting;
+    
     public void render() {
+    	cached_isScripting = null;
     	scriptExecutor.render();
     	
     	if (planComputeTriggers) {
@@ -141,7 +144,10 @@ public class ScriptManagement {
     }
     
     public boolean isScripting() {
-    	return scriptExecutor.isScripting();
+    	if (cached_isScripting == null) {
+    		cached_isScripting = scriptExecutor.isScripting();
+    	}
+    	return cached_isScripting;
     }
     
     /** Is any script blocking (except top priority ones) **/
