@@ -1,12 +1,11 @@
 package junit.perso;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -48,7 +47,7 @@ public class TestAdvancedPerso extends EngineUT {
 		renderFrames(250);
 	}
 	
-	@Test //@InfoPersos
+	@Test
 	public void dieStoppingAutomaticScenes() {
 		mapUtils.loadMap("dragon");
 		PersoPlayer zildo = spawnZildo(861,214);
@@ -222,7 +221,6 @@ public class TestAdvancedPerso extends EngineUT {
 	}
 	
 	@Test
-	@InfoPersos
 	public void turtleFollowHisRoute() {
 		mapUtils.loadMap("sousbois7");
 		PersoPlayer roxy = spawnZildo(116, 430);
