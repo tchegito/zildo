@@ -181,15 +181,18 @@
 		</condition>
 		
 		<condition name="chatcou8">
-		     <if expQuest="!killButcher">
+		    <if expQuest="!killButcher">
 			 	<perso who="butcher" action="butcher"/>
-			 </if>
-			 <if expQuest="killButcher">
+			 	<activate what="doorFirst" value="true" unblock="true"/>
+			 	<music/>
+			</if>
+			<if expQuest="killButcher">
 			     <remove who="butcher"/>
 			     <activate what="exitDoor" value="true"/>
-			 </if>
+			     <remove what="doorFirst"/>
+			</if>
 		</condition>
-		
+
    	</mapScript>
 
    	<quest name="prisonext">
@@ -449,7 +452,21 @@
 		    <speak who="zildo" text="chatcou.attaque2"/>
    	    </action>
    	</quest>
-		
+
+   	<quest name="appearButcher">
+   	    <trigger>
+   	        <location name="chatcou8" pos="280,270" radius="6"/>
+   	    </trigger>
+   	    <action>
+   	        <wait value="50"/>
+   	        <moveTo what="camera" pos="80,-64" delta="true"/>
+   	        <music name="Surprise"/>
+   	        <wait value="50"/>
+	        <activate what="doorFirst" value="false" unblock="true"/>
+   	        <moveTo what="camera" pos="-80,64" delta="true"/>
+   	    </action>
+   	</quest>
+   	
    	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>
