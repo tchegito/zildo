@@ -72,11 +72,17 @@ public class Pnj4 extends SpriteBanque {
 			new Zone(46, 263, 8, 8),	// Head popping out
 			new Zone(46, 263, 8, 14),	// Head popping out
 			// Dynamite thrower (80)
-			new Zone(254, 43, 20, 32),
+			//new Zone(254, 43, 20, 32),
+			new Zone(1, 1, 20, 32),
 			// Butcher
 			new Zone(0, 0, 21, 29), new Zone(22, 1, 22, 28),	// Angle 3
 			new Zone(0, 30, 16, 28), new Zone(17, 30, 16, 28), new Zone(34, 30, 16, 28),	// Angle 1
-			new Zone(0, 60, 22, 27), new Zone(23, 59, 22, 28)	// Angle 0
+			new Zone(0, 60, 22, 27), new Zone(23, 59, 22, 28),	// Angle 0
+			// Suite du Dynamite thrower
+			new Zone(25, 1, 20, 33), new Zone(46, 0, 20, 34),	// angle 2
+			new Zone(69, 1, 20, 32), new Zone(93, 1, 20, 33), new Zone(114, 0, 20, 34), // Angle 2 reverse
+
+			new Zone(1, 38, 20, 32), new Zone(25, 38, 20, 32), new Zone(46, 37, 20, 33)	// angle 0
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),
@@ -85,8 +91,9 @@ public class Pnj4 extends SpriteBanque {
 				new GraphChange("dragonpal", 29, 0),
 				new GraphChange("bitey", 37, 0),
 				new GraphChange("exteria10", 66, 0),
-				new GraphChange("dragonpal", 80, 0),
-				new GraphChange("butcher", 81, 0)
+				new GraphChange("thrower", 80, 0),
+				new GraphChange("butcher", 81, 0),
+				new GraphChange("thrower", 88, 0),
 		});
 	}
 }

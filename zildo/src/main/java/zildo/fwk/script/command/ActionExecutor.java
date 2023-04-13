@@ -763,6 +763,9 @@ public class ActionExecutor extends RuntimeExecutor {
 							perso.setAction(null);
 							// perso.setGhost(false);
 						} else {
+							if (EngineZildo.scriptManagement.isPersoActing(perso)) {
+								EngineZildo.scriptManagement.stopPersoAction(perso);
+							}
 							perso.setAction(new ScriptedPersoAction(perso,
 									p_action.action, context));
 						}

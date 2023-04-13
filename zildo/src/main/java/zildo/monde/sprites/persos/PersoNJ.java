@@ -568,6 +568,8 @@ public class PersoNJ extends Perso {
 
 		final int[] seqp = { 0, 2, 0, 1 }; // 3 sprites characters
 		final int[] seqv = { 0, 1, 2, 1 }; // another 3 sprites
+		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
+		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
 		
 		int add_spr = 0;
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
@@ -874,7 +876,20 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case MOLE:
+			break;
 		case DARKGUY:
+			int cs = computeSeqPositive(4);
+			if (angle == Angle.SUD) {
+				add_spr = seqbadguyreverse[cs % seqbadguy.length];
+				if ((cs % 8) > 3)
+				reverse = Reverse.NOTHING;
+			} else if (angle == Angle.NORD) {
+				add_spr = 6 + seqbadguy[cs % seqbadguy.length];
+				reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+			}
+			if ("thrower1".equals(name)) {
+				//System.out.println(add_spr + " " + reverse);
+			}
 			break;
 		case SCORPION:
 			Reverse r = Reverse.NOTHING;

@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import tools.EngineUT;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.fwk.script.context.SceneContext;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
@@ -26,6 +27,15 @@ import zildo.server.EngineZildo;
 
 public class TestAdvancedPerso extends EngineUT {
 
+	String guyScript="<adventure>"+
+			" <scene id='testRemoveScript'>"+
+			"  <perso who='thrower1' action=''/>" +
+			" </scene>"+
+			" <scene id='testChangeScript'>"+
+			"  <perso who='thrower1' action='immobileDarkGuy'/>" +
+			" </scene>"+
+			"</adventure>";
+	
 	/** We had a NPE at frame 645, because dragon has been removed, and he still had a 'persoAction' attached to him.
 	 * In 'dragonDiveAndReappear', we tried to modify a removed character. Now, a character removal, occuring by
 	 * 'remove' action in 'death' scene, include persoAction removal. **/
@@ -235,5 +245,57 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue("Roxy should have been on platform !", roxy.isOnPlatform());
 		Perso turtle = persoUtils.persoByName("sacher");
 		Assert.assertFalse(turtle.isAlerte());
+	}
+	
+	@Test
+	public void persoActionRemove() throws Exception {
+		Perso guy1 = preparePersoAction();
+		
+		scriptMgmt.execute("testRemoveScript", true, new SceneContext(), null);
+		renderFrames(10);
+		Assert.assertFalse(guy1.isDoingAction());
+	}
+	
+	@Test
+	public void persoActionSwitch() throws Exception {
+		Perso guy1 = preparePersoAction();
+		
+		scriptMgmt.execute("testChangeScript", true, new SceneContext(), null);
+		renderFrames(10);
+		Assert.assertTrue(guy1.isDoingAction());
+		
+		// Check that character isn't moving anymore
+		int nbFrames = 100;
+		while (nbFrames-- > 0 && guy1.getTarget() == null) {
+			renderFrames(1);
+		}
+		Assert.assertNull("Character shouldn't move !", guy1.getTarget());
+	}
+	
+	@Test
+	public void persoActionWhenDead() throws Exception {
+		Perso guy1 = preparePersoAction();
+		
+		// Kill him
+		persoUtils.removePerso("thrower1");
+		Assert.assertNull(persoUtils.persoByName("thrower1"));
+
+		// Ensure that script won't fail even if the character isn't there
+		scriptMgmt.execute("testChangeScript", true, new SceneContext(), null);
+		renderFrames(2);
+	}
+	
+	private Perso preparePersoAction() throws Exception {
+		loadXMLAsString(guyScript);
+		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);
+		mapUtils.loadMap("prisonext");
+		spawnZildo(140, 144);
+		waitEndOfScriptingPassingDialog();
+		
+		Perso guy1 = persoUtils.persoByName("thrower1");
+		Assert.assertNotNull(guy1);
+		Assert.assertTrue(guy1.isDoingAction());
+		
+		return guy1;
 	}
 }

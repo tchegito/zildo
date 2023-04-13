@@ -467,7 +467,17 @@
    	    </action>
    	</quest>
    	
-   	<scene id="insertPortalKey">
+   	<quest name="caughtHeroCastle">
+   	    <trigger>
+   	        <questDone name="killButcher"/>
+   	        <location name="prisonext" pos="370, 140" floor="2" radius="4"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="captureZildoDuringAttack"/>
+   	    </action>
+   	</quest>
+
+   		<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>
    		<sound name="MoonFusion"/>
@@ -723,8 +733,9 @@
    	            <if exp="fun:mapFloor(zildo.x,zildo.y)=zildo.floor">
 	   	            <sound name="ZildoLance"/>
 	   	            <script who="self" value="3"/>	<!-- Stop -->
-	   	            
+	   	            <!-- 
 	   	            <throw who="self" way="BELL" floor="2" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
+-->
 	   	            <wait value="80"/>
 	   	            <script who="self" value="0"/>
 	   	                
@@ -928,5 +939,13 @@
                 <sprite what="loc:s" alphaA="0"/>
             </if>
         </for>
+    </scene>
+    
+    <scene id="captureZildoDuringAttack">
+        <!--  handle case when one or both are dead -->
+        <perso who="thrower1" action="immobileDarkGuy"/>
+        <perso who="thrower2" action="immobileDarkGuy"/>
+        <moveTo who="zildo" pos="370,140"/>
+        <wait value="100"/>
     </scene>
 </adventure>
