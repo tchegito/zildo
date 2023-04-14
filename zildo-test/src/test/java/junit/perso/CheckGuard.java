@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -15,7 +14,6 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
-import zildo.server.EngineZildo;
 
 
 public class CheckGuard extends EngineUT {

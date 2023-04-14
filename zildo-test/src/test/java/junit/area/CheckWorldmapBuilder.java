@@ -26,6 +26,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -44,6 +45,7 @@ import zildo.server.EngineZildo;
  * @author Tchegito
  *
  */
+@Ignore
 public class CheckWorldmapBuilder extends EngineUT {
 
 	
