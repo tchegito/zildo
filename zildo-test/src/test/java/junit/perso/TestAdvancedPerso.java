@@ -274,7 +274,7 @@ public class TestAdvancedPerso extends EngineUT {
 	
 	@Test
 	public void persoActionWhenDead() throws Exception {
-		Perso guy1 = preparePersoAction();
+		preparePersoAction();
 		
 		// Kill him
 		persoUtils.removePerso("thrower1");

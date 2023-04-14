@@ -65,6 +65,14 @@ public class CheckGuard extends EngineUT {
 		Assert.assertFalse(alertAndShootHero(609, 260, new Point(700, 261)));
 	}
 	
+	@Test
+	public void shouldntShootOnDifferentFloor() {
+		mapUtils.loadMap("prisonext");
+		PersoPlayer hero = spawnZildo(374, 141);
+		hero.setFloor(2);
+		Assert.assertFalse("Guard shouldn't have shot an arrow !", alertAndShootHero(310, 141, new Point(374, 141)));
+	}
+	
 	/** Spawn hero and black guard with a bow. Makes him shoot an arrow.
 	 * Return an arrow if exists after a 300 frames waiting **/
 	private boolean alertAndShootHero(int gardX, int gardY, Point zildoLoc) {
