@@ -940,12 +940,34 @@
             </if>
         </for>
     </scene>
-    
+
     <scene id="captureZildoDuringAttack">
-        <!--  handle case when one or both are dead -->
-        <perso who="thrower1" action="immobileDarkGuy"/>
-        <perso who="thrower2" action="immobileDarkGuy"/>
+		<music name="Surprise"/>
+        <perso who="thrower1" action=""/>
+        <perso who="thrower2" action=""/>
+        <script who="thrower1" value="3"/>
+        <script who="thrower2" value="3"/>
         <moveTo who="zildo" pos="370,140"/>
+        <wait value="10"/>
+        <angle who="zildo" value="3"/>
+        <wait value="10"/>
+        <moveTo who="zildo" pos="4,1" delta="true"/>
         <wait value="100"/>
+        <spawn who="attackg1" pos="198,122" type="GARDE_CANARD" floor="2" info="ENEMY" angle="0" pv="4" effect="noir"/>
+        <spawn who="attackg2" pos="198,166" type="GARDE_CANARD" floor="2" info="ENEMY" angle="0" pv="4" effect="noir"/>
+        <spawn who="attackg3" pos="546,122" type="GARDE_CANARD" floor="2" info="ENEMY" angle="0" pv="4" effect="noir"/>
+        <spawn who="attackg4" pos="546,166" type="GARDE_CANARD" floor="2" info="ENEMY" angle="0" pv="4" effect="noir"/>
+        <actions>
+            <moveTo who="attackg1" pos="262,122" unstoppable="true"/>
+            <moveTo who="attackg2" pos="262,166" unstoppable="true"/>
+            <moveTo who="attackg3" pos="468,122" unstoppable="true"/>
+            <moveTo who="attackg4" pos="468,166" unstoppable="true"/>
+        </actions>
+        <wait value="20"/>
+        <speak who="attackg1" text="castle.g1"/>
+        <speak who="attackg1" text="castle.g2"/>
+        <wait value="200"/>
+        <music name=""/>
+        <fadeOut value="0"/>
     </scene>
 </adventure>

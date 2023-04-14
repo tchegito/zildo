@@ -1,4 +1,5 @@
 uniform vec4 noise;
+uniform vec4 curColor;
 
 void main (void) {
 	vec2 delta = vec2(gl_TexCoord[0].xy - vec2(0.5, 0.5));
@@ -16,7 +17,7 @@ void main (void) {
 	intensity = intensity / clamp(alpha, 0.1, 0.7);
 	intensity = clamp(intensity, 0.0, 1.0);
 	
-	vec4 starTex = vec4(1.0, 1.0, 1.0, 1.0-intensity);
+	vec4 starTex = vec4(1.0, 1.0, 1.0, 1.0-intensity) * curColor;
 	
 	gl_FragColor = starTex;
 }

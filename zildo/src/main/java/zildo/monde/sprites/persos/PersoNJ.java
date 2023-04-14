@@ -347,7 +347,7 @@ public class PersoNJ extends Perso {
 						int deltaY = Math.abs((int) (zildo.y - yy));
 						// Alert potential allies
 						EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(zildo.x, zildo.y));
-						if (deltaX <= 1 || deltaY <= 1) {
+						if (zildo.floor <= floor && (deltaX <= 1 || deltaY <= 1)) {
 							// Get sight on Zildo and shoot !
 							Angle previousAngle = angle;
 							sight(zildo, false);

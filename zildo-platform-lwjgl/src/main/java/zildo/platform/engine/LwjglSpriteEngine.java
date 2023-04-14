@@ -112,6 +112,7 @@ public class LwjglSpriteEngine extends SpriteEngine {
 						break;
                 	case STAR:
 						ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(3));
+						ClientEngineZildo.pixelShaders.setParameter(5, "curColor", ambient4f);
 						ClientEngineZildo.pixelShaders.setParameter(3, "noise", new Vector4f(gamma, (float) Math.random(), 0, 1));
 						break;
                 	case CLIP:

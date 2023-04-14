@@ -1,6 +1,6 @@
 <adventure>
     <scene id="setup">
-	    <nameReplace who="jaune,garde,gard1,gard2,gard3,gard4,gard5,gardenord" name="gard"/>
+	    <nameReplace who="jaune,garde,gard1,gard2,gard3,gard4,gard5,gardenord,attackg1" name="gard"/>
 	    <nameReplace who="vieille,sarah" name="oldLady"/>
 	    <nameReplace who="alcolo,aaaaaaaa,saaaaaaa,zzzsss,zzzzzmzz,bbbbggbg,aaaaaa" name="citizen"/>
 	    <nameReplace who="fffff,qqqqqq" name="citizen"/>
