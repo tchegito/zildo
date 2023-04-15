@@ -477,7 +477,7 @@
    	    </action>
    	</quest>
 
-   		<scene id="insertPortalKey">
+   	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>
    		<sound name="MoonFusion"/>
@@ -733,9 +733,8 @@
    	            <if exp="fun:mapFloor(zildo.x,zildo.y)=zildo.floor">
 	   	            <sound name="ZildoLance"/>
 	   	            <script who="self" value="3"/>	<!-- Stop -->
-	   	            <!-- 
+	   	            
 	   	            <throw who="self" way="BELL" floor="2" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
--->
 	   	            <wait value="80"/>
 	   	            <script who="self" value="0"/>
 	   	                
