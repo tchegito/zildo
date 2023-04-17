@@ -11,13 +11,8 @@ test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
 	maxHeapSize = "1280m"
+	forkEvery 50
 	jvmArgs("-XX:+UseParallelGC")
-	testLogging {
-    	showStandardStreams = true
-        events "standard_out", "started", "passed", "skipped", "failed"
-        displayGranularity 1
-        minGranularity 1
-	}
 }
 
 
