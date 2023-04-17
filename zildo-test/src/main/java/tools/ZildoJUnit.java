@@ -48,6 +48,7 @@ public class ZildoJUnit extends BlockJUnit4ClassRunner {
 		// Check annotations on class
 		handleAnnotations(testClass.getClass().getAnnotations(), testClass);
 
+		System.out.println(Runtime.getRuntime().freeMemory()+" / " + Runtime.getRuntime().totalMemory());
 		return super.withBefores(method, target, statement);
 	}
 	
