@@ -11,7 +11,7 @@ test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
 	maxHeapSize = "1280m"
-	forkEvery 50
+	forkEvery 20
 	jvmArgs("-XX:+UseParallelGC")
 }
 
