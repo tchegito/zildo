@@ -10,9 +10,16 @@ version = '1.0'
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
-	maxHeapSize = "64m"
-	jvmArgs("-Xmx1280m -XX:+UseParallelGC")
+	maxHeapSize = "1280m"
+	jvmArgs("-XX:+UseParallelGC")
+	testLogging {
+    	showStandardStreams = true
+        events "standard_out", "started", "passed", "skipped", "failed"
+        displayGranularity 1
+        minGranularity 1
+	}
 }
+
 
 // add a collection to track failedTests
 ext.failedTests = []
