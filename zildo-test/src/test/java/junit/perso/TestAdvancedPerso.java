@@ -11,7 +11,9 @@ import zildo.fwk.script.context.SceneContext;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -272,6 +274,7 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertNull("Character shouldn't move !", guy1.getTarget());
 	}
 	
+	
 	@Test
 	public void persoActionWhenDead() throws Exception {
 		preparePersoAction();
@@ -283,6 +286,31 @@ public class TestAdvancedPerso extends EngineUT {
 		// Ensure that script won't fail even if the character isn't there
 		scriptMgmt.execute("testChangeScript", true, new SceneContext(), null);
 		renderFrames(2);
+	}
+	
+	@Test
+	public void dynamiteOnRoof() {
+		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);
+		mapUtils.loadMap("prisonext");
+		PersoPlayer zildo = spawnZildo(272, 138);
+		zildo.setFloor(2);
+		waitEndOfScriptingPassingDialog();
+		
+		int nFrames = 500;
+		while (nFrames-- > 0 && findEntityByDesc(ElementDescription.DYNAMITE) == null) {
+			renderFrames(1);
+		}
+		// Find dynamite
+		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
+		Assert.assertNotNull("We should have found a dynamite !", dynamite);
+		Assert.assertEquals(2,  dynamite.getFloor());
+		// Wait for explosion
+		while (!dynamite.dying) {
+			renderFrames(1);
+		}
+		Element explosion = (Element) findEntityByDesc(ElementDescription.EXPLO1);
+		Assert.assertNotNull("An explosion should have been spawn !", explosion);
+		Assert.assertEquals("Explosion should have been on the same floor as dynamite !", 2, explosion.getFloor());
 	}
 	
 	private Perso preparePersoAction() throws Exception {

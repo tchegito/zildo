@@ -64,6 +64,9 @@ public class ElementDynamite extends Element {
 			shadow.dying = true;
 			ElementImpact explosion = new ElementImpact((int) x, (int) y, ImpactKind.EXPLOSION, shooter);
 			explosion.z = Math.max(4, z);
+			if (linkedPerso != null) {
+				explosion.setFloor(linkedPerso.getFloor());
+			}
 			EngineZildo.spriteManagement.spawnSprite(explosion);
 			// Detection of explodable walls
 			EngineZildo.mapManagement.getCurrentMap().explodeTile(new Point(x, y), true, null);
