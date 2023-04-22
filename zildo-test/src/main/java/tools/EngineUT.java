@@ -19,8 +19,9 @@
 
 package tools;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -38,7 +39,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
 
@@ -524,11 +524,18 @@ public abstract class EngineUT {
 	/** Wait for map switch, then check that new map is the expected one **/
 	protected void assertMapIsChangingToward(String mapName) {
 		String current = EngineZildo.mapManagement.getCurrentMap().getName();
-		while (!EngineZildo.mapManagement.isChangingMap(clientState.zildo)) {
+		int safetyCheckFrame = 0;
+		while (!EngineZildo.mapManagement.isChangingMap(clientState.zildo) && safetyCheckFrame <= MAX_WAIT_FRAMES) {
 			renderFrames(1);
+			safetyCheckFrame++;
+
 		}
-		while (current.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+		while (current.equals(EngineZildo.mapManagement.getCurrentMap().getName())  && safetyCheckFrame < MAX_WAIT_FRAMES) {
 			renderFrames(1);
+			safetyCheckFrame++;
+		}
+		if (safetyCheckFrame > MAX_WAIT_FRAMES) {
+			throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
 		}
 		Assert.assertEquals("Map has changed but to the wrong one !", mapName, EngineZildo.mapManagement.getCurrentMap().getName());
 	}
@@ -563,9 +570,9 @@ public abstract class EngineUT {
 				doReturn(fakedKbHandler.getCode(keys[0])).when(fakedKbHandler).getEventKey();
 			} else {
 				// Multiple value matching
-				doReturn(true).when(fakedKbHandler).isKeyDown(Matchers.argThat(new ArgumentMatcher<Keys>() {
+				doReturn(true).when(fakedKbHandler).isKeyDown(argThat(new ArgumentMatcher<Keys>() {
 					@Override
-					public boolean matches(Object argument) {
+					public boolean matches(Keys argument) {
 						for (Keys k : keys) {
 							if (argument == k) {
 								return true;

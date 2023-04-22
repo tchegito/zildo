@@ -50,5 +50,5 @@ dependencies {
 	//files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
 	project(':zeditor')
 	implementation "junit:junit:4.12",
-				"org.mockito:mockito-all:1.10.19"
+				"org.mockito:mockito-core:2.28.2"
 }
