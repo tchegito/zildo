@@ -472,6 +472,10 @@ public class MasterFrameManager {
 		return kind;
 	}
 
+	public void switchTab(SelectionKind kind) {
+		masterFrame.getTabsPane().setSelectedIndex(kind.ordinal());
+	}
+	
 	public Selection getSelection() {
 		SelectionKind kind = getSelectionKind();
 		if (kind != null) {
