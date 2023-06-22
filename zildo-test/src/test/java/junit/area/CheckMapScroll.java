@@ -8,11 +8,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.client.ClientEngineZildo;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -69,9 +71,7 @@ public class CheckMapScroll extends EngineUT {
 		waitEndOfScripting();
 		// Goes up and wait for map change
 		simulateDirection(0, -1);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		renderFrames(5);
 		waitEndOfScripting();
@@ -108,7 +108,7 @@ public class CheckMapScroll extends EngineUT {
 	@Test
 	public void entitiesDisappearAtRightTime() {
 		mapUtils.loadMap("prison4r");
-		PersoPlayer hero = spawnZildo(40, 146);
+		spawnZildo(40, 146);
 		waitEndOfScripting();
 		
 		// Get barrels
@@ -118,9 +118,7 @@ public class CheckMapScroll extends EngineUT {
 		// 1) transition to the left
 		System.out.println(EngineZildo.spriteManagement.getSpriteEntities(null).size());
 		simulateDirection(-1, 0);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		
 		// Check that sprites are still there
@@ -137,9 +135,7 @@ public class CheckMapScroll extends EngineUT {
 		// 2) transition to the right
 		barrels = findBarrels();
 		simulateDirection(1, 0);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		
 		// Check that sprites are still there
@@ -167,6 +163,64 @@ public class CheckMapScroll extends EngineUT {
 		}
 		Assert.assertEquals(0, hackSuspendedEntities().size());
 
+	}
+	
+	@Test
+	public void offsetOnMapVertical() {
+		mapUtils.loadMap("cavef3");
+		spawnZildo(495, 54);
+		waitEndOfScripting();
+
+		// Go north to reach cavef4
+		simulateDirection(0, -1);
+		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
+		Assert.assertEquals(320, camera().x);
+		waitChangingMap();
+		renderFrames(1);
+		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
+		waitEndOfScroll();
+		Assert.assertEquals("cavef4",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(336,  camera().x);
+
+		// And go back to cavef3
+		simulateDirection(0, 1);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef3",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(335, camera().x);
+	}
+	
+	@Test
+	public void offsetOnMapHorizontal() {
+		mapUtils.loadMap("cavef6");
+		spawnZildo(672,336);
+		waitEndOfScripting();
+
+		// Go north to reach cavef4
+		simulateDirection(1, 0);
+		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
+		Assert.assertEquals(216, camera().y);
+		waitChangingMap();
+		renderFrames(1);
+		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
+		waitEndOfScroll();
+		Assert.assertEquals("cavef7",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(224,  camera().y);
+
+		// And go back to cavef3
+		simulateDirection(-1, 0);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef6",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(216, camera().y);
+	}
+	
+	
+	
+	private Point camera() {
+		return ClientEngineZildo.mapDisplay.getCamera();
 	}
 	
 	// Get a package protected field from SpriteManagement

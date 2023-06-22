@@ -75,7 +75,7 @@ public class Ambient {
 			case LAVACAVE:
 				return 256*10 + 34;
 			case NATUREPALACE:
-				return 256*9 + 9;
+				return 256*7 + 96;
 			}
 		}
 	}

@@ -23,18 +23,24 @@ public class TileLight {
 	}
 	
 	 public int left(int level, float x, float y) {
-		 if (level == 1) {
+		 switch (level) {
+		 case 0:
+			 return (int)x % 16;
+		 case 1:
 			 return 8 + Math.min((int) x % 16, 7);
-		 } else {
+		 default:
 			 return (int) (x % 16) / 2;
 		 }
 	 }
 	 
 	 public int right(int level, float x, float y) {
-		 if (level == 1) {
-			 return Math.min(8 + 16 - (int) x % 16, 15);
-		 } else {
-			 return 8 - ((int) x % 16) / 2;
+		 switch (level) {
+			 case 0:
+				 return 15 - (int)x % 16;
+			 case 1:
+				 return Math.min(8 + 16 - (int) x % 16, 15);
+			 default:
+				 return 8 - ((int) x % 16) / 2;
 		 }
 	 }
 	 

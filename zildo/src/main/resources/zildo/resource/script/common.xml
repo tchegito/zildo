@@ -282,11 +282,42 @@
 	    <zoom who="zildo" value="255"/>
     </scene>
 	
+	<scene id="princessFallPit">
+	   	<perso who="zildo" vx="zildo.vx*9" vy="0.2+zildo.vy*9"/>
+	    <sound name="ZildoFall"/>
+	    <script who="zildo" text="TOMBE"/>
+	    <zoom who="zildo" value="200"/>
+	    <wait value="20"/>
+	   	<perso who="zildo" vx="zildo.vx*0.4" vy="zildo.vy*0.4"/>
+	    <zoom who="zildo" value="170"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="140"/>
+	    <wait value="10"/>
+	    <zoom who="zildo" value="100"/>
+	    <perso who="zildo" vx="0" vy="0"/>
+	    <wait value="10"/>
+	    <visible who="zildo" value="false"/>
+	    <animation who="zildo" pos="1,0" type="STAR_SHINE" />
+	    <!-- 
+	   	<animation who="zildo" pos="0,5" type="STAR_SHINE" />
+	   	-->
+	    <wait value="30"/>
+    	<fadeOut type="5"/>
+	    <zoom who="zildo" value="255"/>
+    </scene>
+    
 	<scene id="dieInPit">
 		<exec script="fallPit"/>
 		<respawn/>
 		<fadeIn type="5"/>    
 	</scene>
+	
+	<scene id="princessDieInPit">
+		<exec script="princessFallPit"/>
+		<respawn/>
+		<fadeIn type="5"/>    
+	</scene>
+	
 	
 	<scene id="endFallPit">
    	    <script who="zildo" text="TOMBE"/>

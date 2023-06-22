@@ -1121,7 +1121,6 @@ public class MapManagement {
 					Point translated = new Point(p.x + delta.x, p.y + delta.y);
 					locked &= collide(translated.x, translated.y, p);
 					Point areaCoords = new Point(translated.x >> 4, translated.y >> 4);
-					System.out.println(areaCoords);
 					int val = currentMap.readmap(areaCoords.x, areaCoords.y);
 					if (val == Tile.T_BUSH) {
 						bushLocation = areaCoords;

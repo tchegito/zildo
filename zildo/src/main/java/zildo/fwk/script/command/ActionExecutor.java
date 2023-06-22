@@ -251,7 +251,6 @@ public class ActionExecutor extends RuntimeExecutor {
 						} else if ("easein".equals(p_action.text)) {
 							entity.setMover(new EasinMoveOrder(location.x, location.y, p_action.speed));
 						} else if ("straight".equals(p_action.text)) {
-							if (p_action.what.equals("loc:hook")) System.out.println("move hook");
 							entity.setMover(new StraightMoveOrder(location.x, location.y, p_action.speed));
 						} else {
 							entity.setMover(new BasicMoveOrder(location.x,
@@ -970,9 +969,6 @@ public class ActionExecutor extends RuntimeExecutor {
 			break;
 		case focus:
 			achieved = ClientEngineZildo.mapDisplay.getTargetCamera() == null;
-			if (achieved == true) {
-				System.out.println("finish");
-			}
 			break;
 		case speak:
 		case end:

@@ -193,6 +193,10 @@
 			</if>
 		</condition>
 
+		<condition name="nature2">
+			<perso who="bitey1" action="bitey"/> 
+			<perso who="bitey2" action="bitey"/> 
+		</condition>
    	</mapScript>
 
    	<quest name="prisonext">
@@ -965,8 +969,21 @@
         <wait value="20"/>
         <speak who="attackg1" text="castle.g1"/>
         <speak who="attackg1" text="castle.g2"/>
-        <wait value="200"/>
+        <wait value="20"/>
+        <angle who="zildo" value="3"/>
+        <wait value="30"/>
+        <angle who="zildo" value="1"/>
+        <actions>
+        	<speak who="attackg1" text="castle.g3"/>
+            <moveTo who="attackg1" pos="48,16" delta="true" speed="0.3"/>
+        </actions>
+        <angle who="zildo" value="3"/>
+        <moveTo who="zildo" pos="4,0" backward="true" delta="true" speed="0.1"/>
         <music name=""/>
         <fadeOut value="0"/>
+        <markQuest name="hero_princess" value="true"/>
+        <map name="nature1"/>
+        <pos who="zildo" pos="167,115"/>
+        <fadeIn value="0"/>
     </scene>
 </adventure>

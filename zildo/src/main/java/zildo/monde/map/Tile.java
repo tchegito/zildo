@@ -72,6 +72,8 @@ public class Tile implements Cloneable {
     public final static int T_BONES1 = 256*3+249;
     public final static int T_BONES2 = 256*3+250;
     public final static int T_LAVA = 256*10 + 34; 
+    public final static int T_NATUREPALACE_PLATFORM = 256*9 + 174;
+    public final static int T_NATUREPALACE_PLATFORM2 = 256*9 + 175;
     		
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);
@@ -156,7 +158,8 @@ public class Tile implements Cloneable {
 		// Means that hero fall and have to lost HP
 		switch (value) {
 		case 256 * 3 + 217:
-		case 41 + 256 * 9:
+			// Void in nature palace
+		case 39 + 256 * 9: case 40 + 256 * 9: 		case 41 + 256 * 9:
 		case T_LAVA:
 			// Rock forming moutains on top of lava
 		case 256*10 + 7:
@@ -175,6 +178,11 @@ public class Tile implements Cloneable {
 		case 256*10 + 80:
 		case 256*10 + 81:
 		case 256*10 + 82:
+			// Nature palace
+		case 256*9 + 31:
+		case 256*9 + 33:
+		case 256*9 + 35:
+		case 256*9 + 37:
 			return true;
 		case 108:	// 'Ponton' case: consider bottomless only if 'back2' tile exists
 			return back2Value != -1;

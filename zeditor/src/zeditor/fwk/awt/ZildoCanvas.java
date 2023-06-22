@@ -289,7 +289,13 @@ public class ZildoCanvas extends AWTOpenGLCanvas implements MapCapturer {
 	    int height=h-j;
 	    
 	    SelectionKind selKind=manager.getSelectionKind();
+	    if (selKind != SelectionKind.TILES && selKind != SelectionKind.SPRITES) {
+			// Force tiles tab
+			selKind = SelectionKind.TILES;
+			manager.switchTab(selKind);
+	    }
 	    switch (selKind) {
+
 	    	case SPRITES:
     		// Get all sprites in the range
     		List<SpriteEntity> entities = findEntity(selKind, null, new Zone(i, j, w-i, h-j));

@@ -784,9 +784,16 @@ public abstract class Perso extends Element {
 				coeffWhiteLight = tileLight.south(2, x, y);
 				break;
 			// Tile used on different rotated value: light coeff will follow
-			case 9 + 256*10:
+			case 9 + 256*10:	// lavacave
 			case 10 + 256*10:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, tile.rotation);
+				break;
+			case 25 + 256*9:	// nature palace
+				coeffWhiteLight = 0;
+				break;
+			case 28+ 256*9:	// Nature palace
+				coeffWhiteLight = tileLight.forRotatedTile(0, x, y, tile.rotation);
+				System.out.println(coeffWhiteLight);
 				break;
 			case 13 + 256*10:
 			case 14 + 256*10:
@@ -944,7 +951,12 @@ public abstract class Perso extends Element {
 				vy =deltaMoveY / 20;
 				stopBeingWounded();	// Stop potential projection
 				setCompte_dialogue(0);	// Stop Zildo blink
-				EngineZildo.scriptManagement.execute("dieInPit", true);
+				if (isZildo() && ((PersoPlayer)this).who == ControllablePerso.PRINCESS_BUNNY) {
+					// Adapt fall for hero as a princess)
+					EngineZildo.scriptManagement.execute("princessDieInPit", true);
+				} else {
+					EngineZildo.scriptManagement.execute("dieInPit", true);
+				}
 			}
 		}
 		if (repeatSound) {

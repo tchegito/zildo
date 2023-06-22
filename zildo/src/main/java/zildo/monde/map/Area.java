@@ -1737,8 +1737,7 @@ public class Area implements EasySerializable {
 		Angle angleShift = p_mapScrollAngle.opposite();
 		Point coords = angleShift.coords;
 		Area mapReference = nextMap;
-		Point scrollOffset = new Point(0,0);
-		scrollOffset = mapReference.getScrollOffset().multiply(16);
+		Point scrollOffset = mapReference.getScrollOffset().multiply(16);
 		switch (angleShift) {
 		case OUEST:
 		case NORD:
@@ -1748,6 +1747,7 @@ public class Area implements EasySerializable {
 		if (!mapBuilder) {
 			scrollOffset = mapReference.getScrollOffset().multiply(16);
 		}
+		
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 	  coords.y * 16 * mapReference.getDim_y());
 		

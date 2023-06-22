@@ -176,6 +176,16 @@ public class Case implements EasySerializable {
 						motif+=seqRotate[comptModulo4];
 					}
 					break;
+				case 9: // Nature palace
+					// 78 , 92 , 106 (+14)
+					if (motif >= 78 && motif <= 91) {
+						motif += 14 * ((compteur_animation / 5) % 6);
+					}
+					if (motif >=162 && motif <= 171) {
+						motif += 2 * ((compteur_animation / 6) % 6);
+					}
+					
+					break;
 			}
 			break;
 			case BACK2:
