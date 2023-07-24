@@ -73,7 +73,9 @@ public class BankEdit {
 			for (int i = 0; i < img.getWidth(); i++) {
 				int offset = i + (j * img.getWidth());
 				int v = imgPixels[offset];
-				if ((v & 0xffffff) == Transparency.TRANSPARENCY_COLOR) {
+				if (p_transparentColor == -1) {
+					// Nothing : keep transparency
+				} else if ((v & 0xffffff) == Transparency.TRANSPARENCY_COLOR) {
 					imgPixels[offset] = 0 << 24;
 				} else {
 					// No transparency at all => 0xff as ALPHA value

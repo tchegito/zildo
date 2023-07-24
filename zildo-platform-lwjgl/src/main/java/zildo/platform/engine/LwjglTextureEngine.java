@@ -94,7 +94,7 @@ public class LwjglTextureEngine extends TextureEngine {
     @Override
 	public void getTextureImage(int p_nthTex) {
     	if (scratch == null) {
-    		prepareSurfaceForTexture(false);
+    		prepareSurfaceForTexture(true);
     	}
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, getNthTexture(p_nthTex));
 	    scratch.position(0);

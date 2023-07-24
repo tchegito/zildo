@@ -49,7 +49,8 @@ public class SpriteBank {
 	public static final int BANK_GEAR = 5;
 	public static final int BANK_PNJ3 = 6;
 	public static final int BANK_PNJ4 = 7;
-	public static final int BANK_ZILDOOUTFIT = 8;
+	public static final int BANK_PNJ5 = 8;
+	public static final int BANK_ZILDOOUTFIT = 9;
 	
 	private static final int COLOR_GARD1 = 178 << 16 | 146 << 8 | 251;
 	private static final int COLOR_GARD2 = 81 << 16 | 113 << 8 | 203;

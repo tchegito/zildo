@@ -29,10 +29,16 @@ public class GraphChange {
 	public final String imageName;
 	public final int nTile;
 	public final int shiftY;
+	public final boolean transparency;
 	
 	public GraphChange(String p_imageName, int p_nTile, int p_shiftY) {
+		this(p_imageName, p_nTile, p_shiftY, false);
+	}
+	
+	public GraphChange(String p_imageName, int p_nTile, int p_shiftY, boolean p_transparency) {
 		imageName=p_imageName;
 		nTile=p_nTile;
 		shiftY=p_shiftY;
+		transparency = p_transparency;
 	}
 }

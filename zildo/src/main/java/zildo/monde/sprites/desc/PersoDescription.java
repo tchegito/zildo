@@ -140,6 +140,9 @@ public enum PersoDescription implements SpriteDescription {
 	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463),
 	BUTCHER(450, 449, 451, 452, 453, 454, 455),
 	
+	// Shift numbers once darkguy will have all its sprites
+	HOODED(464, 465, 466, 467),
+	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
@@ -175,7 +178,9 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 367) {
+		if (f > 463) {
+			f-= 464;
+		} else if (f > 367) {
 			f-=368;
 		} else if (f > 258) {
 			f-=259;
@@ -200,8 +205,10 @@ public enum PersoDescription implements SpriteDescription {
 			return SpriteBank.BANK_PNJ2;
 		} else if (s < 368) {
 			return SpriteBank.BANK_PNJ3;
-		} else {
+		} else if (s < 464) {
 			return SpriteBank.BANK_PNJ4;
+		} else {
+			return SpriteBank.BANK_PNJ5;
 		}
 	}
 

@@ -195,7 +195,8 @@
 
 		<condition name="nature2">
 			<perso who="bitey1" action="bitey"/> 
-			<perso who="bitey2" action="bitey"/> 
+			<perso who="bitey2" action="bitey"/>
+			<perso who="hooded" action="hooded"/> 
 		</condition>
    	</mapScript>
 
@@ -848,6 +849,13 @@
 	   		
    		</loop>
    	</persoAction>
+   	
+   	<!-- Add possibility to break a sequence of animation if presence is detected -->
+   	<persoAction id="hooded">
+   	    <loop>
+	   	    <seq who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="5"/>   	    
+   	    </loop>
+  	</persoAction>
    	
    	<scene id="chainGoBack">	<!-- arg0:hook sprite, arg1:chain sprite, arg2-arg3: hero coordinates, arg4:flag to notify chain is entirely back -->
    	    <if expQuest="E#loc:arg0">
