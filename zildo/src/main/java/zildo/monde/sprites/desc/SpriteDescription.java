@@ -56,7 +56,7 @@ public interface SpriteDescription {
 			case SpriteBank.BANK_PNJ5:
 				return PersoDescription.fromNSpr(nSpr + 259 + 109 + 96);
 			case SpriteBank.BANK_GEAR:
-				return GearDescription.fromNSpr(nSpr + 259 + 109);
+				return GearDescription.fromNSpr(nSpr);
 			default:
 			    // Is this bank Zildo with another outfit ?
 			    if (nBank >= SpriteBank.BANK_ZILDOOUTFIT) {

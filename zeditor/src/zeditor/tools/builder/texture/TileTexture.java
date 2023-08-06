@@ -50,7 +50,7 @@ public class TileTexture {
 				j = ij >> 4;
 				int a = motif[i + j * 16];
 
-				Vector4f color = GFXBasics.splitRGB(a);
+				Vector4f color = GFXBasics.splitRGBA(a);
 				surface.pset(i + x, j + y, color);
 			}
 			// Next position
@@ -147,7 +147,7 @@ public class TileTexture {
 					// Regular size
 					a=sBank.modifyPixel(n,a);
 
-					Vector4f color = GFXBasics.splitRGB(a);
+					Vector4f color = GFXBasics.splitRGBA(a);
 					surfaceGfx.pset(i+x, j+y, color);
 				}
 			}

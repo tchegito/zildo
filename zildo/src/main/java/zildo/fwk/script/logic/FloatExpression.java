@@ -116,7 +116,7 @@ public class FloatExpression {
 				if (leftNode == null) 
 					leftNode = temp;
 				else 
-					leftNode = new FloatBuiltIn(leftNode.toString(), temp.toString());
+					leftNode = new FloatBuiltIn(leftNode.toString(), temp);
 			} else if (")".equals(val)) {
 				if (!parenthese) {
 					scan.goBack();

@@ -25,6 +25,9 @@ public class CheckBuiltinScript extends EngineScriptUT {
 		String expectedLocation = "" + PointEvaluator.toSingleFloat(new Point(200, 114));
 		Assert.assertEquals(expectedLocation, scriptMgmt.getVariables().get("freeLoc"));	// Angle = pi/2
 		Assert.assertEquals(expectedLocation, scriptMgmt.getVariables().get("freeLoc2"));	// Angle = pi/2
+		
+		// Same with half of the distance
+		expectedLocation = "" + PointEvaluator.toSingleFloat(new Point(200, 82));
 		Assert.assertEquals(expectedLocation, scriptMgmt.getVariables().get("freeLoc3"));	// Angle = pi/2
 				
 		Perso bandit = persoUtils.persoByName("bandit");
