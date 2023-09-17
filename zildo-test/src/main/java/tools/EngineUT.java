@@ -437,9 +437,21 @@ public abstract class EngineUT {
 		waitEndOfScripting(null);
 	}
 	
+	public void waitChangingMap() {
+		int safetyCheckFrame = 0;
+		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+			if (safetyCheckFrame++ > MAX_WAIT_FRAMES) {
+				throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
+			}
+		}
+	}
+	
 	public void waitEndOfScroll() {
 		while (clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL ||
-				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT) {
+				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT ||
+				clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
 			renderFrames(1);
 		}
 		renderFrames(1);

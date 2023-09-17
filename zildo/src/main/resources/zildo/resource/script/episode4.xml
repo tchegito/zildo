@@ -853,7 +853,14 @@
    	<!-- Add possibility to break a sequence of animation if presence is detected -->
    	<persoAction id="hooded">
    	    <loop>
-	   	    <seq who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="5"/>   	    
+	   	    <seq who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="5"/>   
+	   	    <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
+	   	        <var name="loc:iota" value="fun:angle(self, zildo)"/>
+				<var name="loc:delta" value="fun:dist(self.loc, zildo.loc)"/>
+		 		<var name="loc:freeLoc" value="fun:project(self, loc:iota, loc:delta * 0.5)"/>
+		 
+	   	        <moveTo who="self" pos="loc:freeLoc"/>
+   	   	    </lookFor>   	            	    
    	    </loop>
   	</persoAction>
    	

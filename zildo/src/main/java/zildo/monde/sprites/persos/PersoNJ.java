@@ -571,6 +571,9 @@ public class PersoNJ extends Perso {
 		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
 		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
 		
+		final int[] seqHoodedIdle = {0, 1, 0, 1, 2, 3};
+		final int[] seqHoodedWalking = {0, 1, 2, 3};
+		
 		int add_spr = 0;
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
 
@@ -924,6 +927,19 @@ public class PersoNJ extends Perso {
 			}
 			reverse = r;
 			break;
+			
+		case HOODED:
+			// Standard stance
+			if (pathFinder.getTarget() == null) {// Idle
+				add_spr = seqHoodedIdle[computeSeqPositive(6) % seqHoodedIdle.length];
+			} else {
+				add_spr = 4 + seqHoodedWalking[computeSeqPositive(4) % seqHoodedWalking.length];
+				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
+				System.out.println("hooded:" + add_spr);
+				setAddSpr(0);
+			}
+			break;
+			
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;
 			break;
