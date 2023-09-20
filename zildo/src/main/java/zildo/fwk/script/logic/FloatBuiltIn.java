@@ -62,6 +62,10 @@ public class FloatBuiltIn implements FloatASTNode {
 			int result = EngineZildo.mapManagement.collide(pointLoc.x, pointLoc.y, (Element) context.getActor()) ? 1 : 0;
 			//System.out.println("collision at "+pointLoc+" gives "+result);
 			return result;
+		case "persoloc":
+			npc = EngineZildo.persoManagement.getNamedPersoInContext(variable(0), context);
+			
+			return PointEvaluator.toSingleFloat(new Pointf(npc.x, npc.y));
 		case "dist": // Returns distance between two float locations args=(loc1, loc2)
 			Point p1 = PointEvaluator.fromFloat(params[0].evaluate(context));
 			Point p2 = PointEvaluator.fromFloat(params[1].evaluate(context));

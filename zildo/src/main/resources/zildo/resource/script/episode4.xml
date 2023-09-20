@@ -856,10 +856,15 @@
 	   	    <seq who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="5"/>   
 	   	    <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
 	   	        <var name="loc:iota" value="fun:angle(self, zildo)"/>
-				<var name="loc:delta" value="fun:dist(self.loc, zildo.loc)"/>
+	   	        <var name="loc:hoodedLoc" value="fun:loc(x, y)"/>
+				<var name="loc:delta" value="fun:dist(loc:hoodedLoc, zildo.loc)"/>
 		 		<var name="loc:freeLoc" value="fun:project(self, loc:iota, loc:delta * 0.5)"/>
 		 
 	   	        <moveTo who="self" pos="loc:freeLoc"/>
+	   	        
+	   	        <!-- Attack -->
+	   	        <script who="self" value="24"/>
+	   	        <seq who="self" addSpr="8,9,10,11,12,13" wait="2"/>
    	   	    </lookFor>   	            	    
    	    </loop>
   	</persoAction>

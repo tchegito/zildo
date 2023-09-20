@@ -142,7 +142,7 @@ public enum PersoDescription implements SpriteDescription {
 	
 	// Shift numbers once darkguy will have all its sprites
 	HOODED(/*Idle face*/ 464, 465, 466, 467, /*Walking*/ 468, 469, 470, 471,
-			504, 505, 506, 507, 508, 509),
+			/* Attacking */504, 505, 506, 507, 508, 509),
 	
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 

@@ -553,6 +553,11 @@ public class PersoNJ extends Perso {
 	 * sequence of sprites (example {@link PersoDescription#FISH}) this will lead to a problem.
 	 * Symptom is when game is paused : 'move' method of Perso isn't called anymore, so if it handle
 	 * the 'addSpr' set, a sprite could be badly rendered, with the wrong graphics ... (arg)
+	 * 
+	 * Attempt to fix it: a new method SpriteManagement#updateSprModel especially for Perso
+	 * has been added to handle this case. So we doesn't add addSpr anymore, so no contiguous
+	 * sequence of sprites can work now.
+	 * ==> Need to ensure that. Test with fish, which has a "addSpr=0" here (we should be able to remove it)
 	 */
 	@Override
 	public void finaliseComportement(int animationCounter) {
@@ -930,13 +935,19 @@ public class PersoNJ extends Perso {
 			
 		case HOODED:
 			// Standard stance
-			if (pathFinder.getTarget() == null) {// Idle
+			System.out.println("hooded:" + add_spr+ quel_deplacement + getTarget());
+			if (quel_deplacement == MouvementPerso.HOODED_ATTACK) {
+				// Attacking
+				add_spr = addSpr;
+			} else if (pathFinder.getTarget() == null) {// Idle
 				add_spr = seqHoodedIdle[computeSeqPositive(6) % seqHoodedIdle.length];
 			} else {
 				add_spr = 4 + seqHoodedWalking[computeSeqPositive(4) % seqHoodedWalking.length];
-				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
-				System.out.println("hooded:" + add_spr);
+				//System.out.println("hooded:" + add_spr+ quel_deplacement + getTarget());
 				setAddSpr(0);
+			}
+			if (deltaMoveX != 0) {
+				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
 			}
 			break;
 			

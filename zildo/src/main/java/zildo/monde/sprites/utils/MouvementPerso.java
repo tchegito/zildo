@@ -50,7 +50,8 @@ public enum MouvementPerso {
 	RETRACTED(20),	// For dragon too, when he's diving into lava
 	FREEFLY(21),	// For vulture, with z as target
 	CHAIN_FOLLOW(22),	// Get target from the followed one 
-	MOLE(23);
+	MOLE(23),
+	HOODED_ATTACK(24);
 	
 	public int valeur;
 	
@@ -118,7 +119,8 @@ public enum MouvementPerso {
 		this != SPITFIRE &&
 		this != RETRACTED &&
 		this != FREEFLY &&
-		this != MOLE;
+		this != MOLE &&
+		this != HOODED_ATTACK;
 	}
 	
 	/**
@@ -127,6 +129,7 @@ public enum MouvementPerso {
 	 */
 	public boolean isAlertable() {
 		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && 
-				this != SPITFIRE && this != RETRACTED && this != MOLE && this != CHAIN_FOLLOW && this != MOBILE_WAIT;
+				this != SPITFIRE && this != RETRACTED && this != MOLE && this != CHAIN_FOLLOW && this != MOBILE_WAIT &&
+				this != HOODED_ATTACK;
 	}
 }

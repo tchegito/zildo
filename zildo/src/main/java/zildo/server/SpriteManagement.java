@@ -698,6 +698,12 @@ public class SpriteManagement extends SpriteStore {
 		element.setSprModel(spr);		
 	}
 	
+	private void updateSprModel(Perso perso) {
+		SpriteModel spr = getSpriteBank(perso.getNBank())
+			.get_sprite(perso.getNSpr() );
+		perso.setSprModel(spr);		
+	}
+	
 	public void updateSprModel(SpriteEntity entity) {
 		SpriteModel spr = getSpriteBank(entity.getNBank())
 			.get_sprite(entity.getNSpr());
