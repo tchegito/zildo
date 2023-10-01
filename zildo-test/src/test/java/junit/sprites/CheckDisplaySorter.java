@@ -4,10 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.client.ClientEngineZildo;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Vector2f;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
@@ -59,5 +61,29 @@ public class CheckDisplaySorter extends EngineUT {
 		Assert.assertEquals(2, fireBall.getFloor());
 		Assert.assertEquals("Fireball should be above the ground", 2, fireBall.getFloorForSort());
 
+	}
+	
+	// Rotated sprites have their condition wether they are inside the view, which was wrongly calculated.
+	// It didn't take rotation into account
+	@Test
+	public void creeperDisappear() {
+		mapUtils.loadMap("nature2");
+		PersoPlayer zildo = spawnZildo(199, 225);
+		ClientEngineZildo.spriteDisplay.setZildoId(zildo.getId());
+		waitEndOfScripting();
+
+		SpriteEntity creeper = findEntitiesByDesc(ElementDescription.CREEPER3B).stream()
+				.filter(e -> e.x <70 && e.y <= 212)
+				.findAny().get();
+		
+		// In order to calculate scrX/scrY properly according to the camera
+		ClientEngineZildo.spriteDisplay.setEntities(EngineZildo.spriteManagement.getSpriteEntities(null)); 
+		
+		// 230
+		Assert.assertTrue(creeper.isInsideView());
+		zildo.setTarget(new Pointf(235, 225));
+		zildo.setGhost(true);
+		renderFrames(30);
+		Assert.assertTrue(creeper.isInsideView());
 	}
 }
