@@ -64,6 +64,11 @@ public class PersoNJ extends Perso {
 	ElementGuardWeapon guardWeapon;
 	ElementDescription carriedItem;	// Object that monster will give when he died
 	
+	int[] spriteSequence;
+	int delayInSequence;
+		
+	int framesImmobile;
+	
 	public PersoNJ() {
 		super();
 		setPos_seqsprite(0);
@@ -459,11 +464,19 @@ public class PersoNJ extends Perso {
 */
 					if (!pathFinder.hasNoTarget()) { // Move character if he has a target
 						Pointf loc = pathFinder.reachDestination(vitesse);
-						// Check for infinite movement (A => B => A => B ...)
+						// Check for infinite movement (A => B => A => B ...) or immobile since too long
 						boolean hasCollided = loc.x == x && loc.y == y;
-						if ( (deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY))) {
+						if (deltaMoveX == 0 && deltaMoveY == 0) {
+							framesImmobile++;
+						} else {
+							framesImmobile = 0;
+						}
+						if (framesImmobile >= 10 || 
+								((deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY)))) {
+							framesImmobile = 0;
 							pathFinder.setTarget(null);
 						} else {
+
 							boolean slowDown = walkTile(true);
 							
 							if (slowDown) {
@@ -501,6 +514,8 @@ public class PersoNJ extends Perso {
 								pos_seqsprite = (pos_seqsprite + 1) % 512;
 							}
 						}
+					} else if (spriteSequence != null) {
+						pos_seqsprite = (pos_seqsprite + 1) % 512;
 					}
 				}
 			}
@@ -576,10 +591,7 @@ public class PersoNJ extends Perso {
 		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
 		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
 		
-		final int[] seqHoodedIdle = {0, 1, 0, 1, 2, 3};
-		final int[] seqHoodedWalking = {0, 1, 2, 3};
-		
-		int add_spr = 0;
+		int add_spr = getAddSpr();
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
 
 		int seq2 = computeSeq(3) % 2;
@@ -935,16 +947,8 @@ public class PersoNJ extends Perso {
 			
 		case HOODED:
 			// Standard stance
-			System.out.println("hooded:" + add_spr+ quel_deplacement + getTarget());
-			if (quel_deplacement == MouvementPerso.HOODED_ATTACK) {
-				// Attacking
-				add_spr = addSpr;
-			} else if (pathFinder.getTarget() == null) {// Idle
-				add_spr = seqHoodedIdle[computeSeqPositive(6) % seqHoodedIdle.length];
-			} else {
-				add_spr = 4 + seqHoodedWalking[computeSeqPositive(4) % seqHoodedWalking.length];
-				//System.out.println("hooded:" + add_spr+ quel_deplacement + getTarget());
-				setAddSpr(0);
+			if (delayInSequence != 0) {
+				add_spr = spriteSequence[computeStandardSeqPositive(delayInSequence) % spriteSequence.length];
 			}
 			if (deltaMoveX != 0) {
 				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
@@ -1229,5 +1233,10 @@ public class PersoNJ extends Perso {
 	
 	public void setCarriedItem(ElementDescription p_desc) {
 		carriedItem = p_desc;
+	}
+	
+	public void setSpriteSequence(int[] seq, int delay) {
+		spriteSequence = seq;
+		delayInSequence = delay;
 	}
 }

@@ -133,7 +133,7 @@ public enum PersoDescription implements SpriteDescription {
 	VACTO(389, 390, 387, 388, 385, 386),
 	FIRE_ELEMENTAL(397, 398, 399, 400),
 	COAL(401, 402, 403, 404),
-	COAL_COLD(404),
+	COAL_COLD(404),     
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
 	MOLE(441, 442, 443, 444, 445, 446, 447),
@@ -142,8 +142,10 @@ public enum PersoDescription implements SpriteDescription {
 	
 	// Shift numbers once darkguy will have all its sprites
 	HOODED(/*Idle face*/ 464, 465, 466, 467, /*Walking*/ 468, 469, 470, 471,
-			/* Attacking */504, 505, 506, 507, 508, 509),
+			/* Attacking */504, 505, 506, 507, 508, 509, 
+			/* Bouncing */ 486, 487, 488, 489, 490, 491, 492, 493),
 	
+	// 22
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;

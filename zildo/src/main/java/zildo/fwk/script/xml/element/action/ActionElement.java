@@ -20,8 +20,12 @@
 
 package zildo.fwk.script.xml.element.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xml.sax.Attributes;
 
+import zildo.fwk.ZUtils;
 import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.fwk.script.model.point.IPoint;
@@ -65,6 +69,7 @@ public class ActionElement extends LanguageElement {
 	public String parent;	// For 'perso'
 	public String impact;	// For 'spawn' => describe a ImpactKind element
 	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
+	public int[] sequence;
 	
 	public boolean changeContext;	// For lookFor only
 	
@@ -279,6 +284,15 @@ public class ActionElement extends LanguageElement {
 		case herospecial:			
 			text = readAttribute("arg");
 			val = readInt("value");
+			break;
+		case seqPerso:
+			String[] strSeq = readAttribute("addSpr").replaceAll(" ", "").split(",");
+			List<Integer> values = new ArrayList<>();
+			for (String s : strSeq) {
+				values.add(Integer.parseInt(s));
+			}
+			sequence = ZUtils.listToArray(values);
+			val = readInt("wait");
 			break;
 		case lookFor:
 			Boolean cc = readBoolean("changeContext");

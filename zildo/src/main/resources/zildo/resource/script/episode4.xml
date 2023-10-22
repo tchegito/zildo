@@ -852,19 +852,33 @@
    	
    	<!-- Add possibility to break a sequence of animation if presence is detected -->
    	<persoAction id="hooded">
+   	    <script who="self" value="21"/> 
+   	    <perso who="self" speed="0.5"/>
    	    <loop>
-	   	    <seq who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="5"/>   
+	   	    <seqPerso who="self" addSpr="0,0,0,1,1,1,0,0,0,1,1,1,0,0,2,3,1,1" wait="6"/>   
 	   	    <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
 	   	        <var name="loc:iota" value="fun:angle(self, zildo)"/>
 	   	        <var name="loc:hoodedLoc" value="fun:loc(x, y)"/>
 				<var name="loc:delta" value="fun:dist(loc:hoodedLoc, zildo.loc)"/>
 		 		<var name="loc:freeLoc" value="fun:project(self, loc:iota, loc:delta * 0.5)"/>
 		 
-	   	        <moveTo who="self" pos="loc:freeLoc"/>
+		 		<var name="loc:coll1" value="fun:collide(loc:freeLoc)"/>
+		 		<!-- if location is colliding, try to go further -->
+		 		<if exp="loc:coll1=1.0">
+			 		<var name="loc:freeLoc" value="fun:project(self, loc:iota, loc:delta)"/>
+		 			<var name="loc:coll1" value="fun:collide(loc:freeLoc)"/>
+		 		</if>
+		 		<!-- move if the location is free from collision -->
+	   	       	<if exp="loc:coll1=0.0">
+	   	       		<seqPerso who="self" addSpr="14, 15, 16, 17, 18, 19, 20, 21" wait="6"/>
+	   	       	    <moveTo who="self" pos="loc:freeLoc"/>
+	   	       	</if>
 	   	        
-	   	        <!-- Attack -->
-	   	        <script who="self" value="24"/>
-	   	        <seq who="self" addSpr="8,9,10,11,12,13" wait="2"/>
+	   	        <!-- Attack if zildo is here -->
+	   	       	<lookFor who="self" info="ZILDO" radius="1" changeContext="false">
+		   	        <script who="self" value="24"/>
+		   	        <seq who="self" addSpr="8,9,10,11,12,13" wait="2"/>
+		   	    </lookFor>
    	   	    </lookFor>   	            	    
    	    </loop>
   	</persoAction>

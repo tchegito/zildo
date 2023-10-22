@@ -28,7 +28,7 @@ public enum ActionKind {
 	actions, pos, moveTo, speak, script, angle, wait, sound, clear, fadeIn, fadeOut, map, focus, spawn, exec, stop, take, mapReplace, zikReplace, nameReplace, // History
 																																							// actions
 	music, animation, remove, markQuest, putDown, attack, activate, tile, filter, end, visible, respawn, zoom, herospecial, perso, sprite, 
-	timer, loop, _for, lookFor, _throw, listen, seq;
+	timer, loop, _for, lookFor, _throw, listen, seq, seqPerso;
 
 	public static ActionKind fromString(String p_name) {
 		for (ActionKind kind : values()) {

@@ -826,6 +826,7 @@ public class PersoPlayer extends Perso {
 				int dyingSprite = PersoDescription.PRINCESS_BUNNY.nth(14);
 				setNSpr(dyingSprite);
 				setNBank(SpriteBank.BANK_PNJ4);
+				nSpr = dyingSprite + addSpr;
 				sprModel = EngineZildo.spriteManagement.getSpriteBank(getNBank()).get_sprite(dyingSprite + addSpr);
 				setAjustedX((int) xx - sprModel.getTaille_x() / 2);
 				setAjustedY((int) yy - sprModel.getTaille_y());

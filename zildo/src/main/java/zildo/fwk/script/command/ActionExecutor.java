@@ -779,6 +779,10 @@ public class ActionExecutor extends RuntimeExecutor {
 					int addSpr = (int) p_action.addSpr.evaluate(context);
 					if (addSpr != -1) {
 						perso.setAddSpr(addSpr);
+						// Reset potential previous sprite sequence
+						if (!perso.isZildo()) {
+							((PersoNJ) perso).setSpriteSequence(new int[] {}, 0);
+						}
 					}
 					if (p_action.pv != -1) {
 						perso.setPv(p_action.pv);
@@ -791,6 +795,10 @@ public class ActionExecutor extends RuntimeExecutor {
 					}
 					applyCommonAndPhysicAttributes((Element) perso, p_action);
 				}
+				achieved = true;
+				break;
+			case seqPerso:
+				((PersoNJ) perso).setSpriteSequence(p_action.sequence, p_action.val);
 				achieved = true;
 				break;
 			case timer:

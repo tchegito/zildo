@@ -793,7 +793,6 @@ public abstract class Perso extends Element {
 				break;
 			case 28+ 256*9:	// Nature palace
 				coeffWhiteLight = tileLight.forRotatedTile(0, x, y, tile.rotation);
-				System.out.println(coeffWhiteLight);
 				break;
 			case 13 + 256*10:
 			case 14 + 256*10:
@@ -1416,6 +1415,12 @@ public abstract class Perso extends Element {
 	public int computeSeqPositive(int factor) {
 		 return pos_seqsprite == -1 ? 0 :
 		 	(pos_seqsprite / (factor * Constantes.speed));
+	}
+	
+	/** Same but without the constant speed, to get a real definit delay between each sprite **/
+	public int computeStandardSeqPositive(int factor) {
+		 return pos_seqsprite == -1 ? 0 :
+		 	(pos_seqsprite / factor);
 	}
 	
 	public void setCarriedItem(ElementDescription desc) { }

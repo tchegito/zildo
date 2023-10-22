@@ -243,4 +243,13 @@ public class ZUtils {
     public static boolean isNumeric(String p_text) {
     	return p.matcher(p_text).matches();
     }
+    
+    public static int[] listToArray(List<Integer> l) {
+    	int[] array = new int[l.size()];
+    	int ind = 0;
+    	for (Integer i : l) {
+    		array[ind++] = i;
+    	}
+    	return array;
+    }
 }
