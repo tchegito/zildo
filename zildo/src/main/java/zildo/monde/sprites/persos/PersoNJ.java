@@ -21,6 +21,7 @@
 package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
@@ -570,7 +571,7 @@ public class PersoNJ extends Perso {
 	 * the 'addSpr' set, a sprite could be badly rendered, with the wrong graphics ... (arg)
 	 * 
 	 * Attempt to fix it: a new method SpriteManagement#updateSprModel especially for Perso
-	 * has been added to handle this case. So we doesn't add addSpr anymore, so no contiguous
+	 * has been added to handle this case. So we don't add addSpr anymore, so no-contiguous
 	 * sequence of sprites can work now.
 	 * ==> Need to ensure that. Test with fish, which has a "addSpr=0" here (we should be able to remove it)
 	 */
@@ -1236,7 +1237,10 @@ public class PersoNJ extends Perso {
 	}
 	
 	public void setSpriteSequence(int[] seq, int delay) {
-		spriteSequence = seq;
-		delayInSequence = delay;
+		if (!Arrays.equals(seq, spriteSequence)) {
+			spriteSequence = seq;
+			delayInSequence = delay;
+			pos_seqsprite = 0;
+		}
 	}
 }

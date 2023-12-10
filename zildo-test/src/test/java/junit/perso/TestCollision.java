@@ -328,4 +328,25 @@ public class TestCollision extends EngineUT {
 		Assert.assertEquals(4, darkGuy.getPv());
 	}
 	
+	@Test
+	public void hoodedMoveAlong() {
+		mapUtils.loadMap("nature2");
+		spawnZildo(198, 73);
+		waitEndOfScripting();
+		Perso hooded = persoUtils.persoByName("hooded");
+		hooded.x = 245;
+		hooded.y = 128;
+		//hooded.setTarget(new Pointf(221, 100));
+		renderFrames(10);
+		Assert.assertNotNull(hooded.getTarget());
+		// Wait and check if monster gets stuck
+		
+		while (hooded.deltaMoveX != 0 || hooded.deltaMoveY != 0) {
+			System.out.println(hooded);
+			assertNotBlocked(hooded);
+			renderFrames(1);
+		} // 227,103
+		Assert.assertNull("Hooded should have reach its target !", hooded.getTarget());
+		System.out.println(hooded.getTarget());
+	}
 }
