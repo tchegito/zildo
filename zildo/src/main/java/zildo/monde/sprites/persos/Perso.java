@@ -789,11 +789,14 @@ public abstract class Perso extends Element {
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, tile.rotation);
 				break;
 			case 25 + 256*9:	// nature palace
-				coeffWhiteLight = 0;
+				coeffWhiteLight = tileLight.forNaturePalaceRotatedDoorStep(x, y, tile.rotation);
 				break;
 			case 28+ 256*9:	// Nature palace
-				coeffWhiteLight = tileLight.forRotatedTile(0, x, y, tile.rotation);
+				coeffWhiteLight = tileLight.forNaturePalaceRotatedTile(x, y, tile.rotation);
 				break;
+			case 256*9 + 176:	// Slab in nature palace
+				area.walkSlab(cx, cy, id, true);
+			break;
 			case 13 + 256*10:
 			case 14 + 256*10:
 				coeffWhiteLight = tileLight.forRotatedTile(1, x, y, tile.rotation);
@@ -904,6 +907,11 @@ public abstract class Perso extends Element {
 					break;
 				}
 			}
+		}
+		
+		// Release a slab
+		if (onmap != 256*9 + 176 && onmap != 256*9 + 177) {
+			area.walkSlab(cx, cy, id, false);
 		}
 
 		Tile foreTile = area.readForeTile(cx, cy);

@@ -58,4 +58,29 @@ public class TileLight {
 		}
 	 }
 
+	 public int forNaturePalaceRotatedTile(float x, float y, Rotation rot) {
+		switch (rot) {
+		case NOTHING:
+			default:
+			return north(0, x, y);
+		case CLOCKWISE:
+			return right(0, x, y);
+		case UPSIDEDOWN:
+			return south(1, x, y);
+		case COUNTERCLOCKWISE:
+			return left(0, x, y);
+		}
+	 }
+	 
+	 public int forNaturePalaceRotatedDoorStep(float x, float y, Rotation rot) {
+		 switch (rot) {
+		 case NOTHING:
+		 case CLOCKWISE:
+		 case COUNTERCLOCKWISE:
+			 default:
+			 return 0;
+		 case UPSIDEDOWN:
+			 return south(0, x, y);
+		 }
+	 }
 }

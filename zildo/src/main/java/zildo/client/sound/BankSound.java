@@ -122,7 +122,6 @@ public enum BankSound implements AudioBank {
 	
 	Bitey("bitey"),
 	BossSand1("sand1"),
-	BossSand2("sand2"),
 	Fuite("fuite"),
 	Whip("whip"),
 	Wind("windsuck"),
@@ -160,6 +159,9 @@ public enum BankSound implements AudioBank {
 	MoleBuried2("moleBuried2"),
 	MoleOut("moleOut"),
 	MoleCry("molecry"),
+	
+	Slab1("slabPush"),
+	Slab2("slabRelease"),
 	
 	Chain("chain");
 	

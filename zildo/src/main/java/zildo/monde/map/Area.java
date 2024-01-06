@@ -126,6 +126,8 @@ public class Area implements EasySerializable {
 	// Respawn points for Zildo (multiplayer only)
 	private final List<Point> respawnPoints;
 
+	Map<Integer, Point> walkedSlabs;	// Character ID => coordinates of the pushed slab
+	
 	private Point alertLocation;	// Sound able to alert enemies
 	private int alertDuration = 0;
 	
@@ -152,6 +154,8 @@ public class Area implements EasySerializable {
 		originalDim = new Point(dimX, dimY);
 		dim_x = dimX;
 		dim_y = dimY;
+		
+		walkedSlabs = new HashMap<>();
 	}
 
 	public Area(Atmosphere p_atmo) {
@@ -664,7 +668,20 @@ public class Area implements EasySerializable {
 				((PersoPlayer)attacker).grabWithFork(bush);
 			}
 		}
-}
+	}
+
+	public void walkSlab(int cx, int cy, int id, boolean pushed) {
+		Point loc = walkedSlabs.get(id);
+		if (pushed && loc == null) {
+			walkedSlabs.put(id,  new Point(cx, cy));
+			writemap(cx, cy, 256*9 + 177);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Slab1, loc);
+		} if (!pushed && loc != null) {
+			walkedSlabs.remove(id);
+			writemap(loc.x, loc.y, 256*9 + 176);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Slab2, loc);
+		}
+	}
 	
 	/**
 	 * Explode a wall at a given location, looking for a crack sprite. 
