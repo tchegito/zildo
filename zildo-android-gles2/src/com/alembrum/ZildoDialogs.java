@@ -20,18 +20,14 @@
 
 package com.alembrum;
 
-import zildo.fwk.ui.EditableItemMenu;
-import zildo.fwk.ui.UIText;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+
+import zildo.fwk.ui.EditableItemMenu;
+import zildo.fwk.ui.UIText;
 
 /**
  * @author Tchegito
@@ -58,15 +54,18 @@ public class ZildoDialogs {
         builder.setView(editText);
         
         builder.setCancelable(false)	// No back button
-        	.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
-            public void onClick(DialogInterface dialog, int whichButton) {
-            	
-              }  
-            });   
-        
-        
-    	playerNameDialog = builder.create();	
+        	.setPositiveButton("Ok", (dialog, whichButton) -> {
+				String result = editText.getText().toString();
+				result = result.replaceAll(System.getProperty("line.separator"), "");
+				if (result != null && result.length() >= 1) {
+					// Append to the item menu string builder
+					for (int i=0;i<result.length();i++) {
+						item.addText(result.charAt(i));
+					}
+				}
+			});
 
+    	playerNameDialog = builder.create();	
 	}
 	
 	class FilterForbiddenCharacter implements InputFilter {
@@ -84,29 +83,10 @@ public class ZildoDialogs {
 		    return null;
 		}
 	}
-	class CustomListener implements OnClickListener {
-        private final Dialog dialog;
-        public CustomListener(Dialog dialog) {
-            this.dialog = dialog;
-        }
-        @Override
-        public void onClick(View v) {
-        	String result = editText.getText().toString();
-        	result = result.replaceAll(System.getProperty("line.separator"), "");
-        	if (result != null && result.length() >= 1) {
-            	// Append to the item menu string builder
-            	for (int i=0;i<result.length();i++) {
-            		item.addText(result.charAt(i));
-            	}
-            	dialog.dismiss();
-        	}
-        }
-    }
+
 	public void askPlayerName(EditableItemMenu p_item) {
 		editText.setText("");
 		item = p_item;
 		playerNameDialog.show();
-    	Button b = playerNameDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-  	  	b.setOnClickListener(new CustomListener(playerNameDialog));
 	}
 }

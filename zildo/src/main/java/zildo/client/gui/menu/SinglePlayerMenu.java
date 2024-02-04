@@ -52,7 +52,6 @@ public class SinglePlayerMenu extends Menu {
         	@Override
 			public void run() {
         		client.handleMenu(new PlayerNameMenu(sb, currentMenu, runSingle));
-
         	}
         };
         
@@ -60,7 +59,6 @@ public class SinglePlayerMenu extends Menu {
         	@Override
 			public void run() {
                 client.handleMenu(new SaveGameMenu(true, currentMenu));
-
         	}
         };
         

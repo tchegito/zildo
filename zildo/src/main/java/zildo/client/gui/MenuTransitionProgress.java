@@ -16,8 +16,7 @@ public class MenuTransitionProgress {
 	
 	// Decreasing number of frames during user can't interact
 	int framesAwaiting;
-	int fadeLevel;
-	
+
 	Menu currentMenu;
 	Menu nextMenu;
 	GameStage nextStage;
@@ -87,7 +86,7 @@ public class MenuTransitionProgress {
 			// Next lines may not be necessary for singleplayer stage
 			framesAwaiting = BLOCKING_FRAMES_ON_MENU_INTERACTION;
 
-			System.out.println("set stage to "+nextStage);
+			//System.out.println("set stage to "+nextStage);
 			currentStage = nextStage;
 			nextStage = null;
 		}
@@ -95,7 +94,6 @@ public class MenuTransitionProgress {
 	}
 	
 	public void mainLoop() {
-		//System.out.println(framesAwaiting);
 		if (framesAwaiting == 1) {
 			if (fadingOut) {
 				activateNextSequence();

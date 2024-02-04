@@ -76,7 +76,7 @@ public class ZildoActivity extends Activity {
 		ZildoDialogs zd;
 		Context appContext;	// This context is global to the whole application, depends not on activity lifecycle
 		ActionRunner removeSplashAction;
-		Provider<ZildoDialogs> createZdACtion;
+		Provider<ZildoDialogs> createZdAction;
 
 		public SplashHandler(OpenGLES20SurfaceView view, Context ctx,
 							 ActionRunner splashAction,
@@ -84,7 +84,7 @@ public class ZildoActivity extends Activity {
 			this.view = view;
 			this.appContext = ctx;
 			this.removeSplashAction = splashAction;
-			this.createZdACtion = createZdAction;
+			this.createZdAction = createZdAction;
 		}
 
 		@Override
@@ -96,7 +96,7 @@ public class ZildoActivity extends Activity {
 					break;
 				case PLAYERNAME_DIALOG:
 					if (zd == null) {
-						zd = createZdACtion.make();
+						zd = createZdAction.make();
 					}
 					zd.askPlayerName((EditableItemMenu) msg.obj);
 					break;
@@ -166,11 +166,7 @@ public class ZildoActivity extends Activity {
 						client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
 
 					}
-				}, new Provider<ZildoDialogs>() {
-					public ZildoDialogs make() {
-						return new ZildoDialogs(new AlertDialog.Builder(ZildoActivity.this), getBaseContext());
-					}
-				});
+				}, () -> new ZildoDialogs(new AlertDialog.Builder(ZildoActivity.this), getBaseContext()));
 			}
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
