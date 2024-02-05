@@ -813,7 +813,10 @@ public class Element extends SpriteEntity {
 					if ((j == 2 || j == 3)) {
 						// Allow diagonal movement to become lateral, only if it leads to a real position
 						// (it fixes the bug where jump was quite impossible to make because of lateral movement)
-						if ( (follower || !mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this)) && 
+						// Difference between
+  						//if ( (follower || !mapManagement.collide(x + diagonalForce * move2.x, y + diagonalForce * move2.y, this)) && 
+
+						if ( (follower || !mapManagement.collide(x + diagonalForce * p_deltaX, y + diagonalForce * p_deltaY, this)) && 
 								!mapManagement.collide(x + move2.x, y + move2.y, this)) {
 							xx = x + move2.x;
 							yy = y + move2.y;

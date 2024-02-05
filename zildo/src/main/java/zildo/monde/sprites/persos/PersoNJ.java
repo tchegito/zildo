@@ -908,9 +908,6 @@ public class PersoNJ extends Perso {
 				add_spr = 6 + seqbadguy[cs % seqbadguy.length];
 				reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
 			}
-			if ("thrower1".equals(name)) {
-				//System.out.println(add_spr + " " + reverse);
-			}
 			break;
 		case SCORPION:
 			Reverse r = Reverse.NOTHING;

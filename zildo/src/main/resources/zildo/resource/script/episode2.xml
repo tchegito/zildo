@@ -781,7 +781,7 @@
 	        <!-- Night -->
 	        <filter type="1"/>
 	    </condition>
-	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6,voleursg7,nature1,nature2">
+	    <condition name="chateaucoucou*,voleursg*,nature*">
 	        <!-- Day -->
 	        <filter type="0"/>
 	    </condition>
