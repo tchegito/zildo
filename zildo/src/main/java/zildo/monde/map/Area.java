@@ -673,14 +673,27 @@ public class Area implements EasySerializable {
 	public void walkSlab(int cx, int cy, int id, boolean pushed) {
 		Point loc = walkedSlabs.get(id);
 		if (pushed && loc == null) {
+			SpriteEntity symbol = getSpriteOnCase(cx, cy);
 			walkedSlabs.put(id,  new Point(cx, cy));
 			writemap(cx, cy, 256*9 + 177);
 			EngineZildo.soundManagement.broadcastSound(BankSound.Slab1, loc);
+			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()+1);
 		} if (!pushed && loc != null) {
+			SpriteEntity symbol = getSpriteOnCase(loc.x, loc.y);
 			walkedSlabs.remove(id);
 			writemap(loc.x, loc.y, 256*9 + 176);
 			EngineZildo.soundManagement.broadcastSound(BankSound.Slab2, loc);
+			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()-1);
 		}
+	}
+
+	private SpriteEntity getSpriteOnCase(int cx, int cy) {
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (entity.getEntityType() == EntityType.ENTITY && (int) entity.x / 16 == cx && (int) entity.y / 16 == cy) {
+				return entity;
+			}
+		}
+		return null;
 	}
 	
 	/**

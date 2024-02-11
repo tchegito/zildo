@@ -37,9 +37,9 @@ public class Pnj5 extends SpriteBanque {
 			// Bouncing
 			new Zone(6,132, 17, 28), new Zone(38, 134, 18, 26), new Zone(69, 137, 20, 23), new Zone(100, 140, 22, 20),
 			new Zone(134, 137, 19, 23), new Zone(166, 134, 17, 26),
-			// Running
-			new Zone(7, 164, 16, 28), new Zone(38, 167, 18, 25), new Zone(71, 162, 16, 28), new Zone(102, 161, 18, 28),
-			new Zone(134, 162, 19, 27), new Zone(166, 167, 19, 25), new Zone(198, 166, 17, 26), new Zone(230, 165, 17, 25),
+			// Bouncing
+			new Zone(7, 164, 16, 28), new Zone(38, 167, 18, 25), new ZoneO(71, 162, 16, 28, 0, 0, -2), new ZoneO(102, 161, 18, 28, 0, 0, -3),
+			new ZoneO(134, 162, 19, 27, 1, 0, -3), new ZoneO(166, 167, 19, 25, 1, 0, 0), new ZoneO(198, 166, 17, 26, 1, 2, 0), new ZoneO(230, 165, 17, 27, 0, 1, 0),
 			// Dying
 			new Zone(7, 196, 16, 28), new Zone(38, 198, 18, 26), new Zone(70, 200, 18, 23), new Zone(104, 200, 16, 23),
 			// Dying 2

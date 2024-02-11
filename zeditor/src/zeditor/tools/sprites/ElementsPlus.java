@@ -377,7 +377,13 @@ public class ElementsPlus extends SpriteBanque {
 				// Chair (290)
 				new Zone(40, 126, 14, 22),
 				// Hook of the butcher
-				new Zone(1, 88, 5, 6), new Zone(0, 96, 7, 7)
+				new Zone(1, 88, 5, 6), new Zone(0, 96, 7, 7),
+				// Symbol on nature palace slabs
+				new Zone(0, 502, 13, 12), new Zone(14, 502, 13,12), new Zone(28, 502, 13, 12),
+				new Zone(42, 502, 13, 12), new Zone(56, 502, 13, 12),
+				new Zone(0, 515, 13, 12), new Zone(14, 515, 13, 12), new Zone(28, 515, 13, 12),
+				new Zone(42, 515, 13, 12), new Zone(56, 515, 13, 12)
+				
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("elem", 0, 0), 
@@ -407,7 +413,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 278, 0),
 				new GraphChange("exteria10", 282, 0),
 				new GraphChange("elem", 288, 0),
-				new GraphChange("butcher", 291, 0)
+				new GraphChange("butcher", 291, 0),
+				new GraphChange("interia6", 293, 0)
 		});
 	}
 }

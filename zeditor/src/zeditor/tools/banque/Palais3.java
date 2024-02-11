@@ -110,7 +110,11 @@ public class Palais3 extends Banque {
 				{272, 64}, {288, 64},
 				{336, 64}, {352, 64},
 				// Platform to jump (174)
-				{32, 48}, {48, 48}
+				{32, 48}, {48, 48},
+				// Slab (176)
+				{64, 48}, {80, 48},
+				// Rambard vertical
+				{16, 176}, {32, 176}, {48, 176}
 		};
 				
 		coordsInt = c;
