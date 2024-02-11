@@ -312,7 +312,8 @@ public class Client {
 				}
 			}
 			
-			if (kbHandler.isKeyPressed(Keys.TOUCH_BACK)) {
+			if (kbHandler.isKeyPressed(Keys.TOUCH_BACK) ||
+				kbHandler.isKeyPressed(Keys.GEAR)) {
 				if (!connected) {
 					if (currentMenu == ingameMenu) {
 						askForItemMenu(ingameMenu, "m7.quit");

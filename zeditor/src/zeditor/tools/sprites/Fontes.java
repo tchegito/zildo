@@ -69,7 +69,9 @@ public class Fontes extends SpriteBanque {
 				//Touch aura
 				new Zone(308, 33, 31, 31),
 				// Squirrel for menu
-				new Zone(185,43,9,16)
+				new Zone(185,43,9,16),
+				// Gears for Android
+				new Zone(0, 601, 28, 28)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

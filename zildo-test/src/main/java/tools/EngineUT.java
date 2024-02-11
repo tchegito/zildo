@@ -378,6 +378,10 @@ public abstract class EngineUT {
 			LwjglKeyboardHandler justForCodes = new LwjglKeyboardHandler();
 			
 			@Override
+			public void poll() {
+				super.poll();
+			}
+			@Override
 			public boolean next() {
 				return false;
 			}

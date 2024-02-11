@@ -921,7 +921,7 @@ public class GUIDisplay {
 
 		final int GUI_Y = 4; //35;
 		final int WEAPON_X = 8;
-		final int DROPS_X = 300; //248;
+		final int DROPS_X = 300 - 28; //248;
 
 		int i;
 		// Life
@@ -1005,34 +1005,37 @@ public class GUIDisplay {
 			}
 		}
 		// virtual pad
-		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android 
-				&& ClientEngineZildo.client.isDisplayedAndroidUI()) {
-			int curAlpha = alphaPad;
-			if (dialogDisplay.isDialoguing()) {
-				curAlpha>>=2;
-			}
-			Point crossCenter = null;
-			boolean movingCross = ClientEngineZildo.client.isMovingCross();
-			if (movingCross) {
-				crossCenter = ClientEngineZildo.client.getCrossCenter();
-				Point drag = ClientEngineZildo.client.getDraggingTouch();
-				if (drag != null) {
-					guiSpritesSequence.addSprite(FontDescription.TOUCH_AURA, drag.x-16, drag.y-16);
+		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
+			// Gear should stay always on Android screen
+			guiSpritesSequence.addSprite(FontDescription.GEAR, Zildo.viewPortX - 30, 0);
+			if (ClientEngineZildo.client.isDisplayedAndroidUI()) {
+				int curAlpha = alphaPad;
+				if (dialogDisplay.isDialoguing()) {
+					curAlpha>>=2;
 				}
-			} else {
-				crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
-			}
-			if (crossCenter != null) {
-				int x1 = crossCenter.x - (80/2);
-				if (!movingCross) {
-					x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+				Point crossCenter = null;
+				boolean movingCross = ClientEngineZildo.client.isMovingCross();
+				if (movingCross) {
+					crossCenter = ClientEngineZildo.client.getCrossCenter();
+					Point drag = ClientEngineZildo.client.getDraggingTouch();
+					if (drag != null) {
+						guiSpritesSequence.addSprite(FontDescription.TOUCH_AURA, drag.x-16, drag.y-16);
+					}
+				} else {
+					crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
 				}
-				guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
-			}
-			int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
-			int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
+				if (crossCenter != null) {
+					int x1 = crossCenter.x - (80/2);
+					if (!movingCross) {
+						x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+					}
+					guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
+				}
+				int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
+				int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
+				guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
+				guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
+				}
 		}
 		// Display compass with low alpha if it isn't available
 		guiSpritesSequence.addSprite(FontDescription.COMPASS, 48, 0, !isToDisplay_compassItem() ? 50 : 255);

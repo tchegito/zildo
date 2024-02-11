@@ -57,7 +57,8 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		VP_FRAME(0, 180, 320, 240, false, KEY_DIALOG_FRAME),
 		
 		VP_DPAD(0-30, 0-30, 80+60, 80+60, true, KEY_DIALOG_FRAME),	// KEy has no meaning here
-		VP_COMPASS(48, 0, 32, 32, false, KEY_COMPASS);
+		VP_COMPASS(48, 0, 32, 32, false, KEY_COMPASS),
+		VP_GEAR(290, 0, 28, 28, false, KEY_TOUCH_GEAR);
 		/*
 		VP_BUTTON_A(4, 33, 26, 26, false, KEY_Q),
 		VP_BUTTON_B(36, 58, 26, 26, false, KEY_W),
@@ -133,6 +134,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_TOUCH_MENU	= 0xD2;	/* Random */
 	private static final int KEY_TOUCH_BACK	= 0xD3;	/* Random */
 	private static final int KEY_COMPASS = 40; //253;
+	private static final int KEY_TOUCH_GEAR = 41;
 	
 	static {
 		platformKeys.put(Keys.BACK, KEY_BACK);
@@ -154,6 +156,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.COMPASS, KEY_COMPASS);
 		platformKeys.put(Keys.PAGEUP, 254);	// No pageup/pagedown on touchscreen
 		platformKeys.put(Keys.PAGEDOWN, 253);
+		platformKeys.put(Keys.GEAR, KEY_TOUCH_GEAR);
 	}
 	
 	TouchPoints polledTouchedPoints;
@@ -194,6 +197,8 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 		for (int i : platformKeys.values()) {
 			keyStates[i] = false;
 		}
+		super.poll(); //[19] = keyNext[19];
+		
 		simulatedKeyCode = -1;
 		
 		polledTouchedPoints.clear();

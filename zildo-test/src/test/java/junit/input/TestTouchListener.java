@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.menu.SaveGameMenu;
@@ -136,5 +137,15 @@ public class TestTouchListener extends EngineUT {
 		// Now check that direction is accordingly set
 		Assert.assertNotNull(dir);
 		Assert.assertEquals(Angle.SUD, Angle.fromDelta(dir.x, dir.y));
+	}
+	
+	@Test
+	public void holdGearButton() {
+		TouchPoints tp = enableAndroidTouch();
+		tp.set(0,  new Point(Zildo.viewPortX - 10, 10));
+		fakedKbHandler.poll();
+		Assert.assertTrue(fakedKbHandler.isKeyPressed(Keys.GEAR));
+		fakedKbHandler.poll();
+		Assert.assertFalse(fakedKbHandler.isKeyPressed(Keys.GEAR));
 	}
 }
