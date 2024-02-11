@@ -82,8 +82,7 @@ public class PersoGreenBlob extends PersoShadowed {
 		// TODO: enhance that
 		// Ugly trick : reduce 'add_spr' because it's readded in SpriteManagement#updateSprites
 		// Problem is some use of 'add_spr' non-orthodox, let's see CompositeElement#followShape
-		setAddSpr(add_spr);
-		setNSpr(PersoDescription.GREEN_BLOB.nth(add_spr) - add_spr);
+		setNSpr(PersoDescription.GREEN_BLOB.nth(add_spr));
 		
 	}
 	

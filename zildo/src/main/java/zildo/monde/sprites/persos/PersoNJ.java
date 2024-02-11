@@ -592,7 +592,7 @@ public class PersoNJ extends Perso {
 		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
 		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
 		
-		int add_spr = getAddSpr();
+		int add_spr = 0; //getAddSpr();
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
 
 		int seq2 = computeSeq(3) % 2;
@@ -761,7 +761,7 @@ public class PersoNJ extends Perso {
 			break;
 		case CHAUVESOURIS:
 		case FIRETHING:
-			add_spr = 0;
+			add_spr = getAddSpr();
 			break;
 		case RAT:
 			add_spr = angle.value * 2;
@@ -879,8 +879,10 @@ public class PersoNJ extends Perso {
 			} else {	// Turtle head => no shadow
 				shadow.setVisible(false);
 			}
+			add_spr += getAddSpr();
 			break;
 		case TURRET_HEART:
+			add_spr = getAddSpr();
 			if (addSpr == 0) {
 				if (shadow == null) addShadow(ElementDescription.SHADOW_LARGE);
 				shadow.setVisible(true);
@@ -888,6 +890,7 @@ public class PersoNJ extends Perso {
 				break;
 			}	// No break is intentional
 		case TURRET:
+			add_spr = getAddSpr();
 			if (shadow != null) {
 				shadow.setVisible(false);
 			}
