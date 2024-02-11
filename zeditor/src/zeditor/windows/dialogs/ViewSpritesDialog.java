@@ -134,16 +134,19 @@ public class ViewSpritesDialog extends JDialog {
 		Graphics2D gfx2d = (Graphics2D) img.getGraphics();
 		// Multiply size by scale
 		gfx2d.scale(scale, scale);
+		// Display width/height
+		String display = model.getTaille_x()+" x "+model.getTaille_y();
+		Zone borders = model.getEmptyBorders();
+		int startX = 0, sizeX = model.getTaille_x()*scale;
+		if (borders != null) {
+			display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
+		}
+		gfx2d.fillRect(startX, 0, sizeX, model.getTaille_y()*scale);
 		gfx2d.translate(0.5, 0.5);
 		spriteSet.drawSprite(0, 0, bank, nSpr, gfx2d, buffer);
 		ImageIcon icon = new ImageIcon(img);
 		spriteImgLabel.setIcon(icon);
-		// Display width/height
-		String display = model.getTaille_x()+" x "+model.getTaille_y();
-		Zone borders = model.getEmptyBorders();
-		if (borders != null) {
-			display += " offXLeft="+borders.x1+" offXRight="+borders.x2+" offY="+borders.y1;
-		}
+
 		display += " " +SpriteDescription.Locator.findSpr(nBank, nSpr);
 		sizeLabel.setText(display);
 	}
