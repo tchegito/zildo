@@ -33,6 +33,7 @@ import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector2f;
@@ -161,5 +162,26 @@ public class TestBasicPerso extends EngineUT {
 			Assert.assertNull(persoUtils.persoByName(persoName));
 		}
 		Assert.assertTrue("List of failures should have been empty but is "+erreurs,  erreurs.isEmpty());
+	}
+	
+	@Test
+	public void observableNotAlertable() {
+		mapUtils.loadMap("polaky5");
+		PersoPlayer zildo = spawnZildo(647, 546); //585, 569);
+		zildo.setAngle(Angle.NORD);
+		waitEndOfScripting();
+		Perso lulu = persoUtils.persoByName("lulu");
+		Assert.assertNotNull(lulu);
+		Assert.assertEquals(MouvementPerso.OBSERVE, lulu.getQuel_deplacement());
+		Assert.assertFalse(lulu.isAlerte());
+		zildo.takeSomething(648, 535, ElementDescription.JAR, null);
+		renderFrames(5);
+		Assert.assertNotNull(zildo.getEn_bras());
+		zildo.setAngle(Angle.OUEST);
+		simulateDirection(-1, 0);
+		renderFrames(30);
+		zildo.throwSomething();
+		renderFrames(80);
+		Assert.assertFalse(lulu.isAlerte());
 	}
 }
