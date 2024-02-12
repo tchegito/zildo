@@ -256,4 +256,17 @@ public class TestBugCutscenes extends EngineUT {
 		System.out.println(hero.getPv());
 	}
 	
+	@Test
+	public void thiefsCutScenes() {
+		mapUtils.loadMap("voleursg2");
+		spawnZildo(604, 65);
+		simulateDirection(1, 0);
+		renderFrames(100);
+		Assert.assertEquals("voleursg3", EngineZildo.mapManagement.getCurrentMap().getName());
+		waitEndOfScroll();
+		waitEndOfScriptingPassingDialog();
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestOver("meanwhile_voleurs"));
+
+	}
+	
 }
