@@ -305,7 +305,8 @@ public class PlayerManagement {
 				EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
 				// Reset pushed object before collision could set one
-				if (heros.getMouvement() == MouvementZildo.POUSSE && heros.getAngle() != heros.getAnglePush()) {
+				Angle angleDirection = Angle.fromDirection(Math.round(deltaY),  Math.round(deltaY));
+				if (heros.getMouvement() == MouvementZildo.POUSSE && angleDirection != heros.getAnglePush()) {
 					heros.setMouvement(MouvementZildo.VIDE);
 				}
 				heros.pushSomething(null);
