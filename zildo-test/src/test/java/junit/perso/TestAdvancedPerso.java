@@ -313,6 +313,18 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertEquals("Explosion should have been on the same floor as dynamite !", 2, explosion.getFloor());
 	}
 	
+	@Test
+	public void squeakyFloor() {
+		// Since butcher implementation, we had a problem with lookFor tag, and especially attribute 'changeContext'
+		// In 'disturbVoleurs' scene, we look for a guy around hero, then that guy should throw a projectile
+		// With 'lookFor' changing context, we ended up with a NULL character throwing => NPE
+		mapUtils.loadMap("voleursm1");
+		spawnZildo(214, 119);
+		simulateDirection(0, -1);
+		renderFrames(30);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
+	}
+	
 	private Perso preparePersoAction() throws Exception {
 		loadXMLAsString(guyScript);
 		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);

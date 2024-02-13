@@ -843,10 +843,10 @@ public class ActionExecutor extends RuntimeExecutor {
 				}
 				if (found != null ^ lookFor.negative) { // XOR !
 					IEvaluationContext lookForContext;
-					if (found == null || !p_action.changeContext) {
-						lookForContext = context;
-					} else {
+					if (found != null) {
 						lookForContext = new SpriteEntityContext(found, context);
+					} else {
+						lookForContext = context;
 					}
 					// Specificity here: we create a subprocess with a different
 					// context: upon found character

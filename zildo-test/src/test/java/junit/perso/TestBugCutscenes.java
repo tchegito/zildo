@@ -266,7 +266,6 @@ public class TestBugCutscenes extends EngineUT {
 		waitEndOfScroll();
 		waitEndOfScriptingPassingDialog();
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestOver("meanwhile_voleurs"));
-
 	}
 	
 }
