@@ -10,6 +10,9 @@ import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.ZUtils;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
@@ -27,6 +30,7 @@ import zildo.platform.input.TouchPoints;
  */
 public class TestTouchListener extends EngineUT {
 
+	TouchPoints tp;
 	
 	@Test
 	public void concurrentModification() {
@@ -147,5 +151,55 @@ public class TestTouchListener extends EngineUT {
 		Assert.assertTrue(fakedKbHandler.isKeyPressed(Keys.GEAR));
 		fakedKbHandler.poll();
 		Assert.assertFalse(fakedKbHandler.isKeyPressed(Keys.GEAR));
+	}
+	
+	PersoPlayer zildo;
+	
+	@Test
+	public void releaseInventory() {
+		mapUtils.loadMap("d4m3");
+		zildo = spawnZildo(160, 160);
+		Item sword = new Item(ItemKind.SWORD);
+		zildo.getInventory().add(sword);
+		zildo.setWeapon(sword);
+		waitEndOfScripting();
+		tp = enableAndroidTouch();
+		
+		tryPressAndReleaseInventory(true, new Point(20, 20));
+		tryPressAndReleaseInventory(true, new Point(padDownLoc.x1+2, padDownLoc.y1+2));
+		tryPressAndReleaseInventory(false, new Point(padDownLoc.x1-12, padDownLoc.y1+2));
+	}
+	
+	/** Go inside inventory, then press a key to go out.
+	 * According to the given location, we expect player leaves inventory or not.
+	 * @param shouldRelease
+	 * @param touchLocation
+	 */
+	private void tryPressAndReleaseInventory(boolean shouldQuitInventory, Point touchLocation) {
+		// Press inventory
+		Assert.assertFalse(fakedKbHandler.isKeyPressed(Keys.X));
+		addTouchPoint(new Point(20, 20));
+		Assert.assertTrue(fakedKbHandler.isKeyPressed(Keys.X));
+		addTouchPoint(null);	// Release inventory key
+		Assert.assertTrue(zildo.isInventoring());
+		renderFrames(20);
+		//tp.set(0,  new Point(20, 20));
+		addTouchPoint(touchLocation);
+		renderFrames(20);	// Wait for inventory circle to disappear
+		Assert.assertEquals(!shouldQuitInventory, zildo.isInventoring());
+		addTouchPoint(null);
+
+	}
+	
+	// Touch the screen, then send result to engines, and wait 1 frame for being processed in PlayerManagement
+	private void addTouchPoint(Point p) {
+		if (p == null) {
+			tp.clear();
+		} else {
+			tp.set(0,  p);
+		}
+		fakedKbHandler.poll();
+		instant.update();
+		renderFrames(1);
 	}
 }

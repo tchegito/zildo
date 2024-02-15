@@ -98,9 +98,9 @@ public class PlayerManagement {
 			gamePhase=GamePhase.INGAME;
 		} 
 
+		Vector2f dir = instant.getDirection();
 		if (Zildo.recordMovements) {
 			boolean oneKeyPressed = false;
-			Vector2f dir = instant.getDirection();
 			for (KeysConfiguration key : KeysConfiguration.values()) {
 				if (instant.isKeyDown(key)) {
 					EngineZildo.game.recordMovement(dir, key);
@@ -121,13 +121,21 @@ public class PlayerManagement {
 					);
 		}
 		if (heros.isInventoring()) {
+			boolean allow = true;
+			if (dir != null) {
+				// Refuses to leave inventory if user presses a diagonal movement => we prefer switching items instead
+				Angle ang = Angle.fromDirection(Math.round(dir.x), Math.round(dir.y));
+				allow &= ang != Angle.SUDOUEST && ang != Angle.SUDEST;
+			}
+			if (allow) {
 			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_INVENTORY,
 					KeysConfiguration.PLAYERKEY_UP, 
 					KeysConfiguration.PLAYERKEY_INVENTORY,
 					KeysConfiguration.PLAYERKEY_DOWN
 					//KeysConfiguration.PLAYERKEY_ACTION,	// These keys was added for gamepad support, but ruins game experience (see Issue 81)
 					//KeysConfiguration.PLAYERKEY_ATTACK
-					);			
+					);	
+			}
 		}
 		
 		
