@@ -71,8 +71,6 @@ public class ActionElement extends LanguageElement {
 	public FloatExpression addSpr;	// For 'perso' and 'spawn' (never a float value, but we can use context variables)
 	public int[] sequence;
 	
-	public boolean changeContext;	// For lookFor only
-	
 	// Only used for 'spawn' on 'chained' attribute
 	public int chainCount = -1;
 	public FloatExpression chainDelay;
@@ -294,9 +292,6 @@ public class ActionElement extends LanguageElement {
 			sequence = ZUtils.listToArray(values);
 			val = readInt("wait");
 			break;
-		case lookFor:
-			Boolean cc = readBoolean("changeContext");
-			changeContext = cc == null ? true : cc;
 		default:
 			break;
 		}

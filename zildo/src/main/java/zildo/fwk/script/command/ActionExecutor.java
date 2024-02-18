@@ -842,11 +842,9 @@ public class ActionExecutor extends RuntimeExecutor {
 							lookFor.radius, p_action.info, lookFor.sight);
 				}
 				if (found != null ^ lookFor.negative) { // XOR !
-					IEvaluationContext lookForContext;
-					if (found != null) {
+					IEvaluationContext lookForContext = context;
+					if (found != null && lookFor.changeContext) {
 						lookForContext = new SpriteEntityContext(found, context);
-					} else {
-						lookForContext = context;
 					}
 					// Specificity here: we create a subprocess with a different
 					// context: upon found character
