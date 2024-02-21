@@ -157,10 +157,10 @@ public class ZildoActivity extends Activity {
 					public void run() {
 						setContentView(com.alembrum.R.layout.main);
 
-						OpenGLES20SurfaceView openGLview = (OpenGLES20SurfaceView) findViewById(R.id.glsurfaceview); // Nul si on a pas fait le setContentView avant
+						view = findViewById(R.id.glsurfaceview); // Nul si on a pas fait le setContentView avant
 
-						openGLview.setViewRenderer(renderer);
-						openGLview.setOnTouchListener(touchListener);
+						view.setViewRenderer(renderer);
+						view.setOnTouchListener(touchListener);
 
 						client.setLeftHanded(getPreferences(MODE_PRIVATE).getBoolean(PARAM_LEFTHANDED, false));
 						client.setMovingCross(getPreferences(MODE_PRIVATE).getBoolean(PARAM_MOVINGCROSS, false));
@@ -225,8 +225,16 @@ public class ZildoActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (findViewById(R.id.glsurfaceview) == null && renderer != null) {
+			// Our view has been disposed, so we have to recreate it and attach it to our renderer and touch listener
+			setContentView(com.alembrum.R.layout.main);
+			view = findViewById(R.id.glsurfaceview);
+			view.setViewRenderer(renderer);
+			view.setOnTouchListener(touchListener);
+		}
 		if (view != null) {
 			view.onResume();
+
 		}
 		AndroidSoundEngine.resumeAll();
 	}
@@ -357,11 +365,5 @@ public class ZildoActivity extends Activity {
 		public Client getClient() {
 			return client;
 		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		System.exit(0);
 	}
 }
