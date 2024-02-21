@@ -8,8 +8,13 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import tools.annotations.SpyHero;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
@@ -143,6 +148,25 @@ public class CheckPersoMoving extends EngineUT {
 		}
 		// Check that falling is automatically ran
 		checkScriptRunning("dieInPit");
-		
+	}
+	
+	
+	// Before, when hero looking north hit a gard before him, the attacked guy
+	// could be projected toward south, coming back on hero. That was absurd.
+	@Test
+	public void projectionNotOnAttacker() {
+		mapUtils.loadMap("polakyg3");
+		PersoPlayer zildo = spawnZildo(175, 130);
+		persoUtils.removePerso("bleu");
+		Perso gard = persoUtils.persoByName("bleu");
+		gard.setQuel_deplacement(MouvementPerso.IMMOBILE, true);
+		waitEndOfScripting();
+
+		zildo.setAngle(Angle.NORD);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		zildo.attack();
+		renderFrames(10);
+		Assert.assertTrue(gard.isWounded());
+		Assert.assertTrue(gard.getPy() < 0);
 	}
 }

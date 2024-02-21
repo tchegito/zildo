@@ -20,10 +20,12 @@
 
 package zildo.monde.collision;
 
+import zildo.monde.Trigo;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 public class Collision {
 
@@ -123,6 +125,14 @@ public class Collision {
         } else {
             return false;
         }
+    }
+    
+    /** Calculate the middle of intersecting zones between 2 circles **/
+    public static Point hitPointOnCircles(int x, int y, int a, int b, int r, int rayon) {
+    	double angle = Trigo.getAngleRadian(a-x, b-y);
+    	Point e1 = new Pointf(x,y).translate(Trigo.vect(angle, r)).toPoint();
+    	Point e2 = new Pointf(a,b).translate(Trigo.vect(angle, -rayon)).toPoint();
+    	return Point.middle(e1, e2);
     }
     
     @Override
