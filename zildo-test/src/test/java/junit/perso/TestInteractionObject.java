@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -28,29 +29,25 @@ public class TestInteractionObject extends EngineUT {
 
 	PersoPlayer zildo;
 	
+	@Before
+	public void init() {
+		zildo = spawnZildo(160, 100);
+		// Very important: wait, because automatic behavior doesn't run without
+		waitEndOfScripting();
+	}
 	/** Check when hero takes items that:
 	 * -automatic dialog are well triggered
 	 * -item are added into his inventory (if possible) **/
 	@Test
 	public void automaticBehavior() {
-		zildo = spawnZildo(160, 100);
-		// Very important: wait, because automatic behavior doesn't run without
-		waitEndOfScripting();
 		for (ItemKind kind : ItemKind.values()) {
 			
 			SpriteDescription desc = kind.representation;
-			System.out.println(kind);
-			
-			/*
-			boolean before = !(kind.isWeapon() || desc == ElementDescription.FLASK_RED || desc == ElementDescription.NECKLACE
-					|| desc == ElementDescription.FLUT || desc != ZildoDescription.SHIELD_DOWN);
-					*/
 			pick(desc);
 			// If automatic sentence is planned, check it
 			if (kind.getFoundSentence("") != null) {
-				Assert.assertNotNull(dialog(kind));
+				Assert.assertNotNull(dialog((ElementDescription) desc));
 			}
-			//Assert.assertTrue(kind+" should have return "+before+" !", before == pick);
 			// Wait for end of dialog
 			waitEndOfScriptingPassingDialog();
 			if (kind.canBeInInventory()) {
@@ -58,6 +55,29 @@ public class TestInteractionObject extends EngineUT {
 			}
 			// Remove item in hero's arms
 			zildo.setEn_bras(null);
+			EngineZildo.dialogManagement.resetQueue();
+		}
+	}
+
+	@Test
+	public void takeTwiceAutomaticBehavior() {
+		// First time
+		pick(ElementDescription.KEY);
+		Assert.assertNotNull(dialog(ElementDescription.KEY));
+
+		// Second time
+		EngineZildo.dialogManagement.resetQueue();
+		pick(ElementDescription.KEY);
+		Assert.assertEquals(0, EngineZildo.dialogManagement.getQueue().size());
+	}
+	
+	@Test
+	public void takeFourMoonFragments() {
+		zildo.getInventory().add(new Item(ItemKind.NECKLACE));
+
+		for (int i=0;i<4;i++) {
+			pick(ElementDescription.HEART_FRAGMENT);
+			Assert.assertNotNull(dialog(ElementDescription.HEART_FRAGMENT));
 			EngineZildo.dialogManagement.resetQueue();
 		}
 	}
@@ -70,9 +90,9 @@ public class TestInteractionObject extends EngineUT {
 	}
 	
 	/** Get the pronounced sentence. Parameter is just for displaying error. **/
-	private String dialog(ItemKind kind) {
+	private String dialog(ElementDescription desc) {
 		List<WaitingDialog> wds = EngineZildo.dialogManagement.getQueue();
-		Assert.assertTrue("No automatic dialog was found for "+kind, wds.size() > 0);
+		Assert.assertTrue("No automatic dialog was found for "+desc, wds.size() > 0);
 		Assert.assertEquals("Only one sentence should have been launched !", 1, wds.size());
 		String sentence = wds.get(0).sentence;
 		System.out.println(sentence);
@@ -81,9 +101,6 @@ public class TestInteractionObject extends EngineUT {
 	
 	@Test
 	public void plantDynamite() {
-		waitEndOfScripting();
-		zildo = spawnZildo(160, 100);
-
 		// Hero east of the boulder
 		plantAndCheck(new Point(160, 100), boulder -> boulder.vx > 0, "East");
 		// Hero west of the boulder

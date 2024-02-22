@@ -488,7 +488,18 @@ public class ScriptManagement {
 		}
     	if (label != null) {
     		ClientState client = Server.getClientFromZildo(p_zildo);
-    		EngineZildo.dialogManagement.launchDialog(client, null, new TakingItemAction(label, p_element));
+    		boolean infoDialog = true;
+    		if (p_desc == ElementDescription.KEY) {
+    			String questName = "found" + p_desc;
+    			if (!isQuestDone(questName)) {
+    				accomplishQuest(questName, false);
+    			} else {
+    				infoDialog = false;
+    			}
+    		}
+    		if (infoDialog) {
+    			EngineZildo.dialogManagement.launchDialog(client, null, new TakingItemAction(label, p_element));
+    		}
     	}
 	}
 	
