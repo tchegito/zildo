@@ -231,6 +231,7 @@
         </trigger>
         <action>
             <wait value="80"/>
+            <spawn what="leaf" type="WATER_LEAF" pos="344,128"/>
       	    <sound name="SlipWater1"/>
             <moveTo what="leaf" pos="294,154"/>
       	    <sound name="SlipWater2"/>

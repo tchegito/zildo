@@ -283,6 +283,8 @@ public class EngineZildo {
 			case CHANGINGMAP_WAITSCRIPT:	// Engine is doing 'map script' (see MapscriptElement)
 				if (!scriptManagement.isPriorityScripting()) {
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
+					// We have to wait condition mapscript to execute, in case they change the music (example: igorlily/igorvillage)
+					EngineZildo.mapManagement.loadMapMusic();
 				}
 				retEvent.chPoint = null;
 				break;

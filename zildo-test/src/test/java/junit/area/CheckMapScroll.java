@@ -7,8 +7,13 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
 import tools.EngineUT;
 import zildo.client.ClientEngineZildo;
+import zildo.client.sound.Ambient.Atmosphere;
+import zildo.client.sound.BankMusic;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -217,6 +222,58 @@ public class CheckMapScroll extends EngineUT {
 		Assert.assertEquals(216, camera().y);
 	}
 	
+	// plusieurs problèmes de musique:
+	// -quand on charge une partie au village des pêcheurs on devrait avoir Village, et non pas Nuit
+	// -quand on transitionne entre igorvillage et igorlily le changement ne se fait pas correctement
+	
+	
+	@Test
+	public void twoWaterLilies() {
+		mapUtils.loadMap("igorvillage");
+		PersoPlayer zildo = spawnZildo(420, 282);
+		zildo.setWeapon(new Item(ItemKind.FLUT));
+		persoUtils.removePerso("new");
+		waitEndOfScripting();
+
+		String[] playingMusic = {"no"};
+		doAnswer((i) -> playingMusic[0] = ((BankMusic)i.getArgument(0)).getFilename()
+
+		).when(ClientEngineZildo.soundPlay).playMusic(any(BankMusic.class), any(Atmosphere.class));
+		// Play flut then check for the waterlily
+		zildo.attack();
+		renderFrames(100);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("summonLeafVillage"));
+		SpriteEntity waterLily = findEntityByDesc(ElementDescription.WATER_LEAF);
+		Assert.assertNotNull(waterLily);
+		Assert.assertTrue(waterLily.getMover().isActive());
+		waitForScriptFinish("summonLeafVillage");
+		Assert.assertFalse(waterLily.getMover().isActive());
+		zildo.setPos(new Vector2f(414, 329));
+		simulateDirection(0, 1);
+		while (zildo.getY() < 350) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		Assert.assertTrue(zildo.isOnPlatform());
+		
+		waterLily.x = 31;
+		waterLily.y = 239;
+		zildo.setPos(new Vector2f(31, 239));
+		// Go west swinging the sword
+		zildo.setAngle(Angle.EST);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		renderFrames(1);
+		zildo.attack();
+		renderFrames(20);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("igorlily");
+		Assert.assertEquals("Nuit", playingMusic[0]);
+		// Then go back to check for the waterlily presence
+		Assert.assertEquals("It should have been only 1 water lily !", 
+				1, findEntitiesByDesc(ElementDescription.WATER_LEAF).size());
+	}
 	
 	
 	private Point camera() {
