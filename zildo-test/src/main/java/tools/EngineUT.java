@@ -305,7 +305,7 @@ public abstract class EngineUT {
 		
 		// Mock certain screen filters
 		@SuppressWarnings("unchecked")
-		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class, FitToScreenFilter.class};
+		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
 		for (Class<ScreenFilter> clazz : filterClasses) {
 			ScreenFilter filter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
 			Zildo.pdPlugin.filters.put(clazz, filter);
