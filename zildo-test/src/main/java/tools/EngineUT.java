@@ -63,6 +63,7 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
+import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
@@ -304,10 +305,10 @@ public abstract class EngineUT {
 		
 		// Mock certain screen filters
 		@SuppressWarnings("unchecked")
-		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
+		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class, FitToScreenFilter.class};
 		for (Class<ScreenFilter> clazz : filterClasses) {
-			ScreenFilter cloudFilter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
-			Zildo.pdPlugin.filters.put(clazz, cloudFilter);
+			ScreenFilter filter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
+			Zildo.pdPlugin.filters.put(clazz, filter);
 		}
 
 		// Fake client display
