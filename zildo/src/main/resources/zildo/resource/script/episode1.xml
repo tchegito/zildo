@@ -551,6 +551,9 @@
 		<condition name="polakyg" exp="tonneau_polakyg">
 		    <pos what="barrel1" pos="0,16" delta="true"/>
 		</condition>
+		<condition name="polaky2">
+		    <visible who="barmasky" value="false"/>
+		</condition>
 	</mapScript>
 	
 	<scene id="preintro">
