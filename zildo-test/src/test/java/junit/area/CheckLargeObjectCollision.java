@@ -292,7 +292,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 	private void initIgorLily(Point waterLilyLoc) {
 		mapUtils.loadMap("igorlily");
 		EngineZildo.persoManagement.clearPersos(true);
-		EngineZildo.spriteManagement.getNamedEntity("leaf").dying = true;
 		
 		// Spawn water lily
 		waterLily = EngineZildo.spriteManagement.spawnSprite(
