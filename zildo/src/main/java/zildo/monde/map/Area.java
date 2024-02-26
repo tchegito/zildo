@@ -1781,7 +1781,7 @@ public class Area implements EasySerializable {
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 	  coords.y * 16 * mapReference.getDim_y());
 		
-		if (nextMap.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
+		if (p_mapScrollAngle.isVertical()) { //.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
 			scrollOffset.x = 0;
 		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props

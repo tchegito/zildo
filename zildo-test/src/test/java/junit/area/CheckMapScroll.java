@@ -16,6 +16,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
@@ -178,11 +179,9 @@ public class CheckMapScroll extends EngineUT {
 
 		// Go north to reach cavef4
 		simulateDirection(0, -1);
-		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
 		Assert.assertEquals(320, camera().x);
 		waitChangingMap();
 		renderFrames(1);
-		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
 		waitEndOfScroll();
 		Assert.assertEquals("cavef4",  EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertEquals(336,  camera().x);
@@ -204,11 +203,9 @@ public class CheckMapScroll extends EngineUT {
 
 		// Go north to reach cavef4
 		simulateDirection(1, 0);
-		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
 		Assert.assertEquals(216, camera().y);
 		waitChangingMap();
 		renderFrames(1);
-		System.out.println(ClientEngineZildo.mapDisplay.getCamera());
 		waitEndOfScroll();
 		Assert.assertEquals("cavef7",  EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertEquals(224,  camera().y);
@@ -221,12 +218,8 @@ public class CheckMapScroll extends EngineUT {
 		Assert.assertEquals("cavef6",  EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertEquals(216, camera().y);
 	}
-	
-	// plusieurs problèmes de musique:
-	// -quand on charge une partie au village des pêcheurs on devrait avoir Village, et non pas Nuit
-	// -quand on transitionne entre igorvillage et igorlily le changement ne se fait pas correctement
-	
-	
+		
+	// This test does also an additional check on music switch between maps
 	@Test
 	public void twoWaterLilies() {
 		mapUtils.loadMap("igorvillage");
@@ -275,6 +268,23 @@ public class CheckMapScroll extends EngineUT {
 				1, findEntitiesByDesc(ElementDescription.WATER_LEAF).size());
 	}
 	
+	@Test
+	public void lavaEntitiesPersistDuringScroll() {
+		mapUtils.loadMap("cavef4");
+		PersoPlayer zildo = spawnZildo(159, 199);
+		SpriteEntity lavaPatch = findEntityByDesc(GearDescription.LAVA3);
+		System.out.println(lavaPatch);
+		simulateDirection(0, 1);
+		waitChangingMap();
+		renderFrames(5);
+
+		SpriteEntity lavaPatch2 = findEntityByDesc(GearDescription.LAVA3);
+		Assert.assertNotNull(lavaPatch2);
+		// Entity have moved along X-axis because of X-offset
+		// So an entity coming from the previous screen shouldn't be shifted on X-axis if movement is vertical
+		Assert.assertEquals((int) lavaPatch.x,  (int) lavaPatch2.x);
+
+	}
 	
 	private Point camera() {
 		return ClientEngineZildo.mapDisplay.getCamera();
