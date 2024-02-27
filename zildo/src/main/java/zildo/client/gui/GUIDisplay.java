@@ -74,6 +74,10 @@ import zildo.server.state.PlayerState;
 // -inventory
 // -extra informations, various animations ...
 
+// There is 2 methods called on each frame:
+// -prepareDraw
+// -draw
+
 // Other class communicate with this one by events:
 // -toDisplay_dialoguing
 // -toRemove_dialoguing
@@ -166,6 +170,11 @@ public class GUIDisplay {
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
+	int sizeX;
+	int sizeY;
+	int posX1;
+	int posY1;
+	
 	public GUIDisplay() {
 		toDisplay_dialoguing = false;
 		toDisplay_generalGui = false;
@@ -188,6 +197,10 @@ public class GUIDisplay {
 		
 		// Screen constants
 		sc = ClientEngineZildo.screenConstant;
+		sizeX = sc.TEXTER_SIZEX;
+		sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
+		posX1 = sc.TEXTER_COORDINATE_X - 10;
+		posY1 = sc.TEXTER_COORDINATE_Y - 10;
 		
 		dialogContext = new DialogContext();
 		dialogDisplay = new DialogDisplay(dialogContext, arrowSprite);
@@ -279,13 +292,8 @@ public class GUIDisplay {
 		return c.intValue();
 	}
 	
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// draw
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Main method for this class.
-	// Should handle all events happening here.
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void draw(boolean isMenu) {
+	/** Called before updating sprite entities on display **/
+	public void prepareDraw(boolean isMenu) {
 		if (!isMenu && toDisplay_dialogMode != DialogMode.TEXTER) {
 			// Re-initialize the gui's sprites sequence.
 			// Each frame, we re-add the sprites to avoid doing test about what
@@ -306,11 +314,7 @@ public class GUIDisplay {
 			toDisplay_dialoguing = false;
 		} else if (toDisplay_dialoguing) {
 			// Draw frame and text inside it
-			drawFrame();
-		}
-
-		if (toDisplay_scores) {
-			drawScores();
+			prepareDrawFrame();
 		}
 		if (toDisplay_adventureMenu) {
 			// In this mode, we have to remove any dialogs => best is to forbid compass during conversations
@@ -318,6 +322,23 @@ public class GUIDisplay {
 		} else if (adventureSequence.isDrawn()) {
 			adventureSequence.clear();
 			frameDialogSequence.clear();
+		}
+	}
+	
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// draw
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// Main method for this class.
+	// Should handle all events happening here.
+	// /////////////////////////////////////////////////////////////////////////////////////
+	public void draw() {
+		if (toDisplay_dialoguing) {
+			// Draw frame and text inside it
+			drawBox(posX1, posY1, sizeX, sizeY, true);
+		}
+
+		if (toDisplay_scores) {
+			drawScores();
 		}
 
 		if (toDisplay_dialogMode == DialogMode.TEXTER) {
@@ -603,21 +624,16 @@ public class GUIDisplay {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// drawFrame
+	// prepareDrawFrame
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// Draw frame around displayed text
+	// Prepare sprite sequences to draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
 	private final int couleur_cadre[] = {48, 149, 150, 149, 48};
 	//private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
 
-	void drawFrame() {
-		int sizeX = sc.TEXTER_SIZEX;
-		int sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
-		int posX1 = sc.TEXTER_COORDINATE_X - 10;
-		int posY1 = sc.TEXTER_COORDINATE_Y - 10;
-
+	void prepareDrawFrame() {
 		// Draw frame's bars
-		drawBox(posX1, posY1, sizeX, sizeY, true);
+		prepareDrawBox(posX1, posY1, sizeX, sizeY, true);
 		
 		// Draw corner frame
 		if (frameDialogSequence.isDrawn()) {
@@ -626,15 +642,20 @@ public class GUIDisplay {
 			dialogDisplay.animateArrow(entity);
 		}
 	}
-
-	/** Draw a frame with transparent blue box inside, according to the current fade level **/
+	
+	int x2;
+	int y2;
+	int fadeLevel;
+	
 	private void drawBox(int x, int y, int width, int height, boolean arrow) {
-		int x2 = x + width + 10;
-		int y2 = y + height + 10;
+
 		Ortho ortho = ClientEngineZildo.ortho;
 		ortho.enableBlend();
 		ortho.initDrawBox(false);
-		int fadeLevel = ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevel();
+
+		if (ClientEngineZildo.filterCommand.getActiveFade() != null) {
+			fadeLevel = 255 - ClientEngineZildo.filterCommand.getFadeLevel();
+		}
 		for (int i = 0; i < 5; i++) {
 			int col = couleur_cadre[i];
 			Vector4f v = new Vector4f(GFXBasics.getColor(col));
@@ -650,6 +671,13 @@ public class GUIDisplay {
 		ortho.enableBlend();
 		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.15f, 0.12f, 0.7f * fadeLevel / 256f));
 		ortho.disableBlend();
+	}
+	
+	/** Draw a frame with transparent blue box inside, according to the current fade level **/
+	private void prepareDrawBox(int x, int y, int width, int height, boolean arrow) {
+		x2 = x + width + 10;
+		y2 = y + height + 10;
+		fadeLevel = 255;
 		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {

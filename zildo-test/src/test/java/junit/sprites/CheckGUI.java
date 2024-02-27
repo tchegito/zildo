@@ -1,5 +1,6 @@
 package junit.sprites;
 
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -19,6 +20,9 @@ import zildo.client.stage.SinglePlayer;
 import zildo.fwk.FilterCommand;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.FontDescription;
+import zildo.server.EngineZildo;
 
 public class CheckGUI extends EngineWithMenuUT {
 
@@ -61,5 +65,32 @@ public class CheckGUI extends EngineWithMenuUT {
 		// Check last entry
 		FilterMonitoring fm = values.get(values.size() - 1);
 		Assert.assertTrue("A blink occured with FitScreenFilter !", fm.enableFitScreen && fm.fadeLevel == 0);
+	}
+	
+	@Test 	@ClientMainLoop
+	public void displayDialogCorner() {
+		// We trigger a dialog, then press button to make frame disappear
+		// After one frame, we should notice that the bars are gone, but corners still there.
+		spawnZildo(160, 100);
+		waitEndOfScripting();
+		EngineZildo.scriptManagement.execute("preintro", true);
+		while (!clientState.dialogState.isDialoguing()) {
+			renderFrames(1);
+		}
+		renderFrames(50);
+		simulatePressButton(Keys.Q, 1);
+		simulatePressButton(Keys.Q, 0);
+		SpriteDisplayMocked sd = (SpriteDisplayMocked) ClientEngineZildo.spriteDisplay;
+		SpriteEntity[][] entities = sd.getTabTri();
+		FontDescription expected = FontDescription.FRAME_CORNER_LEFT;
+		for (int i=0;i<entities.length;i++) {
+			for (int j=0;j<entities[i].length;j++) {
+				SpriteEntity entity = entities[i][j];
+				if (entity != null && entity.nSpr == expected.getNSpr() && entity.nBank == expected.getBank()) {
+					// && entities[i][j].getDesc() == FontDescription.FRAME_CORNER_LEFT) {
+					fail("Corner sprite shouldn't have been there !"); //.out.println(entities[i][j].getDesc());
+				}
+			}
+		}
 	}
 }
