@@ -988,25 +988,24 @@ public class GUIDisplay {
 	
 			// Bombs
 			if (zildo.hasItem(ItemKind.DYNAMITE)) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
-				displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136 - 8, GUI_Y - 2);
+				displayNumber(zildo.getCountBomb(), 2, 126 - 8, GUI_Y);
 			}
 	
 			// Arrows
 			if (zildo.hasItem(ItemKind.BOW)) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174, GUI_Y);
-				displayNumber(zildo.getCountArrow(), 2, 164, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174 - 16, GUI_Y);
+				displayNumber(zildo.getCountArrow(), 2, 164 - 16, GUI_Y);
 			}
 			
 			// Keys
 			if (zildo.getCountKey() > 0) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
-				displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211 - 28, GUI_Y + 2);
+				displayNumber(zildo.getCountKey(), 1, 201 - 28, GUI_Y);
 			}
-
 			if (zildo.getCountNettleLeaf() >= 0) {
-				guiSpritesSequence.addSprite(ElementDescription.NETTLE_LEAF, 241, GUI_Y + 1);
-				displayNumber(zildo.getCountNettleLeaf(), 2, 231, GUI_Y);
+				guiSpritesSequence.addSprite(ElementDescription.NETTLE_LEAF, 241 - 28, GUI_Y + 1);
+				displayNumber(zildo.getCountNettleLeaf(), 2, 231 - 28, GUI_Y);
 			}
 			
 			// Current weapon

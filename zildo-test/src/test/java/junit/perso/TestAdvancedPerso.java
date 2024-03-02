@@ -325,6 +325,32 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
 	}
 	
+	// After fixes on float number on multiplications in script, hero's script about falling was
+	// pushing him too far
+	@Test
+	public void heroFallWithoutMovingTooMuch() {
+		mapUtils.loadMap("cavef4");
+		PersoPlayer zildo = spawnZildo(564, 172);
+		waitEndOfScripting();
+		
+		// Wait for being hurt by the serpent thing
+		while (!zildo.isWounded()) {
+			renderFrames(1);
+		}
+		while (zildo.getMouvement() != MouvementZildo.TOMBE) {
+			renderFrames(1);
+		}
+		renderFrames(10);
+		float maxVx = 0 ; float maxVy = 0;
+		while (zildo.vx != 0) {
+			maxVx = Math.max(maxVx,  Math.abs(zildo.vx));
+			maxVy = Math.max(maxVy, Math.abs(zildo.vy));
+			renderFrames(1);
+		}
+		Assert.assertTrue(maxVx < 0.5);
+		Assert.assertTrue(maxVy < 0.5);
+	}
+	
 	private Perso preparePersoAction() throws Exception {
 		loadXMLAsString(guyScript);
 		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);

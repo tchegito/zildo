@@ -22,6 +22,7 @@ package zildo.monde.sprites.persos.ia.mover;
 import java.util.HashMap;
 import java.util.Map;
 
+import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
@@ -31,6 +32,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -85,6 +87,12 @@ public class Mover {
 				entity.y += feltY;
 				entity.setAjustedX(entity.getAjustedX() + feltX);
 				entity.setAjustedY(entity.getAjustedY() + feltY);
+				/* For now, this is not needed. No quest triggers on a character move on a platform.
+				if (entity.isZildo()) {
+					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+					TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(entity.x, entity.y), mobile.getName(), -1, entity.floor);
+					EngineZildo.scriptManagement.trigger(trig);
+				} */
 			}
 		}
 	}

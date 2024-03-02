@@ -748,7 +748,7 @@ public abstract class EngineUT {
 		}
 	}
 	
-	protected class SpriteDisplayMocked extends SpriteDisplay {
+	public class SpriteDisplayMocked extends SpriteDisplay {
 		public SpriteDisplayMocked(SpriteEngine spriteEngine) {
 			super(spriteEngine);
 			

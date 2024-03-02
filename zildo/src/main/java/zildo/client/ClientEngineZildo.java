@@ -176,6 +176,8 @@ public class ClientEngineZildo {
 		
 		//long t3 = ZUtils.getTime();
 
+		guiDisplay.prepareDraw(!client.connected);
+		
 		spriteDisplay.updateSpritesClient(mapDisplay.getCamera());
 
 		//long t4 = ZUtils.getTime();
@@ -217,7 +219,12 @@ public class ClientEngineZildo {
 			}
 
 			if (!p_editor && lastTurn) {	// Display only once !
-				guiDisplay.draw(!client.connected);
+				// We have to split GuiDisplay into 2 different methods
+				// 1) one for preparing GUISpriteSequences 
+				// (to be called before SpriteDisplay#updateSpritesClient)
+				// 2) one for drawing with Ortho#box etc
+				// (to be called once in this loop after back and fore ground
+				guiDisplay.draw();
 			}
 			// Display FOREGROUND sprites
 			if (spriteDisplay.foreBackController.isDisplayForeground()) {

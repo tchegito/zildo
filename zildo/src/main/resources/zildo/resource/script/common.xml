@@ -264,7 +264,7 @@
 	    <wait value="30"/>
 	    <zoom who="zildo" value="200"/>
 	    <wait value="20"/>
-	    <perso who="zildo" vx="zildo.vx*7" vy="zildo.vy*7"/>
+	    <perso who="zildo" vx="zildo.vx*0.7" vy="zildo.vy*0.7"/>
 	    <zoom who="zildo" value="170"/>
 	    <wait value="10"/>
 	    <zoom who="zildo" value="140"/>
