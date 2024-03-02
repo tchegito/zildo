@@ -119,6 +119,17 @@ public class MenuTransitionProgress {
 		}
 	}
 	
+	/** Returns 0..255 integer: same method that above with further condition to liss fadeLevel on in-game texter transitions**/
+	public int getFadeLevelMenu() {
+		if (framesAwaiting == 0) {
+			return currentMenu == null && (currentStage == null || fadingOut) ? 0 : 255;
+		} else {
+			return getFadeLevel();
+		}
+	}
+	
+
+	
 	public Menu getCurrentMenu() {
 		return currentMenu;
 	}

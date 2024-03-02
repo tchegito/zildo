@@ -306,6 +306,18 @@ public class GUIDisplay {
 			}
 		}
 		
+		if (toDisplay_dialogMode == DialogMode.TEXTER) {
+			// Frame under texter
+			if (texterSizeY < 200) {
+				// Note: this is not vertically centered because drawBox adds 10 to height.
+				prepareDrawBox(sc.BIGTEXTER_X-10, (Zildo.viewPortY - texterSizeY)/2, 
+						sc.BIGTEXTER_WIDTH, texterSizeY, false);
+			} else {
+				prepareDrawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
+						sc.BIGTEXTER_WIDTH, Zildo.viewPortY - 38, false);
+			}
+		}
+		
 		if (toRemove_dialoguing) {
 			// Remove frame and text inside it
 			removePreviousTextInFrame();
@@ -318,7 +330,7 @@ public class GUIDisplay {
 		}
 		if (toDisplay_adventureMenu) {
 			// In this mode, we have to remove any dialogs => best is to forbid compass during conversations
-			displayAdventureMenu();
+			prepareAdventureMenu();
 		} else if (adventureSequence.isDrawn()) {
 			adventureSequence.clear();
 			frameDialogSequence.clear();
@@ -353,6 +365,9 @@ public class GUIDisplay {
 			}
 		}
 		
+		if (toDisplay_adventureMenu) {
+			drawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
+		}
 		drawConsoleMessages();
 	}
 
@@ -642,13 +657,12 @@ public class GUIDisplay {
 			dialogDisplay.animateArrow(entity);
 		}
 	}
-	
-	int x2;
-	int y2;
+
 	int fadeLevel;
 	
 	private void drawBox(int x, int y, int width, int height, boolean arrow) {
-
+		int x2 = x + width + 10;
+		int y2 = y + height + 10;
 		Ortho ortho = ClientEngineZildo.ortho;
 		ortho.enableBlend();
 		ortho.initDrawBox(false);
@@ -675,9 +689,9 @@ public class GUIDisplay {
 	
 	/** Draw a frame with transparent blue box inside, according to the current fade level **/
 	private void prepareDrawBox(int x, int y, int width, int height, boolean arrow) {
-		x2 = x + width + 10;
-		y2 = y + height + 10;
-		fadeLevel = 255;
+		int x2 = x + width + 10;
+		int y2 = y + height + 10;
+		fadeLevel = ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevelMenu();
 		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {
@@ -1111,8 +1125,8 @@ public class GUIDisplay {
 		messageQueue.clear();
 	}
 
-	private void displayAdventureMenu() {
-		drawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
+	private void prepareAdventureMenu() {
+		prepareDrawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
 		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
 			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			adventureSequence.clear();
