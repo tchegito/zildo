@@ -697,6 +697,9 @@ public class ScriptManagement {
     					trig.done = false;
     				}
     			}
+    		} else if (quest.isRepeatable()) {
+            	// Reinit all repeatable quests as undone
+    			quest.done = false;
     		}
     	}
 	}

@@ -325,6 +325,18 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
 	}
 	
+	@Test
+	public void squeakyFloor2() {
+		// Sometimes, a repeatable quest is recorded as 'done' in savegame.
+		// However, it should be triggered next time hero comes to the map.
+		EngineZildo.scriptManagement.accomplishQuest("squeaky_floor_voleurs2", true);
+		mapUtils.loadMap("voleursm2");
+		spawnZildo(71, 131);
+		simulateDirection(0, -1);
+		renderFrames(30);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
+	}
+	
 	// After fixes on float number on multiplications in script, hero's script about falling was
 	// pushing him too far
 	@Test

@@ -90,6 +90,10 @@ public class QuestElement extends AnyElement {
 		return both;
 	}
 
+	public boolean isRepeatable() {
+		return repeat;
+	}
+	
 	@Override
 	public String toString() {
 		return name + "\ntriggers=" + triggers + "\nactions=" + actions;
