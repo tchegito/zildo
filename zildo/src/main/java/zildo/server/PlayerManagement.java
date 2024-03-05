@@ -21,6 +21,7 @@
 package zildo.server;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
@@ -554,7 +555,8 @@ public class PlayerManagement {
 							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
 								// Hero found a chest ! Great, isn't it ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-                                map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
+                                ClientEngineZildo.soundEngine.lowerTemporarilyMusicVolume();
+								map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.actOnTile(map.getName(), new Point(newx, newy));
 							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {

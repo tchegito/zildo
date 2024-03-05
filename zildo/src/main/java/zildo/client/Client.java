@@ -266,7 +266,7 @@ public class Client {
 			// Music
 			if (isMusic()) {
 				long currentTime = ZUtils.getTime();
-				ClientEngineZildo.soundEngine.pollMusic((int) (currentTime - time));
+				ClientEngineZildo.soundEngine.poll((int) (currentTime - time));
 				time = currentTime;
 			}
 			done |= glGestion.mainloop();

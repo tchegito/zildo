@@ -32,13 +32,31 @@ public abstract class SoundEngine {
 	protected boolean initialized = false;
 	protected boolean failed = false;
 	protected int musicVolume = 100;
+	private int percentageBefore;
+	
+	protected int counter = 0;
 	
 	public abstract void detectAndInitSoundEngine();
-	public abstract void pollMusic(int delta);	
+	protected abstract void pollMusic(int delta);
 	public abstract void setMusicVolume(int percentage);
-	
+
+	public void poll(int delta) {
+		pollMusic(delta);
+		if (counter -- == 1) {
+			setMusicVolume(percentageBefore);
+			counter = 0;
+		}
+	}
+
 	public abstract void cleanUp();
 	
 	/** Load sound file, either music or SFX **/
 	public abstract Sound createSound(String path);
+	
+	
+	public void lowerTemporarilyMusicVolume() {
+		percentageBefore = musicVolume;
+		setMusicVolume(musicVolume /2);
+		counter = 200;
+	}
 }
