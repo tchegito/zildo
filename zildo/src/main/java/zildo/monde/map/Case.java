@@ -116,6 +116,7 @@ public class Case implements EasySerializable {
 	private static int[] seqForge2={144, 195, 179};
 	private static int[] seqRotate={0, 1, 2, 1};
 	private static int[] seqForward={0, 1, 2};
+	private static int[] seqLavaWall= {0, 131, 133}; 
 	
 	public static int getAnimatedMotif(TileLevel level, Tile t, int compteur_animation) {
 		int motif = t.index;
@@ -176,6 +177,11 @@ public class Case implements EasySerializable {
 						motif+=seqRotate[comptModulo4];
 					}
 					break;
+				case 10:	// Lavacave
+					 if (motif == 6 || motif == 7) {	// Lava wall
+							motif += seqLavaWall[comptModulo3];
+					 }
+					 break;
 				case 9: // Nature palace
 					// 78 , 92 , 106 (+14)
 					if (motif >= 78 && motif <= 91) {
