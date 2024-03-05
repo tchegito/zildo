@@ -148,7 +148,7 @@ public class Pnj extends SpriteBanque {
 				new Zone(247, 162, 16, 22),
 				// Soulard - 82
 				new Zone(95, 54, 16, 25),
-				new Zone(111, 54, 15, 25),
+				new Zone(111, 54, 16, 25),
 				// Panneau - 84
 				new Zone(79, 26, 10, 10),
 				// Garde au bouclier impassable - 85
