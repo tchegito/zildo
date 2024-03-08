@@ -176,4 +176,17 @@ public class TestInteractionObject extends EngineUT {
 		Item item = hero.getInventory().get(0);
 		Assert.assertEquals(ItemKind.SPADE, item.kind);
 	}
+	
+	@Test	// Hero is not allowed to take the fork named 'forbidden' in ferme (only the one from Charles)
+	public void takeFork2() {
+		mapUtils.loadMap("ferme");
+		PersoPlayer hero = spawnZildo(197,747);
+		hero.setAngle(Angle.OUEST);
+		waitEndOfScripting();
+		EngineZildo.scriptManagement.putVarValue("allowedTakeFork", "yes");
+		
+		// Take the fork
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 1);
+		Assert.assertEquals("Hero should not take that forbidden item !", 0, hero.getInventory().size());
+	}
 }

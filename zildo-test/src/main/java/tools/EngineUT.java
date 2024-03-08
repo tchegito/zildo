@@ -28,6 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -39,7 +40,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
 
 import zildo.Zildo;
@@ -63,13 +63,13 @@ import zildo.fwk.gfx.engine.SpriteEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.filter.CircleFilter;
 import zildo.fwk.gfx.filter.CloudFilter;
-import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.fwk.input.CommonKeyboardHandler;
 import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.opengl.SoundEngine;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
@@ -307,7 +307,7 @@ public abstract class EngineUT {
 		@SuppressWarnings("unchecked")
 		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
 		for (Class<ScreenFilter> clazz : filterClasses) {
-			ScreenFilter filter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
+			ScreenFilter filter = (ScreenFilter) mock(clazz, withSettings().stubOnly());
 			Zildo.pdPlugin.filters.put(clazz, filter);
 		}
 
@@ -322,10 +322,11 @@ public abstract class EngineUT {
 				EngineZildo.soundManagement = mock(SoundManagement.class);
 			}
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
+			ClientEngineZildo.soundEngine = mock(SoundEngine.class, withSettings().stubOnly());
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
-			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class, Mockito.withSettings().stubOnly());
-			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class, withSettings().stubOnly());
+			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class, withSettings().stubOnly());
 			ClientEngineZildo.spriteDisplay = new SpriteDisplayMocked(ClientEngineZildo.spriteEngine);
 			GUIDisplay gd = null;
 			if (disableGuiDisplay) {
@@ -350,8 +351,8 @@ public abstract class EngineUT {
 
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
 			//doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
-			ClientEngineZildo.tileEngine = mock(TileEngine.class, Mockito.withSettings().stubOnly());
-			ClientEngineZildo.ortho = mock(Ortho.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.tileEngine = mock(TileEngine.class, withSettings().stubOnly());
+			ClientEngineZildo.ortho = mock(Ortho.class, withSettings().stubOnly());
 			
 		}
 
