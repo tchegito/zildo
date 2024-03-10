@@ -15,7 +15,6 @@ import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
-import zildo.monde.util.Angle;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
@@ -53,6 +52,7 @@ public class TestGUI extends EngineUT {
 		clientState.zildoId = hero.getId();
 		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
 		ClientEngineZildo.spriteDisplay.setEntities(entities);
+		ClientEngineZildo.spriteDisplay.setZildoId(hero.getId());
 		waitEndOfScripting();
 		/*
 		// To set display_dialoguing to text, either call this

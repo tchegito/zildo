@@ -1622,7 +1622,6 @@ public class PersoPlayer extends Perso {
 		if (getEn_bras() == null) { // Doesn't take 2 items at 1 time
 			
 			// Is hero allowed to take the fork ? (really special case)
-			System.out.println(p_element.getName());
 		    if (p_kind == ItemKind.SPADE_GROUND && ("no".equals(EngineZildo.scriptManagement.getVarValue("allowedTakeFork"))
 		    		|| "forbidden".equals(p_element.getName())) ) {
 		    	return;

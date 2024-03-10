@@ -13,6 +13,8 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Vector2f;
+import zildo.server.EngineZildo;
 
 public class CheckMapInteractions extends EngineUT {
 
@@ -96,5 +98,19 @@ public class CheckMapInteractions extends EngineUT {
 		renderFrames(16);
 		Assert.assertEquals(origin.x, (int) cactus.x);
 		Assert.assertEquals(origin.y, (int) cactus.y);
+	}
+	
+	@Test
+	public void blockedChainingPoint() {
+		mapUtils.loadMap("valori");
+		hero = spawnZildo(467, 70);
+		waitEndOfScripting();
+		
+		// Solution to make this UT work => modify TriggerElement#isDone to handle
+		// location trigger with specific position (only if map names match) like match() with radius
+		
+		simulateDirection(new Vector2f(-1f, -0.5f));
+		renderFrames(40);
+		Assert.assertFalse("Hero shouldn't go to valori's cave before finding 3 keys !", EngineZildo.mapManagement.isChangingMap(hero));
 	}
 }

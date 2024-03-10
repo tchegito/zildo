@@ -230,13 +230,7 @@ public class TriggerElement extends AnyElement {
 					}
 					return false;
 				} else if (p_another.location != null && location != null) {
-					float dist = p_another.location.distance(location);
-					// System.out.println(dist + "   <   "+(8f + 16*radius));
-					if (radius >= 0) {
-						return dist < (8f + 16 * radius);
-					} else {
-						return dist > (8f + 16 * -radius);
-					}
+					return locationPos(p_another.location);
 				}
 			}
 			break;
@@ -270,6 +264,15 @@ public class TriggerElement extends AnyElement {
 		return false;
 	}
 
+	private boolean locationPos(Point triggerLoc) {
+		float dist = triggerLoc.distance(location);
+		if (radius >= 0) {
+			return dist < (8f + 16 * radius);
+		} else {
+			return dist > (8f + 16 * -radius);
+		}
+	}
+	
 	public boolean isLocationSpecific() {
 		return kind == QuestEvent.LOCATION && name != null && (location != null || mover != null || tileLocation != null || tileValue != -1);
 	}
@@ -280,17 +283,20 @@ public class TriggerElement extends AnyElement {
 	 * @return boolean
 	 */
 	public boolean isDone() {
+		PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 		switch (kind) {
 		case QUESTDONE:
 			return questSwitch.evaluate().equals( ZSCondition.TRUE );
 		case INVENTORY:
-			PersoPlayer zildo = EngineZildo.persoManagement.getZildo();
 			return zildo != null && zildo.hasItem(ItemKind.fromString(name)) == !not;
 		case LOCATION:
 			Area map = EngineZildo.mapManagement.getCurrentMap();
-			if (map != null && !isLocationSpecific() && mapNameMatch(map.getName())) {
+			if (map != null && mapNameMatch(map.getName())) {
 				// Mover ?
 				boolean ok = true;
+				if (location != null) {
+					ok = zildo != null && locationPos(new Point(zildo.x, zildo.y));
+				}
 				if (mover != null) {
 					PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 					ok = false;

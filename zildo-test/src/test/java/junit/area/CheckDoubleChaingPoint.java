@@ -86,11 +86,9 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		waitEndOfScripting();
 		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertTrue(waterLily.isVisible());
-		System.out.println("Suite");
 		zildo.attack();
 		renderFrames(10);
 		Assert.assertTrue(zildo.getPv() == 4);
-		System.out.println(waterLily.x);
 	}
 	
 	@Test

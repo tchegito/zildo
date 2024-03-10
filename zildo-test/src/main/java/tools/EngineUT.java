@@ -355,22 +355,6 @@ public abstract class EngineUT {
 			ClientEngineZildo.ortho = mock(Ortho.class, withSettings().stubOnly());
 			
 		}
-
-		/*
-		new CloudFilter(null) {
-			
-			@Override
-			public boolean renderFilter() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			@Override
-			public void addOffset(int x, int y) {
-				offsetU += x;
-				offsetV += y;
-			}
-		});
-		*/
 		
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
