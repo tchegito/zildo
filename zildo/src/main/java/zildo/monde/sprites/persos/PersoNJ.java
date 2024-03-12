@@ -900,6 +900,7 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case MOLE:
+			add_spr = getAddSpr();
 			break;
 		case DARKGUY:
 			int cs = computeSeqPositive(4);

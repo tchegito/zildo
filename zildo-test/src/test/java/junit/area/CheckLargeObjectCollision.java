@@ -262,7 +262,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 			renderFrames(1);
 		}
 		// Check that flut playing hasn't triggered the leaf to move
-		Assert.assertTrue(zildo.deltaMoveX == 0);
+		Assert.assertTrue("Zildo should have be immobile ("+zildo.deltaMoveX+")", zildo.deltaMoveX == 0);
 	}
 	
 	/** Issue 143 **/

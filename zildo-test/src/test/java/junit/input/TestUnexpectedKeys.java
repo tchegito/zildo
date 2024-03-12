@@ -232,6 +232,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 		GUIDisplay gd = ClientEngineZildo.guiDisplay;
 		clientState.zildoId = hero.getId();
 		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+		ClientEngineZildo.spriteDisplay.setZildoId(hero.getId());
 		ClientEngineZildo.spriteDisplay.setEntities(entities);
 		hero.setAngle(Angle.NORD);	// Face the grandpa
 		simulatePressButton(Keys.COMPASS, 1);

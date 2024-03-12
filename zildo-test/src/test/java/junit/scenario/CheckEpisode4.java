@@ -56,6 +56,15 @@ public class CheckEpisode4 extends EngineUT {
 		Assert.assertEquals(1, zildo.getInventory().size());
 	}
 	
+	@Test	// remove this test when episode is ready
+	public void episode4NotAvailableYet() {
+		spawnZildo(160, 100);
+		waitEndOfScripting();
+		EngineZildo.scriptManagement.execute("ep3_closure", true);
+		waitEndOfScriptingPassingDialog();
+		Assert.assertNotEquals("voleurs", EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+	
 	// Talk to Charles and wait for the dialog to be over
 	private void talkToCharles() {
 		zildo.x = charles.x;
