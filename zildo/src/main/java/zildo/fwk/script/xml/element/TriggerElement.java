@@ -297,13 +297,21 @@ public class TriggerElement extends AnyElement {
 				if (location != null) {
 					ok = zildo != null && locationPos(new Point(zildo.x, zildo.y));
 				}
-				if (mover != null) {
+				if (tileLocation != null) {
+					return done;
+				}
+				if (ok && mover != null) {
 					PersoPlayer hero = EngineZildo.persoManagement.getZildo();
 					ok = false;
 					if (hero != null) {
-						for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
+						List<SpriteEntity> walkables = EngineZildo.spriteManagement.getWalkableEntities();
+						if (walkables.isEmpty() && negate) {
+							return true;
+						}
+						for (SpriteEntity entity : walkables) {
+							
 							if (entity.getMover().isOnIt(hero)) {
-								ok = !mover.contains("!");
+								ok = !negate;
 							}
 						}
 					}
