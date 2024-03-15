@@ -297,7 +297,7 @@ public class TriggerElement extends AnyElement {
 				if (location != null) {
 					ok = zildo != null && locationPos(new Point(zildo.x, zildo.y));
 				}
-				if (tileLocation != null) {
+				if (tileLocation != null || tileValue != -1) {
 					return done;
 				}
 				if (ok && mover != null) {
