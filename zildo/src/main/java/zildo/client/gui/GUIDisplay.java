@@ -664,7 +664,7 @@ public class GUIDisplay {
 		int x2 = x + width + 10;
 		int y2 = y + height + 10;
 		Ortho ortho = ClientEngineZildo.ortho;
-		ortho.enableBlend();
+		// We don't enable blend for bars, to avoid a different color than the corners
 		ortho.initDrawBox(false);
 
 		if (ClientEngineZildo.filterCommand.getActiveFade() != null) {
@@ -680,7 +680,6 @@ public class GUIDisplay {
 			ortho.boxOpti(x + i, y+7, 1, height+3, 0, v);
 			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, 0, v);
 		}
-		ortho.disableBlend();
 		ortho.endDraw();
 		ortho.enableBlend();
 		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.15f, 0.12f, 0.7f * fadeLevel / 256f));
