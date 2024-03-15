@@ -52,6 +52,7 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.SpriteDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
+import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.SoundPlay;
 import zildo.client.stage.GameStage;
 import zildo.fwk.FilterCommand;
@@ -71,6 +72,7 @@ import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
 import zildo.fwk.opengl.SoundEngine;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ui.Menu;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.HistoryRecord;
@@ -455,6 +457,11 @@ public abstract class EngineUT {
 		while (true) {
 			renderFrames(1);
 			if (!EngineZildo.scriptManagement.isScripting()) {
+				break;
+			}
+			Menu menu = ClientEngineZildo.client.getCurrentMenu();
+			if (menu != null && menu.getClass() == RegisterChampionMenu.class) {
+				// In any way, we cut here if test reaches end of game
 				break;
 			}
 			if (action != null) {
