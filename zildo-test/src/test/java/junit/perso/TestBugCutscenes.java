@@ -22,7 +22,7 @@ public class TestBugCutscenes extends EngineUT {
 	@Test
 	public void thiefAttack() {
 		mapUtils.loadMap("voleurs");
-		spawnZildo(900, 984);
+		spawnZildo(904, 984);
 		waitEndOfScripting();
 		
 		simulateDirection(new Vector2f(-2, 0));
