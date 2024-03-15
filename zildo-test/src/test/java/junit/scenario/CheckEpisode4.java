@@ -4,12 +4,15 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.fwk.net.www.WorldRegister;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
+
+import static org.mockito.Mockito.*;
 
 public class CheckEpisode4 extends EngineUT {
 
@@ -58,6 +61,7 @@ public class CheckEpisode4 extends EngineUT {
 	
 	@Test	// remove this test when episode is ready
 	public void episode4NotAvailableYet() {
+		EngineZildo.worldRegister = mock(WorldRegister.class);
 		spawnZildo(160, 100);
 		waitEndOfScripting();
 		EngineZildo.scriptManagement.execute("ep3_closure", true);
