@@ -102,6 +102,7 @@ public class CheckConsistentMap {
 					case MOLE:
 					case BUTCHER:
 					case HOODED:
+					case DARKGUY:
 						shouldBeEnemy = true;
 					default:
 						break;

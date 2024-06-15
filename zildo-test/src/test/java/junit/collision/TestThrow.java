@@ -78,7 +78,7 @@ public class TestThrow extends EngineUT {
 		spawnZildo(219, 67);
 		Perso thrower = spawnPerso(PersoDescription.DARKGUY, "dark", 190, 98);
 		thrower.setAction(new ScriptedPersoAction(thrower, "darkGuy", null));
-		renderFrames(30);
+		renderFrames(50);
 		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
 		Assert.assertEquals(Angle.NORD, dynamite.getAngle());
 		Assert.assertNotNull(dynamite);

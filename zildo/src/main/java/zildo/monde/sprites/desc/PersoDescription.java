@@ -141,9 +141,9 @@ public enum PersoDescription implements SpriteDescription {
 	BUTCHER(450, 449, 451, 452, 453, 454, 455),
 	
 	// Shift numbers once darkguy will have all its sprites
-	HOODED(/*Idle face*/ 464, 465, 466, 467, /*Walking*/ 468, 469, 470, 471,
-			/* Attacking */504, 505, 506, 507, 508, 509, 
-			/* Bouncing */ 486, 487, 488, 489, 490, 491, 492, 493),
+	HOODED(/*Idle face*/ 466, 467, 468, 469, /*Walking*/ 470, 471, 472, 473,
+			/* Attacking */506, 507, 508, 509, 510, 511, 
+			/* Bouncing */ 488, 489, 490, 491, 492, 493, 494, 495),
 	
 	// 22
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
