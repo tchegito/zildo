@@ -137,7 +137,7 @@ public enum PersoDescription implements SpriteDescription {
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
 	MOLE(441, 442, 443, 444, 445, 446, 447),
-	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463),
+	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465),
 	BUTCHER(450, 449, 451, 452, 453, 454, 455),
 	
 	// Shift numbers once darkguy will have all its sprites
@@ -181,8 +181,8 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 463) {
-			f-= 464;
+		if (f > 463+2) {
+			f-= 464+2;
 		} else if (f > 367) {
 			f-=368;
 		} else if (f > 258) {

@@ -277,7 +277,7 @@ public class PersoNJ extends Perso {
 		float sx = getX(), sy = getY();
 
 		if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
-				&& MouvementPerso.ZONEARC != quel_deplacement) {
+				&& MouvementPerso.ZONEARC != quel_deplacement && MouvementPerso.THROWING != quel_deplacement) {
 			// Zildo has been caught, so the monster try to reach him, or run away (hen)
 			boolean fear = quel_deplacement.isAfraid();
 			reachAvoidTarget(zildo, fear);
@@ -903,14 +903,18 @@ public class PersoNJ extends Perso {
 			add_spr = getAddSpr();
 			break;
 		case DARKGUY:
-			int cs = computeSeqPositive(4);
-			if (angle == Angle.SUD) {
-				add_spr = seqbadguyreverse[cs % seqbadguy.length];
-				if ((cs % 8) > 3)
-				reverse = Reverse.NOTHING;
-			} else if (angle == Angle.NORD) {
-				add_spr = 6 + seqbadguy[cs % seqbadguy.length];
-				reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+			if (getQuel_deplacement() == MouvementPerso.THROWING) {
+				add_spr = getAddSpr();
+			} else {
+				int cs = computeSeqPositive(4);
+				if (angle == Angle.SUD) {
+					add_spr = seqbadguyreverse[cs % seqbadguy.length];
+					if ((cs % 8) > 3)
+					reverse = Reverse.NOTHING;
+				} else if (angle == Angle.NORD) {
+					add_spr = 6 + seqbadguy[cs % seqbadguy.length];
+					reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				}
 			}
 			break;
 		case SCORPION:

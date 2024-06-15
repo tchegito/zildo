@@ -82,7 +82,9 @@ public class Pnj4 extends SpriteBanque {
 			new Zone(25, 1, 20, 33), new Zone(46, 0, 20, 34),	// angle 2
 			new Zone(69, 1, 20, 32), new Zone(93, 1, 20, 33), new Zone(114, 0, 20, 34), // Angle 2 reverse
 
-			new Zone(1, 38, 20, 32), new Zone(25, 38, 20, 32), new Zone(46, 37, 20, 33)	// angle 0
+			new Zone(1, 38, 20, 32), new Zone(25, 38, 20, 32), new Zone(46, 37, 20, 33),	// angle 0
+			// Lighting his dynamite stick
+			new Zone(140, 1, 20, 32), new Zone(162, 1, 20, 32)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("turret", 0, 0),

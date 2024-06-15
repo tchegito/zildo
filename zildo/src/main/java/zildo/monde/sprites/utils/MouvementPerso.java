@@ -51,7 +51,8 @@ public enum MouvementPerso {
 	FREEFLY(21),	// For vulture, with z as target
 	CHAIN_FOLLOW(22),	// Get target from the followed one 
 	MOLE(23),
-	HOODED_ATTACK(24);
+	HOODED_ATTACK(24),
+	THROWING(25);	// For darkguy, when he lights up his stick of dynamite
 	
 	public int valeur;
 	
@@ -120,7 +121,8 @@ public enum MouvementPerso {
 		this != RETRACTED &&
 		this != FREEFLY &&
 		this != MOLE &&
-		this != HOODED_ATTACK;
+		this != HOODED_ATTACK &&
+		this != THROWING;
 	}
 	
 	/**

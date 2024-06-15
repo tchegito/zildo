@@ -81,74 +81,76 @@
 	    
 	    <condition name="prisonext" exp="findDragonPortalKey">
 	        <!-- Epic battle -->
-	        <remove who="gardenord"/>
-	        <spawn who="black1" pos="349,221" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
-	        <spawn who="black2" pos="510,46" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	        <script who="black1" value="7"/>
-	        <script who="black2" value="7"/>
-	        <spawn who="thrower1" type="DARKGUY" floor="2" pos="267,178" info="ENEMY"/>
-	        <spawn who="thrower2" type="DARKGUY" floor="2" pos="467,178" info="ENEMY"/>
-	        <script who="thrower1" value="0"/>
-	        <script who="thrower2" value="0"/>
-	        <perso who="thrower1" action="darkGuy"/>
-	        <perso who="thrower2" action="darkGuy"/>
-	        <spawn who="black3" pos="347,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
-	        <spawn who="black4" pos="385,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
-	        <script who="black3" value="13"/>
-	        <script who="black4" value="13"/>
-	        <!-- Crates and immobile thrower 3 -->
-			<spawn what="c1" type="CRATE" pos="210,353"/>
-			<spawn what="c2" type="CRATE" pos="225,361"/>
-			<spawn what="c3" type="CRATE2" pos="223,378"/>
-			<spawn what="c4" type="CRATE" pos="236,394"/>
-			<spawn what="c5" type="CRATE2" pos="192,347"/>
-			<spawn who="thrower3" type="DARKGUY" pos="200,379" info="ENEMY"/>
-			<perso who="thrower3" action="immobileDarkGuy"/>
-			<!-- Crates and immobile thrower 4 -->
-			<spawn what="c6" type="CRATE" pos="325,388"/>
-			<spawn what="c7" type="CRATE" pos="340,380"/>
-			<spawn what="c8" type="CRATE2" pos="363,378"/>
-			<spawn what="c9" type="CRATE" pos="380,395"/>
-			<spawn what="c10" type="CRATE2" pos="370,422"/>
-			<spawn who="thrower4" type="DARKGUY" pos="356,398" info="ENEMY"/>
-			<perso who="thrower4" action="immobileDarkGuy"/>
-			
-			<spawn who="fire" type="COAL_COLD" effect="fire" pos="363,330"/>
-			<pos what="fire_f" pos="0,-3" delta="true"/>
-			<spawn what="b1" type="BAGSAND" pos="306,293"/>
-			<spawn what="b2" type="BAGSAND" pos="300,300" reverse="128"/>
-			<spawn what="b3" type="BAGSAND" pos="290,310"/>
-			<spawn what="b4" type="BAGSAND" pos="292,316"/>
-			<!-- Line of bags -->
-			<spawn type="BAGSAND" pos="377,488"/>
-			<spawn type="BAGSAND" pos="360,489"/>
-			<spawn type="BAGSAND" pos="343,486" reverse="128"/>
-			<spawn type="BAGSAND" pos="330,484"/>
-			<spawn type="BAGSAND" pos="315,490"/>
-			<spawn type="BAGSAND" pos="300,487"/>
-			<spawn type="BAGSAND" pos="290,490" reverse="128"/>
-			<spawn type="BAGSAND" pos="272,488"/>
-			<spawn type="BAGSAND" pos="259,483" reverse="128"/>
-			<spawn type="BAGSAND" pos="242,491" reverse="128"/>
-			<spawn type="BAGSAND" pos="220,488"/>
-			<spawn type="BAGSAND" pos="205,486"/>
-			<spawn type="BAGSAND" pos="190,483" reverse="128"/>
-			<spawn type="BAGSAND" pos="175,484" reverse="128"/>
-			
-			<spawn who="black5" pos="635,313" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	        <script who="black5" value="7"/>
-			<spawn who="black6" pos="640,329" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	        <script who="black6" value="7"/>
-	        
-	       	<spawn who="black7" pos="770,333" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	       	<script who="black7" value="0"/>
-	        <spawn who="black8" pos="807,391" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	        <script who="black8" value="0"/>
-	        
-	        <spawn who="black9" pos="921,633" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
-	        <script who="black9" value="7"/>
-	        
-	       	<spawn who="black10" pos="500,789" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	        <actions>	<!--  to make all spawnings appearing at once -->
+		        <remove who="gardenord"/>
+		        <spawn who="black1" pos="349,221" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
+		        <spawn who="black2" pos="510,46" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		        <script who="black1" value="7"/>
+		        <script who="black2" value="7"/>
+		        <spawn who="thrower1" type="DARKGUY" floor="2" pos="267,178" info="ENEMY"/>
+		        <spawn who="thrower2" type="DARKGUY" floor="2" pos="467,178" info="ENEMY"/>
+		        <script who="thrower1" value="0"/>
+		        <script who="thrower2" value="0"/>
+		        <perso who="thrower1" action="darkGuy"/>
+		        <perso who="thrower2" action="darkGuy"/>
+		        <spawn who="black3" pos="347,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
+		        <spawn who="black4" pos="385,280" type="GARDE_CANARD" info="ENEMY" angle="0" pv="4" effect="noir"/>
+		        <script who="black3" value="13"/>
+		        <script who="black4" value="13"/>
+		        <!-- Crates and immobile thrower 3 -->
+				<spawn what="c1" type="CRATE" pos="210,353"/>
+				<spawn what="c2" type="CRATE" pos="225,361"/>
+				<spawn what="c3" type="CRATE2" pos="223,378"/>
+				<spawn what="c4" type="CRATE" pos="236,394"/>
+				<spawn what="c5" type="CRATE2" pos="192,347"/>
+				<spawn who="thrower3" type="DARKGUY" pos="200,379" info="ENEMY"/>
+				<perso who="thrower3" action="immobileDarkGuy"/>
+				<!-- Crates and immobile thrower 4 -->
+				<spawn what="c6" type="CRATE" pos="325,388"/>
+				<spawn what="c7" type="CRATE" pos="340,380"/>
+				<spawn what="c8" type="CRATE2" pos="363,378"/>
+				<spawn what="c9" type="CRATE" pos="380,395"/>
+				<spawn what="c10" type="CRATE2" pos="370,422"/>
+				<spawn who="thrower4" type="DARKGUY" pos="356,398" info="ENEMY"/>
+				<perso who="thrower4" action="immobileDarkGuy"/>
+				
+				<spawn who="fire" type="COAL_COLD" effect="fire" pos="363,330"/>
+				<pos what="fire_f" pos="0,-3" delta="true"/>
+				<spawn what="b1" type="BAGSAND" pos="306,293"/>
+				<spawn what="b2" type="BAGSAND" pos="300,300" reverse="128"/>
+				<spawn what="b3" type="BAGSAND" pos="290,310"/>
+				<spawn what="b4" type="BAGSAND" pos="292,316"/>
+				<!-- Line of bags -->
+				<spawn type="BAGSAND" pos="377,488"/>
+				<spawn type="BAGSAND" pos="360,489"/>
+				<spawn type="BAGSAND" pos="343,486" reverse="128"/>
+				<spawn type="BAGSAND" pos="330,484"/>
+				<spawn type="BAGSAND" pos="315,490"/>
+				<spawn type="BAGSAND" pos="300,487"/>
+				<spawn type="BAGSAND" pos="290,490" reverse="128"/>
+				<spawn type="BAGSAND" pos="272,488"/>
+				<spawn type="BAGSAND" pos="259,483" reverse="128"/>
+				<spawn type="BAGSAND" pos="242,491" reverse="128"/>
+				<spawn type="BAGSAND" pos="220,488"/>
+				<spawn type="BAGSAND" pos="205,486"/>
+				<spawn type="BAGSAND" pos="190,483" reverse="128"/>
+				<spawn type="BAGSAND" pos="175,484" reverse="128"/>
+				
+				<spawn who="black5" pos="635,313" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		        <script who="black5" value="7"/>
+				<spawn who="black6" pos="640,329" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		        <script who="black6" value="7"/>
+		        
+		       	<spawn who="black7" pos="770,333" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		       	<script who="black7" value="0"/>
+		        <spawn who="black8" pos="807,391" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		        <script who="black8" value="0"/>
+		        
+		        <spawn who="black9" pos="921,633" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+		        <script who="black9" value="7"/>
+		        
+		       	<spawn who="black10" pos="500,789" type="GARDE_CANARD" info="ENEMY" angle="3" pv="4" effect="noir"/>
+	       	</actions>
 	        <script who="black10" value="0"/>
 	        
 	        <script who="gard2" value="0"/>
@@ -736,33 +738,42 @@
    	        <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
    	            <!-- Determine a spot to throw dynamite -->
    	            <if exp="fun:mapFloor(zildo.x,zildo.y)=zildo.floor">
+   	                <script who="self" value="25"/>	<!-- prepare dynamite -->
+   	                <exec script="spark(x,y)"/>
+   	                <sound name="Lighting"/>
+					<seq who="self" addSpr="9,10,9,10" wait="4"/>
 	   	            <sound name="ZildoLance"/>
 	   	            <script who="self" value="3"/>	<!-- Stop -->
 	   	            
 	   	            <throw who="self" way="BELL" floor="2" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
 	   	            <wait value="80"/>
 	   	            <script who="self" value="0"/>
-	   	                
    	            </if>
   	        </lookFor>
 			<wait value="100"/>
    	    </loop>
    	</persoAction>
    	
+   	<!-- Why I have these 2 scripts ??? -->
    	<persoAction id="immobileDarkGuy">
    	    <script who="self" value="3"/>	<!-- Stop -->
    	    <loop>
    	        <lookFor who="self" info="ZILDO" radius="7" changeContext="false">
+   	            <script who="self" value="25"/>	<!-- prepare dynamite -->
+                <exec script="spark(x,y)"/>
+   	            <sound name="Lighting"/>
+                <seq who="self" addSpr="9,10,9,10" wait="4"/>
    	            <!-- Determine a spot to throw dynamite -->
    	            <sound name="ZildoLance"/>
    	            
    	            <throw who="self" way="BELL" floor="2" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
+   	            <script who="self" value="3"/>
    	            <wait value="80"/>
   	        </lookFor>
 			<wait value="100"/>
    	    </loop>
    	</persoAction>
-
+   	
    	<persoAction id="butcher">
 
    	    <!-- If distance from Zildo is too low, he tries to go back.
@@ -1020,4 +1031,10 @@
         <pos who="zildo" pos="167,115"/>
         <fadeIn value="0"/>
     </scene>
+    
+   	<scene id="spark">
+   	    <for var="loc:i" value="10">
+			<spawn type="STAR1" pos="loc:arg0,loc:arg1-5" vx="random*0.6" floor="2" vy="random*0.9" z="4" vz="2.4" az="-0.1" zoom="100" alpha="255" alphaA="-0.3"/>
+   	    </for>
+	</scene>
 </adventure>

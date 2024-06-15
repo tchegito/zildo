@@ -402,6 +402,8 @@ public enum ElementDescription implements SpriteDescription {
 		case ZZZ1:
 		case ZZZ2:
 		case DROP_SMALL:
+		case EXPLO1:
+		case STAR1:
 			return false;
 		default:
 			return true;

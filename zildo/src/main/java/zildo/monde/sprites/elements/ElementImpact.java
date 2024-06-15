@@ -21,6 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import static zildo.server.EngineZildo.hasard;
+
 import zildo.client.sound.BankSound;
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.DamageType;
@@ -228,6 +229,7 @@ public class ElementImpact extends Element {
 						int dy=(int) (Math.random()*32 - 16);
 						ElementImpact smoke = new ElementImpact(startX + dx, startY + dy, ImpactKind.FIRESMOKE,
                                 (Perso) linkedPerso);
+						smoke.floor = floor;
 						smoke.z = z;
                         EngineZildo.spriteManagement.spawnSprite(smoke);
                     }
