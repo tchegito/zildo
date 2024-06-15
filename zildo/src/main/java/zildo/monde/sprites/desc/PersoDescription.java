@@ -137,13 +137,13 @@ public enum PersoDescription implements SpriteDescription {
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
 	MOLE(441, 442, 443, 444, 445, 446, 447),
-	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465),
+	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465 /* lighting dynamite*/, 466, 467, 468),
 	BUTCHER(450, 449, 451, 452, 453, 454, 455),
 	
 	// Shift numbers once darkguy will have all its sprites
-	HOODED(/*Idle face*/ 466, 467, 468, 469, /*Walking*/ 470, 471, 472, 473,
-			/* Attacking */506, 507, 508, 509, 510, 511, 
-			/* Bouncing */ 488, 489, 490, 491, 492, 493, 494, 495),
+	HOODED(/*Idle face*/ 469, 470, 471, 472, /*Walking*/ 473, 474, 475, 476,
+			/* Attacking */509, 510, 511, 512, 513, 514, 
+			/* Bouncing */ 491, 492, 493, 494, 495, 496, 497, 498),
 	
 	// 22
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
@@ -181,8 +181,8 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 463+2) {
-			f-= 464+2;
+		if (f > 463+2+3) {
+			f-= 464+2+3;
 		} else if (f > 367) {
 			f-=368;
 		} else if (f > 258) {

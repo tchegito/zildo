@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.EngineFX;
 import static zildo.server.EngineZildo.hasard;
 import zildo.monde.collision.Collision;
@@ -515,7 +516,7 @@ public class PersoNJ extends Perso {
 								pos_seqsprite = (pos_seqsprite + 1) % 512;
 							}
 						}
-					} else if (spriteSequence != null) {
+					} else if (!ZUtils.isEmpty(spriteSequence)) {
 						pos_seqsprite = (pos_seqsprite + 1) % 512;
 					}
 				}
@@ -591,6 +592,7 @@ public class PersoNJ extends Perso {
 		final int[] seqv = { 0, 1, 2, 1 }; // another 3 sprites
 		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
 		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
+		final int[] seqbadguyside = {0, 1, 0, 2};
 		
 		int add_spr = 0; //getAddSpr();
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
@@ -914,6 +916,9 @@ public class PersoNJ extends Perso {
 				} else if (angle == Angle.NORD) {
 					add_spr = 6 + seqbadguy[cs % seqbadguy.length];
 					reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				} else if (angle == Angle.EST || angle == Angle.OUEST) {
+					add_spr = 11 + seqbadguyside[cs % seqbadguyside.length];
+					reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
 				}
 			}
 			break;
