@@ -38,8 +38,9 @@ if (project.hasProperty('IC')) {
 
 }
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+// Maybe just needed for Android Studio
+//sourceCompatibility = 1.6
+//targetCompatibility = 1.6
 
 version = '1.0'
 
@@ -54,8 +55,11 @@ dependencies {
     implementation "com.google.android:android:2.3.3"
 }
 
+// Maybe just for Android Studio (but fails with Gradle, saying android() doesn't exist for such arguments)
+/*
 android {
     defaultConfig {
         minSdk 28
     }
 }
+*/
