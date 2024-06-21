@@ -241,7 +241,7 @@ public class ZUtils {
     static final Pattern p = Pattern.compile("[0-9|\\.|\\-| ]*");
     
     public static boolean isEmpty(int[] seq) {
-    	return seq == null || seq.length > 0; 
+    	return seq == null || seq.length == 0; 
     }
     
     public static boolean isNumeric(String p_text) {

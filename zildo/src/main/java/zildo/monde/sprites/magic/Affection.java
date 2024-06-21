@@ -20,12 +20,10 @@
 package zildo.monde.sprites.magic;
 
 import zildo.client.sound.BankSound;
-import zildo.fwk.ZUtils;
 import zildo.monde.items.Item;
 import zildo.monde.sprites.persos.Perso;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
-import zildo.server.MultiplayerManagement;
 
 /**
  * An affection is any kind of magic cast on a character : invincibility, poison, quad damage ...
@@ -37,7 +35,6 @@ import zildo.server.MultiplayerManagement;
 public class Affection {
 
 	public enum AffectionKind {
-		QUAD_DAMAGE(MultiplayerManagement.QUAD_TIME_DURATION),
 		INVINCIBILITY(500),
 		FIRE_DAMAGE_REDUCED(5000),
 		SLOWNESS(100);
@@ -74,11 +71,6 @@ public class Affection {
 		
 		// Specific behavior
 		switch (kind) {
-		case QUAD_DAMAGE:
-			if (duration == 160) {
-				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamageLeaving, perso);
-			}		
-			break;
 		case INVINCIBILITY:
 			if ( (kind.duration - duration) % 100 == 0) {
 				EngineZildo.soundManagement.broadcastSound(BankSound.Invincible, perso);
@@ -109,6 +101,7 @@ public class Affection {
 				perso.setLight(color);
 				perso.setSpeed(0.5f);
 			}
+			default:
 			break;
 		}
 		duration--;

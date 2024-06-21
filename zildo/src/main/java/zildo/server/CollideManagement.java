@@ -293,10 +293,6 @@ public class CollideManagement {
 
 	        		if (attacker != null && p_collider.perso.isZildo()) {
 	        			PersoPlayer zildo=(PersoPlayer) attacker;
-	        			if (zildo.isAffectedBy(AffectionKind.QUAD_DAMAGE)) {
-	        				EngineZildo.soundManagement.broadcastSound(BankSound.QuadDamaging, zildo);
-	        				dmg *= 4;
-	        			}
 	        			// Check if collider is something else than current hero's weapon
 	        			if (p_collider.weapon == null && zildo.getWeapon() != null && zildo.getWeapon().kind == ItemKind.MIDSWORD) {
 	        				dmg += 1;

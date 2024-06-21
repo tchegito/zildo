@@ -119,7 +119,7 @@ public class SpriteManagement extends SpriteStore {
 
 	}
 
-	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
+	public Element createElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation, Perso issuer) {
 		// SpriteEntity informations
 		Element element;
 		int nBank = desc.getBank();
@@ -128,7 +128,7 @@ public class SpriteManagement extends SpriteStore {
 			element.setAjustedX(x);
 			element.setAjustedY(y);
 		} else if (desc == ElementDescription.DYNAMITE) {
-			element = new ElementDynamite(x, y, z, null);
+			element = new ElementDynamite(x, y, z, issuer);
 		} else {
     		if (desc == ElementDescription.PORTAL_KEY) {
     			// Handle this in a more generic way
@@ -155,7 +155,7 @@ public class SpriteManagement extends SpriteStore {
 	// -build an element with given parameters
 	// -add it to the sprite engine
 	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
-		Element element = createElement(desc, x, y, z, reverse, rotation);
+		Element element = createElement(desc, x, y, z, reverse, rotation, null);
 		spawnSprite(element);
 		return element;
 	}
@@ -476,7 +476,7 @@ public class SpriteManagement extends SpriteStore {
 
 		if (desc.isPushable() || desc == ElementDescription.STONE_HEAVY) { // || nSpr == 179) {
 			// Particular sprite (Block that Zildo can move, chest...)
-			return createElement(desc, x, y, 0, Reverse.NOTHING, Rotation.NOTHING); // + spr.getTaille_y() / 2 - 3,
+			return createElement(desc, x, y, 0, Reverse.NOTHING, Rotation.NOTHING, null); // + spr.getTaille_y() / 2 - 3,
 					//0);
 		}
 
@@ -501,9 +501,6 @@ public class SpriteManagement extends SpriteStore {
 			entity = new ElementGear(x, y);
 			entity.setAjustedX(x);
 			entity.setAjustedY(y);
-		} else if (desc == ElementDescription.QUAD1) {
-			EngineZildo.multiplayerManagement.spawnQuad(x, y);
-			return null;
 		} else if (desc == ElementDescription.CAULDRON1) {
 			entity = new ElementImpact(x, y - 4, ImpactKind.CAULDRON, null);
 			entity.z = 0;	// Default is z=4 for ElementImpact

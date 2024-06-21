@@ -57,10 +57,6 @@ public enum BankSound implements AudioBank {
 	
 	MoonFusion("moonfusion"),
 	
-	QuadDamage("quaddamage"),
-	QuadDamageLeaving("damage2"),
-	QuadDamaging("damage3"),
-	
 	Invincible("invincible"),
 	
 	MonstreTouche("touche"),

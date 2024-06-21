@@ -1105,6 +1105,7 @@ public class Element extends SpriteEntity {
 		}
 		burningFire.x = x;
 		burningFire.y = y;
+		burningFire.floor = floor;
 	}
 
 	public boolean isOutsidemapAllowed() {

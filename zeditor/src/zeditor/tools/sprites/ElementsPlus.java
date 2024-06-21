@@ -179,7 +179,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(102, 16, 3, 3), new Zone(105, 16, 4, 4),
 				new Zone(109, 16, 7, 7), 
 				// Bomb (and explosion) (106)
-				new Zone(116, 16, 13, 14), new Zone(129, 16, 14, 14),
+				new Zone(118, 17, 10, 13), new Zone(129, 16, 14, 14),
 				new Zone(143, 16, 15, 15), new Zone(158, 16, 15, 16),
 				new Zone(173, 16, 14, 14), new Zone(187, 16, 15, 15),
 				new Zone(212, 16, 8, 8),
@@ -190,7 +190,9 @@ public class ElementsPlus extends SpriteBanque {
 
 				// Quad (117)	// Phase of removing (this shouldn't stay in the Android version)
 				//new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
-				new Zone(34, 35, 17, 23), new Zone(51, 35, 17, 23),
+				// Dynamite (half burnt)
+				new Zone(133, 33, 10, 13),	// Following is quad's remaining. Feel free to override them
+				new Zone(34, 35, 17, 23), //new Zone(51, 35, 17, 23),
 				new Zone(68, 35, 17, 23), new Zone(85, 35, 17, 23),
 				new Zone(102, 35, 17, 23), new Zone(119, 35, 17, 23),
 				
@@ -414,7 +416,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("exteria10", 282, 0),
 				new GraphChange("elem", 288, 0),
 				new GraphChange("butcher", 291, 0),
-				new GraphChange("interia6", 293, 0)
+				new GraphChange("interia6", 293, 0),
+				new GraphChange("elem", 303, 0)
 		});
 	}
 }

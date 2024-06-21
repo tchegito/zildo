@@ -25,7 +25,6 @@ import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.elements.ElementImpact;
 import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
-import zildo.monde.sprites.elements.ElementQuadDamage;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
@@ -62,7 +61,7 @@ public class MultiplayerManagement {
 	
     public void spawnQuad(int x, int y) {
         EngineZildo.spriteManagement.spawnSprite(new ElementImpact(x, y, ImpactKind.SMOKE, null));
-        EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
+        //EngineZildo.spriteManagement.spawnSprite(new ElementQuadDamage(x, y));
         quadPos=new Point(x, y);
     }
 	

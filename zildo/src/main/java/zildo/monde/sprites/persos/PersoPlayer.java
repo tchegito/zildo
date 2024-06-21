@@ -1357,10 +1357,6 @@ public class PersoPlayer extends Perso {
 		case ARROW_UP:
 			countArrow += 5;
 			break;
-		case QUAD1:
-			affections.add(AffectionKind.QUAD_DAMAGE);
-			EngineZildo.multiplayerManagement.pickUpQuad();
-			break;
 		case DYNAMITE:
 			countBomb ++;
 			break;
@@ -1386,9 +1382,6 @@ public class PersoPlayer extends Perso {
 			toPlay = BankSound.ZildoItem;
 			break;
 			*/
-		case QUAD1:
-			toPlay = BankSound.QuadDamage;
-			break;
 		case KEY:
 			toPlay = BankSound.ZildoKey;
 			break;

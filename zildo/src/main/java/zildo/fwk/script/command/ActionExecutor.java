@@ -358,7 +358,7 @@ public class ActionExecutor extends RuntimeExecutor {
 				achieved = !p_action.delta || p_action.unblock;
 				break;
 			case spawn: // Spawn a new character or element
-				actionSpawn(p_action, location.toPoint(), false);
+				actionSpawn(p_action, location.toPoint(), false, null);
 				achieved = true;
 				break;
 			case animation:
@@ -869,7 +869,7 @@ public class ActionExecutor extends RuntimeExecutor {
 				break;
 			case _throw:
 				if (perso != null) { // If thrower has been killed => don't throw NPE
-					Element elem = actionSpawn(p_action, location.toPoint(), true); // Ignore 'who' because it's for the throw
+					Element elem = actionSpawn(p_action, location.toPoint(), true, perso); // Ignore 'who' because it's for the throw
 					location = new Pointf(p_action.target.getPoint());
 					// Turn character in the right direction
 					perso.sight(EngineZildo.persoManagement.getZildo(), true);
@@ -1077,7 +1077,7 @@ public class ActionExecutor extends RuntimeExecutor {
 	 * 
 	 * @return spawned element
 	 */
-	private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho) {
+	private Element actionSpawn(ActionElement p_action, Point location, boolean p_ignoreWho, Perso issuer) {
 		Element elem = null;
 		String name = null;
 		if (!p_ignoreWho && p_action.who != null) {
@@ -1155,7 +1155,7 @@ public class ActionExecutor extends RuntimeExecutor {
 								elem = (Element) entity;
 							}
 						} else {
-		        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot);
+		        			elem = EngineZildo.spriteManagement.createElement(desc, location.x, location.y, 0, rev, rot, issuer);
 							entity = elem;
 							if (desc instanceof FontDescription) {
 								// Particular case=> animation on GUI

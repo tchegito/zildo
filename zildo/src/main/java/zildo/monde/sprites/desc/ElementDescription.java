@@ -64,7 +64,7 @@ public enum ElementDescription implements SpriteDescription {
 	FLUT, SWORD,
 
 	// 115
-	STONEWALL1, STONEWALL2, QUAD1, QUAD2, QUAD3, QUAD4, QUAD5, QUAD6,
+	STONEWALL1, STONEWALL2, DYNAMITE2, QUAD2, QUAD3, QUAD4, QUAD5, QUAD6,
 
 	// 123
 	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, HAMMER, CRYSTAL, LANTERN, FIRE_STAFF, ITEM_SCEPTER, EXCALIBUR, BOOK, NECKLACE_RED, GLOVE, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_YELLOW, FLASK_BLUE,
@@ -288,6 +288,7 @@ public enum ElementDescription implements SpriteDescription {
 				case ARROW_RIGHT:
 				case ARROW_LEFT:
 				case DYNAMITE:
+				case DYNAMITE2:
 				case STAFF_POUM:
 				case BIG_FIRE_BALL:
 				case PEEBLE:
@@ -340,7 +341,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CUBE_BLUE: case CUBE_ORANGE:
 		case ARROW_UP: case ARROW_RIGHT: case ARROW_DOWN: case ARROW_LEFT:
 		case BOOMERANG1: case BOOMERANG2: case BOOMERANG3: case BOOMERANG4:
-		case DYNAMITE: case BOMBS3:
+		case DYNAMITE: case DYNAMITE2: case BOMBS3:
 		case KEY: case STAFF_POUM: case BIG_FIRE_BALL:
 		case HEART_FRAGMENT: case NOTE: case NOTE2:
 		case PEEBLE: case ZZZ1: case ZZZ2: case STAR1: case STAR2: case STAR3:
