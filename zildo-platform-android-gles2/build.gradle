@@ -12,12 +12,12 @@ if (project.hasProperty('IC')) {
     apply plugin: 'com.android.library'
 
     android {
-        compileSdkVersion 30
+        compileSdkVersion 33
 
         //applicationId 'zildo.platform'
         sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
         defaultConfig {
-            minSdk 16
+            minSdk 33
             //applicationId 'zildo.platform'
         }
         //minSdkVersion 16
@@ -38,6 +38,8 @@ if (project.hasProperty('IC')) {
 
 }
 
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 version = '1.0'
 
@@ -50,4 +52,10 @@ repositories {
 dependencies {
     implementation project(':zildo')
     implementation "com.google.android:android:2.3.3"
+}
+
+android {
+    defaultConfig {
+        minSdk 28
+    }
 }
