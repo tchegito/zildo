@@ -20,7 +20,7 @@ include 'zildo-platform-lwjgl'
 include 'zeditor'
 // include "packaging-win"
 
-rootProject.name = 'zildo'
+rootProject.name = 'alembrume'
 
 def isICBuild() {
     return hasProperty("IC")

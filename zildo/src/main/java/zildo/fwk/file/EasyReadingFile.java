@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -54,6 +55,6 @@ public class EasyReadingFile extends EasyBuffering {
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to read "+path);
 		}
-		data.flip();
+		((Buffer)data).flip();
 	}
 }

@@ -12,15 +12,15 @@ compileJava {
 */
 
 // doublon mais si on le met pas, gradle nous dit qu'il n'est pas défini !
-android.compileSdkVersion 28
+android.compileSdkVersion 33
 
 android {
 
     //applicationId "com.alembrum"
-    compileSdkVersion 30
     sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
     defaultConfig {
-        minSdk 16
+        // 28 pour lancer sur mon redmi 6, mais google exige 33 sur le store
+        minSdk 33
         applicationId 'com.alembrum'
     }
     //versionCode 72
@@ -36,6 +36,12 @@ android {
             java {
                 srcDirs = ['src']
             }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
         }
     }
 }

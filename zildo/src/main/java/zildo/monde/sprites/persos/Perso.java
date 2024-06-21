@@ -66,10 +66,10 @@ import zildo.server.EngineZildo;
 public abstract class Perso extends Element {
 
 	public enum PersoInfo {
-		NEUTRAL,			// Hero can talk to 
-		ENEMY, 				// Hero can attack
-		ZILDO,				// Enemy can attack (hero or damageable entity, like coal) 
-		SHOOTABLE_NEUTRAL;	// Hero can attack (hen, duck)
+		NEUTRAL, // Hero can talk to
+		ENEMY, // Hero can attack
+		ZILDO, // Enemy can attack (hero or damageable entity, like coal)
+		SHOOTABLE_NEUTRAL; // Hero can attack (hen, duck)
 	}
 
 	protected Zone zone_deplacement;
@@ -83,27 +83,27 @@ public abstract class Perso extends Element {
 	protected int attente; // =0 => pas d'attente
 	protected PathFinder pathFinder; // Destination
 	protected float px, py; // Quand le perso est propulsé (touché)
-	protected float prevX, prevY;	// Previous location (to calculate a delta)
-	public float deltaMoveX, deltaMoveY;	// Previous location (to calculate a delta)
+	protected float prevX, prevY; // Previous location (to calculate a delta)
+	public float deltaMoveX, deltaMoveY; // Previous location (to calculate a delta)
 	protected int pos_seqsprite;
 	private Element en_bras; // If this is Zildo, what he holds. If any perso,
 								// his weapon
 	Element feet;
 	boolean dieSceneLaunched = false;
-	
+
 	protected MouvementZildo mouvement; // Situation du
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
 	protected int pv, maxpv; // Points de vie du perso
-	private boolean onPlatform = false;	// TRUE=character is on a platform
+	private boolean onPlatform = false; // TRUE=character is on a platform
 
 	protected int money;
 	protected int countArrow;
 	protected int countBomb;
 	protected int countKey; // How many keys have perso ? (for PNJ, he gives it when he dies)
-	
-	protected Perso shooter;	// Last perso who shoot this one
-	
+
+	protected Perso shooter; // Last perso who shoot this one
+
 	// Jump
 	private Point posAvantSaut;
 	protected Point posShadowJump;
@@ -112,14 +112,14 @@ public abstract class Perso extends Element {
 	protected PersoAction action; // Perso doing an action
 
 	private int count = 0;
-	protected boolean inWater = false;	// Feet in water
+	protected boolean inWater = false; // Feet in water
 	protected boolean underWater = false;
 	protected boolean inDirt = false;
 	/** Linked to flags defined in {@link FlagPerso} **/
-	protected int flagBehavior = 0;	
-	
-	protected boolean askedVisible = true;	// FALSE=a script ask this character to be invisible
-	
+	protected int flagBehavior = 0;
+
+	protected boolean askedVisible = true; // FALSE=a script ask this character to be invisible
+
 	private boolean wounded;
 	private Perso dialoguingWith;
 	private String dialogSwitch; // Field parseable by ZSSwitch
@@ -129,25 +129,25 @@ public abstract class Perso extends Element {
 	private static SoundGetter footOnSqueak = new SoundGetter(BankSound.Squeak1, BankSound.Squeak2, 800, true);
 
 	private static TileCollision tileCollision = TileCollision.getInstance();
-	
+
 	private static TileLight tileLight = new TileLight();
-	
+
 	PersoAffections affections;
 
 	// Convenient variable, for optimization
-	int bottomZ;	// 'z' coordinate under the current character's location
+	int bottomZ; // 'z' coordinate under the current character's location
 	TileNature nature;
-	
+
 	public Item weapon;
 
 	public Item getWeapon() {
 		return weapon;
 	}
-	
+
 	public void setWeapon(Item weapon) {
 		this.weapon = weapon;
 	}
-	
+
 	public Element getFollowing() {
 		return following;
 	}
@@ -226,7 +226,7 @@ public abstract class Perso extends Element {
 				break;
 			case FOLLOW:
 				// Assume that 'following' has been set before (and keep previous speed)
-				float prevSpeed = pathFinder == null ? 0.5f: pathFinder.speed;
+				float prevSpeed = pathFinder == null ? 0.5f : pathFinder.speed;
 				pathFinder = new PathFinderFollow(this, following);
 				pathFinder.speed = prevSpeed;
 				break;
@@ -274,7 +274,7 @@ public abstract class Perso extends Element {
 	public boolean isProjected() {
 		return px != 0f || py != 0f;
 	}
-	
+
 	public int getPos_seqsprite() {
 		return pos_seqsprite;
 	}
@@ -366,20 +366,20 @@ public abstract class Perso extends Element {
 
 	public Perso() {
 		super();
-		
+
 		initFields();
-		
+
 		feet = new Element(this);
 		feet.setNBank(SpriteBank.BANK_ZILDO);
 		feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 		addPersoSprites(feet);
 
 	}
-	
+
 	public boolean isBlinking() {
 		return compte_dialogue != 0 || mouvement == MouvementZildo.TOUCHE;
 	}
-	
+
 	protected void initFields() {
 		entityType = EntityType.PERSO;
 
@@ -402,7 +402,7 @@ public abstract class Perso extends Element {
 	public Perso(int id) {
 		super(id);
 	}
-	
+
 	public void destroy() {
 		// Delete linked elements
 		if (persoSprites != null && persoSprites.size() > 0) {
@@ -472,18 +472,17 @@ public abstract class Perso extends Element {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Perso=" + name + "\nCoords:(" + x + ", " + y + " " + z+")");
+		sb.append("Perso=" + name + "\nCoords:(" + x + ", " + y + " " + z + ")");
 		if (pathFinder != null && pathFinder.getTarget() != null) {
 			Pointf p = pathFinder.getTarget();
-			sb.append(" ==> ("+p.x+","+p.y+")");
+			sb.append(" ==> (" + p.x + "," + p.y + ")");
 		}
-		sb.append("\ninfo=" + info + "\nmvt=" + mouvement+" pv="+pv);
+		sb.append("\ninfo=" + info + "\nmvt=" + mouvement + " pv=" + pv);
 		return sb.toString();
 	}
 
 	/**
-	 * Push the character away, with a hit point located at the given
-	 * coordinates.
+	 * Push the character away, with a hit point located at the given coordinates.
 	 * 
 	 * @param p_cx
 	 * @param p_cy
@@ -506,7 +505,8 @@ public abstract class Perso extends Element {
 	public abstract void initPersoFX();
 
 	/**
-	 * All methods overriding this one should call it (before or after, that doesn't matter).
+	 * All methods overriding this one should call it (before or after, that doesn't
+	 * matter).
 	 */
 	public void beingWounded(float cx, float cy, Perso p_shooter, int p_damage) {
 		shooter = p_shooter;
@@ -518,9 +518,9 @@ public abstract class Perso extends Element {
 	public void parry(float cx, float cy, Perso p_shooter) {
 	}
 
-	public void stopBeingWounded() { 
+	public void stopBeingWounded() {
 		boolean died = (getPv() <= 0);
-		if (died && !dieSceneLaunched) {	// Don't run the scene twice !
+		if (died && !dieSceneLaunched) { // Don't run the scene twice !
 			die(true, shooter);
 		}
 		if (!died) {
@@ -531,24 +531,28 @@ public abstract class Perso extends Element {
 	public abstract void attack();
 
 	/**
-	 * All methods overriding this one should call it (before or after, that doesn't matter).
-	 * Basically, called during 'stopBeingWounded' if character hasn't HP anymore.
-	 * @param p_link TRUE=death animation will be linked to character's sprite
+	 * All methods overriding this one should call it (before or after, that doesn't
+	 * matter). Basically, called during 'stopBeingWounded' if character hasn't HP
+	 * anymore.
+	 * 
+	 * @param p_link    TRUE=death animation will be linked to character's sprite
 	 * @param p_shooter
 	 */
 	public void die(boolean p_link, Perso p_shooter) {
 		// Death !
-		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, floor, 0, p_link ? this
-						: null, null);
+		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, floor, 0,
+				p_link ? this : null, null);
 		TriggerElement trig = TriggerElement.createDeathTrigger(name);
 		EngineZildo.scriptManagement.trigger(trig);
 		setSpecialEffect(EngineFX.PERSO_HURT);
 		dieSceneLaunched = true;
 	}
 
-	/** Method designed for Perso rendering. Called every frame, whatever game state is. So this is the
-	 * right place for ongoing animations, when ingame menu is displayed for example, or whatever causing
-	 * an NPC block.
+	/**
+	 * Method designed for Perso rendering. Called every frame, whatever game state
+	 * is. So this is the right place for ongoing animations, when ingame menu is
+	 * displayed for example, or whatever causing an NPC block.
+	 * 
 	 * @param compteur_animation
 	 */
 	public void finaliseComportement(int compteur_animation) {
@@ -572,35 +576,39 @@ public abstract class Perso extends Element {
 		x = prevX;
 		y = prevY;
 	}
-	/** Method for Perso animation. Called every frame, <b>when characters are not blocked</b>.
-	    Here is the default one : launch perso's action if exists, store delta movements,
-	    and manage OBSERVE script.
-	    @param compteur **/
+
+	/**
+	 * Method for Perso animation. Called every frame, <b>when characters are not
+	 * blocked</b>. Here is the default one : launch perso's action if exists, store
+	 * delta movements, and manage OBSERVE script.
+	 * 
+	 * @param compteur
+	 **/
 	public void animate(int compteur) {
 
 		deltaMoveX = x - prevX;
 		deltaMoveY = y - prevY;
-		
+
 		prevX = x;
 		prevY = y;
-		
+
 		if (action != null && getPv() > 0) {
-			if (attente > 0 && !isZildo()) {	// Zildo's attente field decrease is already handled in PlayerManagement
+			if (attente > 0 && !isZildo()) { // Zildo's attente field decrease is already handled in PlayerManagement
 				attente--;
 			}
 			if (action.launchAction()) {
 				action = null;
-				ghost = false;	// Allow player movements
+				ghost = false; // Allow player movements
 			}
 		}
-		
+
 		// Alpha channel evolution
 		alphaV += alphaA;
 		if (alphaV != 0) {
 			setAlpha(alpha + alphaV);
 		}
 
-		if (alpha > 255) {	// Stop alpha increase when it reaches the max
+		if (alpha > 255) { // Stop alpha increase when it reaches the max
 			alpha = 255;
 			alphaV = 0;
 			alphaA = 0;
@@ -609,7 +617,7 @@ public abstract class Perso extends Element {
 			alphaV = 0;
 			alphaA = 0;
 		}
-		
+
 		switch (this.quel_deplacement) {
 		case OBSERVE:
 			// Persos qui regardent en direction de Zildo
@@ -632,7 +640,10 @@ public abstract class Perso extends Element {
 
 	private boolean transitionCrossed;
 
-	/** Fills the {@link onPlatform} variable, checking every walking platform under current character. **/
+	/**
+	 * Fills the {@link onPlatform} variable, checking every walking platform under
+	 * current character.
+	 **/
 	protected boolean checkPlatformUnder() {
 		// Check sprite collision
 		for (SpriteEntity entity : EngineZildo.spriteManagement.getWalkableEntities()) {
@@ -642,16 +653,17 @@ public abstract class Perso extends Element {
 			float diffZ = z - vehicle.getFlatZ();
 			if (zz.isInto((int) x, (int) y)) {
 				// Declare entity is on the mover only if Z matches
-				if (0 <= diffZ && diffZ < 0.5) {			// 0 <= DiffZ < 0.5
+				if (0 <= diffZ && diffZ < 0.5) { // 0 <= DiffZ < 0.5
 					bottomZ = vehicle.getFlatZ();
 					boolean justLinked = vehicle.linkEntity(this);
 					if (justLinked) {
 						String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-						TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(), -1, floor);
+						TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(),
+								-1, floor);
 						EngineZildo.scriptManagement.trigger(trigger);
 						onPlatform = true;
 					}
-	
+
 					return true;
 				}
 			} else if (onPlatform && vehicle.isOnIt(this)) {
@@ -661,26 +673,25 @@ public abstract class Perso extends Element {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Perso walk on a tile, so he reacts (water/mud), or tile change (door).
 	 * 
-	 * @param p_sound
-	 *            TRUE=play sound when modifying map.
+	 * @param p_sound TRUE=play sound when modifying map.
 	 * @return boolean (TRUE=slow down)
 	 */
 	public boolean walkTile(boolean p_sound) {
 
-		if (isZildo() && checkPlatformUnder()) {	// Only Zildo on platforms, for now
+		if (isZildo() && checkPlatformUnder()) { // Only Zildo on platforms, for now
 			// Be careful : 'return' here, means that no trigger could be activated
 			// But it avoid character to die in lava if he's on a platform.
-			return false;	// Perso is on a platform
+			return false; // Perso is on a platform
 		}
-		
+
 		int cx = (int) (x / 16);
 		int cy = (int) (y / 16);
 		Area area = EngineZildo.mapManagement.getCurrentMap();
-		boolean bottomLess = area.isCaseBottomLess(cx,  cy, floor);
+		boolean bottomLess = area.isCaseBottomLess(cx, cy, floor);
 		Tile tile = area.readmap(cx, cy, false, floor);
 		if (tile == null && floor > 0) {
 			// To handle properly collision in dragon's cave (juste on the dragon's edge)
@@ -694,11 +705,11 @@ public abstract class Perso extends Element {
 			transitionCrossed = true;
 		} else if (transitionCrossed) {
 			// Try to change perso's floor
-			if (floor < area.getHighestFloor() && area.readmap(cx, cy, false, floor+1) != null) {
-				setFloor(floor+1);
-			} else if (floor>0) {
+			if (floor < area.getHighestFloor() && area.readmap(cx, cy, false, floor + 1) != null) {
+				setFloor(floor + 1);
+			} else if (floor > 0) {
 				if (area.readmap(cx, cy, false, floor) == null) {
-					setFloor(floor-1);
+					setFloor(floor - 1);
 				}
 			}
 			transitionCrossed = false;
@@ -713,102 +724,109 @@ public abstract class Perso extends Element {
 		BankSound snd = null;
 		nature = area.getCaseNature((int) x, (int) y, floor);
 		int coeffWhiteLight = 15;
-		
+
 		if (!flying && isZildo() && nature == TileNature.WATER) {
 			// Water
 			diveAndWound();
 		} else {
 			switch (onmap) {
 			// Diminushing light under horizontal doors
-			case 97 + 256*3:
-			case 99 + 256*3:
+			case 97 + 256 * 3:
+			case 99 + 256 * 3:
 				coeffWhiteLight = Math.min(16 - (int) x % 16, 15);
 				break;
-			case 102 + 256*3:
-			case 104 + 256*3:
+			case 102 + 256 * 3:
+			case 104 + 256 * 3:
 				coeffWhiteLight = Math.min((int) x % 16, 15);
 				break;
-			case 98 + 256*3:
-			case 100 + 256*3:
+			case 98 + 256 * 3:
+			case 100 + 256 * 3:
 				setLight(0x111111);
 				break;
-			case 159 + 256*3: case 163 + 256*3:
-			case 160 + 256*3: case 164 + 256*3:
-				setLight(0xc2fbca); coeffWhiteLight = -1;
-				break; //b2ebba ou 79ba92
-			case 191 + 256*3:	// Access to the right 1
-			case 193 + 256*3:
+			case 159 + 256 * 3:
+			case 163 + 256 * 3:
+			case 160 + 256 * 3:
+			case 164 + 256 * 3:
+				setLight(0xc2fbca);
+				coeffWhiteLight = -1;
+				break; // b2ebba ou 79ba92
+			case 191 + 256 * 3: // Access to the right 1
+			case 193 + 256 * 3:
 				coeffWhiteLight = tileLight.right(1, x, y);
 				break;
-			case 192 + 256*3:	// Access to the right 2
-			case 194 + 256*3:
+			case 192 + 256 * 3: // Access to the right 2
+			case 194 + 256 * 3:
 				coeffWhiteLight = tileLight.right(2, x, y);
 				break;
-			case 197 + 256*3:	// Access to the left 1
-			case 199 + 256*3:
+			case 197 + 256 * 3: // Access to the left 1
+			case 199 + 256 * 3:
 				coeffWhiteLight = tileLight.left(1, x, y);
 				break;
-			case 196 + 256*3:	// Access to the left 2
-			case 198 + 256*3:
+			case 196 + 256 * 3: // Access to the left 2
+			case 198 + 256 * 3:
 				coeffWhiteLight = tileLight.left(2, x, y);
 				break;
-				// Vertical doors
-			case 175 + 256*3:	// Access the north 1
-			case 176 + 256*3:
-			case 109 + 256*3:
-			case 110 + 256*3:
-			case 87 +256*5: case 148+256*5:	// Desert cave entrance
+			// Vertical doors
+			case 175 + 256 * 3: // Access the north 1
+			case 176 + 256 * 3:
+			case 109 + 256 * 3:
+			case 110 + 256 * 3:
+			case 87 + 256 * 5:
+			case 148 + 256 * 5: // Desert cave entrance
 				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
-			case 177 + 256*3:	// Access to the north 2
-			case 178 + 256*3:
+			case 177 + 256 * 3: // Access to the north 2
+			case 178 + 256 * 3:
 
-			case 192 + 256*5: case 193 + 256*5:	// Desert cave
-			case 224 + 256*4:
+			case 192 + 256 * 5:
+			case 193 + 256 * 5: // Desert cave
+			case 224 + 256 * 4:
 				coeffWhiteLight = tileLight.north(2, x, y);
 				break;
-			case 111 + 256*3:
-			case 112 + 256*3:
+			case 111 + 256 * 3:
+			case 112 + 256 * 3:
 				coeffWhiteLight = tileLight.north(0, x, y);
 				break;
-			case 179 + 256*3:	// Access to the south 2
-			case 180 + 256*3:
-			case 105 + 256*3:
-			case 106 + 256*3:
+			case 179 + 256 * 3: // Access to the south 2
+			case 180 + 256 * 3:
+			case 105 + 256 * 3:
+			case 106 + 256 * 3:
 				coeffWhiteLight = tileLight.south(1, x, y);
 				break;
-			case 181 + 256*3:	// Access to the south 1
-			case 182 + 256*3:
-			case 107 + 256*3:
-			case 108 + 256*3:
+			case 181 + 256 * 3: // Access to the south 1
+			case 182 + 256 * 3:
+			case 107 + 256 * 3:
+			case 108 + 256 * 3:
 				coeffWhiteLight = tileLight.south(2, x, y);
 				break;
 			// Tile used on different rotated value: light coeff will follow
-			case 9 + 256*10:	// lavacave
-			case 10 + 256*10:
+			case 9 + 256 * 10: // lavacave
+			case 10 + 256 * 10:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, tile.rotation);
 				break;
-			case 25 + 256*9:	// nature palace
+			case 25 + 256 * 9: // nature palace
 				coeffWhiteLight = tileLight.forNaturePalaceRotatedDoorStep(x, y, tile.rotation);
 				break;
-			case 28+ 256*9:	// Nature palace
+			case 28 + 256 * 9: // Nature palace
 				coeffWhiteLight = tileLight.forNaturePalaceRotatedTile(x, y, tile.rotation);
 				break;
-			case 256*9 + 176:	// Slab in nature palace
+			case 256 * 9 + 176: // Slab in nature palace
 				area.walkSlab(cx, cy, id, true);
-			break;
-			case 13 + 256*10:
-			case 14 + 256*10:
+				break;
+			case 13 + 256 * 10:
+			case 14 + 256 * 10:
 				coeffWhiteLight = tileLight.forRotatedTile(1, x, y, tile.rotation);
 				break;
-			case 256 + 22: case 256*5 + 214:
+			case 256 + 22:
+			case 256 * 5 + 214:
 				if (pathFinder.open) {
 					area.writemap(cx, cy, 314);
 					area.writemap(cx + 1, cy, 315);
 					snd = BankSound.OuvrePorte;
 				}
 				break;
-			case 256 + 23: case 256*5 + 215:
+			case 256 + 23:
+			case 256 * 5 + 215:
 				if (pathFinder.open) {
 					area.writemap(cx - 1, cy, 314);
 					area.writemap(cx, cy, 315);
@@ -817,7 +835,7 @@ public abstract class Perso extends Element {
 				break;
 			case 200:
 			case 374:
-				if (!flying && z == 0) {	// Don't slow down character if he's in the air
+				if (!flying && z == 0) { // Don't slow down character if he's in the air
 					snd = BankSound.ZildoGadou;
 					inDirt = true;
 					repeatSound = true;
@@ -838,33 +856,38 @@ public abstract class Perso extends Element {
 				break;
 			case 857:
 			case 858:
-			case 7*256+129: case 7*256+130:
+			case 7 * 256 + 129:
+			case 7 * 256 + 130:
 				handleStairsScene("miniStairsDown");
 				slowDown = true;
 				break;
-			case 7*256+133: case 7*256+134:
+			case 7 * 256 + 133:
+			case 7 * 256 + 134:
 				handleStairsScene("miniStairsDownReverse");
 				slowDown = true;
 				break;
-			case 859:	// cave stairs
+			case 859: // cave stairs
 			case 860:
-			case 7*256+131: case 7*256+132:	// Palace1 stairs
-			case 768 + 248:	// Rock on back2 for stairs (careful with this !!!)
+			case 7 * 256 + 131:
+			case 7 * 256 + 132: // Palace1 stairs
+			case 768 + 248: // Rock on back2 for stairs (careful with this !!!)
 				handleStairsScene("miniStairsUp");
 				slowDown = true;
 				break;
-			case 7*256+135: case 7*256+136:
+			case 7 * 256 + 135:
+			case 7 * 256 + 136:
 				handleStairsScene("miniStairsUpReverse");
 				slowDown = true;
 				break;
-			case 6*256+197:	// Secret stairs in Valori
+			case 6 * 256 + 197: // Secret stairs in Valori
 				handleStairsScene("miniStairsDownCave");
 				slowDown = true;
 				break;
-			case 256*2 + 200: case 256 * 2 + 198:	// Wood stairs going up
-			case 256*2 + 201:	// Wood stairs going down (on the right)
-			case 256*2 + 213:
-			case 256*5 + 151: // Stone stairs (in the desert)
+			case 256 * 2 + 200:
+			case 256 * 2 + 198: // Wood stairs going up
+			case 256 * 2 + 201: // Wood stairs going down (on the right)
+			case 256 * 2 + 213:
+			case 256 * 5 + 151: // Stone stairs (in the desert)
 				slowDown = true;
 				break;
 			case 206:
@@ -872,31 +895,34 @@ public abstract class Perso extends Element {
 			case 170:
 			case 171:
 			case 172: // Stairs in forest
-			case 91+7*256:	// Stairs in palace1
-			case 228+512: case 229+512: case 230+512:	// Stairs
-			case 212+1024: case 213+1024:	// Palace outside stairs
+			case 91 + 7 * 256: // Stairs in palace1
+			case 228 + 512:
+			case 229 + 512:
+			case 230 + 512: // Stairs
+			case 212 + 1024:
+			case 213 + 1024: // Palace outside stairs
 				slowDown = true;
 				break;
 			// Falls
-			case 768+217:	// grotte
-			//case 1536+198: // foret4
-			case 256*10 + 34:	// lava
+			case 768 + 217: // grotte
+				// case 1536+198: // foret4
+			case 256 * 10 + 34: // lava
 				if (isZildo()) {
 					fall = true;
 				}
 				break;
-			case 1277:	// Knives
+			case 1277: // Knives
 				if (isZildo()) {
 					beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
 				}
 				break;
-			case 256*2 + 57:
+			case 256 * 2 + 57:
 				// Squeaky floor
-				if (!flying){ 
+				if (!flying) {
 					snd = footOnSqueak.getSingleSound();
 				}
 				break;
-			case 256*3 + 125:	// Hole with a floor on map below
+			case 256 * 3 + 125: // Hole with a floor on map below
 				break;
 			default:
 				if (isZildo() && bottomLess) {
@@ -908,9 +934,9 @@ public abstract class Perso extends Element {
 				}
 			}
 		}
-		
+
 		// Release a slab
-		if (onmap != 256*9 + 176 && onmap != 256*9 + 177) {
+		if (onmap != 256 * 9 + 176 && onmap != 256 * 9 + 177) {
 			area.walkSlab(cx, cy, id, false);
 		}
 
@@ -918,47 +944,53 @@ public abstract class Perso extends Element {
 		if (foreTile != null) {
 			int val = foreTile.getValue();
 			switch (val) {
-			case 256*3 + 126:
-			case 256*2:
-				// Particular case: really ugly, but how handle it properly ? When hero is under a foretile masking him
+			case 256 * 3 + 126:
+			case 256 * 2:
+				// Particular case: really ugly, but how handle it properly ? When hero is under
+				// a foretile masking him
 				// For example, when he crosses vertical door.
 				coeffWhiteLight = 0;
 				break;
-			case 256*4 + 219:
+			case 256 * 4 + 219:
 				coeffWhiteLight = tileLight.north(1, x, y);
-			case 256*3 + 195:
+			case 256 * 3 + 195:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.succ());
 				break;
-			case 256*3 + 98: case 256*3 + 100:
-			case 256*3 + 101: case 256*3 + 103:
+			case 256 * 3 + 98:
+			case 256 * 3 + 100:
+			case 256 * 3 + 101:
+			case 256 * 3 + 103:
 				coeffWhiteLight = 0;
 				break;
-			case 256*3 + 200:
+			case 256 * 3 + 200:
 				coeffWhiteLight = tileLight.forRotatedTile(2, x, y, foreTile.rotation.prec());
 				break;
 			default:
-				// In dragon cave, we use foretile on bottomless tiles (this game need to reach an end one day, too much workarounds !)
+				// In dragon cave, we use foretile on bottomless tiles (this game need to reach
+				// an end one day, too much workarounds !)
 				if (isZildo() && bottomLess) {
-					fall = (tileCollision.collide((int) x % 16, (int) y % 16, val, foreTile.reverse, Rotation.NOTHING, 0));
+					fall = (tileCollision.collide((int) x % 16, (int) y % 16, val, foreTile.reverse, Rotation.NOTHING,
+							0));
 				}
 			}
 		}
 		if (coeffWhiteLight != -1) {
 			setLight(coeffWhiteLight * 0x111111);
 		}
-		if (fall && !EngineZildo.scriptManagement.isScripting()) {	// Don't redo the same scene
-			// Dirty case: bridge over water. We use collision by back2 data, but instead of falling in a pit
+		if (fall && !EngineZildo.scriptManagement.isScripting()) { // Don't redo the same scene
+			// Dirty case: bridge over water. We use collision by back2 data, but instead of
+			// falling in a pit
 			// We want player to splash
 			onmap = area.get_mapcase(cx, cy).getBackTile().getValue();
-			if (onmap == 108) {	// Ponton
+			if (onmap == 108) { // Ponton
 				diveAndWound();
 			} else {
 				// Fall slipping forward
-				vx =deltaMoveX / 20;
-				vy =deltaMoveY / 20;
-				stopBeingWounded();	// Stop potential projection
-				setCompte_dialogue(0);	// Stop Zildo blink
-				if (isZildo() && ((PersoPlayer)this).who == ControllablePerso.PRINCESS_BUNNY) {
+				vx = deltaMoveX / 20;
+				vy = deltaMoveY / 20;
+				stopBeingWounded(); // Stop potential projection
+				setCompte_dialogue(0); // Stop Zildo blink
+				if (isZildo() && ((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY) {
 					// Adapt fall for hero as a princess)
 					EngineZildo.scriptManagement.execute("princessDieInPit", true);
 				} else {
@@ -993,7 +1025,8 @@ public abstract class Perso extends Element {
 	private void handleStairsScene(String scene) {
 		if (!isGhost() && isZildo()) {
 			if (mouvement == MouvementZildo.TOUCHE) {
-				// Cancel projection movement if hero is wounded (maybe if this isn't good, we may think to consider blocking
+				// Cancel projection movement if hero is wounded (maybe if this isn't good, we
+				// may think to consider blocking
 				// all tiles leading to this method: stairs tiles)
 				x -= px;
 				y -= py;
@@ -1002,7 +1035,7 @@ public abstract class Perso extends Element {
 			}
 		}
 	}
-	
+
 	public boolean linkedSpritesContains(SpriteEntity entity) {
 		return (persoSprites != null && persoSprites.contains(entity)) || en_bras == entity;
 	}
@@ -1051,17 +1084,17 @@ public abstract class Perso extends Element {
 	}
 
 	public void askVisible(boolean p_visible) {
-		if (!askedVisible && p_visible) {	// Gets out of his invisibility
+		if (!askedVisible && p_visible) { // Gets out of his invisibility
 			setVisible(true);
 		}
 		askedVisible = p_visible;
 
 	}
-	
+
 	public Pointf getTarget() {
 		return pathFinder.getTarget();
 	}
-	
+
 	public Integer getTargetZ() {
 		return pathFinder.getTargetZ();
 	}
@@ -1069,7 +1102,7 @@ public abstract class Perso extends Element {
 	public void setTarget(Pointf target) {
 		pathFinder.setTarget(target);
 	}
-	
+
 	public void setTargetZ(Integer targetZ) {
 		pathFinder.setTargetZ(targetZ);
 	}
@@ -1087,7 +1120,7 @@ public abstract class Perso extends Element {
 	public float getSpeed() {
 		return pathFinder.speed;
 	}
-	
+
 	public void setForward(boolean p_forward) {
 		pathFinder.backward = p_forward;
 	}
@@ -1095,7 +1128,7 @@ public abstract class Perso extends Element {
 	public void setOpen(boolean p_open) {
 		pathFinder.open = p_open;
 	}
-	
+
 	// Is this perso allowed to pass door/stairs ?
 	public boolean isOpen() {
 		return pathFinder.open;
@@ -1141,14 +1174,13 @@ public abstract class Perso extends Element {
 	 * Turn character in order to see given perso.
 	 * 
 	 * @param p_target
-	 * @param p_shortRadius
-	 *            TRUE=sight only if target is in short perimeter / FALSE=sight
-	 *            whenever target is
+	 * @param p_shortRadius TRUE=sight only if target is in short perimeter /
+	 *                      FALSE=sight whenever target is
 	 */
 	public void sight(Element p_target, boolean p_shortRadius) {
 		int xx = (int) (p_target.getX() - getX());
 		int yy = (int) (p_target.getY() - getY());
-		setAngle(Angle.fromDelta(xx,  yy));
+		setAngle(Angle.fromDelta(xx, yy));
 	}
 
 	@Override
@@ -1166,13 +1198,11 @@ public abstract class Perso extends Element {
 
 		return pos;
 	}
-	
 
 	/**
 	 * Starts a jump in given angle.
 	 * 
-	 * @param p_angle
-	 *            should not be null
+	 * @param p_angle should not be null
 	 */
 	protected void jump(Angle p_angle) {
 		// On sauve la position de Zildo avant son saut
@@ -1187,28 +1217,32 @@ public abstract class Perso extends Element {
 	}
 
 	/**
-	 * Check if character is about to jump : near a cliff with room for landing point.<br/>
-	 * If he can, start jumping calling {@link #jump(Angle)} method. Else, if he can't because of something blocking on landing, return landing point.
+	 * Check if character is about to jump : near a cliff with room for landing
+	 * point.<br/>
+	 * If he can, start jumping calling {@link #jump(Angle)} method. Else, if he
+	 * can't because of something blocking on landing, return landing point.
+	 * 
 	 * @param loc
 	 * @returns landing point (only if something blocks on landing)
 	 */
 	public Angle tryJump(Pointf loc) {
-		int cx=(int) (loc.x / 16);
-		int cy=(int) (loc.y / 16);
-		Angle angleResult=EngineZildo.mapManagement.getAngleJump(angle, cx, cy, floor);
+		int cx = (int) (loc.x / 16);
+		int cy = (int) (loc.y / 16);
+		Angle angleResult = EngineZildo.mapManagement.getAngleJump(angle, cx, cy, floor);
 
-		if (angleResult!=null) {
-			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in polaky4)
+		if (angleResult != null) {
+			// Is there a sprite colliding on the jump ? (example: bar blocking jump, in
+			// polaky4)
 			int xx = (int) (loc.x + angleResult.coords.x * 4);
 			int yy = (int) (loc.y + angleResult.coords.y * 4);
 			if (EngineZildo.spriteManagement.collideSprite(xx, yy, this)) {
 				return null;
 			}
-			
+
 			Point landingPoint = angleResult.getLandingPoint().translate((int) x, (int) y);
 			if (!EngineZildo.mapManagement.collide(landingPoint.x, landingPoint.y, this)) {
 				jump(angleResult);
-			} else {	// Returns angle so caller can handle particular cases
+			} else { // Returns angle so caller can handle particular cases
 				return angleResult;
 			}
 		}
@@ -1218,33 +1252,34 @@ public abstract class Perso extends Element {
 	public void landOnGround() {
 		fall();
 	}
-	
+
 	protected void land() {
 		if (!isOnPlatform()) {
 			Perso blocker = EngineZildo.persoManagement.collidePerso((int) x, (int) y, this);
 			if (blocker != null) {
-				// Character has fallen but collides with someone => try to project him (example: turtle)
+				// Character has fallen but collides with someone => try to project him
+				// (example: turtle)
 				project(blocker.x, blocker.y, 1);
 				pathFinder.setUnstoppable(true);
 			}
 		}
-		z=bottomZ;
-		az=0;
-		vz=0;
+		z = bottomZ;
+		az = 0;
+		vz = 0;
 		setMouvement(MouvementZildo.VIDE); // Jump is over, get back to regular movement
-		
+
 		// Check if a lower floor exists (and current one doesn't anymore)
-		if (floor > 0) {	
+		if (floor > 0) {
 			Area map = EngineZildo.mapManagement.getCurrentMap();
 			int xx = (int) x / 16;
 			int yy = (int) y / 16;
-			if (map.readmap(xx, yy, false, floor-1) != null ) {
+			if (map.readmap(xx, yy, false, floor - 1) != null) {
 				if (map.readmap(xx, yy, false, floor) == null) {
-					setFloor(floor-1);
+					setFloor(floor - 1);
 				}
 			}
 		}
-		
+
 		boolean platformUnder = checkPlatformUnder();
 
 		if (nature != null) {
@@ -1256,10 +1291,10 @@ public abstract class Perso extends Element {
 				}
 				break;
 			case BOTTOMLESS:
-				walkTile(false);	// Make hero fall if his feet are not feeling the ground
+				walkTile(false); // Make hero fall if his feet are not feeling the ground
 				break;
 			case WATER_MUD:
-				inWater = true;	// no break => we want explicitly that player lands on ground
+				inWater = true; // no break => we want explicitly that player lands on ground
 			default:
 				landOnGround();
 			}
@@ -1267,7 +1302,7 @@ public abstract class Perso extends Element {
 			landOnGround();
 		}
 	}
-	
+
 	/**
 	 * Character is jumping : move him
 	 */
@@ -1279,20 +1314,20 @@ public abstract class Perso extends Element {
 				attente = 0;
 			}
 		} else {
-			Point landingPoint=getJumpAngle().getLandingPoint();
-			float pasx=landingPoint.x / (float) nbStep;
-			float pasy=landingPoint.y / (float) nbStep;
-			x+=pasx;
-			y+=pasy;
+			Point landingPoint = getJumpAngle().getLandingPoint();
+			float pasx = landingPoint.x / (float) nbStep;
+			float pasy = landingPoint.y / (float) nbStep;
+			x += pasx;
+			y += pasy;
 			// Trajectoire en cloche
 			double beta = (Math.PI * attente) / (float) nbStep;
-			z =  (int) (14.0f * Math.sin(beta));
+			z = (int) (14.0f * Math.sin(beta));
 			attente++;
-		}	
+		}
 	}
-	
+
 	public boolean replaceBeforeJump() {
-		Point beforeJumpPos=getPosAvantSaut();
+		Point beforeJumpPos = getPosAvantSaut();
 		if (beforeJumpPos == null) {
 			return false;
 		} else {
@@ -1303,20 +1338,22 @@ public abstract class Perso extends Element {
 			return true;
 		}
 	}
-	
+
 	public void diveAndWound() {
 		if (action == null && !underWater) {
-			// If hero lands in water, put back in his ancient location and removes a moon piece
+			// If hero lands in water, put back in his ancient location and removes a moon
+			// piece
 			EngineZildo.scriptManagement.execute("dieInWater", true);
 			underWater = true;
 		}
 	}
 
-	/** Called when a script move this character with a 'pos' action.
-	 * In order to update script, behavior when he's in a particular floor for example.
+	/**
+	 * Called when a script move this character with a 'pos' action. In order to
+	 * update script, behavior when he's in a particular floor for example.
 	 */
 	public void beingMoved() {
-		
+
 	}
 
 	public Point getPosAvantSaut() {
@@ -1326,54 +1363,54 @@ public abstract class Perso extends Element {
 	public void resetPosAvantSaut() {
 		posAvantSaut = null;
 	}
-	
+
 	public Angle getJumpAngle() {
 		return jumpAngle;
 	}
-	
+
 	public void setAction(PersoAction p_action) {
 		action = p_action;
-		ghost = true;	// Cancel player movements
+		ghost = true; // Cancel player movements
 	}
 
 	public boolean isDoingAction() {
 		return action != null;
 	}
-	
+
 	public boolean isOnPlatform() {
 		return onPlatform;
 	}
-	
+
 	public boolean isFacing(SpriteEntity p_other) {
 		int dx = (int) (p_other.x - x);
 		int dy = (int) (p_other.y - y);
-		
+
 		Angle a = Angle.fromDelta(dx, dy);
 		return a == angle;
 		/*
-		int angleSignumX = Integer.signum(angle.coords.x);
-		int angleSignumY = Integer.signum(angle.coords.y);
-		return  (Integer.signum(dx) == angleSignumX || angleSignumX == 0) &&
-				(Integer.signum(dy) == angleSignumY || angleSignumY == 0);
-				*/
+		 * int angleSignumX = Integer.signum(angle.coords.x); int angleSignumY =
+		 * Integer.signum(angle.coords.y); return (Integer.signum(dx) == angleSignumX ||
+		 * angleSignumX == 0) && (Integer.signum(dy) == angleSignumY || angleSignumY ==
+		 * 0);
+		 */
 	}
 
 	public boolean isAffectedBy(AffectionKind kind) {
 		return affections != null && affections.isAffectedBy(kind);
 	}
-	
+
 	public void affect(AffectionKind kind) {
 		if (affections == null) {
 			affections = new PersoAffections(this);
 		}
 		affections.add(kind);
 	}
-	
+
 	@Override
 	public Pointf getDelta() {
 		return new Pointf(deltaMoveX, deltaMoveY);
 	}
-	
+
 	@Override
 	public void setFloor(int p_floor) {
 		super.setFloor(p_floor);
@@ -1389,12 +1426,13 @@ public abstract class Perso extends Element {
 	@Override
 	public void setAlpha(float p_alpha) {
 		alpha = p_alpha;
-		// Affect all linked elements (ex: hero and his shield, when he falls into water)
+		// Affect all linked elements (ex: hero and his shield, when he falls into
+		// water)
 		for (Element e : persoSprites) {
 			e.setAlpha(p_alpha);
 		}
 	}
-	
+
 	@Override
 	public void setLight(int light) {
 		// Set perso's light and all of his linked elements
@@ -1408,39 +1446,42 @@ public abstract class Perso extends Element {
 		}
 		super.setLight(light);
 	}
-	
+
 	// Returns the 'z' coordinates of the tile under the character's feet
 	public int getBottomZ() {
 		return EngineZildo.mapManagement.getPersoBottomZ(this);
 	}
-	
+
 	/** Returns current sequence position divided by factor*current speed **/
 	public int computeSeq(int factor) {
-		 return pos_seqsprite == -1 ? -1 :
-		 	(pos_seqsprite / (factor * Constantes.speed));
+		return pos_seqsprite == -1 ? -1 : (pos_seqsprite / (factor * Constantes.speed));
 	}
 
 	public int computeSeqPositive(int factor) {
-		 return pos_seqsprite == -1 ? 0 :
-		 	(pos_seqsprite / (factor * Constantes.speed));
+		return pos_seqsprite == -1 ? 0 : (pos_seqsprite / (factor * Constantes.speed));
 	}
-	
-	/** Same but without the constant speed, to get a real definit delay between each sprite **/
+
+	/**
+	 * Same but without the constant speed, to get a real definit delay between each
+	 * sprite
+	 **/
 	public int computeStandardSeqPositive(int factor) {
-		 return pos_seqsprite == -1 ? 0 :
-		 	(pos_seqsprite / factor);
+		return pos_seqsprite == -1 ? 0 : (pos_seqsprite / factor);
 	}
-	
-	public void setCarriedItem(ElementDescription desc) { }
-	
+
+	public void setCarriedItem(ElementDescription desc) {
+	}
+
 	@Override
 	public int getFloorForSort() {
-		// When a character is on a transition (=ladder) he should be drawn OVER the tiles,
-		// especially to appear ON the tile at (x,y-1). Without that, he appears UNDER the tile.
+		// When a character is on a transition (=ladder) he should be drawn OVER the
+		// tiles,
+		// especially to appear ON the tile at (x,y-1). Without that, he appears UNDER
+		// the tile.
 		int visibleFloor = floor + (transitionCrossed ? 1 : 0);
-		return Math.min(Constantes.TILEENGINE_FLOOR-1, visibleFloor);
+		return Math.min(Constantes.TILEENGINE_FLOOR - 1, visibleFloor);
 	}
-	
+
 	// Tells this character that it could move by a Mover and carry people on him
 	@Override
 	public void initMover() {
@@ -1455,6 +1496,5 @@ public abstract class Perso extends Element {
 	public void setFlagBehavior(int flagBehavior) {
 		this.flagBehavior = flagBehavior;
 	}
-	
-	
+
 }
