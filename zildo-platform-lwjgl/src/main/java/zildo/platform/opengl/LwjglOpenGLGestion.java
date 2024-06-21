@@ -20,6 +20,7 @@
 
 package zildo.platform.opengl;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -342,7 +343,7 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 		try {
 			Display.setDisplayMode(displayMode);
 			Display.setTitle(windowTitle);
-			framerate = Display.getDisplayMode().getFrequency();
+			framerate = 60; //Display.getDisplayMode().getFrequency();
 			Display.create();
 		} catch (LWJGLException e) {
 			Display.destroy();
@@ -365,10 +366,10 @@ public class LwjglOpenGLGestion extends OpenGLGestion {
 	private void initAppIcon() {
         ByteBuffer iconBuf = ByteBuffer.allocate(16 * 16 * 4);
         iconBuf.put(LwjglOpenGLGestion.icon);
-        iconBuf.flip();
+        ((Buffer)iconBuf).flip();
         ByteBuffer bigIconBuf = ByteBuffer.allocate(32 * 32 * 4);
         bigIconBuf.put(LwjglOpenGLGestion.bigIcon);
-        bigIconBuf.flip();
+        ((Buffer)bigIconBuf).flip();
         Display.setIcon(new ByteBuffer[] { iconBuf, bigIconBuf });
 	}
 
