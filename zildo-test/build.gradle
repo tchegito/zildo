@@ -1,21 +1,54 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
 
 version = '1.0'
 
 // We allow Java 7 in tests, because we have no Android or whatever constraints here
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
 
 // Accept environment variable to define DATA folder
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
-	maxHeapSize = "1024m"
+	maxHeapSize = "1280m"
+	forkEvery 20
+	jvmArgs("-XX:+UseParallelGC")
 }
 
+
+// add a collection to track failedTests
+ext.failedTests = []
+
+// add a testlistener to all tasks of type Test
+tasks.withType(Test) {
+	afterTest { TestDescriptor descriptor, TestResult result ->
+		if(result.resultType == org.gradle.api.tasks.testing.TestResult.ResultType.FAILURE){
+			failedTests << ["${descriptor.className}::${descriptor.name}"]
+		}
+	}
+}
+
+// print out tracked failed tests when the build has finished
+gradle.buildFinished {
+	if(!failedTests.empty){
+		println "Failed tests for ${project.name}:"
+		failedTests.each { failedTest ->
+			println failedTest
+		}
+		println ""
+	}
+}
+// We have to force this task to make a JAR from this android library
+// It will be used by the 'files' dependencies below, because Gradle can't figure out that
+// this jar is issued for this library compilation (...)
+//tasks.compileJava.dependsOn ':zildo-platform-android-gles2:makeJar'
+
 dependencies {
-	compile project(':zildo'), project(':zeditor'), project(':zildo-platform-android-gles2')
-	compile "junit:junit:4.12",
-				"org.mockito:mockito-all:1.10.19"
+	implementation project(':zildo'), 
+	project(':zildo-platform-lwjgl'),
+	project(':zildo-platform-android-gles2'),
+	//files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
+	project(':zeditor')
+	implementation "junit:junit:4.12",
+				"org.mockito:mockito-core:2.28.2"
 }

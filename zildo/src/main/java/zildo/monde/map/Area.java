@@ -126,6 +126,8 @@ public class Area implements EasySerializable {
 	// Respawn points for Zildo (multiplayer only)
 	private final List<Point> respawnPoints;
 
+	Map<Integer, Point> walkedSlabs;	// Character ID => coordinates of the pushed slab
+	
 	private Point alertLocation;	// Sound able to alert enemies
 	private int alertDuration = 0;
 	
@@ -152,6 +154,8 @@ public class Area implements EasySerializable {
 		originalDim = new Point(dimX, dimY);
 		dim_x = dimX;
 		dim_y = dimY;
+		
+		walkedSlabs = new HashMap<>();
 	}
 
 	public Area(Atmosphere p_atmo) {
@@ -664,7 +668,33 @@ public class Area implements EasySerializable {
 				((PersoPlayer)attacker).grabWithFork(bush);
 			}
 		}
-}
+	}
+
+	public void walkSlab(int cx, int cy, int id, boolean pushed) {
+		Point loc = walkedSlabs.get(id);
+		if (pushed && loc == null) {
+			SpriteEntity symbol = getSpriteOnCase(cx, cy);
+			walkedSlabs.put(id,  new Point(cx, cy));
+			writemap(cx, cy, 256*9 + 177);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Slab1, loc);
+			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()+1);
+		} if (!pushed && loc != null) {
+			SpriteEntity symbol = getSpriteOnCase(loc.x, loc.y);
+			walkedSlabs.remove(id);
+			writemap(loc.x, loc.y, 256*9 + 176);
+			EngineZildo.soundManagement.broadcastSound(BankSound.Slab2, loc);
+			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()-1);
+		}
+	}
+
+	private SpriteEntity getSpriteOnCase(int cx, int cy) {
+		for (SpriteEntity entity : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (entity.getEntityType() == EntityType.ENTITY && (int) entity.x / 16 == cx && (int) entity.y / 16 == cy) {
+				return entity;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * Explode a wall at a given location, looking for a crack sprite. 
@@ -1737,8 +1767,7 @@ public class Area implements EasySerializable {
 		Angle angleShift = p_mapScrollAngle.opposite();
 		Point coords = angleShift.coords;
 		Area mapReference = nextMap;
-		Point scrollOffset = new Point(0,0);
-		scrollOffset = mapReference.getScrollOffset().multiply(16);
+		Point scrollOffset = mapReference.getScrollOffset().multiply(16);
 		switch (angleShift) {
 		case OUEST:
 		case NORD:
@@ -1748,10 +1777,11 @@ public class Area implements EasySerializable {
 		if (!mapBuilder) {
 			scrollOffset = mapReference.getScrollOffset().multiply(16);
 		}
+		
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 	  coords.y * 16 * mapReference.getDim_y());
 		
-		if (nextMap.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
+		if (p_mapScrollAngle.isVertical()) { //.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
 			scrollOffset.x = 0;
 		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props

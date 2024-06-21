@@ -47,7 +47,8 @@ public class SpriteStore {
 											  "pnj2.spr",
 											  "gear.spr",
 											  "pnj3.spr",
-											  "pnj4.spr"};
+											  "pnj4.spr",
+											  "pnj5.spr"};
 
 	public SpriteStore() {
 		

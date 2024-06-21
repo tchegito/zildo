@@ -21,9 +21,11 @@
 package zildo.monde.sprites.persos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZUtils;
 import zildo.fwk.gfx.EngineFX;
 import static zildo.server.EngineZildo.hasard;
 import zildo.monde.collision.Collision;
@@ -63,6 +65,11 @@ public class PersoNJ extends Perso {
 
 	ElementGuardWeapon guardWeapon;
 	ElementDescription carriedItem;	// Object that monster will give when he died
+	
+	int[] spriteSequence;
+	int delayInSequence;
+		
+	int framesImmobile;
 	
 	public PersoNJ() {
 		super();
@@ -271,7 +278,7 @@ public class PersoNJ extends Perso {
 		float sx = getX(), sy = getY();
 
 		if (isAlerte() && MouvementPerso.VOLESPECTRE != quel_deplacement
-				&& MouvementPerso.ZONEARC != quel_deplacement) {
+				&& MouvementPerso.ZONEARC != quel_deplacement && MouvementPerso.THROWING != quel_deplacement) {
 			// Zildo has been caught, so the monster try to reach him, or run away (hen)
 			boolean fear = quel_deplacement.isAfraid();
 			reachAvoidTarget(zildo, fear);
@@ -347,7 +354,7 @@ public class PersoNJ extends Perso {
 						int deltaY = Math.abs((int) (zildo.y - yy));
 						// Alert potential allies
 						EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(zildo.x, zildo.y));
-						if (deltaX <= 1 || deltaY <= 1) {
+						if (zildo.floor <= floor && (deltaX <= 1 || deltaY <= 1)) {
 							// Get sight on Zildo and shoot !
 							Angle previousAngle = angle;
 							sight(zildo, false);
@@ -459,11 +466,19 @@ public class PersoNJ extends Perso {
 */
 					if (!pathFinder.hasNoTarget()) { // Move character if he has a target
 						Pointf loc = pathFinder.reachDestination(vitesse);
-						// Check for infinite movement (A => B => A => B ...)
+						// Check for infinite movement (A => B => A => B ...) or immobile since too long
 						boolean hasCollided = loc.x == x && loc.y == y;
-						if ( (deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY))) {
+						if (deltaMoveX == 0 && deltaMoveY == 0) {
+							framesImmobile++;
+						} else {
+							framesImmobile = 0;
+						}
+						if (framesImmobile >= 10 || 
+								((deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY)))) {
+							framesImmobile = 0;
 							pathFinder.setTarget(null);
 						} else {
+
 							boolean slowDown = walkTile(true);
 							
 							if (slowDown) {
@@ -501,6 +516,8 @@ public class PersoNJ extends Perso {
 								pos_seqsprite = (pos_seqsprite + 1) % 512;
 							}
 						}
+					} else if (!ZUtils.isEmpty(spriteSequence)) {
+						pos_seqsprite = (pos_seqsprite + 1) % 512;
 					}
 				}
 			}
@@ -553,6 +570,11 @@ public class PersoNJ extends Perso {
 	 * sequence of sprites (example {@link PersoDescription#FISH}) this will lead to a problem.
 	 * Symptom is when game is paused : 'move' method of Perso isn't called anymore, so if it handle
 	 * the 'addSpr' set, a sprite could be badly rendered, with the wrong graphics ... (arg)
+	 * 
+	 * Attempt to fix it: a new method SpriteManagement#updateSprModel especially for Perso
+	 * has been added to handle this case. So we don't add addSpr anymore, so no-contiguous
+	 * sequence of sprites can work now.
+	 * ==> Need to ensure that. Test with fish, which has a "addSpr=0" here (we should be able to remove it)
 	 */
 	@Override
 	public void finaliseComportement(int animationCounter) {
@@ -568,8 +590,11 @@ public class PersoNJ extends Perso {
 
 		final int[] seqp = { 0, 2, 0, 1 }; // 3 sprites characters
 		final int[] seqv = { 0, 1, 2, 1 }; // another 3 sprites
+		final int[] seqbadguy = { 0, 1, 2, 1, 0, 1, 2, 1};
+		final int[] seqbadguyreverse = { 0, 1, 2, 1, 3, 4, 5, 4};
+		final int[] seqbadguyside = {0, 1, 0, 2};
 		
-		int add_spr = 0;
+		int add_spr = 0; //getAddSpr();
 		PersoDescription quelSpriteWithBank = (PersoDescription) desc;
 
 		int seq2 = computeSeq(3) % 2;
@@ -738,7 +763,7 @@ public class PersoNJ extends Perso {
 			break;
 		case CHAUVESOURIS:
 		case FIRETHING:
-			add_spr = 0;
+			add_spr = getAddSpr();
 			break;
 		case RAT:
 			add_spr = angle.value * 2;
@@ -856,8 +881,10 @@ public class PersoNJ extends Perso {
 			} else {	// Turtle head => no shadow
 				shadow.setVisible(false);
 			}
+			add_spr += getAddSpr();
 			break;
 		case TURRET_HEART:
+			add_spr = getAddSpr();
 			if (addSpr == 0) {
 				if (shadow == null) addShadow(ElementDescription.SHADOW_LARGE);
 				shadow.setVisible(true);
@@ -865,6 +892,7 @@ public class PersoNJ extends Perso {
 				break;
 			}	// No break is intentional
 		case TURRET:
+			add_spr = getAddSpr();
 			if (shadow != null) {
 				shadow.setVisible(false);
 			}
@@ -874,7 +902,25 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case MOLE:
+			add_spr = getAddSpr();
+			break;
 		case DARKGUY:
+			if (getQuel_deplacement() == MouvementPerso.THROWING) {
+				add_spr = getAddSpr();
+			} else {
+				int cs = computeSeqPositive(4);
+				if (angle == Angle.SUD) {
+					add_spr = seqbadguyreverse[cs % seqbadguy.length];
+					if ((cs % 8) > 3)
+					reverse = Reverse.NOTHING;
+				} else if (angle == Angle.NORD) {
+					add_spr = 6 + seqbadguy[cs % seqbadguy.length];
+					reverse = (cs % 8) > 4 ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				} else if (angle == Angle.EST || angle == Angle.OUEST) {
+					add_spr = 11 + seqbadguyside[cs % seqbadguyside.length];
+					reverse = angle == Angle.OUEST ? Reverse.HORIZONTAL : Reverse.NOTHING;
+				}
+			}
 			break;
 		case SCORPION:
 			Reverse r = Reverse.NOTHING;
@@ -909,6 +955,17 @@ public class PersoNJ extends Perso {
 			}
 			reverse = r;
 			break;
+			
+		case HOODED:
+			// Standard stance
+			if (delayInSequence != 0) {
+				add_spr = spriteSequence[computeStandardSeqPositive(delayInSequence) % spriteSequence.length];
+			}
+			if (deltaMoveX != 0) {
+				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
+			}
+			break;
+			
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;
 			break;
@@ -1187,5 +1244,13 @@ public class PersoNJ extends Perso {
 	
 	public void setCarriedItem(ElementDescription p_desc) {
 		carriedItem = p_desc;
+	}
+	
+	public void setSpriteSequence(int[] seq, int delay) {
+		if (!Arrays.equals(seq, spriteSequence)) {
+			spriteSequence = seq;
+			delayInSequence = delay;
+			pos_seqsprite = 0;
+		}
 	}
 }

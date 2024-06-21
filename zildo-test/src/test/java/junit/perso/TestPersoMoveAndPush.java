@@ -255,6 +255,26 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Assert.assertEquals(EntityType.ELEMENT, entity.getEntityType());
 		Element elem = (Element) entity;
 		Assert.assertEquals(0f, elem.vx, 0.1f);
-		
 	}
+	
+	
+	@Test
+	public void pushStanceStopped() {
+		// There was a bug when hero enters in a "pushing" stance, but when he moved, he kept that stance
+		mapUtils.loadMap("prisonext");
+		PersoPlayer zildo = spawnZildo(774, 292);
+		waitEndOfScripting();
+		
+		simulateDirection(0, 1);
+		renderFrames(40);
+		Assert.assertEquals(MouvementZildo.POUSSE, zildo.getMouvement());
+		float y = zildo.getY();
+		
+		// Change direction => hero should stop pushing
+		simulateDirection(-1, 1);
+		renderFrames(40);
+		Assert.assertTrue(zildo.getY() > y);
+		Assert.assertEquals(MouvementZildo.VIDE,  zildo.getMouvement());
+	}
+
 }

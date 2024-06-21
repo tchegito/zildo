@@ -204,6 +204,21 @@ public class CheckZSSwitch extends SimpleEngineScript {
 		
 	}
 	
+	@Test
+	public void wildcards() {
+		ZSSwitch sw1 = ZSSwitch.parseForMapCondition("nature1,nature2,nature3");
+		ZSSwitch sw2 = ZSSwitch.parseForMapCondition("nature*");
+		
+		Area fakeMap = new Area();
+		fakeMap.setName("nature3");
+		MapManagement mm = mock(MapManagement.class);
+		EngineZildo.mapManagement = mm;
+		when(mm.getCurrentMap()).thenReturn(fakeMap);
+		
+		Assert.assertTrue(sw1.evaluateInt() == 1);
+		Assert.assertTrue(sw2.evaluateInt() == 1);
+	}
+
 	@Override
 	@After
 	public void tearDown() {

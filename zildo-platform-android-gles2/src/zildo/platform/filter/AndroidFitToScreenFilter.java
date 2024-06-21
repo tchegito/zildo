@@ -57,8 +57,8 @@ public class AndroidFitToScreenFilter extends FitToScreenFilter {
 			endInitialization();
 			resized = true;
         }
-
-		shaders.setColor(new Vector4f(1, 1, 1, 1f));
+		int fadeLevel = getFadeLevel();
+		shaders.setColor(new Vector4f(1, 1, 1, fadeLevel / 255f));
 
 		GLES20.glEnable(GLES20.GL_BLEND);
     	GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);

@@ -74,6 +74,10 @@ import zildo.server.state.PlayerState;
 // -inventory
 // -extra informations, various animations ...
 
+// There is 2 methods called on each frame:
+// -prepareDraw
+// -draw
+
 // Other class communicate with this one by events:
 // -toDisplay_dialoguing
 // -toRemove_dialoguing
@@ -166,6 +170,11 @@ public class GUIDisplay {
 	// Construction/Destruction
 	// ////////////////////////////////////////////////////////////////////
 
+	int sizeX;
+	int sizeY;
+	int posX1;
+	int posY1;
+	
 	public GUIDisplay() {
 		toDisplay_dialoguing = false;
 		toDisplay_generalGui = false;
@@ -188,6 +197,10 @@ public class GUIDisplay {
 		
 		// Screen constants
 		sc = ClientEngineZildo.screenConstant;
+		sizeX = sc.TEXTER_SIZEX;
+		sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
+		posX1 = sc.TEXTER_COORDINATE_X - 10;
+		posY1 = sc.TEXTER_COORDINATE_Y - 10;
 		
 		dialogContext = new DialogContext();
 		dialogDisplay = new DialogDisplay(dialogContext, arrowSprite);
@@ -279,13 +292,8 @@ public class GUIDisplay {
 		return c.intValue();
 	}
 	
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// draw
-	// /////////////////////////////////////////////////////////////////////////////////////
-	// Main method for this class.
-	// Should handle all events happening here.
-	// /////////////////////////////////////////////////////////////////////////////////////
-	public void draw(boolean isMenu) {
+	/** Called before updating sprite entities on display **/
+	public void prepareDraw(boolean isMenu) {
 		if (!isMenu && toDisplay_dialogMode != DialogMode.TEXTER) {
 			// Re-initialize the gui's sprites sequence.
 			// Each frame, we re-add the sprites to avoid doing test about what
@@ -298,6 +306,18 @@ public class GUIDisplay {
 			}
 		}
 		
+		if (toDisplay_dialogMode == DialogMode.TEXTER) {
+			// Frame under texter
+			if (texterSizeY < 200) {
+				// Note: this is not vertically centered because drawBox adds 10 to height.
+				prepareDrawBox(sc.BIGTEXTER_X-10, (Zildo.viewPortY - texterSizeY)/2, 
+						sc.BIGTEXTER_WIDTH, texterSizeY, false);
+			} else {
+				prepareDrawBox(sc.BIGTEXTER_X-10, sc.BIGTEXTER_Y-10, 
+						sc.BIGTEXTER_WIDTH, Zildo.viewPortY - 38, false);
+			}
+		}
+		
 		if (toRemove_dialoguing) {
 			// Remove frame and text inside it
 			removePreviousTextInFrame();
@@ -306,18 +326,31 @@ public class GUIDisplay {
 			toDisplay_dialoguing = false;
 		} else if (toDisplay_dialoguing) {
 			// Draw frame and text inside it
-			drawFrame();
+			prepareDrawFrame();
+		}
+		if (toDisplay_adventureMenu) {
+			// In this mode, we have to remove any dialogs => best is to forbid compass during conversations
+			prepareAdventureMenu();
+		} else if (adventureSequence.isDrawn()) {
+			adventureSequence.clear();
+			frameDialogSequence.clear();
+		}
+	}
+	
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// draw
+	// /////////////////////////////////////////////////////////////////////////////////////
+	// Main method for this class.
+	// Should handle all events happening here.
+	// /////////////////////////////////////////////////////////////////////////////////////
+	public void draw() {
+		if (toDisplay_dialoguing) {
+			// Draw frame and text inside it
+			drawBox(posX1, posY1, sizeX, sizeY, true);
 		}
 
 		if (toDisplay_scores) {
 			drawScores();
-		}
-		if (toDisplay_adventureMenu) {
-			// In this mode, we have to remove any dialogs => best is to forbid compass during conversations
-			displayAdventureMenu();
-		} else if (adventureSequence.isDrawn()) {
-			adventureSequence.clear();
-			frameDialogSequence.clear();
 		}
 
 		if (toDisplay_dialogMode == DialogMode.TEXTER) {
@@ -332,6 +365,9 @@ public class GUIDisplay {
 			}
 		}
 		
+		if (toDisplay_adventureMenu) {
+			drawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
+		}
 		drawConsoleMessages();
 	}
 
@@ -603,21 +639,16 @@ public class GUIDisplay {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// drawFrame
+	// prepareDrawFrame
 	// /////////////////////////////////////////////////////////////////////////////////////
-	// Draw frame around displayed text
+	// Prepare sprite sequences to draw frame around displayed text
 	// /////////////////////////////////////////////////////////////////////////////////////
 	private final int couleur_cadre[] = {48, 149, 150, 149, 48};
 	//private final int couleur_cadre[] = {48, 239, 238, 239, 48}; //{ 3, 203, 204, 203, 3 };
 
-	void drawFrame() {
-		int sizeX = sc.TEXTER_SIZEX;
-		int sizeY = sc.TEXTER_SIZELINE_SCRIPT * sc.TEXTER_NUMLINE + 2;
-		int posX1 = sc.TEXTER_COORDINATE_X - 10;
-		int posY1 = sc.TEXTER_COORDINATE_Y - 10;
-
+	void prepareDrawFrame() {
 		// Draw frame's bars
-		drawBox(posX1, posY1, sizeX, sizeY, true);
+		prepareDrawBox(posX1, posY1, sizeX, sizeY, true);
 		
 		// Draw corner frame
 		if (frameDialogSequence.isDrawn()) {
@@ -627,14 +658,18 @@ public class GUIDisplay {
 		}
 	}
 
-	/** Draw a frame with transparent blue box inside, according to the current fade level **/
+	int fadeLevel;
+	
 	private void drawBox(int x, int y, int width, int height, boolean arrow) {
 		int x2 = x + width + 10;
 		int y2 = y + height + 10;
 		Ortho ortho = ClientEngineZildo.ortho;
-		ortho.enableBlend();
+		// We don't enable blend for bars, to avoid a different color than the corners
 		ortho.initDrawBox(false);
-		int fadeLevel = ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevel();
+
+		if (ClientEngineZildo.filterCommand.getActiveFade() != null) {
+			fadeLevel = 255 - ClientEngineZildo.filterCommand.getFadeLevel();
+		}
 		for (int i = 0; i < 5; i++) {
 			int col = couleur_cadre[i];
 			Vector4f v = new Vector4f(GFXBasics.getColor(col));
@@ -645,11 +680,17 @@ public class GUIDisplay {
 			ortho.boxOpti(x + i, y+7, 1, height+3, 0, v);
 			ortho.boxOpti(x2+6 - i, y+7, 1, height+3, 0, v);
 		}
-		ortho.disableBlend();
 		ortho.endDraw();
 		ortho.enableBlend();
 		ortho.box(x+5, y+5, width+7, height+7, 0, new Vector4f(0.4f, 0.15f, 0.12f, 0.7f * fadeLevel / 256f));
 		ortho.disableBlend();
+	}
+	
+	/** Draw a frame with transparent blue box inside, according to the current fade level **/
+	private void prepareDrawBox(int x, int y, int width, int height, boolean arrow) {
+		int x2 = x + width + 10;
+		int y2 = y + height + 10;
+		fadeLevel = ClientEngineZildo.getClientForGame().getMenuTransition().getFadeLevelMenu();
 		
 		// Draw corner frame
 		if (!frameDialogSequence.isDrawn()) {
@@ -921,7 +962,7 @@ public class GUIDisplay {
 
 		final int GUI_Y = 4; //35;
 		final int WEAPON_X = 8;
-		final int DROPS_X = 300; //248;
+		final int DROPS_X = 300 - 28; //248;
 
 		int i;
 		// Life
@@ -960,25 +1001,24 @@ public class GUIDisplay {
 	
 			// Bombs
 			if (zildo.hasItem(ItemKind.DYNAMITE)) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136, GUI_Y - 2);
-				displayNumber(zildo.getCountBomb(), 2, 126, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_BOMB, 136 - 8, GUI_Y - 2);
+				displayNumber(zildo.getCountBomb(), 2, 126 - 8, GUI_Y);
 			}
 	
 			// Arrows
 			if (zildo.hasItem(ItemKind.BOW)) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174, GUI_Y);
-				displayNumber(zildo.getCountArrow(), 2, 164, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_ARROW, 174 - 16, GUI_Y);
+				displayNumber(zildo.getCountArrow(), 2, 164 - 16, GUI_Y);
 			}
 			
 			// Keys
 			if (zildo.getCountKey() > 0) {
-				guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211, GUI_Y + 2);
-				displayNumber(zildo.getCountKey(), 1, 201, GUI_Y);
+				guiSpritesSequence.addSprite(FontDescription.GUI_KEY, 211 - 28, GUI_Y + 2);
+				displayNumber(zildo.getCountKey(), 1, 201 - 28, GUI_Y);
 			}
-
 			if (zildo.getCountNettleLeaf() >= 0) {
-				guiSpritesSequence.addSprite(ElementDescription.NETTLE_LEAF, 241, GUI_Y + 1);
-				displayNumber(zildo.getCountNettleLeaf(), 2, 231, GUI_Y);
+				guiSpritesSequence.addSprite(ElementDescription.NETTLE_LEAF, 241 - 28, GUI_Y + 1);
+				displayNumber(zildo.getCountNettleLeaf(), 2, 231 - 28, GUI_Y);
 			}
 			
 			// Current weapon
@@ -1005,34 +1045,37 @@ public class GUIDisplay {
 			}
 		}
 		// virtual pad
-		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android 
-				&& ClientEngineZildo.client.isDisplayedAndroidUI()) {
-			int curAlpha = alphaPad;
-			if (dialogDisplay.isDialoguing()) {
-				curAlpha>>=2;
-			}
-			Point crossCenter = null;
-			boolean movingCross = ClientEngineZildo.client.isMovingCross();
-			if (movingCross) {
-				crossCenter = ClientEngineZildo.client.getCrossCenter();
-				Point drag = ClientEngineZildo.client.getDraggingTouch();
-				if (drag != null) {
-					guiSpritesSequence.addSprite(FontDescription.TOUCH_AURA, drag.x-16, drag.y-16);
+		if (PlatformDependentPlugin.currentPlugin == PlatformDependentPlugin.KnownPlugin.Android) {
+			// Gear should stay always on Android screen
+			guiSpritesSequence.addSprite(FontDescription.GEAR, Zildo.viewPortX - 30, 0);
+			if (ClientEngineZildo.client.isDisplayedAndroidUI()) {
+				int curAlpha = alphaPad;
+				if (dialogDisplay.isDialoguing()) {
+					curAlpha>>=2;
 				}
-			} else {
-				crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
-			}
-			if (crossCenter != null) {
-				int x1 = crossCenter.x - (80/2);
-				if (!movingCross) {
-					x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+				Point crossCenter = null;
+				boolean movingCross = ClientEngineZildo.client.isMovingCross();
+				if (movingCross) {
+					crossCenter = ClientEngineZildo.client.getCrossCenter();
+					Point drag = ClientEngineZildo.client.getDraggingTouch();
+					if (drag != null) {
+						guiSpritesSequence.addSprite(FontDescription.TOUCH_AURA, drag.x-16, drag.y-16);
+					}
+				} else {
+					crossCenter = new Point(10 + (80/2), Zildo.viewPortY - (80/2));
 				}
-				guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
-			}
-			int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
-			int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
-			guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
+				if (crossCenter != null) {
+					int x1 = crossCenter.x - (80/2);
+					if (!movingCross) {
+						x1 = computeForLeftHanded(x1, FontDescription.VIRTUAL_PAD);
+					}
+					guiSpritesSequence.addSprite(FontDescription.VIRTUAL_PAD, x1, crossCenter.y -(80/2), curAlpha);
+				}
+				int x2 = computeForLeftHanded(Zildo.viewPortX - 24 - 16 + 2, FontDescription.BUTTON_Y);
+				int x3 = computeForLeftHanded(Zildo.viewPortX - 48 - 16 - 1, FontDescription.BUTTON_X);
+				guiSpritesSequence.addSprite(FontDescription.BUTTON_Y, x2, Zildo.viewPortY-70 - 3, curAlpha);
+				guiSpritesSequence.addSprite(FontDescription.BUTTON_X, x3, Zildo.viewPortY-40 + 8, curAlpha);
+				}
 		}
 		// Display compass with low alpha if it isn't available
 		guiSpritesSequence.addSprite(FontDescription.COMPASS, 48, 0, !isToDisplay_compassItem() ? 50 : 255);
@@ -1081,8 +1124,8 @@ public class GUIDisplay {
 		messageQueue.clear();
 	}
 
-	private void displayAdventureMenu() {
-		drawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
+	private void prepareAdventureMenu() {
+		prepareDrawBox(50, (Zildo.viewPortY - 16 *5) / 2-2, 200, 16 * 4, false);
 		if (toDisplay_dialogMode != DialogMode.ADVENTURE_MENU) {
 			setToDisplay_dialogMode(DialogMode.ADVENTURE_MENU);
 			adventureSequence.clear();

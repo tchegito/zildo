@@ -308,7 +308,19 @@ public class CollideManagement {
 		        			}
 		        		}
 	        		}
-	        		perso.beingWounded(p_collider.cx, p_collider.cy, p_collider.perso, dmg);
+	        		// Calculate crossing point overlapping 2 areas
+	        		Point hitPoint = new Point(p_collider.cx, p_collider.cy);
+	        		if (p_collider.damageType == DamageType.PEEBLE) {
+	        			// Use peeble direction for future projection
+	        			hitPoint = new Point(perso.x - p_collider.weapon.getVx(),
+	        					perso.y - p_collider.weapon.getVy());
+	        		} else if (p_collider.size == null && p_collided.size == null) {	// Between 2 circles (only for now)
+	        			hitPoint = Collision.hitPointOnCircles(p_collider.cx, p_collider.cy, p_collided.cx, p_collided.cy, p_collider.cr, p_collided.cr);
+		        		// Then unapply the collision adjustment to have visual center
+		        		hitPoint.add((int) perso.x - p_collided.cx,
+		        					 (int) perso.y - p_collided.cy);
+	        		}
+	        		perso.beingWounded(hitPoint.x, hitPoint.y, p_collider.perso, dmg);
         		}
         	}
         	

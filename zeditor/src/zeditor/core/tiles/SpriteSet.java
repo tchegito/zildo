@@ -85,7 +85,7 @@ public class SpriteSet extends ImageSet {
 
 	public void initImage(List<SpriteDescription> p_bankDesc) {
 		currentTile = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_RGB);
+				BufferedImage.TYPE_INT_ARGB);
 		currentTile.getGraphics();
 
 		// Wait for all texture to be loaded
@@ -157,15 +157,15 @@ public class SpriteSet extends ImageSet {
 		}
 		int texSizeX = 256;
 		int a = 255;
-		int ps = 3;
+		int ps = 4;
 		for (int y = 0; y < model.getTaille_y(); y++) {
 			for (int x = 0-offXLeft; x < tx + offXRight; x++) {
 				if (x >= 0 && x < tx) {
 					int offset = (y+model.getTexPos_y()) * texSizeX + x + model.getTexPos_x();
-					a = GFXBasics.readColor(buffer, offset*ps);
+					a = GFXBasics.readAlphaColor(buffer, offset*ps);
 				}
-				Vector4f col = GFXBasics.splitRGB(a);
-				gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256));
+				Vector4f col = GFXBasics.splitRGBA(a);
+				gfx2d.setColor(new Color(col.x / 256, col.y / 256, col.z / 256, col.w / 256));
 				gfx2d.drawLine(x + offXLeft + i, y + j, x + offXLeft + i, y + j);
 			}
 		}

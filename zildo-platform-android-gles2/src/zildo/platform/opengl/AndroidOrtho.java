@@ -30,6 +30,7 @@ import zildo.platform.opengl.utils.Bufferizer;
 import zildo.platform.opengl.utils.ShortBufferizer;
 import android.opengl.GLES20;
 import android.util.Log;
+import java.util.Locale;
 
 /**
  * Class which provides direct draw on render screen, in an orthographic
@@ -110,7 +111,7 @@ public class AndroidOrtho extends Ortho {
 	@Override
 	public void drawText(int x, int y, String txt) {
 		for (int i = 0; i < txt.length(); i++) {
-			drawChar(x + 6 * i, y, txt.toLowerCase().charAt(i));
+			drawChar(x + 6 * i, y, txt.toLowerCase(Locale.getDefault()).charAt(i));
 		}
 	}
 

@@ -112,7 +112,7 @@ public class ElementGoodies extends Element {
 			shadow.y = y-2;
 		}
 		
-		if (volatil) {
+		if (volatil && !EngineZildo.scriptManagement.isScripting()) {
 			spe--;
 		}
 		

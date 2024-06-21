@@ -133,13 +133,19 @@ public enum PersoDescription implements SpriteDescription {
 	VACTO(389, 390, 387, 388, 385, 386),
 	FIRE_ELEMENTAL(397, 398, 399, 400),
 	COAL(401, 402, 403, 404),
-	COAL_COLD(404),
+	COAL_COLD(404),     
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
 	MOLE(441, 442, 443, 444, 445, 446, 447),
-	DARKGUY(448),
+	DARKGUY(448, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465 /* lighting dynamite*/, 466, 467, 468),
 	BUTCHER(450, 449, 451, 452, 453, 454, 455),
 	
+	// Shift numbers once darkguy will have all its sprites
+	HOODED(/*Idle face*/ 469, 470, 471, 472, /*Walking*/ 473, 474, 475, 476,
+			/* Attacking */509, 510, 511, 512, 513, 514, 
+			/* Bouncing */ 491, 492, 493, 494, 495, 496, 497, 498),
+	
+	// 22
 	ZILDO(ZildoDescription.DOWN_FIXED.ordinal());
 
 	IntSet sprUsed;
@@ -175,7 +181,9 @@ public enum PersoDescription implements SpriteDescription {
 	 */
 	public int nth(int p_nth) {
 		int f = sprUsed.get(p_nth).intValue();
-		if (f > 367) {
+		if (f > 463+2+3) {
+			f-= 464+2+3;
+		} else if (f > 367) {
 			f-=368;
 		} else if (f > 258) {
 			f-=259;
@@ -200,8 +208,10 @@ public enum PersoDescription implements SpriteDescription {
 			return SpriteBank.BANK_PNJ2;
 		} else if (s < 368) {
 			return SpriteBank.BANK_PNJ3;
-		} else {
+		} else if (s < 464) {
 			return SpriteBank.BANK_PNJ4;
+		} else {
+			return SpriteBank.BANK_PNJ5;
 		}
 	}
 

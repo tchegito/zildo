@@ -1,28 +1,61 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+if (project.hasProperty('IC')) {
+    apply plugin: 'java'
 
-version = '1.0'
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+        }
+    }
+} else {
+    apply plugin: 'com.android.library'
+
+    android {
+        compileSdkVersion 33
+
+        //applicationId 'zildo.platform'
+        sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
+        defaultConfig {
+            minSdk 33
+            //applicationId 'zildo.platform'
+        }
+        //minSdkVersion 16
+        //targetSdkVersion 30
+        sourceSets {
+            main {
+                java {
+                    srcDirs = ['src']
+                }
+            }
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+
+    }
+
+}
+
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
- 
+
+version = '1.0'
+
+
+
 repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-        resources {
-            srcDirs = ['src']
-        }
+dependencies {
+    implementation project(':zildo')
+    implementation "com.google.android:android:2.3.3"
+}
+
+android {
+    defaultConfig {
+        minSdk 28
     }
 }
-
-dependencies {
-	compile project(':zildo')
-	compileOnly "com.google.android:android:2.3.3"
-}
-
-jar.archiveName = "ZildoPlatformAndroidGles2.jar"

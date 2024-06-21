@@ -258,6 +258,7 @@ public class SpritePanel extends JPanel {
 			repeatY.setValue(p_entity.repeatY);
 			String name = "";
 			name = p_entity.getName();
+			pushable.setSelected(false);
 			if (kind.isElement()) {
 				Element elem = (Element) p_entity;
 				pushable.setSelected(elem.isPushable());

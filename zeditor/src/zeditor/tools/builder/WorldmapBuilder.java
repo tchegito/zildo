@@ -130,7 +130,6 @@ public class WorldmapBuilder {
 			// Load asked map
 			Area area = currentMap;
 			if (area == null) {
-				System.out.println("mapMgmt="+EngineZildo.mapManagement);
 				area = EngineZildo.mapManagement.getCurrentMap();
 			}
 			// Load the map and capture image
@@ -168,7 +167,9 @@ public class WorldmapBuilder {
 			worldMaps.put(mapName, new WorldMap(nextMap, mapLoc));
 			
 			for (ChainingPoint ch : nextMap.getChainingPoints()) {
-				if (ch.isBorder() || (ch.getPy()/2 >= (nextMap.getDim_y()-1))) {
+				// La fin de ce IF a été commenté le 20/06/2023 pour éviter d'embarquer
+				// des intérieurs avec des extérieurs. Mais est-ce que ça ne pose pas d'autre problèmes ?
+				if (ch.isBorder()) { // || (ch.getPy()/2 >= (nextMap.getDim_y()-1))) {
 					// Recursively add new map
 					processMap(ch.getMapname(), nextMap, mapLoc, ch.getComingAngle().opposite());
 				}

@@ -19,14 +19,16 @@
 
 package tools;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -38,8 +40,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
 
 import zildo.Zildo;
@@ -52,6 +52,7 @@ import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.SpriteDisplay;
 import zildo.client.gui.GUIDisplay;
 import zildo.client.gui.ScreenConstant;
+import zildo.client.gui.menu.RegisterChampionMenu;
 import zildo.client.sound.SoundPlay;
 import zildo.client.stage.GameStage;
 import zildo.fwk.FilterCommand;
@@ -69,7 +70,9 @@ import zildo.fwk.input.KeyboardHandler;
 import zildo.fwk.input.KeyboardHandler.Keys;
 import zildo.fwk.input.KeyboardInstant;
 import zildo.fwk.opengl.OpenGLGestion;
+import zildo.fwk.opengl.SoundEngine;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.fwk.ui.Menu;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.HistoryRecord;
@@ -306,8 +309,8 @@ public abstract class EngineUT {
 		@SuppressWarnings("unchecked")
 		Class<ScreenFilter>[] filterClasses = new Class[] { CloudFilter.class, CircleFilter.class};
 		for (Class<ScreenFilter> clazz : filterClasses) {
-			ScreenFilter cloudFilter = (ScreenFilter) mock(clazz, Mockito.withSettings().stubOnly());
-			Zildo.pdPlugin.filters.put(clazz, cloudFilter);
+			ScreenFilter filter = (ScreenFilter) mock(clazz, withSettings().stubOnly());
+			Zildo.pdPlugin.filters.put(clazz, filter);
 		}
 
 		// Fake client display
@@ -321,10 +324,11 @@ public abstract class EngineUT {
 				EngineZildo.soundManagement = mock(SoundManagement.class);
 			}
 			ClientEngineZildo.soundPlay = mock(SoundPlay.class);
+			ClientEngineZildo.soundEngine = mock(SoundEngine.class, withSettings().stubOnly());
 			ClientEngineZildo.filterCommand = new FilterCommand();
 			ClientEngineZildo.screenConstant = new ScreenConstant(Zildo.viewPortX, Zildo.viewPortY);
-			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class, Mockito.withSettings().stubOnly());
-			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.openGLGestion = mock(OpenGLGestion.class, withSettings().stubOnly());
+			ClientEngineZildo.spriteEngine = mock(SpriteEngine.class, withSettings().stubOnly());
 			ClientEngineZildo.spriteDisplay = new SpriteDisplayMocked(ClientEngineZildo.spriteEngine);
 			GUIDisplay gd = null;
 			if (disableGuiDisplay) {
@@ -349,26 +353,10 @@ public abstract class EngineUT {
 
 			ClientEngineZildo.mapDisplay = spy(new MapDisplay(mapUtils.area));
 			//doNothing().when(ClientEngineZildo.mapDisplay).centerCamera();
-			ClientEngineZildo.tileEngine = mock(TileEngine.class, Mockito.withSettings().stubOnly());
-			ClientEngineZildo.ortho = mock(Ortho.class, Mockito.withSettings().stubOnly());
+			ClientEngineZildo.tileEngine = mock(TileEngine.class, withSettings().stubOnly());
+			ClientEngineZildo.ortho = mock(Ortho.class, withSettings().stubOnly());
 			
 		}
-
-		/*
-		new CloudFilter(null) {
-			
-			@Override
-			public boolean renderFilter() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			@Override
-			public void addOffset(int x, int y) {
-				offsetU += x;
-				offsetV += y;
-			}
-		});
-		*/
 		
 		// Initialize keyboard to simulate input
 		instant = new KeyboardInstant();
@@ -377,6 +365,10 @@ public abstract class EngineUT {
 			
 			LwjglKeyboardHandler justForCodes = new LwjglKeyboardHandler();
 			
+			@Override
+			public void poll() {
+				super.poll();
+			}
 			@Override
 			public boolean next() {
 				return false;
@@ -437,9 +429,21 @@ public abstract class EngineUT {
 		waitEndOfScripting(null);
 	}
 	
+	public void waitChangingMap() {
+		int safetyCheckFrame = 0;
+		PersoPlayer hero = EngineZildo.persoManagement.getZildo();
+		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
+			renderFrames(1);
+			if (safetyCheckFrame++ > MAX_WAIT_FRAMES) {
+				throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
+			}
+		}
+	}
+	
 	public void waitEndOfScroll() {
 		while (clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL ||
-				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT) {
+				clientState.event.nature == ClientEventNature.CHANGINGMAP_WAITSCRIPT ||
+				clientState.event.nature == ClientEventNature.CHANGINGMAP_SCROLL_WAIT_MAP) {
 			renderFrames(1);
 		}
 		renderFrames(1);
@@ -453,6 +457,11 @@ public abstract class EngineUT {
 		while (true) {
 			renderFrames(1);
 			if (!EngineZildo.scriptManagement.isScripting()) {
+				break;
+			}
+			Menu menu = ClientEngineZildo.client.getCurrentMenu();
+			if (menu != null && menu.getClass() == RegisterChampionMenu.class) {
+				// In any way, we cut here if test reaches end of game
 				break;
 			}
 			if (action != null) {
@@ -524,11 +533,18 @@ public abstract class EngineUT {
 	/** Wait for map switch, then check that new map is the expected one **/
 	protected void assertMapIsChangingToward(String mapName) {
 		String current = EngineZildo.mapManagement.getCurrentMap().getName();
-		while (!EngineZildo.mapManagement.isChangingMap(clientState.zildo)) {
+		int safetyCheckFrame = 0;
+		while (!EngineZildo.mapManagement.isChangingMap(clientState.zildo) && safetyCheckFrame <= MAX_WAIT_FRAMES) {
 			renderFrames(1);
+			safetyCheckFrame++;
+
 		}
-		while (current.equals(EngineZildo.mapManagement.getCurrentMap().getName())) {
+		while (current.equals(EngineZildo.mapManagement.getCurrentMap().getName())  && safetyCheckFrame < MAX_WAIT_FRAMES) {
 			renderFrames(1);
+			safetyCheckFrame++;
+		}
+		if (safetyCheckFrame > MAX_WAIT_FRAMES) {
+			throw new RuntimeException("Test seems blocked there ! After " + MAX_WAIT_FRAMES + " frames, nothing happened !");
 		}
 		Assert.assertEquals("Map has changed but to the wrong one !", mapName, EngineZildo.mapManagement.getCurrentMap().getName());
 	}
@@ -563,9 +579,9 @@ public abstract class EngineUT {
 				doReturn(fakedKbHandler.getCode(keys[0])).when(fakedKbHandler).getEventKey();
 			} else {
 				// Multiple value matching
-				doReturn(true).when(fakedKbHandler).isKeyDown(Matchers.argThat(new ArgumentMatcher<Keys>() {
+				doReturn(true).when(fakedKbHandler).isKeyDown(argThat(new ArgumentMatcher<Keys>() {
 					@Override
-					public boolean matches(Object argument) {
+					public boolean matches(Keys argument) {
 						for (Keys k : keys) {
 							if (argument == k) {
 								return true;
@@ -724,7 +740,7 @@ public abstract class EngineUT {
 		}
 	}
 	
-	protected class SpriteDisplayMocked extends SpriteDisplay {
+	public class SpriteDisplayMocked extends SpriteDisplay {
 		public SpriteDisplayMocked(SpriteEngine spriteEngine) {
 			super(spriteEngine);
 			

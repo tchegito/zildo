@@ -12,10 +12,16 @@
 // To declare projects as part of a multi-project build use the 'include' method
 include 'zildo'
 include 'zildo-test'
-include 'zildo-android-gles2'
-include 'zildo-platform-lwjgl'
+if (!isICBuild()) {
+    include 'zildo-android-gles2'
+}
 include 'zildo-platform-android-gles2'
+include 'zildo-platform-lwjgl'
 include 'zeditor'
-include "packaging-win"
+// include "packaging-win"
 
 rootProject.name = 'alembrume'
+
+def isICBuild() {
+    return hasProperty("IC")
+}

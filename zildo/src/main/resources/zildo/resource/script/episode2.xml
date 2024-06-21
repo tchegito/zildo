@@ -231,6 +231,7 @@
         </trigger>
         <action>
             <wait value="80"/>
+            <spawn what="leaf" type="WATER_LEAF" pos="344,128"/>
       	    <sound name="SlipWater1"/>
             <moveTo what="leaf" pos="294,154"/>
       	    <sound name="SlipWater2"/>
@@ -777,11 +778,11 @@
 	    <condition name="prison">
 	    	<var name="allowedDynamite" value="no"/>
 	    </condition>
-	    <condition name="!chateaucoucou1-!chateaucoucou2-!voleursg1-!voleursg2-!voleursg3-!voleursg4-!voleursg5-!voleursg6-!voleursg7-!nature1" exp="trig_echange-!zildoDream,hero_princess">
+	    <condition name="!chateaucoucou1-!chateaucoucou2-!voleursg1-!voleursg2-!voleursg3-!voleursg4-!voleursg5-!voleursg6-!voleursg7-!nature1-!nature2" exp="trig_echange-!zildoDream,hero_princess">
 	        <!-- Night -->
 	        <filter type="1"/>
 	    </condition>
-	    <condition name="chateaucoucou1,chateaucoucou2,voleursg1,voleursg2,voleursg3,voleursg4,voleursg5,voleursg6,voleursg7,nature1">
+	    <condition name="chateaucoucou*,voleursg*,nature*">
 	        <!-- Day -->
 	        <filter type="0"/>
 	    </condition>

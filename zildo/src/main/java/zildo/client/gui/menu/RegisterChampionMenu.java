@@ -86,6 +86,6 @@ public class RegisterChampionMenu extends Menu {
 		int timeSpent = EngineZildo.game.getTimeSpent();
 		int moonHalf = zildo.getMaxpv() * 2; // + zildo.getMoonHalf();
 		Champion ch = new Champion(UIText.getCharacterName(), moonHalf, Constantes.currentEpisode, new Date(), zildo.getMoney(), timeSpent);
-		return new WorldRegister().registerChampion(ch);
+		return EngineZildo.worldRegister.registerChampion(ch);
 	}
 }

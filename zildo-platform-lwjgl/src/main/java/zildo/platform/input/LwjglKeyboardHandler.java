@@ -41,6 +41,7 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 	private static final int KEY_ESCAPE          = 0x01;
 	private static final int KEY_BACK            = 0x0E; /* backspace */
 	private static final int KEY_TAB             = 0x0F;
+	private static final int KEY_G				 = 0x22;
 	private static final int KEY_Q               = 0x10;
 	private static final int KEY_W               = 0x11;
 	private static final int KEY_E               = 0x12;
@@ -79,6 +80,7 @@ public class LwjglKeyboardHandler extends CommonKeyboardHandler {
 		platformKeys.put(Keys.COMPASS, KEY_2);
 		platformKeys.put(Keys.PAGEUP, KEY_PAGEUP);
 		platformKeys.put(Keys.PAGEDOWN, KEY_PAGEDOWN);
+		platformKeys.put(Keys.GEAR, KEY_G);	// Irrelevant on LWJGL
 	}
 
 	public boolean isKeyDown(int p_code) {

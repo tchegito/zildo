@@ -1,17 +1,19 @@
 package junit.perso;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.fwk.input.KeyboardHandler.Keys;
+import zildo.fwk.script.context.SceneContext;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -27,6 +29,15 @@ import zildo.server.EngineZildo;
 
 public class TestAdvancedPerso extends EngineUT {
 
+	String guyScript="<adventure>"+
+			" <scene id='testRemoveScript'>"+
+			"  <perso who='thrower1' action=''/>" +
+			" </scene>"+
+			" <scene id='testChangeScript'>"+
+			"  <perso who='thrower1' action='immobileDarkGuy'/>" +
+			" </scene>"+
+			"</adventure>";
+	
 	/** We had a NPE at frame 645, because dragon has been removed, and he still had a 'persoAction' attached to him.
 	 * In 'dragonDiveAndReappear', we tried to modify a removed character. Now, a character removal, occuring by
 	 * 'remove' action in 'death' scene, include persoAction removal. **/
@@ -48,7 +59,7 @@ public class TestAdvancedPerso extends EngineUT {
 		renderFrames(250);
 	}
 	
-	@Test //@InfoPersos
+	@Test
 	public void dieStoppingAutomaticScenes() {
 		mapUtils.loadMap("dragon");
 		PersoPlayer zildo = spawnZildo(861,214);
@@ -222,7 +233,6 @@ public class TestAdvancedPerso extends EngineUT {
 	}
 	
 	@Test
-	@InfoPersos
 	public void turtleFollowHisRoute() {
 		mapUtils.loadMap("sousbois7");
 		PersoPlayer roxy = spawnZildo(116, 430);
@@ -237,5 +247,133 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue("Roxy should have been on platform !", roxy.isOnPlatform());
 		Perso turtle = persoUtils.persoByName("sacher");
 		Assert.assertFalse(turtle.isAlerte());
+	}
+	
+	@Test
+	public void persoActionRemove() throws Exception {
+		Perso guy1 = preparePersoAction();
+		
+		scriptMgmt.execute("testRemoveScript", true, new SceneContext(), null);
+		renderFrames(10);
+		Assert.assertFalse(guy1.isDoingAction());
+	}
+	
+	@Test
+	public void persoActionSwitch() throws Exception {
+		Perso guy1 = preparePersoAction();
+		
+		scriptMgmt.execute("testChangeScript", true, new SceneContext(), null);
+		renderFrames(10);
+		Assert.assertTrue(guy1.isDoingAction());
+		
+		// Check that character isn't moving anymore
+		int nbFrames = 100;
+		while (nbFrames-- > 0 && guy1.getTarget() == null) {
+			renderFrames(1);
+		}
+		Assert.assertNull("Character shouldn't move !", guy1.getTarget());
+	}
+	
+	
+	@Test
+	public void persoActionWhenDead() throws Exception {
+		preparePersoAction();
+		
+		// Kill him
+		persoUtils.removePerso("thrower1");
+		Assert.assertNull(persoUtils.persoByName("thrower1"));
+
+		// Ensure that script won't fail even if the character isn't there
+		scriptMgmt.execute("testChangeScript", true, new SceneContext(), null);
+		renderFrames(2);
+	}
+	
+	@Test
+	public void dynamiteOnRoof() {
+		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);
+		mapUtils.loadMap("prisonext");
+		PersoPlayer zildo = spawnZildo(272, 138);
+		zildo.setFloor(2);
+		waitEndOfScriptingPassingDialog();
+		
+		int nFrames = 500;
+		while (nFrames-- > 0 && findEntityByDesc(ElementDescription.DYNAMITE) == null) {
+			renderFrames(1);
+		}
+		// Find dynamite
+		Element dynamite = (Element) findEntityByDesc(ElementDescription.DYNAMITE);
+		Assert.assertNotNull("We should have found a dynamite !", dynamite);
+		Assert.assertEquals(2,  dynamite.getFloor());
+		// Wait for explosion
+		while (!dynamite.dying) {
+			renderFrames(1);
+		}
+		Element explosion = (Element) findEntityByDesc(ElementDescription.EXPLO1);
+		Assert.assertNotNull("An explosion should have been spawn !", explosion);
+		Assert.assertEquals("Explosion should have been on the same floor as dynamite !", 2, explosion.getFloor());
+	}
+	
+	@Test
+	public void squeakyFloor() {
+		// Since butcher implementation, we had a problem with lookFor tag, and especially attribute 'changeContext'
+		// In 'disturbVoleurs' scene, we look for a guy around hero, then that guy should throw a projectile
+		// With 'lookFor' changing context, we ended up with a NULL character throwing => NPE
+		mapUtils.loadMap("voleursm1");
+		spawnZildo(214, 119);
+		simulateDirection(0, -1);
+		renderFrames(30);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
+	}
+	
+	@Test
+	public void squeakyFloor2() {
+		// Sometimes, a repeatable quest is recorded as 'done' in savegame.
+		// However, it should be triggered next time hero comes to the map.
+		EngineZildo.scriptManagement.accomplishQuest("squeaky_floor_voleurs2", true);
+		mapUtils.loadMap("voleursm2");
+		spawnZildo(71, 131);
+		simulateDirection(0, -1);
+		renderFrames(30);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("disturbVoleurs"));
+	}
+	
+	// After fixes on float number on multiplications in script, hero's script about falling was
+	// pushing him too far
+	@Test
+	public void heroFallWithoutMovingTooMuch() {
+		mapUtils.loadMap("cavef4");
+		PersoPlayer zildo = spawnZildo(564, 172);
+		waitEndOfScripting();
+		
+		// Wait for being hurt by the serpent thing
+		while (!zildo.isWounded()) {
+			renderFrames(1);
+		}
+		while (zildo.getMouvement() != MouvementZildo.TOMBE) {
+			renderFrames(1);
+		}
+		renderFrames(10);
+		float maxVx = 0 ; float maxVy = 0;
+		while (zildo.vx != 0) {
+			maxVx = Math.max(maxVx,  Math.abs(zildo.vx));
+			maxVy = Math.max(maxVy, Math.abs(zildo.vy));
+			renderFrames(1);
+		}
+		Assert.assertTrue(maxVx < 0.5);
+		Assert.assertTrue(maxVy < 0.5);
+	}
+	
+	private Perso preparePersoAction() throws Exception {
+		loadXMLAsString(guyScript);
+		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);
+		mapUtils.loadMap("prisonext");
+		spawnZildo(140, 144);
+		waitEndOfScriptingPassingDialog();
+		
+		Perso guy1 = persoUtils.persoByName("thrower1");
+		Assert.assertNotNull(guy1);
+		Assert.assertTrue(guy1.isDoingAction());
+		
+		return guy1;
 	}
 }

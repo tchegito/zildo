@@ -23,18 +23,24 @@ public class TileLight {
 	}
 	
 	 public int left(int level, float x, float y) {
-		 if (level == 1) {
+		 switch (level) {
+		 case 0:
+			 return (int)x % 16;
+		 case 1:
 			 return 8 + Math.min((int) x % 16, 7);
-		 } else {
+		 default:
 			 return (int) (x % 16) / 2;
 		 }
 	 }
 	 
 	 public int right(int level, float x, float y) {
-		 if (level == 1) {
-			 return Math.min(8 + 16 - (int) x % 16, 15);
-		 } else {
-			 return 8 - ((int) x % 16) / 2;
+		 switch (level) {
+			 case 0:
+				 return 15 - (int)x % 16;
+			 case 1:
+				 return Math.min(8 + 16 - (int) x % 16, 15);
+			 default:
+				 return 8 - ((int) x % 16) / 2;
 		 }
 	 }
 	 
@@ -52,4 +58,29 @@ public class TileLight {
 		}
 	 }
 
+	 public int forNaturePalaceRotatedTile(float x, float y, Rotation rot) {
+		switch (rot) {
+		case NOTHING:
+			default:
+			return north(0, x, y);
+		case CLOCKWISE:
+			return right(0, x, y);
+		case UPSIDEDOWN:
+			return south(1, x, y);
+		case COUNTERCLOCKWISE:
+			return left(0, x, y);
+		}
+	 }
+	 
+	 public int forNaturePalaceRotatedDoorStep(float x, float y, Rotation rot) {
+		 switch (rot) {
+		 case NOTHING:
+		 case CLOCKWISE:
+		 case COUNTERCLOCKWISE:
+			 default:
+			 return 0;
+		 case UPSIDEDOWN:
+			 return south(0, x, y);
+		 }
+	 }
 }

@@ -20,7 +20,6 @@
 package zildo.fwk.input;
 
 import zildo.monde.util.Vector2f;
-import zildo.server.EngineZildo;
 
 
 /**

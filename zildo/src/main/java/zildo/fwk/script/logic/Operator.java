@@ -24,7 +24,7 @@ enum Operator {
 	// We can combine test operation like this
 	// a=4 + a=5 : means "a==4 || a==5"
 	// a=3 * b=1 : means "a==3 && b==1"
-	MIN("min"), MAX("max"), PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), OR("|"), AND("&"), EQUALS("="), NOT_EQUALS("!"), 
+	SEPARATOR(","), MIN("min"), MAX("max"), PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"), OR("|"), AND("&"), EQUALS("="), NOT_EQUALS("!"), 
 	LESSER("<"), GREATER(">"), MODULO("%") ;
 	
 	String symbol;

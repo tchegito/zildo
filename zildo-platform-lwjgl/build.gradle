@@ -1,23 +1,30 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
 
 version = '1.0'
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+
+compileJava {
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-	compile ("org.lwjgl.lwjgl:lwjgl:2.9.3") {
+	implementation ("org.lwjgl.lwjgl:lwjgl:2.9.3") {
 		exclude module:'lwjgl-platform'
 		exclude module:'jinput-platform'
 		}
-	compile	"org.jcraft:jorbis:0.0.17",	// This JAR contains both JOGG and JORBIS functionalities
+	implementation	"org.jcraft:jorbis:0.0.17",	// This JAR contains both JOGG and JORBIS functionalities
 		    files('lib/slick-util.jar'),
 		    project(':zildo')
 	
 }
 
-jar.archiveName = "ZildoPlatformLwjgl.jar"
+// To avoid gradle compile source code with JDK 9 and after that, a fail on ByteBuffer#flip running JDK 8
+compileJava {
+	options.compilerArgs.addAll(['--release', '7'])
+}
+
+jar.archiveFileName = "ZildoPlatformLwjgl.jar"

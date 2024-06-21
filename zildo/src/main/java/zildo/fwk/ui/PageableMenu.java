@@ -76,7 +76,7 @@ public class PageableMenu extends Menu {
 	}
 	
 	private void initCurrentPage() {
-		items=new ArrayList<ItemMenu>();
+		items=new ArrayList<>();
 		int indexStart = currentPage * NB_PER_PAGE;
 		int indexEnd = Math.min(indexStart + NB_PER_PAGE, completeItems.size());
 		items.addAll(completeItems.subList(indexStart, indexEnd));
@@ -127,7 +127,6 @@ public class PageableMenu extends Menu {
     
 	private void changePage() {
 		initCurrentPage();
-		selected = 0;
 		client.handleMenu(currentPageableMenu);
 		
 	}

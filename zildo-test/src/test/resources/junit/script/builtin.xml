@@ -16,10 +16,24 @@
 	   	<var name="freeLoc" value="fun:project(bandit, beta, 64)"/>
 	   	<var name="freeLoc2" value="fun:project(bandit, beta, 64.0)"/>
 	   	<var name="freeLoc3" value="fun:project(bandit, beta, loc:distance)"/>
+	   	
+	   	<var name="freeLoc3" value="fun:project(bandit, beta, loc:distance * 0.5)"/>
 	   		   	
 	   	<pos who="bandit" pos="freeLoc"/>
 	   	
 	   	<var name="col1" value="fun:collide(50, 50)"/>
 	   	<var name="col2" value="1-fun:collide(50, 50)"/>
+	</scene>
+	
+	<scene id="testProject">
+	    <spawn who="hooded" type="HOODED" pos="84,124"/>
+	    <pos who="zildo" pos="104, 170"/>
+	    
+	    <var name="hoodedLoc" value="fun:persoloc(hooded)"/> -->
+	    <var name="loc:iota" value="fun:angle(hooded, zildo)"/>
+		<var name="loc:delta" value="fun:dist(hoodedLoc, zildo.loc)"/>
+		<var name="loc:freeLoc" value="fun:project(hooded, loc:iota, loc:delta * 0.5)"/>
+		 
+		<pos who="hooded" pos="loc:freeLoc"/>
 	</scene>
 </adventure>

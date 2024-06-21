@@ -16,7 +16,19 @@ allprojects {
 
 subprojects {
 	repositories {
+		google()
 	    mavenCentral()
+	}
+}
+
+buildscript {
+	repositories {
+		google() // For Gradle 4.0+
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'com.android.tools.build:gradle:7.2.1'
 	}
 }
 

@@ -12,9 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.mockito.stubbing.Answer;
 
 import tools.EngineWithMenuUT;
@@ -114,6 +112,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 	
 			try {
 				field = Zildo.class.getDeclaredField("pdPlugin");
+				field.setAccessible(true);
 				// Allow modification on the field
 				Field modifiersField = Field.class.getDeclaredField("modifiers");
 				modifiersField.setAccessible(true);
@@ -233,6 +232,7 @@ public class TestUnexpectedKeys extends EngineWithMenuUT {
 		GUIDisplay gd = ClientEngineZildo.guiDisplay;
 		clientState.zildoId = hero.getId();
 		List<SpriteEntity> entities = EngineZildo.spriteManagement.getSpriteEntities(null);
+		ClientEngineZildo.spriteDisplay.setZildoId(hero.getId());
 		ClientEngineZildo.spriteDisplay.setEntities(entities);
 		hero.setAngle(Angle.NORD);	// Face the grandpa
 		simulatePressButton(Keys.COMPASS, 1);

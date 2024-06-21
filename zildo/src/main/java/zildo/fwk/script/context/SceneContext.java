@@ -9,6 +9,7 @@ public class SceneContext extends LocaleVarContext {
 
 	@Override
 	public float getValue(String key) {
+		//throw new RuntimeException("Can't find variable "+key+" in a SceneContext !");
 		return 0;
 	}
 

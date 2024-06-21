@@ -30,6 +30,7 @@ import zildo.client.gui.GUIDisplay.DialogMode;
 import zildo.client.gui.menu.SaveGameMenu;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.input.MovementRecord;
+import zildo.fwk.net.www.WorldRegister;
 import zildo.monde.Game;
 import zildo.monde.Hasard;
 import zildo.monde.dialog.DialogManagement;
@@ -55,6 +56,7 @@ public class EngineZildo {
 	public static SoundManagement soundManagement;
     public static MultiplayerManagement multiplayerManagement;
     public static ScriptManagement scriptManagement;
+    public static WorldRegister worldRegister;
     
     public static Game game;
     public static Hasard hasard = new Hasard();	// Could be overwrited for UT
@@ -91,6 +93,8 @@ public class EngineZildo {
 		}
 		
 		nFrame = 0;
+		
+		worldRegister = new WorldRegister();
 	}
 
 	static public int spawnClient(ZildoOutfit p_outfit) {
@@ -283,6 +287,8 @@ public class EngineZildo {
 			case CHANGINGMAP_WAITSCRIPT:	// Engine is doing 'map script' (see MapscriptElement)
 				if (!scriptManagement.isPriorityScripting()) {
 					retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLL;
+					// We have to wait condition mapscript to execute, in case they change the music (example: igorlily/igorvillage)
+					EngineZildo.mapManagement.loadMapMusic();
 				}
 				retEvent.chPoint = null;
 				break;

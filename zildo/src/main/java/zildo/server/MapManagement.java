@@ -148,10 +148,8 @@ public class MapManagement {
 		EngineZildo.spriteManagement.initForNewMap();
 
 		if (!EngineZildo.game.editing) {
-			if (!EngineZildo.soundManagement.isForceMusic()) {
-				BankMusic mus = BankMusic.forName(EngineZildo.scriptManagement.getReplacedZikName(atmo.music.name()));
-				
-				ClientEngineZildo.soundPlay.playMusic(mus, atmo);
+			if (!p_additive) {
+				loadMapMusic();
 			}
 			if (atmo == Atmosphere.CAVE) {
 				// Inside cave, we want full light
@@ -172,6 +170,16 @@ public class MapManagement {
 
 	}
 
+	public void loadMapMusic() {
+		if (!EngineZildo.soundManagement.isForceMusic()) {
+			Atmosphere atmo = getCurrentMap().getAtmosphere();
+
+			BankMusic mus = BankMusic.forName(EngineZildo.scriptManagement.getReplacedZikName(atmo.music.name()));
+			
+			ClientEngineZildo.soundPlay.playMusic(mus, atmo);
+		}
+	}
+	
 	public void clearMap() {
 		Atmosphere savedAtmo = Atmosphere.OUTSIDE;	// Default 
 		if (currentMap != null) {
@@ -767,7 +775,6 @@ public class MapManagement {
 								} else if (platformSpeed < 0.6f) {
 									coeff = 2;
 								}
-								//System.out.println(platformSpeed+" ==> coeff="+coeff);
 							}
 							entity.setMover(new PhysicMoveOrder(coeff * dest.x / 16, coeff * dest.y / 16));
 							entity.setGhost(true);
@@ -1121,7 +1128,6 @@ public class MapManagement {
 					Point translated = new Point(p.x + delta.x, p.y + delta.y);
 					locked &= collide(translated.x, translated.y, p);
 					Point areaCoords = new Point(translated.x >> 4, translated.y >> 4);
-					System.out.println(areaCoords);
 					int val = currentMap.readmap(areaCoords.x, areaCoords.y);
 					if (val == Tile.T_BUSH) {
 						bushLocation = areaCoords;

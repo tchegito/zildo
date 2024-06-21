@@ -262,7 +262,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 			renderFrames(1);
 		}
 		// Check that flut playing hasn't triggered the leaf to move
-		Assert.assertTrue(zildo.deltaMoveX == 0);
+		Assert.assertTrue("Zildo should have be immobile ("+zildo.deltaMoveX+")", zildo.deltaMoveX == 0);
 	}
 	
 	/** Issue 143 **/
@@ -292,7 +292,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 	private void initIgorLily(Point waterLilyLoc) {
 		mapUtils.loadMap("igorlily");
 		EngineZildo.persoManagement.clearPersos(true);
-		EngineZildo.spriteManagement.getNamedEntity("leaf").dying = true;
 		
 		// Spawn water lily
 		waterLily = EngineZildo.spriteManagement.spawnSprite(

@@ -211,6 +211,7 @@ public class Shaders {
 				break;
 			case star:
 				uniform2f("noise", starNoise);
+				uniform4f("CurColor", curColor);
 				break;
 			case fire:
 				uniform4f("iGlobalTime", fireTime);

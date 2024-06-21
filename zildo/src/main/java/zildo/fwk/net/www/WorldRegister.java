@@ -127,6 +127,7 @@ public class WorldRegister extends Thread {
 			InputStream in = urlConnect.getInputStream();
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in, utf8));
+			reader.readLine();
 			while (true) {	// reader.ready() doesn't work on Android
 				// 4 line per champion
 				String name = reader.readLine();

@@ -251,7 +251,6 @@ public class ActionExecutor extends RuntimeExecutor {
 						} else if ("easein".equals(p_action.text)) {
 							entity.setMover(new EasinMoveOrder(location.x, location.y, p_action.speed));
 						} else if ("straight".equals(p_action.text)) {
-							if (p_action.what.equals("loc:hook")) System.out.println("move hook");
 							entity.setMover(new StraightMoveOrder(location.x, location.y, p_action.speed));
 						} else {
 							entity.setMover(new BasicMoveOrder(location.x,
@@ -763,6 +762,9 @@ public class ActionExecutor extends RuntimeExecutor {
 							perso.setAction(null);
 							// perso.setGhost(false);
 						} else {
+							if (EngineZildo.scriptManagement.isPersoActing(perso)) {
+								EngineZildo.scriptManagement.stopPersoAction(perso);
+							}
 							perso.setAction(new ScriptedPersoAction(perso,
 									p_action.action, context));
 						}
@@ -777,6 +779,10 @@ public class ActionExecutor extends RuntimeExecutor {
 					int addSpr = (int) p_action.addSpr.evaluate(context);
 					if (addSpr != -1) {
 						perso.setAddSpr(addSpr);
+						// Reset potential previous sprite sequence
+						if (!perso.isZildo()) {
+							((PersoNJ) perso).setSpriteSequence(new int[] {}, 0);
+						}
 					}
 					if (p_action.pv != -1) {
 						perso.setPv(p_action.pv);
@@ -789,6 +795,10 @@ public class ActionExecutor extends RuntimeExecutor {
 					}
 					applyCommonAndPhysicAttributes((Element) perso, p_action);
 				}
+				achieved = true;
+				break;
+			case seqPerso:
+				((PersoNJ) perso).setSpriteSequence(p_action.sequence, p_action.val);
 				achieved = true;
 				break;
 			case timer:
@@ -832,10 +842,8 @@ public class ActionExecutor extends RuntimeExecutor {
 							lookFor.radius, p_action.info, lookFor.sight);
 				}
 				if (found != null ^ lookFor.negative) { // XOR !
-					IEvaluationContext lookForContext;
-					if (found == null || !p_action.changeContext) {
-						lookForContext = context;
-					} else {
+					IEvaluationContext lookForContext = context;
+					if (found != null && lookFor.changeContext) {
 						lookForContext = new SpriteEntityContext(found, context);
 					}
 					// Specificity here: we create a subprocess with a different
@@ -967,9 +975,6 @@ public class ActionExecutor extends RuntimeExecutor {
 			break;
 		case focus:
 			achieved = ClientEngineZildo.mapDisplay.getTargetCamera() == null;
-			if (achieved == true) {
-				System.out.println("finish");
-			}
 			break;
 		case speak:
 		case end:

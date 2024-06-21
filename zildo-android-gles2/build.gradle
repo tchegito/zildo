@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+}
+//apply plugin: 'java'
+apply plugin: 'com.android.application'
+
+/*
+compileJava {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+*/
+
+// doublon mais si on le met pas, gradle nous dit qu'il n'est pas défini !
+android.compileSdkVersion 33
+
+android {
+
+    //applicationId "com.alembrum"
+    sourceSets.main.manifest.srcFile 'AndroidManifest.xml'
+    defaultConfig {
+        // 28 pour lancer sur mon redmi 6, mais google exige 33 sur le store
+        minSdk 33
+        applicationId 'com.alembrum'
+    }
+    //versionCode 72
+    //minSdkVersion 16
+    //targetSdkVersion 30
+    packagingOptions {
+        exclude 'AndroidManifest.xml'
+        exclude 'resources.arsc'
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':zildo')
+    implementation project(':zildo-platform-android-gles2')
+}

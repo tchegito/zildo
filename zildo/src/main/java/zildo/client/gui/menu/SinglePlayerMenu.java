@@ -44,7 +44,7 @@ public class SinglePlayerMenu extends Menu {
 				// Create single player game, with setting player name
 				String playerName = sb.toString();
 				UIText.setCharacterName(playerName);
-                new SinglePlayer(new Game(null, playerName)).launchGame();
+				client.askStage(new SinglePlayer(new Game(null, playerName)));
 			}
 		};
 
@@ -52,7 +52,6 @@ public class SinglePlayerMenu extends Menu {
         	@Override
 			public void run() {
         		client.handleMenu(new PlayerNameMenu(sb, currentMenu, runSingle));
-
         	}
         };
         
@@ -60,7 +59,6 @@ public class SinglePlayerMenu extends Menu {
         	@Override
 			public void run() {
                 client.handleMenu(new SaveGameMenu(true, currentMenu));
-
         	}
         };
         

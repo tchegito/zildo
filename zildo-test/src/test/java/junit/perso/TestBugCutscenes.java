@@ -22,7 +22,7 @@ public class TestBugCutscenes extends EngineUT {
 	@Test
 	public void thiefAttack() {
 		mapUtils.loadMap("voleurs");
-		spawnZildo(900, 984);
+		spawnZildo(904, 984);
 		waitEndOfScripting();
 		
 		simulateDirection(new Vector2f(-2, 0));
@@ -254,6 +254,18 @@ public class TestBugCutscenes extends EngineUT {
 		hero = EngineZildo.persoManagement.getZildo();
 		System.out.println(hero.isWounded());
 		System.out.println(hero.getPv());
+	}
+	
+	@Test
+	public void thiefsCutScenes() {
+		mapUtils.loadMap("voleursg2");
+		spawnZildo(604, 65);
+		simulateDirection(1, 0);
+		renderFrames(100);
+		Assert.assertEquals("voleursg3", EngineZildo.mapManagement.getCurrentMap().getName());
+		waitEndOfScroll();
+		waitEndOfScriptingPassingDialog();
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestOver("meanwhile_voleurs"));
 	}
 	
 }

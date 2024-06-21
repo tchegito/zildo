@@ -240,7 +240,20 @@ public class ZUtils {
     	
     static final Pattern p = Pattern.compile("[0-9|\\.|\\-| ]*");
     
+    public static boolean isEmpty(int[] seq) {
+    	return seq == null || seq.length > 0; 
+    }
+    
     public static boolean isNumeric(String p_text) {
     	return p.matcher(p_text).matches();
+    }
+    
+    public static int[] listToArray(List<Integer> l) {
+    	int[] array = new int[l.size()];
+    	int ind = 0;
+    	for (Integer i : l) {
+    		array[ind++] = i;
+    	}
+    	return array;
     }
 }

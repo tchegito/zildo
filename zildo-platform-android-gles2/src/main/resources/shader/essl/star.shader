@@ -16,6 +16,7 @@ void main(){
 precision highp float;
 uniform vec2 noise;
 varying mediump vec2 vTexCoord;
+uniform vec4 CurColor;		// Current color
 void main (void) {
 	vec2 delta = vec2(vTexCoord.xy - vec2(0.5, 0.5));
 	float intensity = pow(delta.x, 2.0) + pow(delta.y, 2.0);
@@ -32,7 +33,7 @@ void main (void) {
 	intensity = intensity / clamp(alpha, 0.1, 0.7);
 	intensity = clamp(intensity, 0.0, 1.0);
 	
-	vec4 starTex = vec4(1.0, 1.0, 1.0, 1.0-intensity);
+	vec4 starTex = vec4(1.0, 1.0, 1.0, 1.0-intensity) * CurColor;
 	
 	gl_FragColor = starTex;
 }

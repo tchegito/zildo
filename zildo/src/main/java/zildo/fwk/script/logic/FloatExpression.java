@@ -30,6 +30,8 @@ public class FloatExpression {
 	protected static final String RESERVED_WORD_ZILDOX = "zildo.x";
 	protected static final String RESERVED_WORD_ZILDOY = "zildo.y";
 	protected static final String RESERVED_WORD_ZILDOZ = "zildo.z";
+	protected static final String RESERVED_WORD_ZILDOVX = "zildo.vx";
+	protected static final String RESERVED_WORD_ZILDOVY = "zildo.vy";
 	protected static final String RESERVED_WORD_ZILDOLOC = "zildo.loc";
 	protected static final String RESERVED_WORD_ZILDOSCRX = "zildo.scrX";
 	protected static final String RESERVED_WORD_ZILDOSCRY = "zildo.scrY";
@@ -114,7 +116,7 @@ public class FloatExpression {
 				if (leftNode == null) 
 					leftNode = temp;
 				else 
-					leftNode = new FloatBuiltIn(leftNode.toString(), temp.toString());
+					leftNode = new FloatBuiltIn(leftNode.toString(), temp);
 			} else if (")".equals(val)) {
 				if (!parenthese) {
 					scan.goBack();

@@ -21,7 +21,7 @@
 package com.alembrum;
 
 import android.os.Message;
-import zildo.client.ClientEngineZildo;
+
 import zildo.fwk.ui.DefaultMenuListener;
 import zildo.fwk.ui.EditableItemMenu;
 import zildo.fwk.ui.ItemMenu;
@@ -63,7 +63,6 @@ public class AndroidMenuListener extends DefaultMenuListener {
 			msg.obj = item;
 			editable = (EditableItemMenu) item;
 			ZildoActivity.handler.sendMessage(msg);
-			ClientEngineZildo.getClientForMenu().handleMenu(null);
 			item = null;
 		}
 		return item;

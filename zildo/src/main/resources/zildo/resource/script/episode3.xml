@@ -2222,12 +2222,14 @@
 	    </if>
    	    <speak what="camera" text="ep3.end.3"/>
 	    <speak what="camera" text="ep3.end.4"/>
-	    <!-- closure
+	    <!-- closure -->
    	    <speak what="camera" text="ep3.end.5"/>
   	    <speak what="camera" text="ep2.ending.cut.1"/>
 	   	<end type="0"/>
-  	    -->
+  	    
+  	    <!-- episode 4 ready
   	   	<exec script="intro_episode4"/>
+  	   	-->
 	</scene>
 	
 	<tileAction id="fountain">

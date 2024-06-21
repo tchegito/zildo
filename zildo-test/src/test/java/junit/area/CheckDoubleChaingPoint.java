@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
-import tools.annotations.InfoPersos;
 import zildo.client.ClientEventNature;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -86,11 +85,9 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		waitEndOfScripting();
 		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
 		Assert.assertTrue(waterLily.isVisible());
-		System.out.println("Suite");
 		zildo.attack();
 		renderFrames(10);
 		Assert.assertTrue(zildo.getPv() == 4);
-		System.out.println(waterLily.x);
 	}
 	
 	@Test
@@ -129,12 +126,10 @@ public class CheckDoubleChaingPoint extends EngineUT {
 		assertMapIsChangingToward("prison13");
 	}
 	
-	@InfoPersos
 	@Test
 	public void doubleHorizontal() {
 		mapUtils.loadMap("chateaucoucou3");
-		// We have to add 16 * 11 because that's the offset defined for this map
-		spawnZildo(559 + 16 * 11, 58);
+		spawnZildo(559, 58);
 		waitEndOfScripting();
 		simulateDirection(0, -1);
 		assertMapIsChangingToward("chatcou5");

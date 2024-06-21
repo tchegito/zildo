@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import tools.EngineUT;
 import zildo.fwk.gfx.EngineFX;
-import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
@@ -15,7 +14,6 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Zone;
-import zildo.server.EngineZildo;
 
 
 public class CheckGuard extends EngineUT {
@@ -63,6 +61,14 @@ public class CheckGuard extends EngineUT {
 		
 		// Another case with a flowerpot between hero and shooter
 		Assert.assertFalse(alertAndShootHero(609, 260, new Point(700, 261)));
+	}
+	
+	@Test
+	public void shouldntShootOnDifferentFloor() {
+		mapUtils.loadMap("prisonext");
+		PersoPlayer hero = spawnZildo(374, 141);
+		hero.setFloor(2);
+		Assert.assertFalse("Guard shouldn't have shot an arrow !", alertAndShootHero(310, 141, new Point(374, 141)));
 	}
 	
 	/** Spawn hero and black guard with a bow. Makes him shoot an arrow.

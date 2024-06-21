@@ -23,5 +23,5 @@ void main(){
 	vec4 texel = texture2D(sTexture, vTexCoord);
 	float gray = dot(vec3(texel),vec3(0.3, 0.59, 0.11));
 	gray = clamp(gray * (factor * 4.0), 0.0, 1.0);
-	gl_FragColor = vec4(gray, gray, 0, texel.w * factor.w);
+	gl_FragColor = vec4(gray, gray, 0, texel.w * factor);
 }

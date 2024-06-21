@@ -131,17 +131,24 @@ public class ScriptManagement {
     	return scriptExecutor.verbose();
     }
     
+    Boolean cached_isScripting;
+    
     public void render() {
+    	cached_isScripting = null;
     	scriptExecutor.render();
     	
     	if (planComputeTriggers) {
     		computeTriggers();
+			cached_isScripting = null;	// News scripts could have been added
     		planComputeTriggers = false;
     	}
     }
     
     public boolean isScripting() {
-    	return scriptExecutor.isScripting();
+    	if (cached_isScripting == null) {
+    		cached_isScripting = scriptExecutor.isScripting();
+    	}
+    	return cached_isScripting;
     }
     
     /** Is any script blocking (except top priority ones) **/
@@ -176,7 +183,8 @@ public class ScriptManagement {
     		// Allow a script with arguments to be launched even if same name is already processing
     		 if (call.args != null || !scriptExecutor.isProcessing(call.actionName)) {
 				scriptExecutor.execute(new RuntimeScene(scene, p_locked, call), true, false, p_context, p_caller);
-    		 }
+			 	cached_isScripting = null;
+			 }
     	} else {
     		throw new RuntimeException("Scene "+call.actionName+" doesn't exist !");
     	}
@@ -205,7 +213,8 @@ public class ScriptManagement {
 		}
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
-    }
+		cached_isScripting = null;
+	}
     
     /**
      * Entry point for all identifiable action, which could target a trigger.<p/>
@@ -479,7 +488,18 @@ public class ScriptManagement {
 		}
     	if (label != null) {
     		ClientState client = Server.getClientFromZildo(p_zildo);
-    		EngineZildo.dialogManagement.launchDialog(client, null, new TakingItemAction(label, p_element));
+    		boolean infoDialog = true;
+    		if (p_desc == ElementDescription.KEY) {
+    			String questName = "found" + p_desc;
+    			if (!isQuestDone(questName)) {
+    				accomplishQuest(questName, false);
+    			} else {
+    				infoDialog = false;
+    			}
+    		}
+    		if (infoDialog) {
+    			EngineZildo.dialogManagement.launchDialog(client, null, new TakingItemAction(label, p_element));
+    		}
     	}
 	}
 	
@@ -677,6 +697,9 @@ public class ScriptManagement {
     					trig.done = false;
     				}
     			}
+    		} else if (quest.isRepeatable()) {
+            	// Reinit all repeatable quests as undone
+    			quest.done = false;
     		}
     	}
 	}

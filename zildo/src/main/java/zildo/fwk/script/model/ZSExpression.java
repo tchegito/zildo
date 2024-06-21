@@ -22,6 +22,7 @@ package zildo.fwk.script.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
@@ -55,6 +56,8 @@ public class ZSExpression {
 	String questName;
 	boolean done;	// True if predicate is prefixed by a '!'
 
+	Pattern pattern;	// For wildcards regex
+	
 	FloatExpression floatExpr = null;
 	
 	public ZSExpression(String p_questName) {
@@ -117,7 +120,15 @@ public class ZSExpression {
 		} else if (questName.startsWith(RW_MAP)) {
 			// Expression could be a map name, to match current map
 			String mapName = questName.substring(RW_MAP.length());
-			result = mapName.equals(EngineZildo.mapManagement.getCurrentMap().getName());
+			String currentMap = EngineZildo.mapManagement.getCurrentMap().getName();
+			if (mapName.contains("*")) {	// Wildcards
+				if (pattern == null) {
+					pattern = Pattern.compile(mapName.replace("*", ".*"));
+				}
+				result = pattern.matcher(currentMap).matches();
+			} else {
+				result = mapName.equals(currentMap);
+			}
 		} else if (questName.startsWith(RW_PERSO)) {
 			String persoName = questName.substring(RW_PERSO.length());
 			result = EngineZildo.persoManagement.getNamedPerso(persoName) != null;

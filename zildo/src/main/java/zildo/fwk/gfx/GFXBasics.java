@@ -315,7 +315,14 @@ public class GFXBasics {
 			|  buffer.get(offset+2) & 0xff;
 	}
 
-	public static Vector4f splitRGB(int value) {
+	public static int readAlphaColor(ByteBuffer buffer, int offset) {
+		return (buffer.get(offset+3) & 0xff) << 24 
+				| (buffer.get(offset) & 0xff) << 16 
+				| (buffer.get(offset+1) & 0xff) << 8 
+				|  buffer.get(offset+2) & 0xff;
+	}
+	
+	public static Vector4f splitRGBA(int value) {
 		int r = (value >> 16) & 0xff;
 		int g = (value >> 8) & 0xff;
 		int b = (value) & 0xff;

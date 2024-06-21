@@ -5,6 +5,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +15,7 @@ import tools.annotations.SoundEnabled;
 import zildo.client.sound.BankSound;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
+import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
@@ -120,5 +123,18 @@ public class ScenesBugFixes extends EngineUT {
 		// If we reach this point, we can conclude that script has worked without any blocking character !
 		// Anyway, check that hero can move == attente equals 0
 		Assert.assertEquals(0,  zildo.getAttente());
+	}
+	
+	@Test
+	public void polakyCaveStucked() {
+		EngineZildo.scriptManagement.accomplishQuest("tonneau_polakyg", false);
+		mapUtils.loadMap("polakyg");
+		waitEndOfScripting();
+		
+		List<SpriteEntity> barrels = findEntitiesByDesc(ElementDescription.BARREL);
+		Assert.assertEquals(5, barrels.size());
+		SpriteEntity barrel = barrels.stream().filter(b -> "barrel1".equals(b.getName())).findFirst().orElse(null);
+		Assert.assertNotNull(barrel);
+		System.out.println(barrel.y);
 	}
 }

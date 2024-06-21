@@ -87,7 +87,10 @@ public class LavaCave extends Banque {
 				// Lever on left
 				{256, 32},
 				// Special tile for back2-fore misconception reason
-				{48, 80}
+				{48, 80},
+				// Lava wall animation
+				{80, 144}, {96, 144},
+				{80, 160}, {96, 160}
 		};
 				
 		coordsInt = c;

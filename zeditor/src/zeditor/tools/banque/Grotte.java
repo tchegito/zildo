@@ -95,10 +95,10 @@ public class Grotte extends Banque {
 				/* Grosse pierre */
 				new Point(224, 0),
 				new Point(240, 0),
-				new Point(256, 0),
+				new Point(137, 288), // Lava animation B1
 				new Point(224, 16),
 				new Point(240, 16),
-				new Point(256, 16),
+				new Point(153, 288), // Lava animation B2
 				new Point(224, 32),
 				new Point(240, 32),
 				new Point(256, 32),
@@ -158,8 +158,8 @@ public class Grotte extends Banque {
 				new Point(112, 16), new Point(128, 16),
 				
 				/* Lit de prison */
-				new Point(144,0), new Point(160, 0),
-				new Point(144, 16), new Point(160, 16),
+				new Point(144,0), new Point(137, 304),
+				new Point(144, 16), new Point(153, 304),
 				new Point(144, 32), new Point(80, 96),	// Pushed button
 				
 				/* Bouton */
@@ -184,7 +184,11 @@ public class Grotte extends Banque {
 				new Point(224, 96), new Point(240, 96),
 				new Point(192, 0), new Point(208, 16),
 				new Point(112, 80),
-				new Point(80,48)	// Alternative floor
+				new Point(80,48),
+				/* Lava wall animation */
+				//new Point(137, 288), new Point(153, 288),
+				//new Point(137, 304), new Point(153, 304)
+				// Alternative floor
 		};
 				
 		pkmChanges = Arrays.asList(new GraphChange("interia3", 0, 0),

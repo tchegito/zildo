@@ -826,6 +826,7 @@ public class PersoPlayer extends Perso {
 				int dyingSprite = PersoDescription.PRINCESS_BUNNY.nth(14);
 				setNSpr(dyingSprite);
 				setNBank(SpriteBank.BANK_PNJ4);
+				nSpr = dyingSprite + addSpr;
 				sprModel = EngineZildo.spriteManagement.getSpriteBank(getNBank()).get_sprite(dyingSprite + addSpr);
 				setAjustedX((int) xx - sprModel.getTaille_x() / 2);
 				setAjustedY((int) yy - sprModel.getTaille_y());
@@ -1621,7 +1622,8 @@ public class PersoPlayer extends Perso {
 		if (getEn_bras() == null) { // Doesn't take 2 items at 1 time
 			
 			// Is hero allowed to take the fork ? (really special case)
-		    if (p_kind == ItemKind.SPADE_GROUND && "no".equals(EngineZildo.scriptManagement.getVarValue("allowedTakeFork"))) {
+		    if (p_kind == ItemKind.SPADE_GROUND && ("no".equals(EngineZildo.scriptManagement.getVarValue("allowedTakeFork"))
+		    		|| "forbidden".equals(p_element.getName())) ) {
 		    	return;
 		    }
 

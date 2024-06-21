@@ -7,12 +7,20 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
 import tools.EngineUT;
+import zildo.client.ClientEngineZildo;
+import zildo.client.sound.Ambient.Atmosphere;
+import zildo.client.sound.BankMusic;
+import zildo.monde.items.Item;
+import zildo.monde.items.ItemKind;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
 
@@ -69,9 +77,7 @@ public class CheckMapScroll extends EngineUT {
 		waitEndOfScripting();
 		// Goes up and wait for map change
 		simulateDirection(0, -1);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		renderFrames(5);
 		waitEndOfScripting();
@@ -108,7 +114,7 @@ public class CheckMapScroll extends EngineUT {
 	@Test
 	public void entitiesDisappearAtRightTime() {
 		mapUtils.loadMap("prison4r");
-		PersoPlayer hero = spawnZildo(40, 146);
+		spawnZildo(40, 146);
 		waitEndOfScripting();
 		
 		// Get barrels
@@ -118,9 +124,7 @@ public class CheckMapScroll extends EngineUT {
 		// 1) transition to the left
 		System.out.println(EngineZildo.spriteManagement.getSpriteEntities(null).size());
 		simulateDirection(-1, 0);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		
 		// Check that sprites are still there
@@ -137,9 +141,7 @@ public class CheckMapScroll extends EngineUT {
 		// 2) transition to the right
 		barrels = findBarrels();
 		simulateDirection(1, 0);
-		while (!EngineZildo.mapManagement.isChangingMap(hero)) {
-			renderFrames(1);
-		}
+		waitChangingMap();
 		simulateDirection(0, 0);
 		
 		// Check that sprites are still there
@@ -167,6 +169,125 @@ public class CheckMapScroll extends EngineUT {
 		}
 		Assert.assertEquals(0, hackSuspendedEntities().size());
 
+	}
+	
+	@Test
+	public void offsetOnMapVertical() {
+		mapUtils.loadMap("cavef3");
+		spawnZildo(495, 54);
+		waitEndOfScripting();
+
+		// Go north to reach cavef4
+		simulateDirection(0, -1);
+		Assert.assertEquals(320, camera().x);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef4",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(336,  camera().x);
+
+		// And go back to cavef3
+		simulateDirection(0, 1);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef3",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(335, camera().x);
+	}
+	
+	@Test
+	public void offsetOnMapHorizontal() {
+		mapUtils.loadMap("cavef6");
+		spawnZildo(672,336);
+		waitEndOfScripting();
+
+		// Go north to reach cavef4
+		simulateDirection(1, 0);
+		Assert.assertEquals(216, camera().y);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef7",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(224,  camera().y);
+
+		// And go back to cavef3
+		simulateDirection(-1, 0);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		Assert.assertEquals("cavef6",  EngineZildo.mapManagement.getCurrentMap().getName());
+		Assert.assertEquals(216, camera().y);
+	}
+		
+	// This test does also an additional check on music switch between maps
+	@Test
+	public void twoWaterLilies() {
+		mapUtils.loadMap("igorvillage");
+		PersoPlayer zildo = spawnZildo(420, 282);
+		zildo.setWeapon(new Item(ItemKind.FLUT));
+		persoUtils.removePerso("new");
+		waitEndOfScripting();
+
+		String[] playingMusic = {"no"};
+		doAnswer((i) -> playingMusic[0] = ((BankMusic)i.getArgument(0)).getFilename()
+
+		).when(ClientEngineZildo.soundPlay).playMusic(any(BankMusic.class), any(Atmosphere.class));
+		// Play flut then check for the waterlily
+		zildo.attack();
+		renderFrames(100);
+		Assert.assertTrue(EngineZildo.scriptManagement.isQuestProcessing("summonLeafVillage"));
+		SpriteEntity waterLily = findEntityByDesc(ElementDescription.WATER_LEAF);
+		Assert.assertNotNull(waterLily);
+		Assert.assertTrue(waterLily.getMover().isActive());
+		waitForScriptFinish("summonLeafVillage");
+		Assert.assertFalse(waterLily.getMover().isActive());
+		zildo.setPos(new Vector2f(414, 329));
+		simulateDirection(0, 1);
+		while (zildo.getY() < 350) {
+			renderFrames(1);
+		}
+		simulateDirection(0, 0);
+		Assert.assertTrue(zildo.isOnPlatform());
+		
+		waterLily.x = 31;
+		waterLily.y = 239;
+		zildo.setPos(new Vector2f(31, 239));
+		// Go west swinging the sword
+		zildo.setAngle(Angle.EST);
+		zildo.setWeapon(new Item(ItemKind.SWORD));
+		renderFrames(1);
+		zildo.attack();
+		renderFrames(20);
+		waitChangingMap();
+		renderFrames(1);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("igorlily");
+		Assert.assertEquals("Nuit", playingMusic[0]);
+		// Then go back to check for the waterlily presence
+		Assert.assertEquals("It should have been only 1 water lily !", 
+				1, findEntitiesByDesc(ElementDescription.WATER_LEAF).size());
+	}
+	
+	@Test
+	public void lavaEntitiesPersistDuringScroll() {
+		mapUtils.loadMap("cavef4");
+		PersoPlayer zildo = spawnZildo(159, 199);
+		SpriteEntity lavaPatch = findEntityByDesc(GearDescription.LAVA3);
+		System.out.println(lavaPatch);
+		simulateDirection(0, 1);
+		waitChangingMap();
+		renderFrames(5);
+
+		SpriteEntity lavaPatch2 = findEntityByDesc(GearDescription.LAVA3);
+		Assert.assertNotNull(lavaPatch2);
+		// Entity have moved along X-axis because of X-offset
+		// So an entity coming from the previous screen shouldn't be shifted on X-axis if movement is vertical
+		Assert.assertEquals((int) lavaPatch.x,  (int) lavaPatch2.x);
+
+	}
+	
+	private Point camera() {
+		return ClientEngineZildo.mapDisplay.getCamera();
 	}
 	
 	// Get a package protected field from SpriteManagement

@@ -164,7 +164,9 @@ public enum ElementDescription implements SpriteDescription {
 	BAGSAND, FLOWERVASE,
 	CHAIR,
 	// Hook of the butcher
-	HOOKCHAIN, HOOK;
+	HOOKCHAIN, HOOK, 
+	// Symbols on slabs
+	SLABS1, SLABS2, SLABS3, SLABS4, SLABS5, SLABS6, SLABS7, SLABS8, SLABS9, SLABS10;
 	
 	Boolean damage;
 	
@@ -400,6 +402,8 @@ public enum ElementDescription implements SpriteDescription {
 		case ZZZ1:
 		case ZZZ2:
 		case DROP_SMALL:
+		case EXPLO1:
+		case STAR1:
 			return false;
 		default:
 			return true;

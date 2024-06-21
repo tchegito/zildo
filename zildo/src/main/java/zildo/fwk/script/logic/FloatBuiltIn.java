@@ -1,5 +1,9 @@
 package zildo.fwk.script.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.logic.FloatVariable.NoContextException;
@@ -15,17 +19,14 @@ import zildo.server.EngineZildo;
 public class FloatBuiltIn implements FloatASTNode {
 
 	String funName;
-	FloatVariable[] params;
+	FloatASTNode[] params;
 	
 	/** Called with "fun:<name>" as first parameter and "<val1>,<val2>..." as second **/
-	public FloatBuiltIn(String funName, String strParams) {
+	public FloatBuiltIn(String funName, FloatASTNode fparams) {
 		this.funName = funName.substring(FloatExpression.RESERVED_WORD_FUN.length());
-		String[] values = strParams.split(",");
-		params = new FloatVariable[values.length];
-		int i=0;
-		for (String s : values) {
-			params[i++] = new FloatVariable(s.trim());
-		}
+
+		List<FloatASTNode> res = decompose(fparams);
+		params = res.toArray(new FloatASTNode[res.size()]);
 	}
 
 	@Override
@@ -41,11 +42,11 @@ public class FloatBuiltIn implements FloatASTNode {
 			int yy = (int) params[1].evaluate(context) / 16;
 			return Math.max(map.getHighestCaseFloor(xx, yy), map.getHighestCaseFloor(xx, yy -1));
 		case "angle":	// Returns angle in radian between 2 named characters
-			Perso npc1 = EngineZildo.persoManagement.getNamedPersoInContext(params[0].variable, context);
-			Perso npc2 = EngineZildo.persoManagement.getNamedPersoInContext(params[1].variable, context);
+			Perso npc1 = EngineZildo.persoManagement.getNamedPersoInContext(variable(0), context);
+			Perso npc2 = EngineZildo.persoManagement.getNamedPersoInContext(variable(1), context);
 			return (float) Trigo.getAngleRadian(npc1.x, npc1.y, npc2.x, npc2.y);
 		case "project":	// Returns location with (String npc, float angle, int pixelRadius)
-			Perso npc = EngineZildo.persoManagement.getNamedPersoInContext(params[0].variable, context);
+			Perso npc = EngineZildo.persoManagement.getNamedPersoInContext(variable(0), context);
 			float alpha = params[1].evaluate(context);
 			int radius = (int) params[2].evaluate(context);
 			Pointf p = new Pointf(npc.x, npc.y);
@@ -61,6 +62,10 @@ public class FloatBuiltIn implements FloatASTNode {
 			int result = EngineZildo.mapManagement.collide(pointLoc.x, pointLoc.y, (Element) context.getActor()) ? 1 : 0;
 			//System.out.println("collision at "+pointLoc+" gives "+result);
 			return result;
+		case "persoloc":
+			npc = EngineZildo.persoManagement.getNamedPersoInContext(variable(0), context);
+			
+			return PointEvaluator.toSingleFloat(new Pointf(npc.x, npc.y));
 		case "dist": // Returns distance between two float locations args=(loc1, loc2)
 			Point p1 = PointEvaluator.fromFloat(params[0].evaluate(context));
 			Point p2 = PointEvaluator.fromFloat(params[1].evaluate(context));
@@ -92,6 +97,26 @@ public class FloatBuiltIn implements FloatASTNode {
 			default:
 				throw new RuntimeException("Unable to find builtIn function "+funName);
 		}
+	}
+	
+	private List<FloatASTNode> decompose(FloatASTNode node) {
+		List<FloatASTNode> result = new ArrayList<>();
+		if (node instanceof FloatOperator && ((FloatOperator)node).op == Operator.SEPARATOR) {
+			FloatOperator fo = (FloatOperator) node;
+			result.addAll(decompose(fo.operand1));
+			result.addAll(decompose(fo.operand2));
+		} else {
+			return Collections.singletonList(node);
+		}
+		return result;
+	}
+	
+	private String variable(int i) {
+		FloatASTNode v = params[i];
+		if (!(v instanceof FloatVariable)) {
+			throw new RuntimeException("Variable "+i+" from "+funName+" should be a FloatVariable !");
+		}
+		return ((FloatVariable) v).variable;
 	}
 	
 	private float distance(Point p1, Point p2) {

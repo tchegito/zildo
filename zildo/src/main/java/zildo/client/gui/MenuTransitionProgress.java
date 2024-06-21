@@ -16,8 +16,7 @@ public class MenuTransitionProgress {
 	
 	// Decreasing number of frames during user can't interact
 	int framesAwaiting;
-	int fadeLevel;
-	
+
 	Menu currentMenu;
 	Menu nextMenu;
 	GameStage nextStage;
@@ -87,7 +86,7 @@ public class MenuTransitionProgress {
 			// Next lines may not be necessary for singleplayer stage
 			framesAwaiting = BLOCKING_FRAMES_ON_MENU_INTERACTION;
 
-			System.out.println("set stage to "+nextStage);
+			//System.out.println("set stage to "+nextStage);
 			currentStage = nextStage;
 			nextStage = null;
 		}
@@ -95,7 +94,6 @@ public class MenuTransitionProgress {
 	}
 	
 	public void mainLoop() {
-		//System.out.println(framesAwaiting);
 		if (framesAwaiting == 1) {
 			if (fadingOut) {
 				activateNextSequence();
@@ -110,7 +108,7 @@ public class MenuTransitionProgress {
 	/** Returns 0..255 integer**/
 	public int getFadeLevel() {
 		if (framesAwaiting == 0) {
-			return currentMenu == null && (currentStage == null || fadingOut) ? 0 : 255;
+			return currentMenu == null ? 0 : 255;
 		} else {
 			int val = (int) (255 * (framesAwaiting / (float) BLOCKING_FRAMES_ON_MENU_INTERACTION));
 			if (fadingOut) {
@@ -120,6 +118,17 @@ public class MenuTransitionProgress {
 			}
 		}
 	}
+	
+	/** Returns 0..255 integer: same method that above with further condition to liss fadeLevel on in-game texter transitions**/
+	public int getFadeLevelMenu() {
+		if (framesAwaiting == 0) {
+			return currentMenu == null && (currentStage == null || fadingOut) ? 0 : 255;
+		} else {
+			return getFadeLevel();
+		}
+	}
+	
+
 	
 	public Menu getCurrentMenu() {
 		return currentMenu;

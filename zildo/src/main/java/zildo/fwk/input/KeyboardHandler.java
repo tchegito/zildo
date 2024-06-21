@@ -28,30 +28,30 @@ import zildo.monde.util.Vector2f;
  */
 public interface KeyboardHandler {
 
-	public boolean isKeyDown(int p_code);
-	public boolean isKeyDown(Keys key);
-	public boolean isKeyPressed(Keys key);
+	boolean isKeyDown(int p_code);
+	boolean isKeyDown(Keys key);
+	boolean isKeyPressed(Keys key);
 	
 	// Called once per frame
-	public void poll();
+	void poll();
 	
 	/**
 	 * @return true if a keyboard event was read, false otherwise
 	 */
-	public boolean next();
+	boolean next();
 	
-	public boolean getEventKeyState();
+	boolean getEventKeyState();
 	
-	public int getEventKey();
+	int getEventKey();
 	
-	public char getEventCharacter();
+	char getEventCharacter();
 	
-	public Vector2f getDirection();
+	Vector2f getDirection();
 	
-	public enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
+	enum Keys {Q, W, X, E, UP, DOWN, RIGHT, LEFT, TAB, RETURN, BACK, ESCAPE, LSHIFT,
 		PAGEUP, PAGEDOWN,	// For PC Only
 		// Specific for touch screen
-		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK, COMPASS};
-	public int getCode(Keys k);
+		DIALOG_FRAME, TOUCH_MENU, TOUCH_BACK, COMPASS, GEAR};
+	int getCode(Keys k);
 	
 }

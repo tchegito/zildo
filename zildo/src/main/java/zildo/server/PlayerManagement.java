@@ -21,6 +21,7 @@
 package zildo.server;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.client.PlatformDependentPlugin;
 import zildo.client.PlatformDependentPlugin.KnownPlugin;
 import zildo.client.sound.BankSound;
@@ -98,9 +99,9 @@ public class PlayerManagement {
 			gamePhase=GamePhase.INGAME;
 		} 
 
+		Vector2f dir = instant.getDirection();
 		if (Zildo.recordMovements) {
 			boolean oneKeyPressed = false;
-			Vector2f dir = instant.getDirection();
 			for (KeysConfiguration key : KeysConfiguration.values()) {
 				if (instant.isKeyDown(key)) {
 					EngineZildo.game.recordMovement(dir, key);
@@ -121,13 +122,21 @@ public class PlayerManagement {
 					);
 		}
 		if (heros.isInventoring()) {
+			boolean allow = true;
+			if (dir != null) {
+				// Refuses to leave inventory if user presses a diagonal movement => we prefer switching items instead
+				Angle ang = Angle.fromDirection(Math.round(dir.x), Math.round(dir.y));
+				allow &= ang != Angle.SUDOUEST && ang != Angle.SUDEST;
+			}
+			if (allow) {
 			instant.setKeyMerged(KeysConfiguration.PLAYERKEY_INVENTORY,
 					KeysConfiguration.PLAYERKEY_UP, 
 					KeysConfiguration.PLAYERKEY_INVENTORY,
 					KeysConfiguration.PLAYERKEY_DOWN
 					//KeysConfiguration.PLAYERKEY_ACTION,	// These keys was added for gamepad support, but ruins game experience (see Issue 81)
 					//KeysConfiguration.PLAYERKEY_ATTACK
-					);			
+					);	
+			}
 		}
 		
 		
@@ -305,7 +314,8 @@ public class PlayerManagement {
 				EngineZildo.spriteManagement.collideSprite((int) heros.x, (int) heros.y, heros);
 			} else {
 				// Reset pushed object before collision could set one
-				if (heros.getMouvement() == MouvementZildo.POUSSE && heros.getAngle() != heros.getAnglePush()) {
+				Angle angleDirection = Angle.fromDirection(Math.round(deltaY),  Math.round(deltaY));
+				if (heros.getMouvement() == MouvementZildo.POUSSE && angleDirection != heros.getAnglePush()) {
 					heros.setMouvement(MouvementZildo.VIDE);
 				}
 				heros.pushSomething(null);
@@ -545,7 +555,8 @@ public class PlayerManagement {
 							} else if (Tile.isClosedChest(on_map) && heros.getAngle()==Angle.NORD) {
 								// Hero found a chest ! Great, isn't it ?
 								EngineZildo.soundManagement.broadcastSound(BankSound.ZildoOuvreCoffre, heros);
-                                map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
+                                ClientEngineZildo.soundEngine.lowerTemporarilyMusicVolume();
+								map.takeSomethingOnTile(new Point(newx, newy), false, heros, true);
 								// Mark this event : chest opened
 								EngineZildo.scriptManagement.actOnTile(map.getName(), new Point(newx, newy));
 							} else if (on_map >= 0 && !EngineZildo.mapManagement.isWalkable(on_map)) {

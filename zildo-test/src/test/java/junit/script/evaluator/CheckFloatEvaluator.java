@@ -240,7 +240,14 @@ public class CheckFloatEvaluator {
 	public void builtInFunctions() {
 		FloatExpression exp = new FloatExpression("fun:mapFloor(15,36)=2");
 		
-		Assert.assertEquals("EQUALS(mapFloor(15, 36), 2.0)", exp.toString());
+		Assert.assertEquals("EQUALS(mapFloor(15.0, 36.0), 2.0)", exp.toString());
+	}
+	
+	@Test
+	public void builtInWithMultiply() {
+		FloatExpression exp = new FloatExpression("fun:project(bandit, 2, 3*0.5)");
+		
+		Assert.assertEquals("project(bandit, 2.0, MULTIPLY(3.0, 0.5))", exp.toString());
 	}
 
 	@Before

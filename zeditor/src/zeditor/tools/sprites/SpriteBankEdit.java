@@ -196,7 +196,7 @@ public class SpriteBankEdit extends SpriteBank {
     	 }
     	 if (current != null) {
     		 if (current.nTile == i) {
-    			 loadImage(current.imageName, Modifier.COLOR_BLUE);
+    			 loadImage(current.imageName, current.transparency ? -1 : Modifier.COLOR_BLUE);
     			 current = null;
     		 }
     	 }

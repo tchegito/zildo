@@ -125,6 +125,12 @@ public class Pointf {
         return new Pointf(x + addX, y + addY);
     }
     
+    public Pointf translate(Vector2f v) {
+        Pointf p = new Pointf(x,y);
+        p.add(v);
+        return p;
+    }
+    
     public Pointf translate(Point p) {
         return new Pointf(x + p.x, y + p.y);
     }

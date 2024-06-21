@@ -17,7 +17,12 @@ sourceSets {
 }
 
 dependencies {
-	compile project(':zildo'), project(':zildo-platform-lwjgl')
-	compile group: 'org.json', name: 'json', version: '20180130'
+    implementation project(':zildo'), 
+	implementation ("org.lwjgl.lwjgl:lwjgl:2.9.3") {
+		exclude module:'lwjgl-platform'
+		exclude module:'jinput-platform'
+		},
+	project(':zildo-platform-lwjgl')
+    implementation group: 'org.json', name: 'json', version: '20180130'
 
 }

@@ -93,7 +93,7 @@ public class UIText {
 	}
 	
 	public static void setCharacterName(String name) {
-		characterName = name;
+		characterName = name.trim();
 	}
 	
 	/**

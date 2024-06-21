@@ -266,7 +266,7 @@ public class Client {
 			// Music
 			if (isMusic()) {
 				long currentTime = ZUtils.getTime();
-				ClientEngineZildo.soundEngine.pollMusic((int) (currentTime - time));
+				ClientEngineZildo.soundEngine.poll((int) (currentTime - time));
 				time = currentTime;
 			}
 			done |= glGestion.mainloop();
@@ -312,7 +312,8 @@ public class Client {
 				}
 			}
 			
-			if (kbHandler.isKeyPressed(Keys.TOUCH_BACK)) {
+			if (kbHandler.isKeyPressed(Keys.TOUCH_BACK) ||
+				kbHandler.isKeyPressed(Keys.GEAR)) {
 				if (!connected) {
 					if (currentMenu == ingameMenu) {
 						askForItemMenu(ingameMenu, "m7.quit");
@@ -327,7 +328,7 @@ public class Client {
 					} else {
 						askForItemMenu(ingameMenu, "m7.quit");
 					}
-				} else if (dm != DialogMode.INFO) {
+				} else if (dm != DialogMode.INFO && dm != DialogMode.CREDITS) {
 					handleMenu(ingameMenu);
 					askForItemMenu(ingameMenu, "m7.quit");
 				}

@@ -52,7 +52,7 @@ public class SpriteDisplay extends SpriteStore {
 	
 	protected SpriteSorter spriteSorter;
 
-	public int zildoId;
+	public int zildoId = -1;
 	
 	// We use an map to ease the access to an entity with his ID
 	// Replaced by an array for performance reason on Android (Dalvik's hashmap are slow)
@@ -211,7 +211,7 @@ public class SpriteDisplay extends SpriteStore {
 	}
 
 	public SpriteEntity getZildo() {
-		return arrayEntities[zildoId];
+		return zildoId == -1 ? null : arrayEntities[zildoId];
 	}
 	
 	public void setZildoId(int p_zildoId) {

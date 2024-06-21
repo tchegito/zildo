@@ -32,7 +32,7 @@ import zildo.client.PlatformDependentPlugin;
 @SuppressWarnings("unchecked")
 public enum FilterEffect {
 	FADE(FadeFilter.class, BilinearFilter.class),
-	SEMIFADE(FadeFilter.class, BilinearFilter.class),
+	SEMIFADE(FadeFilter.class, BilinearFilter.class),	// when hero opens his inventory
 	BLEND(BlendFilter.class), 
 	BLUR(BlurFilter.class), 
 	ZOOM(ZoomFilter.class),

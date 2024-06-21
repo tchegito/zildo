@@ -60,7 +60,7 @@ public class TexterStage extends GameStage {
 	@Override
 	public void renderGame() {
 		if (!done) {
-			guiDisplay.displayTexter(wholeText, position, client.getMenuTransition().getFadeLevel());
+			guiDisplay.displayTexter(wholeText, position, client.getMenuTransition().getFadeLevelMenu());
 			texterHeight = guiDisplay.getTexterHeight();
 		}
 	}

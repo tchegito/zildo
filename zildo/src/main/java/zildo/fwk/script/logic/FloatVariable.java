@@ -71,6 +71,10 @@ public class FloatVariable implements FloatASTNode {
 				return p.y;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOZ.equals(variable)) {
 				return p.z;
+			}  else if (FloatExpression.RESERVED_WORD_ZILDOVX.equals(variable)) {
+				return p.vx;
+			} else if (FloatExpression.RESERVED_WORD_ZILDOVY.equals(variable)) {
+				return p.vy;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOLOC.equals(variable)) {
 				return PointEvaluator.toSingleFloat(new Point(p.x, p.y));
 			} else if (FloatExpression.RESERVED_WORD_ZILDOSCRX.equals(variable)) {

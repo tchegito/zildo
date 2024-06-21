@@ -28,6 +28,7 @@ import zildo.fwk.net.TransferObject;
 import zildo.fwk.net.packet.ConnectPacket;
 import zildo.fwk.net.www.NetMessage.Command;
 import zildo.resource.Constantes;
+import zildo.server.EngineZildo;
 
 /**
  * Client on a the WWW network.
@@ -71,7 +72,7 @@ public class InternetClient extends NetClient {
 				NetMessage message = new NetMessage(Command.REMOVE,
 						p_serverInfo.name);
 				message.getServerInfo().ip = p_serverInfo.ip;
-				new WorldRegister().askMessage(message, false);
+				EngineZildo.worldRegister.askMessage(message, false);
 			}
 		}
 		return false;

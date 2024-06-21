@@ -37,11 +37,12 @@ public enum KeysConfiguration {
 	PLAYERKEY_TOPIC(Keys.E),
 	PLAYERKEY_TAB(Keys.TAB),
 	PLAYERKEY_ADVENTUREMENU(Keys.COMPASS),
-	PLAYERKEY_DIALOG(Keys.DIALOG_FRAME);
+	PLAYERKEY_DIALOG(Keys.DIALOG_FRAME),
+	PLAYERKEY_BACK(Keys.TOUCH_BACK);
 	
 	public Keys code;
 	
-	private KeysConfiguration(Keys p_code) {
+	KeysConfiguration(Keys p_code) {
 		this.code=p_code;
 	}
 }

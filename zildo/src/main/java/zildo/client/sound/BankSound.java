@@ -67,7 +67,6 @@ public enum BankSound implements AudioBank {
 	MonstreTouche2("touche2"),
 	MonstreMeurt("meurt"),
 	MonstreTrouve("alerte"),
-	MonstreTire("tire2"),
 	
 	Poule1("poulea1"),
 	Poule2("poulea2"),
@@ -122,7 +121,6 @@ public enum BankSound implements AudioBank {
 	
 	Bitey("bitey"),
 	BossSand1("sand1"),
-	BossSand2("sand2"),
 	Fuite("fuite"),
 	Whip("whip"),
 	Wind("windsuck"),
@@ -160,6 +158,11 @@ public enum BankSound implements AudioBank {
 	MoleBuried2("moleBuried2"),
 	MoleOut("moleOut"),
 	MoleCry("molecry"),
+	
+	Slab1("slabPush"),
+	Slab2("slabRelease"),
+	
+	Lighting("lighting"),	// For dynamite
 	
 	Chain("chain");
 	

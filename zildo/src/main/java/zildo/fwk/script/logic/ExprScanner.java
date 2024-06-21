@@ -31,7 +31,7 @@ public class ExprScanner {
 		
 		if (nextValue != null) {
 			value.append(nextValue);
-			if (!nextValue.equals(')')) {
+			if (!nextValue.equals(")")) {
 				nextValue = null;
 			}
 			return value.toString();

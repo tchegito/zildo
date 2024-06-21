@@ -34,6 +34,7 @@ import zildo.client.stage.MultiPlayer;
 import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.net.ServerInfo;
 import zildo.fwk.net.www.WorldRegister;
+import zildo.fwk.ui.ConfirmMenu;
 import zildo.fwk.ui.InfoMenu;
 import zildo.fwk.ui.ItemMenu;
 import zildo.fwk.ui.Menu;
@@ -74,6 +75,23 @@ public class StartMenu extends Menu {
     			public void run() {
     				openLink("http://www.alembrume.fr");
     			};
+    		});
+    		theItems.add(new ItemMenu("m1.donate") {
+    			@Override
+    			public void run() {
+    				client.handleMenu(new ConfirmMenu("info.donate", new ItemMenu("global.yes") {
+    					@Override
+    					public void run() {
+    	    				openLink("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UJ4DYC583FMRY");
+    					}
+    				}, new ItemMenu("global.no") {
+    					@Override
+    					public void run() {
+    						client.handleMenu(currentMenu);
+    					}
+    				}));
+
+    			};    			
     		});
     	} else {
 	    	theItems.add(new ItemMenu("m1.multi") {
