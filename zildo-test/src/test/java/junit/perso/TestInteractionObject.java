@@ -122,7 +122,7 @@ public class TestInteractionObject extends EngineUT {
 		// Wait for dynamite to explode
 		while (true) {
 			renderFrames(1);
-			if (findEntityByDesc(ElementDescription.DYNAMITE) == null) {
+			if (findEntityByDesc(ElementDescription.DYNAMITE) == null && findEntityByDesc(ElementDescription.DYNAMITE2) == null) {
 				break;
 			}
 		}
