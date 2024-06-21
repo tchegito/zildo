@@ -411,7 +411,8 @@ public class PersoNJ extends Perso {
 			if (quel_deplacement != MouvementPerso.OBSERVE &&
 					quel_deplacement != MouvementPerso.VOLESPECTRE &&
 					quel_deplacement != MouvementPerso.SLEEPING &&
-					quel_deplacement != MouvementPerso.CHAIN_FOLLOW) {
+					quel_deplacement != MouvementPerso.CHAIN_FOLLOW &&
+					quel_deplacement != MouvementPerso.THROWING) {
 				if (pathFinder.hasReachedTarget()) {
 					pathFinder.setTarget(null);
 					pathFinder.setTargetZ(null);
