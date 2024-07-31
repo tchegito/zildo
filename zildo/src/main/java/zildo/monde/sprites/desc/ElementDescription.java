@@ -166,7 +166,8 @@ public enum ElementDescription implements SpriteDescription {
 	// Hook of the butcher
 	HOOKCHAIN, HOOK, 
 	// Symbols on slabs
-	SLABS1, SLABS2, SLABS3, SLABS4, SLABS5, SLABS6, SLABS7, SLABS8, SLABS9, SLABS10;
+	SLABS1, SLABS2, SLABS3, SLABS4, SLABS5, SLABS6, SLABS7, SLABS8, SLABS9, SLABS10,
+	BUNCH_LEAVESFORK;
 	
 	Boolean damage;
 	
@@ -303,6 +304,7 @@ public enum ElementDescription implements SpriteDescription {
 				case POISONBALL:
 				case POISONGOOP:
 				case HOOKCHAIN: case HOOK:
+				case CANDLE1: case BUNCH_LEAVESFORK:	// To be eligible for CATCHING_FIRE and LIGHTING_FIRE
 					damage = true;
 				default:
 					break;
@@ -329,6 +331,7 @@ public enum ElementDescription implements SpriteDescription {
 	public boolean isNotFixe() {
 		switch (this) {
 		case JAR: case AMPHORA: case BUSHES: case LEAF: case STRAWF1: case STRAWF2: case STRAWF3:
+		case BUNCH_LEAVES:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
 		case SMOKE_SMALL: case TINY_ROCK: case NETTLE_LEAF:
 		case HEART: case STONE_HEAVY: case STONE:
@@ -408,6 +411,20 @@ public enum ElementDescription implements SpriteDescription {
 			return false;
 		default:
 			return true;
+		}
+	}
+	
+	public boolean isBurnable() {
+		switch (this) {
+		case BUNCH_LEAVES:
+		case BUNCH_LEAVESFORK:
+		case CREEPER1:
+		case CREEPER2:
+		case CREEPER3A:
+		case CREEPER3B:
+			return true;
+		default:
+			return false;
 		}
 	}
 	

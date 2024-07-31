@@ -110,6 +110,15 @@ public class CollideManagement {
 	                                checkZildoWound(damaged, collider);
 	                            }
 	                        }
+	                    } else if (damager == null) {
+	                    	// Check particular collision about fire
+	                    	if (collider.damageType == DamageType.LIGHTING_FIRE && collided.damageType == DamageType.CATCHING_FIRE) {
+	                    		if (checkColli(collider, collided)) {
+	                    			collided.weapon.addFire(4);
+	                    			collided.damageType = DamageType.LIGHTING_FIRE;
+	                				EngineZildo.soundManagement.broadcastSound(BankSound.Lighting, collided.weapon);
+	                    		}
+	                    	}
 	                    }
                 	}
                 }
@@ -143,7 +152,7 @@ public class CollideManagement {
 	            	case FORKING:
 		            	for (Point location : tilesCollided) {
 		            		if (damager.isZildo() && ((PersoPlayer)damager).canFork()) {
-		            			area.forkTile(damager, location);
+		            			area.forkTile(damager, location, new Point(collider.cx, collider.cy));
 		            		}	
 		            	}
             	}
@@ -175,7 +184,8 @@ public class CollideManagement {
         for (ClientState state : p_states) {
             PersoPlayer zildo = state.zildo;
             // Zildo can't damage himself, excepted with explosion
-            if (zildo != null && (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION)) {
+            if (zildo != null && (damager == null || !damager.equals(zildo) || p_colli.damageType == DamageType.EXPLOSION) 
+            		&& p_colli.damageType != DamageType.CATCHING_FIRE) {
                 checkZildoWound(state.zildo, p_colli);
             }
         }
@@ -229,7 +239,7 @@ public class CollideManagement {
     public void checkZildoWound(Perso p_zildo, Collision p_colli) {
         Collision zildoCollision = p_zildo.getCollision();
 
-        if ((p_colli.perso == null || !p_colli.perso.isWounded()) && checkColli(p_colli, zildoCollision)) {
+        if (p_colli.damageType != DamageType.CATCHING_FIRE && p_colli.damageType != DamageType.LIGHTING_FIRE && (p_colli.perso == null || !p_colli.perso.isWounded()) && checkColli(p_colli, zildoCollision)) {
         	if (p_colli.perso == null || (p_colli.isMultifloor() || p_zildo.floor == p_colli.perso.floor)) {
         		// Zildo gets wounded
         		hit(p_colli, zildoCollision);

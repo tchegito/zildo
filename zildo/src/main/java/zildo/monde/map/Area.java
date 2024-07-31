@@ -41,6 +41,8 @@ import zildo.fwk.collection.IntSet;
 import zildo.fwk.file.EasyBuffering;
 import zildo.fwk.file.EasySerializable;
 import zildo.fwk.script.xml.element.TriggerElement;
+import zildo.monde.collision.Collision;
+import zildo.monde.collision.DamageType;
 import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
@@ -633,41 +635,60 @@ public class Area implements EasySerializable {
 		EngineZildo.scriptManagement.trigger(attackTrigger);
 	}
 	
-	/** When the tile receives a fork blow **/
-	public void forkTile(Perso attacker,Point pos) {
-		int onmap = readmap(pos.x, pos.y);
+	/** When the tile receives a fork blow. Accept real coordinates additionnaly to tile location. **/
+	public void forkTile(Perso attacker, Point tilePos, Point pos) {
+		int onmap = readmap(tilePos.x, tilePos.y);
 		ElementDescription desc = null;
+		// 1) find something to fork on the tiles
 		switch (onmap) {
 		case Tile.T_BUSH:
 			int resultTile = Tile.T_BUSH_CUT;
-			writemap(pos.getX(), pos.getY(), resultTile);
+			writemap(tilePos.getX(), tilePos.getY(), resultTile);
 			desc = ElementDescription.BUSHES;
 			EngineZildo.soundManagement.broadcastSound(BankSound.ZildoRamasse, attacker);
 
 			break;
 		case 256+224:	// Bottom (last)
-			writemap(pos.getX(), pos.getY(), 256 + 209, TileLevel.BACK2);
+			writemap(tilePos.getX(), tilePos.getY(), 256 + 209, TileLevel.BACK2);
 			desc = ElementDescription.STRAW;
 			break;
 		case 256+108:	// Bottom
-			writemap(pos.getX(), pos.getY(), -1, TileLevel.BACK2);
-			writemap(pos.getX(), pos.getY()+1, 256 + 224, TileLevel.BACK2);
+			writemap(tilePos.getX(), tilePos.getY(), -1, TileLevel.BACK2);
+			writemap(tilePos.getX(), tilePos.getY()+1, 256 + 224, TileLevel.BACK2);
 			desc = ElementDescription.STRAW;
 			break;
 		case 250+256: case 252+256:
-			writemap(pos.getX(), pos.getY(), 256 + 108, TileLevel.BACK2);
+			writemap(tilePos.getX(), tilePos.getY(), 256 + 108, TileLevel.BACK2);
 		case 253+256:
 			desc = ElementDescription.STRAW;
 			break;
 		}
-		if (desc != null) {
-			Element bush = EngineZildo.spriteManagement.spawnElement(desc, pos.getX()*16+8, pos.getY()*16+8, 
+		Element heap = null;
+		if (desc == null) {
+			// 2) Look for any pickable sprites (bunch of leaves for example)
+			//Element fork = attacker.getPersoSprites().stream().filter(s -> s.getDesc() == ElementDescription.FORK).findFirst().orElse(null);
+			SpriteEntity pickable = EngineZildo.spriteManagement.lookForEntity(pos.x, pos.y, 8);
+			if (pickable != null && !pickable.getEntityType().isPerso()) {
+				desc = (ElementDescription) pickable.getDesc();
+				if (desc == ElementDescription.BUNCH_LEAVES) {	// For now, only this one is pickable as sprite by the fork
+					desc = ElementDescription.BUNCH_LEAVESFORK;
+					heap = EngineZildo.spriteManagement.spawnElement(desc, pos.x, pos.y, 
+							2, Reverse.NOTHING, Rotation.NOTHING);
+					Collision c = new Collision((int) heap.x, (int) heap.y, 6, null, null, DamageType.CATCHING_FIRE, heap);
+					heap.setPermanentCollision(c);
+				}
+			}
+		} else {
+			heap = EngineZildo.spriteManagement.spawnElement(desc, tilePos.getX()*16+8, tilePos.getY()*16+8, 
 					2, Reverse.NOTHING, Rotation.NOTHING);
-			bush.addShadow(ElementDescription.SHADOW_SMALL);
+		}
+		if (heap != null) {
+			heap.addShadow(ElementDescription.SHADOW_SMALL);
 			if (attacker.isZildo()) {
-				((PersoPlayer)attacker).grabWithFork(bush);
+				((PersoPlayer)attacker).grabWithFork(heap);
 			}
 		}
+
 	}
 
 	public void walkSlab(int cx, int cy, int id, boolean pushed) {
@@ -1175,6 +1196,13 @@ public class Area implements EasySerializable {
 								Element hearth = new ElementImpact(j*16+14, i*16+6 - 4, ImpactKind.HEARTH, null);
 								hearth.z = 0;	// Default is z=4 for ElementImpact
 								spriteManagement.spawnSprite(hearth);
+							} else if (temp.getBackTile().getValue() == 256*9 + 83) {
+								// Lighten alcove: spawn an invisible sprite
+								Element invisibleCandle = spriteManagement.spawnElement(ElementDescription.CANDLE1, j * 16 + 16, i * 16 + 16 - 8, 0, null, null);
+								Collision c = new Collision((int) invisibleCandle.x, (int) invisibleCandle.y, 3, null, null, DamageType.LIGHTING_FIRE, null);
+								invisibleCandle.setPermanentCollision(c);
+								invisibleCandle.flying = true;
+								invisibleCandle.setVisible(false);
 							} else if (temp.getOneValued(256*6 + 231) != null) {
 								if (EngineZildo.scriptManagement.isTileDone(map.getName(), new Point(j, i))) {
 									temp.getBackTile2().index = 232;
@@ -1275,6 +1303,13 @@ public class Area implements EasySerializable {
 					if (shouldSpawn) {
 						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
 								false);
+						if (desc.isBurnable()) {
+							Element invisibleOne = spriteManagement.spawnElement(ElementDescription.BUNCH_LEAVESFORK, x, y, 0, null, null);
+							Collision c = new Collision((int) entity.x, (int) entity.y, 3, null, null, DamageType.CATCHING_FIRE, invisibleOne);
+							invisibleOne.setVisible(false);
+							invisibleOne.setPermanentCollision(c);
+							invisibleOne.setLinkedEntity(entity);
+						}
 						addedEntities.add(entity);
 						if (desc instanceof GearDescription && ((GearDescription)desc).isExplodable()) {	// Exploded wall ?
 							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {

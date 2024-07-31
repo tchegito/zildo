@@ -744,7 +744,6 @@
 					<seq who="self" addSpr="9,10,9,10" wait="4"/>
 	   	            <sound name="ZildoLance"/>
 	   	            <script who="self" value="3"/>	<!-- Stop -->
-	   	            
 	   	            <throw who="self" way="BELL" floor="2" pos="x,y" to="zildo.x,zildo.y" fx="0.01" fy="0.01" z="16" speed="1.5" az="-0.04" type="DYNAMITE"/>
 	   	            <wait value="80"/>
 	   	            <script who="self" value="0"/>
@@ -986,6 +985,37 @@
             <if expQuest="dice10>8">
                 <sprite what="loc:s" alphaA="0"/>
             </if>
+        </for>
+    </scene>
+
+    <!-- Takes 4 parameters pos(arg0, arg1) where leaves are thrown, and speed(arg2, arg3) indicating direction -->
+    <scene id="throwLeaves">
+        <sound name="CasseBuisson" />
+        <for var="loc:i" value="8">
+            <spawn what="loc:s" type="dice10>5:LEAF,LEAF_GREEN" pos="loc:arg0,loc:arg1" 
+                   z="5+random*11"
+                   shadow="SHADOW_MINUS"
+                   vx="-0.8+0.2 * loc:i + loc:arg2*0.6*random"
+                   vy="loc:arg3*0.1*random" 
+                   vz="-0.1+random*0.05" fx="0.1" alphaA="-0.1" 
+                   reverse="dice10>5:0,128"/>
+            <if expQuest="dice10>8">
+                <sprite what="loc:s" alphaA="0"/>
+            </if>
+        </for>
+    </scene>
+    
+    <scene id="spawnAshes">
+    	<sound name="Gas" />
+        <for var="loc:i" value="15">
+            <spawn what="loc:s" type="LEAF_GREEN" pos="loc:arg0 - 2.5 + random*5,loc:arg1 + 2 +random*4" 
+                   z="11+random*2"
+                   vx="-0.1 + random*0.2"
+                   vz="-0.16-random*0.1" fx="0.01" alphaV="-0.6" 
+                   zoom="80+random*40"
+                   reverse="dice10>5:0,128"
+                   light="#774422"
+                   shadow="null"/>
         </for>
     </scene>
 

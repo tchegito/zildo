@@ -213,6 +213,7 @@ public class Tile implements Cloneable {
 				value == 7*256+135 || value == 7*256+136;
 	}
 	
+	/** Tile where hero can pick up something (ex: jar, bushes ...) **/
 	public static boolean isPickableTiles(int value) {
 		switch (value) {
 		case 165:

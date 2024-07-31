@@ -155,7 +155,8 @@ public class SpriteManagement extends SpriteStore {
 	// -build an element with given parameters
 	// -add it to the sprite engine
 	public Element spawnElement(SpriteDescription desc, int x, int y, int z, Reverse reverse, Rotation rotation) {
-		Element element = createElement(desc, x, y, z, reverse, rotation, null);
+		Element element = createElement(desc, x, y, z, reverse == null ? Reverse.NOTHING : reverse, 
+				rotation == null ? Rotation.NOTHING : rotation, null);
 		spawnSprite(element);
 		return element;
 	}
@@ -803,6 +804,29 @@ public class SpriteManagement extends SpriteStore {
 	                        return elem;
 	                    }
 	                }
+	            }
+        	}
+        }
+        return null;
+    }
+    
+    /** Used when Zildo picks with his fork, to find if an entity should be grabbed **/
+    public SpriteEntity lookForEntity(int x, int y, int radius, SpriteDescription... expectedDesc) {
+        for (SpriteEntity entity : spriteEntities) {
+        	if (entity.getEntityType().isEntity() && !entity.dying) {
+                int tx = (int) entity.x;
+                int ty = (int) entity.y;
+                if (Collision.checkCollisionCircles(x, y, tx, ty, radius, radius)) {
+                	// Check that found element is one of expected ones (and it's not dying)
+                	if (expectedDesc != null && expectedDesc.length > 0) {
+                		for (SpriteDescription sDesc : expectedDesc) {
+                			if (sDesc == entity.getDesc()) {
+                				return (Element) entity;
+                			}
+                		}
+                		continue;	// Check next one
+                	}
+                    return entity;
 	            }
         	}
         }

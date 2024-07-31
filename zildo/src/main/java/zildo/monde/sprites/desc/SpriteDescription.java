@@ -36,6 +36,10 @@ public interface SpriteDescription {
 	
 	public boolean isDamageable();
 	
+	default boolean isBurnable() {
+		return false;
+	}
+	
 	class Locator {
 		public static SpriteDescription findSpr(int nBank, int nSpr) {
 			switch (nBank) {

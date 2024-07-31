@@ -1195,7 +1195,7 @@ public class ActionExecutor extends RuntimeExecutor {
 						entity.setForeground(p_action.foreground);
 					}
 					if (elem != null) { // Element specific
-						if (p_action.shadow != null) {
+						if (p_action.shadow != null && !p_action.shadow.equals("null")) {
 		            		ElementDescription descShadow = (ElementDescription) SpriteDescription.Locator.findNamedSpr(p_action.shadow);
 							elem.addShadow(descShadow);
 						}
@@ -1254,7 +1254,7 @@ public class ActionExecutor extends RuntimeExecutor {
 			elem.relativeZ = EngineZildo.mapManagement.getCurrentMap().readAltitude((int) elem.x / 16, (int) elem.y / 16);
 			SpriteDescription dd = elem.getDesc();
 			ElementDescription desc = dd != null && dd instanceof ElementDescription ? (ElementDescription) dd : null;
-			if (!elem.hasShadow() && (desc == null || desc.hasShadow())) {
+			if (!elem.hasShadow() && (desc == null || desc.hasShadow()) && !"null".equals(p_action.shadow)) {
 				elem.addShadow(ElementDescription.SHADOW_SMALL);
 			}
 		}

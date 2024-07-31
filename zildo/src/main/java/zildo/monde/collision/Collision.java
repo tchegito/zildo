@@ -34,7 +34,7 @@ public class Collision {
     public final Angle cangle; // Shooter's angle
     public final Point size; // Exact object's size (if not null, radius will be ignored)
     public final Perso perso; // Shooter
-    public final DamageType damageType;
+    public DamageType damageType;
     public final Element weapon;	// Element which causes direct collision (boomerang, projectile...)
 
     /**
@@ -97,6 +97,7 @@ public class Collision {
     	} else {
     		sb.append(" - radius="+cr);
     	}
+    	sb.append(" type="+damageType);
     	sb.append(")");
     	return sb.toString();
     }

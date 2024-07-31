@@ -38,6 +38,8 @@ public enum DamageType {
 	EXPLOSION, // Bomb
 	SMASH, // Hammer
 	FIRE,	// Fire (big damage)
+	LIGHTING_FIRE,	// No damage but light with fire (ex: candle)
+	CATCHING_FIRE, // No damage but can be light with fire (ex: leaves or creeper)
 	POISON,
 	SLOWNESS,
 	FORKING;	// Hero picks with his fork

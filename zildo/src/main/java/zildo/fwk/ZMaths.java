@@ -22,4 +22,11 @@ public class ZMaths {
     public static float decimal(float f) {
     	return f - (float) Math.floor(f);
     }
+    
+    public static int ratioLight(int light, float ratio) {
+    	return (int) ((light & 0xff0000 >> 16) * ratio) << 16 |
+    			(int) ((light & 0xff00 >> 8) * ratio) << 8 |
+    			(int) ((light & 0xff) * ratio);
+    			
+    }
 }

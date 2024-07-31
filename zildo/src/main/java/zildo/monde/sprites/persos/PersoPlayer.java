@@ -465,6 +465,19 @@ public class PersoPlayer extends Perso {
 					EngineZildo.collideManagement.addCollision(c);
 				}
 				break;
+			case HOLD_FORK:
+				rayon = 8;
+				dmgType = DamageType.FORKING;
+				SpriteModel model = fork.getSprModel();
+				cx = fork.x;
+				cy = fork.y - fork.z - model.getTaille_y() / 2;
+				if (angle == Angle.SUD) {
+					cy += 8;
+				}
+				Point size = new Point(model.getTaille_x(), model.getTaille_y());
+				c = new Collision(new Point((int)cx, (int)cy), size, this, dmgType, null);
+				EngineZildo.collideManagement.addCollision(c);
+				break;
 		}
 	}
 
@@ -1577,7 +1590,7 @@ public class PersoPlayer extends Perso {
 	}
 
 	public boolean canFork() {
-		return elementForked == null;
+		return elementForked == null && mouvement == MouvementZildo.ATTACK_FORK;
 	}
 	
 	public void grabWithFork(Element elem) {

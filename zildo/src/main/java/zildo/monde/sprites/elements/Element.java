@@ -21,6 +21,7 @@
 package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
+import zildo.fwk.ZMaths;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.context.SceneContext;
@@ -70,8 +71,12 @@ public class Element extends SpriteEntity {
 	protected int addSpr; // Pour les animations (exemple:diamants qui brillent)
 	protected Element linkedPerso; // When this element dies, any non-perso
 									// linked entity die too.
-
+	protected SpriteEntity linkedEntity;	// To handle case when an invisible element represents an entity (burnable things)
+	private Collision permanentCollision = null;	// Example: burning fire for candles, hearth ...
+	
 	protected Element burningFire;
+	private int timeBurning;
+	static final int MAX_TIME_BURNING = 200;
 	
 	protected boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
@@ -417,6 +422,16 @@ public class Element extends SpriteEntity {
 			if (burningFire != null) {
 				burningFire.x = x;
 				burningFire.y = y;
+				timeBurning++;
+				if (desc.isBurnable()) {
+					if (timeBurning >= MAX_TIME_BURNING) {
+						EngineZildo.scriptManagement.execute("spawnAshes("+x+","+y+")", false, new SceneContext(), null);
+						die();
+					} else {
+						SpriteEntity entity = linkedEntity == null ? this : linkedEntity;
+						entity.setLight(ZMaths.ratioLight(0xffeedd, 1f - (float) timeBurning / MAX_TIME_BURNING)); //(int) (timeBurning * 0xffeedd / MAX_TIME_BURNING));
+					}
+				}
 			}
 		}
 		
@@ -440,6 +455,10 @@ public class Element extends SpriteEntity {
 	 */
 	public void manageCollision() {
 		Collision collision = getCollision();
+		if (permanentCollision != null && permanentCollision.weapon != null) {
+			collision.cx = (int) permanentCollision.weapon.x;
+			collision.cy = (int) permanentCollision.weapon.y;
+		}
 		// Default, collision from element is related to the linked Perso
 		Element linked = linkedPerso;
 		Element weapon = this;
@@ -468,8 +487,11 @@ public class Element extends SpriteEntity {
 			collision = new Collision(cx, cy, radius, Angle.NORD,
 					(Perso) linked, getDamageType(), weapon);
 		}
-		collision.cy -= model.getTaille_y() / 2;
-		collision.cy -= z;
+
+		if (permanentCollision == null || permanentCollision.weapon != null) {
+			collision.cy -= model.getTaille_y() / 2;
+			collision.cy -= z;
+		}
 		EngineZildo.collideManagement.addCollision(collision);
 	}
 
@@ -584,6 +606,10 @@ public class Element extends SpriteEntity {
 		this.linkedPerso = linkedPerso;
 	}
 
+	public void setLinkedEntity(SpriteEntity entity) {
+		this.linkedEntity = entity;
+	}
+	
 	public TileNature getCurrentTileNature() {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		if (area != null) {
@@ -667,6 +693,12 @@ public class Element extends SpriteEntity {
 					case STRAW:
 						Point dir = getLinkedPerso().angle.coords;
 						EngineZildo.scriptManagement.execute("throwStraw("+x+","+y+","+dir.x+","+dir.y+")", false, new SceneContext(), null);
+						break;
+					case BUNCH_LEAVESFORK:
+						if (visible) {
+							dir = getLinkedPerso().angle.coords;
+							EngineZildo.scriptManagement.execute("throwLeaves("+x+","+y+","+dir.x+","+dir.y+")", false, new SceneContext(), null);
+						}
 						break;
 					case POISONBALL:
 						if (alpha == 255 && z < 4) {
@@ -887,6 +919,9 @@ public class Element extends SpriteEntity {
 		if (burningFire != null) {
 			burningFire.dying = true;
 		}
+		if (linkedEntity != null) {
+			linkedEntity.dying = true;
+		}
 	}
 
 	/**
@@ -996,8 +1031,13 @@ public class Element extends SpriteEntity {
 		return false;
 	}
 
+	/** Maybe replace that by a set(DamageType) automating all related stuff **/
+	public void setPermanentCollision(Collision collision) {
+		permanentCollision = collision;
+	}
+	
 	public Collision getCollision() {
-		return null;
+		return permanentCollision;
 	}
 
 	public void setFx(float fx) {
@@ -1096,7 +1136,7 @@ public class Element extends SpriteEntity {
 		questTrigger = p_trigger;
 	}
 	
-	public void addFire() {
+	public void addFire(int addZ) {
 		if (burningFire == null) {
 			burningFire = new ElementFire((int) x, (int) y);
 			EngineZildo.spriteManagement.spawnSprite(burningFire);
@@ -1105,7 +1145,13 @@ public class Element extends SpriteEntity {
 		}
 		burningFire.x = x;
 		burningFire.y = y;
+		burningFire.z = z + addZ;
 		burningFire.floor = floor;
+		timeBurning = 0;
+	}
+	
+	public void addFire() {
+		addFire(0);
 	}
 
 	public boolean isOutsidemapAllowed() {
