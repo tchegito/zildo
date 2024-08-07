@@ -3,8 +3,8 @@ apply plugin: 'java'
 version = '1.0'
 
 compileJava {
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 }
 
 repositories {
@@ -24,7 +24,7 @@ dependencies {
 
 // To avoid gradle compile source code with JDK 9 and after that, a fail on ByteBuffer#flip running JDK 8
 compileJava {
-	options.compilerArgs.addAll(['--release', '7'])
+	options.compilerArgs.addAll(['--release', '8'])
 }
 
 jar.archiveFileName = "ZildoPlatformLwjgl.jar"
