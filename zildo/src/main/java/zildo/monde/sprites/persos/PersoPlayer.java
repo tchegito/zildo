@@ -1590,7 +1590,7 @@ public class PersoPlayer extends Perso {
 	}
 
 	public boolean canFork() {
-		return elementForked == null && mouvement == MouvementZildo.ATTACK_FORK;
+		return elementForked == null;
 	}
 	
 	public void grabWithFork(Element elem) {
