@@ -208,7 +208,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(144, 17, 17, 17),	// Item scepter
 				// Excalibur (133)
 				new Zone(163, 0, 10, 22), new Zone(178, 0, 13, 16),
-				new Zone(193, 0, 15, 16), new Zone(209, 0, 14, 16),
+				new Zone(193, 0, 15, 16), /*new Zone(209, 0, 14, 16),*/ new Zone(99, 49, 20, 18),	// Another creeper
 				new Zone(193, 17, 14, 16), new Zone(193, 34, 14, 16),
 				new Zone(84, 40, 8, 9),
 				new Zone(100, 34, 8, 16),
@@ -384,7 +384,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 502, 13, 12), new Zone(14, 502, 13,12), new Zone(28, 502, 13, 12),
 				new Zone(42, 502, 13, 12), new Zone(56, 502, 13, 12),
 				new Zone(0, 515, 13, 12), new Zone(14, 515, 13, 12), new Zone(28, 515, 13, 12),
-				new Zone(42, 515, 13, 12), new Zone(56, 515, 13, 12)
+				new Zone(42, 515, 13, 12), new Zone(56, 515, 13, 12),
+				new Zone(282, 108, 19, 12),	// Bunch of leaves on a fork
+				
 				
 		};
 		
@@ -393,6 +395,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("interia7", 115, 0),
 				new GraphChange("elem2", 117, 0),
 				new GraphChange("objets", 123, 0),
+				new GraphChange("palace1", 135, 0),
+				new GraphChange("objets", 136, 0),
 				new GraphChange("elem", 156, 0),
 				new GraphChange("objets", 181, 0),
 				new GraphChange("elem", 183, 0),

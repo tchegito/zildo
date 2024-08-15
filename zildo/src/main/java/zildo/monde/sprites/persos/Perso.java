@@ -639,6 +639,8 @@ public abstract class Perso extends Element {
 	}
 
 	private boolean transitionCrossed;
+	private boolean transitionMasked;	// Some transition (crack in a wall) should be displayed over character
+	// and some others (ladder) should be displayed under
 
 	/**
 	 * Fills the {@link onPlatform} variable, checking every walking platform under
@@ -693,9 +695,19 @@ public abstract class Perso extends Element {
 		Area area = EngineZildo.mapManagement.getCurrentMap();
 		boolean bottomLess = area.isCaseBottomLess(cx, cy, floor);
 		Tile tile = area.readmap(cx, cy, false, floor);
-		if (tile == null && floor > 0) {
-			// To handle properly collision in dragon's cave (juste on the dragon's edge)
-			tile = area.readmap(cx, cy, false, floor - 1);
+		if (tile == null) {
+			if (floor > 0) {
+				// To handle properly collision in dragon's cave (juste on the dragon's edge)
+				tile = area.readmap(cx, cy, false, floor - 1);
+				if (tile != null && tile.bank == 9) {	// Apply this only in Nature Palace. Not very elegant I confess ...
+					floor = floor - 1;
+				}
+			} else {
+				tile = area.readmap(cx, cy, false, floor + 1);
+				if (tile != null && tile.bank == 9) {
+					floor = floor + 1;
+				}
+			}
 		}
 		if (tile == null) {
 			return false;
@@ -1478,7 +1490,7 @@ public abstract class Perso extends Element {
 		// tiles,
 		// especially to appear ON the tile at (x,y-1). Without that, he appears UNDER
 		// the tile.
-		int visibleFloor = floor + (transitionCrossed ? 1 : 0);
+		int visibleFloor = floor + (transitionCrossed && !transitionMasked ? 1 : 0);
 		return Math.min(Constantes.TILEENGINE_FLOOR - 1, visibleFloor);
 	}
 

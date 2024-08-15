@@ -275,7 +275,7 @@ public class Game implements EasySerializable {
                 int level = p_buffer.readInt();
                 ItemKind itemKind = ItemKind.fromString(kind);
                 if (zildo != null && itemKind.representation != ElementDescription.SPADE) {
-                	Item item = new Item(ItemKind.fromString(kind), level);
+                	Item item = new Item(itemKind, level);
 	                items.add(item);
 	                if (indexSel == i) {
 	                    zildo.setWeapon(item);

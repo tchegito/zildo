@@ -38,8 +38,6 @@ public enum ItemKind {
 	SPADE_GROUND(true, ElementDescription.SPADE, 10),	// Fork sprite on the ground
 	SPADE(true, ElementDescription.FORK_HIGH, 10),	// Fork sprite in inventory
 	FLUT(false, ElementDescription.FLUT, 1),
-	GLOVE(true, ElementDescription.GLOVE, 20),
-	GLOVE_IRON(true, ElementDescription.SUPER_GLOVE, 40),
 	SHIELD(true, ElementDescription.SHIELD_BLUE, 60),
 	SHIELD_MEDIUM(true, ElementDescription.SHIELD_YELLOW, 60),
 	//SHIELD_LARGE(true, ElementDescription.SHIELD_YELLOW, 60),

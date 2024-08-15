@@ -1286,8 +1286,12 @@ public class PersoPlayer extends Perso {
 				break;
 		}
 		if (elementForked != null) {
-			elementForked.x = loc.x;
-			elementForked.y = loc.y;
+			if (elementForked.dying && !elementForked.visible) {
+				elementForked = null;
+			} else {
+				elementForked.x = loc.x;
+				elementForked.y = loc.y;
+			}
 		}		
 	}
 	/**

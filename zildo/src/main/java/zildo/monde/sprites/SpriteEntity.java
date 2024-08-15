@@ -158,6 +158,23 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public SpriteModel getSprModel() {
 		return sprModel;
 	}
+	
+	public Point getEffectiveSize() {
+		int sx = sprModel.getTaille_x();
+		int sy = sprModel.getTaille_y();
+		// Is the sprite rotated ?
+		int rx = repeatX;
+		int ry = repeatY;
+		if (rotation.isWidthHeightSwitched()) {
+			sx = sprModel.getTaille_y(); rx = repeatY; 
+			sy = sprModel.getTaille_x(); ry = repeatX;
+		}
+		// Equivalent to 'entity.getCenter()' but with the right width/height
+		// Is the sprite repeated ?
+		sx*=rx;
+		sy*=ry;
+		return new Point(sx, sy);
+	}
 
 	public void setSprModel(SpriteModel sprModel) {
 		this.sprModel = sprModel;

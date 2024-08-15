@@ -67,7 +67,7 @@ public enum ElementDescription implements SpriteDescription {
 	STONEWALL1, STONEWALL2, DYNAMITE2, QUAD2, QUAD3, QUAD4, QUAD5, QUAD6,
 
 	// 123
-	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, HAMMER, CRYSTAL, LANTERN, FIRE_STAFF, ITEM_SCEPTER, EXCALIBUR, BOOK, NECKLACE_RED, GLOVE, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_YELLOW, FLASK_BLUE,
+	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, HAMMER, CRYSTAL, LANTERN, FIRE_STAFF, ITEM_SCEPTER, EXCALIBUR, BOOK, NECKLACE_RED, CREEPER4, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_YELLOW, FLASK_BLUE,
 	// 150
 	SHIELD_BLUE, SHIELD_YELLOW, STAR1, STAR2, STAR3,
 
@@ -304,7 +304,8 @@ public enum ElementDescription implements SpriteDescription {
 				case POISONBALL:
 				case POISONGOOP:
 				case HOOKCHAIN: case HOOK:
-				case CANDLE1: case BUNCH_LEAVESFORK:	// To be eligible for CATCHING_FIRE and LIGHTING_FIRE
+				case CANDLE1: case BUNCH_LEAVES: case BUNCH_LEAVESFORK:	// To be eligible for CATCHING_FIRE and LIGHTING_FIRE
+				case CREEPER1: case CREEPER2: case CREEPER3A: case CREEPER3B: case CREEPER4:
 					damage = true;
 				default:
 					break;
@@ -331,7 +332,7 @@ public enum ElementDescription implements SpriteDescription {
 	public boolean isNotFixe() {
 		switch (this) {
 		case JAR: case AMPHORA: case BUSHES: case LEAF: case STRAWF1: case STRAWF2: case STRAWF3:
-		case BUNCH_LEAVES:
+		//case BUNCH_LEAVES:
 		case LEAF_GREEN: case DROP_FLOOR: case SMOKE:
 		case SMOKE_SMALL: case TINY_ROCK: case NETTLE_LEAF:
 		case HEART: case STONE_HEAVY: case STONE:
@@ -422,6 +423,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CREEPER2:
 		case CREEPER3A:
 		case CREEPER3B:
+		case CREEPER4:
 			return true;
 		default:
 			return false;

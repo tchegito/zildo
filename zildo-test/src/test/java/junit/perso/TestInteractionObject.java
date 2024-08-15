@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.fwk.ZUtils;
 import zildo.monde.dialog.WaitingDialog;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
@@ -17,6 +18,7 @@ import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementFire;
 import zildo.monde.sprites.elements.ElementGoodies;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
@@ -188,5 +190,51 @@ public class TestInteractionObject extends EngineUT {
 		// Take the fork
 		simulatePressButton(KeysConfiguration.PLAYERKEY_ACTION.code, 1);
 		Assert.assertEquals("Hero should not take that forbidden item !", 0, hero.getInventory().size());
+	}
+	
+	@Test
+	public void burnCreepers() {
+		mapUtils.loadMap("nature1");
+		PersoPlayer hero = spawnZildo(152, 122);
+		hero.setWeapon(new Item(ItemKind.SPADE));
+		hero.setAngle(Angle.EST);
+		waitEndOfScripting();
+		
+		// 1) Grab leaves with his fork
+		simulatePressButton(KeysConfiguration.PLAYERKEY_ATTACK.code, 1);
+		Assert.assertFalse(hero.canFork());
+		
+		// 2) Walk to the flames in the alcove
+		simulateDirection(0, -1);
+		renderFrames(5);
+		while (hero.deltaMoveY != 0) {
+			renderFrames(5);
+		}
+		Element leaves = (Element) findEntityByDesc(ElementDescription.BUNCH_LEAVESFORK);
+		Assert.assertNotNull(leaves); 
+		Assert.assertEquals(1,  getBurningElements().size());
+		
+		// 3) Walk to a creeper to ignite it
+		simulateDirection(new Vector2f(-0.7f, 0.7f));
+		renderFrames(30);
+		simulateDirection(-1, -1);
+		renderFrames(35);
+		simulateDirection(0, 0);
+		Assert.assertEquals(3,  getBurningElements().size());
+		
+		// 4) Wait for elements to finish burning
+		renderFrames(Element.MAX_TIME_BURNING);
+		Assert.assertEquals(0,  getBurningElements().size());
+		Assert.assertTrue(hero.canFork());
+	}
+	
+	private List<ElementFire> getBurningElements() {
+		List<ElementFire> burnings = ZUtils.arrayList();
+		for (SpriteEntity e : EngineZildo.spriteManagement.getSpriteEntities(null)) {
+			if (e instanceof ElementFire) {
+				burnings.add( (ElementFire) e);
+			}
+		}
+		return burnings;
 	}
 }

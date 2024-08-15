@@ -51,6 +51,7 @@ import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.desc.GearDescription;
@@ -1303,9 +1304,29 @@ public class Area implements EasySerializable {
 					if (shouldSpawn) {
 						entity = spriteManagement.spawnSprite(desc, x, y, false, Reverse.fromInt(reverse),
 								false);
-						if (desc.isBurnable()) {
-							Element invisibleOne = spriteManagement.spawnElement(ElementDescription.BUNCH_LEAVESFORK, x, y, 0, null, null);
-							Collision c = new Collision((int) entity.x, (int) entity.y, 3, null, null, DamageType.CATCHING_FIRE, invisibleOne);
+						if ((multi & SpriteEntity.FOREGROUND) != 0) {
+							entity.setForeground(true);
+						}
+						if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
+							entity.rotation = rot;
+							entity.repeatX = repX;
+							entity.repeatY = repY;
+						}
+						if (!zeditor && desc.isBurnable()) {
+							Point size = entity.getEffectiveSize();
+							SpriteModel model = entity.getSprModel();
+							int delta = 0 ;
+							if (model.getTaille_x() != size.x) {
+								delta = size.x - model.getTaille_x();
+							}
+							Element invisibleOne = spriteManagement.spawnElement(desc, 
+									x + (delta >> 1),
+									y - (delta >> 1) - 1, 0, null, null);
+							invisibleOne.setName(entName);
+							// Note that the (x,y) from Collision object won't be used, because it can be
+							// a moving one. So it will always be calculated from actual linked element.
+							Collision c = new Collision(new Point(invisibleOne.x, invisibleOne.y), 
+									size, null, DamageType.CATCHING_FIRE, invisibleOne);
 							invisibleOne.setVisible(false);
 							invisibleOne.setPermanentCollision(c);
 							invisibleOne.setLinkedEntity(entity);
@@ -1315,14 +1336,6 @@ public class Area implements EasySerializable {
 							if (EngineZildo.scriptManagement.isExplodedWall(map.getName(), new Point(ax, ay))) {
 								map.explodeTile(new Point(x, y), false, (Element) entity);
 							}
-						}
-						if ((multi & SpriteEntity.FOREGROUND) != 0) {
-							entity.setForeground(true);
-						}
-						if ((multi & SpriteEntity.REPEATED_OR_ROTATED) != 0) {
-							entity.rotation = rot;
-							entity.repeatX = repX;
-							entity.repeatY = repY;
 						}
 					}
 					if (entity != null) {

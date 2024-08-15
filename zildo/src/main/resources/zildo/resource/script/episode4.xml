@@ -484,6 +484,16 @@
    	    </action>
    	</quest>
 
+   	<quest name="creep1" locked="false">
+   	    <trigger>
+   	        <location name="nature1"/>
+   	        <fall type="CREEPER2" name="creeper"/>
+   	    </trigger>
+   	    <action>
+   	        <sound name="ZildoSecret"/>
+   	    </action>
+   	</quest>
+   	
    	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>

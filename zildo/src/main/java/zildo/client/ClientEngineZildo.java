@@ -392,7 +392,7 @@ public class ClientEngineZildo {
 					int rayon = c.cr;
 					int color = 15;
 					Perso damager = c.perso;
-					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 0.1f);
+					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 0.1f*8);
 					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
 						color = 20;
 					}

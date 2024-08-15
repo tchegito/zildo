@@ -76,7 +76,7 @@ public class Element extends SpriteEntity {
 	
 	protected Element burningFire;
 	private int timeBurning;
-	static final int MAX_TIME_BURNING = 200;
+	public static final int MAX_TIME_BURNING = 200;	// Beyond this number of frames, element will turn into ashes
 	
 	protected boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
@@ -426,7 +426,7 @@ public class Element extends SpriteEntity {
 				if (desc.isBurnable()) {
 					if (timeBurning >= MAX_TIME_BURNING) {
 						EngineZildo.scriptManagement.execute("spawnAshes("+x+","+y+")", false, new SceneContext(), null);
-						die();
+						fall(); die();
 					} else {
 						SpriteEntity entity = linkedEntity == null ? this : linkedEntity;
 						entity.setLight(ZMaths.ratioLight(0xffeedd, 1f - (float) timeBurning / MAX_TIME_BURNING)); //(int) (timeBurning * 0xffeedd / MAX_TIME_BURNING));

@@ -213,6 +213,11 @@ public class Tile implements Cloneable {
 				value == 7*256+135 || value == 7*256+136;
 	}
 	
+	/** Returns TRUE for tiles where hero has to be masked, because ceiling is too low **/
+	public static boolean isTransitionnableMasked(int value) {
+		return value == 9*256+181;
+	}
+	
 	/** Tile where hero can pick up something (ex: jar, bushes ...) **/
 	public static boolean isPickableTiles(int value) {
 		switch (value) {

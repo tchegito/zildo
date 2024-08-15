@@ -535,6 +535,7 @@ public class PlayerManagement {
 										EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.GOLDCOIN,newx*16+8,newy*16+10,1, heros.floor, null, null);
 									}
 									break;
+									/*
 								case 167:	// With any gloves, Zildo can lift this stone
 									if (heros.hasItem(ItemKind.GLOVE) || heros.hasItem(ItemKind.GLOVE_IRON)) {
 										objDesc=ElementDescription.STONE;
@@ -545,6 +546,7 @@ public class PlayerManagement {
 										objDesc=ElementDescription.STONE_HEAVY;
 									}
 									break;
+									*/
 								case 751:objDesc=ElementDescription.JAR;break;
 								case 256*5+195:objDesc=ElementDescription.AMPHORA;break;
 								}

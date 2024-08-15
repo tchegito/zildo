@@ -39,6 +39,7 @@ import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.Perso.PersoInfo;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.FlagPerso;
+import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Point;
 import zildo.server.state.ClientState;
 
@@ -151,8 +152,11 @@ public class CollideManagement {
 	            		break;
 	            	case FORKING:
 		            	for (Point location : tilesCollided) {
-		            		if (damager.isZildo() && ((PersoPlayer)damager).canFork()) {
-		            			area.forkTile(damager, location, new Point(collider.cx, collider.cy));
+		            		if (damager.isZildo()) {
+		            			PersoPlayer zildo = (PersoPlayer)damager;
+		            			if (zildo.canFork() && zildo.getMouvement() == MouvementZildo.ATTACK_FORK) {
+		            				area.forkTile(damager, location, new Point(collider.cx, collider.cy));
+		            			}
 		            		}	
 		            	}
             	}
