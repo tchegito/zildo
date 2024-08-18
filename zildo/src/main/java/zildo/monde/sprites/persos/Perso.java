@@ -936,6 +936,13 @@ public abstract class Perso extends Element {
 				break;
 			case 256 * 3 + 125: // Hole with a floor on map below
 				break;
+			case 256 * 9 + 181: // Hole in Nature Palace
+				if (tile.rotation == Rotation.UPSIDEDOWN) {
+					coeffWhiteLight = tileLight.south(1, x, y);
+				} else {
+					coeffWhiteLight = tileLight.north(0, x, y);
+				}
+				break;
 			default:
 				if (isZildo() && bottomLess) {
 					// Make hero fall if he reach the border of the hill
@@ -943,6 +950,13 @@ public abstract class Perso extends Element {
 						fall = true;
 					}
 					break;
+				}
+			}
+			
+			Tile foreTile = tile.parent.getForeTile();  
+			if (tile.parent.getForeTile() != null && tile != foreTile) {
+				if (foreTile.bank == 9 && foreTile.index == 4) {
+					coeffWhiteLight = 7;
 				}
 			}
 		}

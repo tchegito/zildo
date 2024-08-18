@@ -5,6 +5,7 @@ import java.util.List;
 import zeditor.core.prefetch.complex.DropDelegateDraw;
 import zeditor.core.selection.CaseSelection;
 import zeditor.tools.AreaWrapper;
+import zeditor.windows.managers.MasterFrameManager;
 import zeditor.windows.subpanels.SelectionKind;
 import zildo.monde.map.Case;
 import zildo.monde.map.Tile;
@@ -358,6 +359,8 @@ public class TileSelection extends CaseSelection {
 				int emptyTileValue = map.area.getAtmosphere().getEmptyTile();
 				empty.setBackTile(new Tile(emptyTileValue, empty));
 				map.set_mapcase(px, py, empty);
+			} else {
+				MasterFrameManager.display("A tile already exists above !", MasterFrameManager.MESSAGE_ERROR);
 			}
 		}
 	}

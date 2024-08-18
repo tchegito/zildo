@@ -316,6 +316,8 @@ public class SpritePanel extends JPanel {
 							spinner.setValue(15);
 						}
 					}
+					sel.setFloor(manager.getCurrentFloor());
+					focusSprites(sel);
 					manager.getZildoCanvas().setChangeSprites(true);
 					manager.setUnsavedChanges(true);
 				}

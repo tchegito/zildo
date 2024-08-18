@@ -782,6 +782,13 @@ public class MapManagement {
 					}
 				}
 				zildo.setGhost(true);
+				/** See if we need that one day, for a transition between two different floors on border.
+				if (zildo.getFloor() != chPointTarget.getFloor()) {
+					if (currentMap.readmap((int) (zildo.x / 16), (int) (zildo.y / 16), false, zildo.getFloor()) == null) {
+						zildo.setFloor(chPointTarget.getFloor());
+					}
+				}
+				**/
 			} else {
 				zildo.setTarget(null);
 				zildo.setX(chPointTarget.getPx() * 8 + 16);

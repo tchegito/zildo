@@ -200,6 +200,13 @@
 			<perso who="bitey2" action="bitey"/>
 			<perso who="hooded" action="hooded"/> 
 		</condition>
+		
+		<condition name="nature1">
+		    <if expQuest="creep1">
+		        <remove what="creeper"/>
+		        <remove what="creeper2"/>
+		    </if>
+		</condition>
    	</mapScript>
 
    	<quest name="prisonext">

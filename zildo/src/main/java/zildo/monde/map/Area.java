@@ -1012,6 +1012,10 @@ public class Area implements EasySerializable {
 		List<SpriteEntity> entities = filterExportableSprites(EngineZildo.spriteManagement.getSpriteEntities(null));
 		List<Perso> persos = filterExportablePersos(EngineZildo.persoManagement.tab_perso);
 
+		if (highestFloor == lowestFloor) {
+			// Try to detect if there's an entity above or under single floor (that could happen for visual reason, ex: creepers)
+			entities.forEach(e -> highestFloor = (byte) Math.max(highestFloor, e.floor));
+		}
 		int n_pe = listChainingPoint.size();
 		int n_persos = persos.size();
 		int nbFloors = highestFloor - lowestFloor + 1;

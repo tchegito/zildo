@@ -178,6 +178,10 @@ public class SpriteSelection<T extends SpriteEntity> extends Selection {
 		}
 	}
 	
+	public void setFloor(int floor) {
+		sprites.forEach(s -> s.setFloor(floor));
+	}
+	
 	/** Put the whole current sprite selection on the map, taking selected floor into account **/
 	public void place(Point p_point, int floor) {
 		boolean first=true;
