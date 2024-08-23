@@ -205,6 +205,7 @@
 		    <if expQuest="creep1">
 		        <remove what="creeper"/>
 		        <remove what="creeper2"/>
+		        <tile pos="6,2" back="181+256*9"/>
 		    </if>
 		</condition>
    	</mapScript>
@@ -498,6 +499,7 @@
    	    </trigger>
    	    <action>
    	        <sound name="ZildoSecret"/>
+   	        <tile pos="6,2" back="181+256*9"/>
    	    </action>
    	</quest>
    	
