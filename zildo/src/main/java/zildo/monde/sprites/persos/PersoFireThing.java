@@ -5,6 +5,7 @@ import java.util.List;
 
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
@@ -126,5 +127,10 @@ public class PersoFireThing extends PersoNJ {
 			e.y = e.y + startZ;
 			startZ+=10;
 		}
+	}
+	
+	public void shift(Point p_offset) {
+		super.shift(p_offset);
+		keepy += p_offset.y;
 	}
 }

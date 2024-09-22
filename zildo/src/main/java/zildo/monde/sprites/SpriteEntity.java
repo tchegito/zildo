@@ -615,4 +615,11 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public String getFallScene() {
 		return null;
 	}
+	
+	public void shift(Point p_offset) {
+		x+=p_offset.x;
+		y+=p_offset.y;
+		setAjustedX(getAjustedX() + p_offset.x);
+		setAjustedY(getAjustedY() + p_offset.y);
+	}
 }

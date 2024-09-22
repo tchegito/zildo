@@ -959,18 +959,7 @@ public class SpriteManagement extends SpriteStore {
 	    				continue;
 	    			}
 	    		}
-	    		entity.x+=p_offset.x;
-	    		entity.y+=p_offset.y;
-	    		entity.setAjustedX(entity.getAjustedX() + p_offset.x);
-	    		entity.setAjustedY(entity.getAjustedY() + p_offset.y);
-	    		
-	    		// Shift also the target of the character, if any
-	    		if (entity.getEntityType().isPerso()) {
-	    			Perso perso = (Perso) entity;
-	    			if (perso.getTarget() != null) {
-	    				perso.getTarget().add(p_offset);
-	    			}
-	    		}
+	    		entity.shift(p_offset);
 	    	}
 	    }
 	}

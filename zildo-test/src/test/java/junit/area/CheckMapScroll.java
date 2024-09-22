@@ -1,5 +1,8 @@
 package junit.area;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +10,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
 import tools.EngineUT;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
@@ -271,9 +273,8 @@ public class CheckMapScroll extends EngineUT {
 	@Test
 	public void lavaEntitiesPersistDuringScroll() {
 		mapUtils.loadMap("cavef4");
-		PersoPlayer zildo = spawnZildo(159, 199);
+		spawnZildo(159 + mapUtils.area.getScrollOffset().x*16, 199);
 		SpriteEntity lavaPatch = findEntityByDesc(GearDescription.LAVA3);
-		System.out.println(lavaPatch);
 		simulateDirection(0, 1);
 		waitChangingMap();
 		renderFrames(5);

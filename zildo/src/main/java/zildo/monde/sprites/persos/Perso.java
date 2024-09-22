@@ -1523,4 +1523,12 @@ public abstract class Perso extends Element {
 		this.flagBehavior = flagBehavior;
 	}
 
+	@Override
+	public void shift(Point p_offset) {
+		super.shift(p_offset);
+		// Shift also the target of the character, if any
+		if (getTarget() != null) {
+			getTarget().add(p_offset);
+		}
+	}
 }
