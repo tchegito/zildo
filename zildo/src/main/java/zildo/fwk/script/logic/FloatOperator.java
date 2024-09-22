@@ -70,12 +70,19 @@ public class FloatOperator implements FloatASTNode{
 				return Math.min(f1,  f2);
 			case MAX:
 				return Math.max(f1,  f2);
+			case ROUND:
+				return (int) f1;
 
 		}
 	}
 
 	@Override
 	public String toString() {
-		return op+"("+operand1.toString()+", "+operand2.toString()+")";
+		switch (op) {
+		case ROUND:	// 1 operand
+			return op+"("+operand1.toString()+")";
+		default:
+			return op+"("+operand1.toString()+", "+operand2.toString()+")";
+		}
 	}
 }

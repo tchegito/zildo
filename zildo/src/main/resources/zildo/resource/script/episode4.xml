@@ -208,6 +208,12 @@
 		        <tile pos="6,2" back="181+256*9"/>
 		    </if>
 		</condition>
+		
+		<condition name="nature3">
+		    <if expQuest="nature3opened">
+		        <activate what="door" value="true"/>
+		    </if>
+		</condition>
    	</mapScript>
 
    	<quest name="prisonext">
@@ -503,6 +509,51 @@
    	    </action>
    	</quest>
    	
+   	<!-- Algorithm to validate walking on slabs in the right order -->
+   	<quest name="walkSlab" locked="false" repeat="true">
+   	    <trigger>
+   	        <location name="nature3" tileValue="2480"/>
+   	        <questDone name="!nature3opened"/>
+   	    </trigger>
+   	    <action>
+   	        <var name="loc:zx" value="round(zildo.x / 16)"/>
+   	        <var name="loc:zy" value="round(zildo.y / 16)"/>
+   	        <var name="loc:found" value="0"/>
+   	        <if exp="loc:zx = 11 &amp; loc:zy = 6 ">
+   	        	<markQuest name="slab1" value="true"/>
+	   	        <var name="loc:found" value="1"/>
+	        </if>
+   	        <if exp="loc:zx = 7  &amp; loc:zy = 10 ">
+   	            <if expQuest="slab1">
+   	        		<markQuest name="slab2" value="true"/>
+		   	        <var name="loc:found" value="1"/>
+	        	</if>
+   	        </if>
+   	        <if exp="loc:zx = 5  &amp; loc:zy = 4 ">
+   	            <if expQuest="slab2">
+   	        		<markQuest name="slab3" value="true"/>
+		   	        <var name="loc:found" value="1"/>
+	        	</if>
+   	        </if>
+   	        <if exp="loc:zx = 13 &amp; loc:zy = 10 ">
+   	            <if expQuest="slab3">
+   	        		<activate what="door" value="true"/>
+   	        		<markQuest name="nature3opened" value="true"/>
+		   	        <var name="loc:found" value="1"/>
+	        	</if>
+	        </if>
+   	        <if exp="loc:found=0">
+   	            <exec script="resetSlabs"/>"
+   	        </if>
+   	    </action>
+   	</quest>
+   	
+   	<scene id="resetSlabs">
+   	    <markQuest name="slab1" value="false"/>
+   	    <markQuest name="slab2" value="false"/>
+	    <markQuest name="slab3" value="false"/>
+   	</scene>
+
    	<scene id="insertPortalKey">
    		<putDown item="PORTAL_KEY"/>
    		<tile pos="loc:arg0,loc:arg1" back2="256*5+150"/>

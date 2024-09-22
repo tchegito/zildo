@@ -24,6 +24,7 @@ import zildo.fwk.ZUtils;
 import zildo.fwk.script.context.IEvaluationContext;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.model.point.PointEvaluator;
+import zildo.monde.map.Area;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
@@ -58,6 +59,8 @@ public class FloatVariable implements FloatASTNode {
 		} else if (FloatExpression.RESERVED_WORD_DICE10.equals(variable)) {
 			return hasard.rand(10);
 		} else if (variable.startsWith(FloatExpression.RESERVED_WORD_ZILDO)) {
+			Area area = EngineZildo.mapManagement.getCurrentMap();
+			Point scrollOffset = area == null ? Point.ZERO : area.getScrollOffset().multiply(16);
 			if (EngineZildo.persoManagement == null) {
 				throw new NoContextException();
 			}
@@ -66,9 +69,9 @@ public class FloatVariable implements FloatASTNode {
 				throw new NoContextException();
 			}
 			if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
-				return p.x;
+				return p.x - scrollOffset.x;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
-				return p.y;
+				return p.y - scrollOffset.y;
 			} else if (FloatExpression.RESERVED_WORD_ZILDOZ.equals(variable)) {
 				return p.z;
 			}  else if (FloatExpression.RESERVED_WORD_ZILDOVX.equals(variable)) {

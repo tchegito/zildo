@@ -56,7 +56,7 @@ public class Gears extends SpriteBanque {
 				
 				new Zone(168, 505, 24, 16),	// Regular key opening
 
-				/* Explodable wall */
+				/* Explodable wall (11)*/
 				new Zone(192, 505, 16, 16),
 				
 				/* Big blue door */
@@ -72,12 +72,15 @@ public class Gears extends SpriteBanque {
 				new Zone(51, 538, 19, 24), new Zone(71, 538, 19, 24),
 			
 				/* Lava artefacts */
-				new Zone(2, 215, 31, 19), new Zone(3, 235, 29, 14), new Zone(1, 250, 32, 24), new Zone(1, 275, 68, 27)
+				new Zone(2, 215, 31, 19), new Zone(3, 235, 29, 14), new Zone(1, 250, 32, 24), new Zone(1, 275, 68, 27),
 
+				/* Palace door (23)*/
+				new Zone(0, 192, 16, 26), new Zone(16, 192, 16, 26)
 		};
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{
 				new GraphChange("interia3", 0, 0),
-				new GraphChange("interia7", 19, 0)});
+				new GraphChange("interia7", 19, 0),
+				new GraphChange("palace1", 23, 0)});
 	}
 }

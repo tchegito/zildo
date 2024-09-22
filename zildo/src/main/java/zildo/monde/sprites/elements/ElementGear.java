@@ -138,6 +138,8 @@ public class ElementGear extends Element {
 					break;
 				case GREEN_SIMPLEDOOR:
 				case GREEN_SIMPLEDOOR_OPENING:
+				case PALACE_DOOR:
+				case PALACE_DOOR_OPENING:
 				case GRATE:
 				case GRATE_OPENING:
 				case HIDDENDOOR:

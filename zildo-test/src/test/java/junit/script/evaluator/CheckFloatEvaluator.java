@@ -250,6 +250,19 @@ public class CheckFloatEvaluator {
 		Assert.assertEquals("project(bandit, 2.0, MULTIPLY(3.0, 0.5))", exp.toString());
 	}
 
+	@Test
+	public void round() {
+		FloatExpression.OPTIMIZE = false;
+		FloatExpression exp = new FloatExpression("round(131 / 16)");
+		Assert.assertEquals("ROUND(DIVIDE(131.0, 16.0))", exp.toString());
+
+		float res = exp.evaluate(null);
+		Assert.assertEquals(8f, res, 0f);
+		
+		exp = new FloatExpression("round(131 / 16) = 8.0");
+		Assert.assertEquals("EQUALS(ROUND(DIVIDE(131.0, 16.0)), 8.0)", exp.toString());
+	}
+	
 	@Before
 	public void setup() {
 		FloatExpression.OPTIMIZE = true;		

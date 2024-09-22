@@ -206,12 +206,12 @@ public class TriggerElement extends AnyElement {
 				} else if (mover != null) {
 					return mover.equals(p_another.mover) ^ negate;
 				} else if (tileLocation != null && p_another.location != null) {
-					int gridX = p_another.location.x / 16;
-					int gridY = p_another.location.y / 16;
+					Area area = EngineZildo.mapManagement.getCurrentMap();
+					int gridX = p_another.location.x / 16 - area.getScrollOffset().x;
+					int gridY = p_another.location.y / 16 - area.getScrollOffset().y;
 					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
 					if (onIt && !pressed) {
 						if (gearType != null) {
-							Area area = EngineZildo.mapManagement.getCurrentMap();
 							switch (gearType) {
 							case TIMED_BUTTON:
 								area.addSpawningTile(tileLocation, questName, 0, false, p_another.floor);

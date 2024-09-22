@@ -93,6 +93,11 @@ public class FloatExpression {
 						FloatASTNode rightNode = parse(scan, op, false);
 						leftNode = new FloatOperator(op, new FloatValue(0f), rightNode);
 						continue;
+					} else if (op == Operator.ROUND) {	// Particular operator with only 1 operand
+						scan.next();// Pass the opening parenthese
+						FloatASTNode rightNode = parse(scan, op, true);
+						leftNode = new FloatOperator(op, rightNode, new FloatValue(0f));	// Second will be unused
+						continue;
 					} else if (previous == Operator.NOT_EQUALS) {
 						return parse(scan, previous, false);
 					} else {

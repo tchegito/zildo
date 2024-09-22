@@ -47,7 +47,8 @@ public enum GearDescription implements SpriteDescription {
 	GRATE(true), GRATE_OPENING(false),
 	
 	HIDDENDOOR(true), HIDDENDOOR_OPENING(false),
-	LAVASPIKE, LAVA1, LAVA2, LAVA3;
+	LAVASPIKE, LAVA1, LAVA2, LAVA3,
+	PALACE_DOOR(true), PALACE_DOOR_OPENING(false);
 
 	// Desc used only on doors (initialized with a boolean)
 	private GearDescription openingDoor = null;
@@ -106,6 +107,7 @@ public enum GearDescription implements SpriteDescription {
 			case GRATE:
 			case BIG_BLUE_DOOR:
 			case HIDDENDOOR:
+			case PALACE_DOOR:
 				return true;
 			default:
 				return false;
