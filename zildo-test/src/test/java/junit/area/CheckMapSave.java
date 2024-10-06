@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -14,7 +13,10 @@ import zildo.fwk.file.EasyReadingFile;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.sprites.persos.Perso.PersoInfo;
+import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -52,11 +54,8 @@ public class CheckMapSave extends EngineUT {
 	final static String MAP_TEST = "maptest.map";
 
 	
-	@Before
-	public void saveMap() throws Exception {
-
-			EngineZildo.mapManagement.loadMap(MAP_ORIGINAL, false);
-
+	void prepareSaveMap() {
+		EngineZildo.mapManagement.loadMap(MAP_ORIGINAL, false);
 	        
         // Save the map into a temporary file
 		MapManagement mapManagement=EngineZildo.mapManagement;
@@ -77,6 +76,7 @@ public class CheckMapSave extends EngineUT {
 	 */
 	@Test
 	public void testBinary() {
+		prepareSaveMap();
         // Now compare files
         EasyReadingFile original=new EasyReadingFile("maps"+File.separator+MAP_ORIGINAL);
         EasyReadingFile copied=new EasyReadingFile("maps"+File.separator+MAP_TEST);
@@ -97,6 +97,7 @@ public class CheckMapSave extends EngineUT {
 	 */
 	@Test
 	public void testMapStats() {
+		prepareSaveMap();
 		MapManagement mapMgt=EngineZildo.mapManagement;
 		SpriteManagement sprMgt=EngineZildo.spriteManagement;
 		PersoManagement perMgt=EngineZildo.persoManagement;
@@ -158,6 +159,16 @@ public class CheckMapSave extends EngineUT {
 
 		Assert.assertEquals(EXPECTED_X, found.x, 0);
 		Assert.assertEquals(EXPECTED_Y, found.y, 0);
+	}
+	
+	@Test
+	public void savePnj() {
+		PersoNJ hooded = (PersoNJ) spawnPerso(PersoDescription.HOODED, "hooded", 160, 100);
+        hooded.setInfo(PersoInfo.ENEMY);
+		EngineZildo.mapManagement.saveMapFile(MAP_TEST);
+        
+        EngineZildo.mapManagement.loadMap(MAP_TEST, false);
+        Assert.assertNotNull(findEntityByDesc(PersoDescription.HOODED));
 	}
 	
 	private boolean compareEntity(SpriteEntity p_e1, SpriteEntity p_e2) {

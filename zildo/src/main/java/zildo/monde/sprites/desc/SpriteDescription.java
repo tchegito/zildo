@@ -58,7 +58,7 @@ public interface SpriteDescription {
 			case SpriteBank.BANK_PNJ4:
 				return PersoDescription.fromNSpr(nSpr + 259 + 109);
 			case SpriteBank.BANK_PNJ5:
-				return PersoDescription.fromNSpr(nSpr + 259 + 109 + 96);
+				return PersoDescription.fromNSpr(nSpr + 259 + 109 + 101);
 			case SpriteBank.BANK_GEAR:
 				return GearDescription.fromNSpr(nSpr);
 			default:

@@ -132,7 +132,7 @@ public enum PersoDescription implements SpriteDescription {
 	VIEILLE_BANC(383, 384),
 	VACTO(389, 390, 387, 388, 385, 386),
 	FIRE_ELEMENTAL(397, 398, 399, 400),
-	COAL(401, 402, 403, 404),
+	COAL(401, 402, 403),
 	COAL_COLD(404),     
 	CACTUS(434),
 	SCORPION(435, 436, 437, 438, 439, 440),
@@ -208,7 +208,7 @@ public enum PersoDescription implements SpriteDescription {
 			return SpriteBank.BANK_PNJ2;
 		} else if (s < 368) {
 			return SpriteBank.BANK_PNJ3;
-		} else if (s < 464) {
+		} else if (s < 469) {
 			return SpriteBank.BANK_PNJ4;
 		} else {
 			return SpriteBank.BANK_PNJ5;

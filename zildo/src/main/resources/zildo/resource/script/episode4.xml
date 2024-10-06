@@ -539,6 +539,7 @@
    	            <if expQuest="slab3">
    	        		<activate what="door" value="true"/>
    	        		<markQuest name="nature3opened" value="true"/>
+   	        		<sound name="ZildoSecret"/>
 		   	        <var name="loc:found" value="1"/>
 	        	</if>
 	        </if>
