@@ -64,7 +64,7 @@ public enum ElementDescription implements SpriteDescription {
 	FLUT, SWORD,
 
 	// 115
-	STONEWALL1, STONEWALL2, DYNAMITE2, QUAD2, QUAD3, QUAD4, QUAD5, QUAD6,
+	STONEWALL1, STONEWALL2, DYNAMITE2, FIRE_SPIRIT1, FIRE_SPIRIT2, FIRE_SPIRIT3, QUAD5, QUAD6,
 
 	// 123
 	KEY, SCROLL, BIG_HEART, HEART_FRAGMENT, HAMMER, CRYSTAL, LANTERN, FIRE_STAFF, ITEM_SCEPTER, EXCALIBUR, BOOK, NECKLACE_RED, CREEPER4, NECKLACE_GREEN, NECKLACE_BLUE, TINY_VIAL, VIAL, GRAPNEL, SUPER_GLOVE, FLIPPER, BOOTS, CUP, PURSE, FLASK, FLASK_RED, FLASK_YELLOW, FLASK_BLUE,
@@ -131,7 +131,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 242
 	FIRE_RING, 
 	// 243
-	PURPLE_FIREFLY, BLUE_FIREFLY,
+	UNUSED, BLUE_FIREFLY,
 	// 245
 	FIRE_BALL,	// Fireball for dragon
 	// 246
@@ -304,6 +304,7 @@ public enum ElementDescription implements SpriteDescription {
 				case POISONBALL:
 				case POISONGOOP:
 				case HOOKCHAIN: case HOOK:
+				case FIRE_SPIRIT1:
 				case CANDLE1: case BUNCH_LEAVES: case BUNCH_LEAVESFORK:	// To be eligible for CATCHING_FIRE and LIGHTING_FIRE
 				case CREEPER1: case CREEPER2: case CREEPER3A: case CREEPER3B: case CREEPER4:
 					damage = true;
@@ -357,11 +358,12 @@ public enum ElementDescription implements SpriteDescription {
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:
 		case SWORD: case FIRE_RING:
-		case BLUE_FIREFLY: case PURPLE_FIREFLY:
+		case BLUE_FIREFLY: case FIRE_SPIRIT1: case FIRE_SPIRIT2: case FIRE_SPIRIT3:
 		case BULLET: case GREEN_BUBBLE:
 		case FIREWIND1: case FIREWIND2: case FIREWIND3:
 		case DRAGON_KEY: case PORTAL_KEY:
 		case HOOKCHAIN: case HOOK:
+		case SLABS1: case SLABS2: case SLABS3: case SLABS4: case SLABS5: case SLABS6: case SLABS7: case SLABS8: case SLABS9: case SLABS10:
 			return true;
 		default:
 			return false;

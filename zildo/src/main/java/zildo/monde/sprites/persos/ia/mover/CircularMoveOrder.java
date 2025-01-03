@@ -46,6 +46,8 @@ public class CircularMoveOrder extends MoveOrder {
 	
 	Element mobileElement;
 	FloatExpression zoomExpr;
+	FloatExpression functionX;	// Can be defined in fx="..." using 'alpha' as available angle in cos/sin functions
+	FloatExpression functionY;
 	IEvaluationContext ctx;
 	
 	final int nbArcs;
@@ -59,21 +61,27 @@ public class CircularMoveOrder extends MoveOrder {
 	 * @param y
 	 * @complete TRUE=complete circle FALSE=arc of circle (PI/2)
 	 */
-	public CircularMoveOrder(float x, float y, FloatExpression zoomExpr, boolean complete) {
+	public CircularMoveOrder(float x, float y, FloatExpression zoomExpr, boolean complete, FloatExpression functionX, FloatExpression functionY) {
 		super(x, y);
 		this.zoomExpr = zoomExpr;
 		this.nbArcs = complete ? 4 : 1;
+		this.functionX = functionX;
+		this.functionY = functionY;
+	}
+	
+	public CircularMoveOrder(float x, float y, FloatExpression zoomExpr, boolean complete) {
+		this(x, y, zoomExpr, complete, null, null);
 	}
 	
 	public CircularMoveOrder(float x, float y) {
-		this(x, y, null, false);
+		this(x, y, null, false, null, null);
 	}
 
 	@Override
 	public Pointf move() {
 		double angle = factor * iota;
-		mobileElement.vx = (float) ( radius.x * Math.cos(angle) * pasX * factor);
-		mobileElement.vy = (float) (-radius.y * Math.sin(angle) * pasY * factor);
+		mobileElement.vx = functionX(angle);
+		mobileElement.vy = functionY(angle);
 		mobileElement.physicMoveWithCollision();
 		
 		if (zoomExpr != null) {
@@ -93,6 +101,22 @@ public class CircularMoveOrder extends MoveOrder {
 		return new Pointf(mobile.x, mobile.y);
 	}
 	
+	private float functionX(double angle) {
+		if (functionX != null) {
+			return (float) (radius.x * functionX.evaluate(ctx) * pasX * factor);
+		} else {
+			return (float) (radius.x * Math.cos(angle) * pasX * factor);
+		}
+	}
+
+	private float functionY(double angle) {
+		if (functionY != null) {
+			return (float) (-radius.y * functionY.evaluate(ctx) * pasY * factor);
+		} else {
+			return (float) (-radius.y * Math.sin(angle) * pasY * factor);
+		}
+	}
+
 	@Override
 	public void init(Mover p_wrapper) {
 		super.init(p_wrapper);
@@ -110,13 +134,15 @@ public class CircularMoveOrder extends MoveOrder {
 		iota = 0;
 		
 		// Context
-		if (zoomExpr != null) {
+		if (zoomExpr != null || functionX != null || functionY != null) {
 			ctx = new SpriteEntityContext(mobileElement) {
 				
 				@Override
 				public float getValue(String key) {
 					if ("bell".equals(key)) {
 						return (float) Math.abs(Math.cos(Math.PI / nbFrames * iota));
+					} else if ("alpha".equals(key)) {
+						return (float) (factor * iota);
 					}
 					return super.getValue(key);
 				}

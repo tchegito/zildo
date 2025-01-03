@@ -47,6 +47,7 @@ import zildo.monde.sprites.desc.SpriteAnimation;
 import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementAnimMort;
+import zildo.monde.sprites.elements.ElementChained;
 import zildo.monde.sprites.elements.ElementClouds;
 import zildo.monde.sprites.elements.ElementDynamite;
 import zildo.monde.sprites.elements.ElementFireballs;
@@ -1093,6 +1094,14 @@ public class SpriteManagement extends SpriteStore {
 		}
 		return null;
 	}
+	
+	public Element findChainedLeader(Element toSearch) {
+		return (Element) spriteEntities.stream()
+				.filter(e -> e instanceof ElementChained)
+				.map(chained -> ((ElementChained)chained).contains(toSearch) ? chained : toSearch)
+				.findAny().orElse(toSearch);
+	}
+	
     public List<SpriteEntity> getWalkableEntities() {
     	return walkableEntities;
     }

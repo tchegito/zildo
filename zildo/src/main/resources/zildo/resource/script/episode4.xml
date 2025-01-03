@@ -214,6 +214,15 @@
 		        <activate what="door" value="true"/>
 		    </if>
 		</condition>
+		
+		<condition name="nature6">
+			<perso who="hooded" action="hooded"/>
+			<markQuest name="slabNature6_green1" value="false"/>
+			<markQuest name="slabNature6_green2" value="false"/>
+			<markQuest name="slabNature6_both" value="false"/>
+			<var name="seqFire" value="0"/>
+		</condition>
+		
    	</mapScript>
 
    	<quest name="prisonext">
@@ -548,6 +557,69 @@
    	        </if>
    	    </action>
    	</quest>
+   	
+   	<quest name="slabNature6_green1" locked="false">
+   		<trigger>
+   	        <location name="nature6" tilePos="4, 4"/>
+   	    </trigger>
+   	</quest>
+
+   	<quest name="slabNature6_green2" locked="false">
+   		<trigger>
+   	        <location name="nature6" tilePos="15, 4"/>
+   	    </trigger>
+   	</quest>
+   	
+   	<quest name="slabNature6_both" locked="false">
+   		<trigger>
+   	        <location name="nature6"/>
+   		    <questDone name="slabNature6_green1-slabNature6_green2"/>
+   		</trigger>
+   		<action>
+   		    <exec script="spawnFireSpirit"/>
+  		</action>
+   	</quest>
+
+   	<scene id="spawnFireSpirit">
+  	    <spawn what="fireSpirit" type="FIRE_SPIRIT1" pos="160, 100" z="10" alpha="95" chained="3, 4"/>
+		<loop>
+			<actions>
+				<moveTo what="fireSpirit" pos="50,40" delta="true" 
+				    fx="fun:cos(2*alpha)+fun:sin(alpha*3)" 
+  		        		fy="fun:sin(alpha)+fun:cos(alpha*2)" way="circular" zoom="216+bell*32"/>
+			</actions>
+   		</loop>
+   	</scene>
+   		
+   	<quest name="firespirit_touched" locked="false">
+   	    <trigger>
+   	        <location name="nature6"/>
+			<fall type="FIRE_SPIRIT1" name="fireSpirit_0"/>
+			<questDone name="slabNature6_both"/>   	    
+   	    </trigger>
+   	    <action>
+   	        <exec script="spawnLetter"/>
+   	    </action>
+   	</quest>
+
+   	<scene id="spawnLetter">
+	    <stop script="spawnFireSpirit"/>
+	    <!-- Spirits goes back to the alcove -->
+   	    <moveTo what="fireSpirit" pos="162,110" way="arc"/>
+   	    <sprite what="fireSpirit" alphaV="-1.5"/>
+   	    <wait value="20"/>
+   	    <!-- Spawns a letter coming out from the fire -->
+   	    <spawn what="letter" type="seqFire=0:SLABS9,seqFire=1:SLABS4,seqFire=2:SLABS1,SLABS10" pos="162,110" z="10" az="0.01" 
+   	        zoom="255" zoomV="2" 
+   	        alphaV="-0.8" light="#e6a61e"/>
+   	    <var name="seqFire" value="(seqFire+1) % 4"/>
+   	    <markQuest name="slabNature6_green1" value="false"/>
+	    <markQuest name="slabNature6_green2" value="false"/>
+	    <markQuest name="slabNature6_both" value="false"/>
+	    <tile pos="4, 4" back="256*9 + 189"/>
+	    <tile pos="15, 4" back="256*9 + 189"/>
+	    <markQuest name="firespirit_touched" value="false"/>
+   	</scene>
    	
    	<scene id="resetSlabs">
    	    <markQuest name="slab1" value="false"/>

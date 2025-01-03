@@ -23,12 +23,15 @@ package zildo.monde.sprites.elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.util.Point;
 import zildo.server.EngineZildo;
 
 /**
  * Abstract class designed for chained elements : when an animation needs
  * several elements created on a time period at a given place.
+ * 
+ * Note that created elements will be named "<initialName>_<n>" where n will start from 0.
  * 
  * @author Tchegito
  * 
@@ -54,10 +57,20 @@ public abstract class ElementChained extends Element {
 
 	@Override
 	public void animate() {
+		for (Element e : linkeds) {
+			e.setAlpha(e.getAlpha() + alphaV);
+		}
+		
 		if (!endOfChain) {
 			if (count >= delay) { // After the delay, create another one
 				Element elem = createOne((int) x, (int) y);
-	
+
+				elem.setName(name+"_"+linkeds.size());
+				
+				if (elem.getDesc() == ElementDescription.FIRE_SPIRIT1) {
+					elem.flying = true;
+				}
+				
 				linkeds.add(elem);
 				EngineZildo.spriteManagement.spawnSprite(elem);
 				
@@ -74,6 +87,12 @@ public abstract class ElementChained extends Element {
 			}
 		}
 		
+		if (follow && !linkeds.isEmpty()) {
+			if (linkeds.stream().allMatch(e -> e.dying)) {
+				dying = true;
+			}
+		}
+		
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			mover.reachTarget();
@@ -83,7 +102,7 @@ public abstract class ElementChained extends Element {
 		if (burningFire != null) {
 			if (dying) {
 				burningFire.dying = true;
-			} else {
+			} else if (!linkeds.isEmpty()) {
 				burningFire.x = linkeds.get(0).x;
 				burningFire.y = linkeds.get(0).y;
 			}
@@ -115,7 +134,11 @@ public abstract class ElementChained extends Element {
 			}
 		}
 	}
-
+	
+	public boolean contains(Element toSearch) {
+		return !linkeds.isEmpty() && linkeds.stream().anyMatch(e -> e == toSearch);
+	}
+	
 	/**
 	 * Delegate method designed for creating an element.<br/>
 	 * It needs to set a delay too.<br/>
@@ -128,6 +151,9 @@ public abstract class ElementChained extends Element {
 
 	@Override
 	public boolean fall() {
+		if (!linkeds.isEmpty()) {
+			linkeds.get(0).fall();
+		}
 		return true;
 	}
 }

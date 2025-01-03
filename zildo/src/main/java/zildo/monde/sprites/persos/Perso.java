@@ -30,6 +30,7 @@ import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
 import zildo.monde.map.Area;
 import zildo.monde.map.Tile;
+import zildo.monde.map.Tile.Slab;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.map.TileCollision;
 import zildo.monde.map.TileLight;
@@ -755,7 +756,7 @@ public abstract class Perso extends Element {
 			case 100 + 256 * 3:
 				setLight(0x111111);
 				break;
-			case 159 + 256 * 3:
+			case 159 + 256 * 3:	// Green window
 			case 163 + 256 * 3:
 			case 160 + 256 * 3:
 			case 164 + 256 * 3:
@@ -823,11 +824,17 @@ public abstract class Perso extends Element {
 				coeffWhiteLight = tileLight.forNaturePalaceRotatedTile(x, y, tile.rotation);
 				break;
 			case 256 * 9 + 176: // Slab in nature palace
-				area.walkSlab(cx, cy, id, true);
+			case 256 * 9 + 189:
+				area.walkSlab(cx, cy, id, true, Slab.fromValue(onmap));
 				break;
 			case 13 + 256 * 10:
 			case 14 + 256 * 10:
 				coeffWhiteLight = tileLight.forRotatedTile(1, x, y, tile.rotation);
+				break;
+			case 162 + 256 * 9:
+			case 163 + 256 * 9:
+				setLight(0xFFDD7D); // 241 221 125
+				coeffWhiteLight = -1;
 				break;
 			case 256 + 22:
 			case 256 * 5 + 214:
@@ -962,8 +969,8 @@ public abstract class Perso extends Element {
 		}
 
 		// Release a slab
-		if (onmap != 256 * 9 + 176 && onmap != 256 * 9 + 177) {
-			area.walkSlab(cx, cy, id, false);
+		if (Slab.fromValue(onmap) == null) {
+			area.walkSlab(cx, cy, id, false, null);
 		}
 
 		Tile foreTile = area.readForeTile(cx, cy);

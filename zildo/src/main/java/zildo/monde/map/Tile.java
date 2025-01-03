@@ -59,6 +59,31 @@ public class Tile implements Cloneable {
 		REGULAR;
 	};
 
+	public enum Slab {
+		TOGGLE_SLAB(256*9 + 176, 256*9 + 177, true),
+		GREEN_SLAB(256*9 + 189, 256*9 + 190, false);
+		
+		final int pressed, unpressed;
+		boolean goBackUp;
+		
+		private Slab(int unpressed, int pressed, boolean goBackUp) {
+			this.pressed = pressed;
+			this.unpressed = unpressed;
+			this.goBackUp = goBackUp;
+		}
+		
+		public static Slab fromValue(int val) {
+			for (Slab s : values()) {
+				if (s.unpressed == val || s.pressed == val) {
+					return s;
+				}
+			}
+			return null;
+		}
+		
+		public boolean backUp() { return goBackUp; }
+	}
+	
 	public final static int T_WATER_FEW = 78 + 256*3;
     public final static int T_STUMP = 159;	// Stump's first tile
     public final static int T_HSTUMP = 225 + 256*6;	// Higher stump's first tile

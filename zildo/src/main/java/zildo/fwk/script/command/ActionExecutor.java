@@ -247,7 +247,7 @@ public class ActionExecutor extends RuntimeExecutor {
 						} else if ("arc".equals(p_action.text)) {
 							entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, false));
 						} else if ("circular".equals(p_action.text)) {
-							entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, true));
+							entity.setMover(new CircularMoveOrder(location.x, location.y, p_action.zoom, true, p_action.functionAngleX, p_action.functionAngleY));
 						} else if ("easein".equals(p_action.text)) {
 							entity.setMover(new EasinMoveOrder(location.x, location.y, p_action.speed));
 						} else if ("straight".equals(p_action.text)) {
@@ -1243,6 +1243,9 @@ public class ActionExecutor extends RuntimeExecutor {
 		}
 		if (p_action.zoom != null) {
 			elem.zoom = (int) p_action.zoom.evaluate(context);
+		}
+		if (p_action.zoomV != null) {
+			elem.zoomV = (int) p_action.zoomV.evaluate(context);
 		}
 		if (p_action.light != -1) {
 			elem.light = p_action.light;

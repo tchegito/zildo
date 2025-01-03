@@ -33,6 +33,9 @@ public class CustomizableElementChained extends ElementChained {
 		//setSpecialEffect(EngineFX.NO_EFFECT);
 		// Customized effect which should be in script (because here we expect behavior to be generic)
 		matrix.setAlpha(0.6f * matrix.getAlpha());
+		if (nbSpawned == 0) {
+			newOne.setForeground(true);
+		}
 		nbSpawned++;
 		if (nbSpawned == nbToSpawn) { // Stop the animation when chain has reach its desired length
 			endOfChain = true;

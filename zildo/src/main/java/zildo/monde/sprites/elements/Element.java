@@ -23,6 +23,7 @@ package zildo.monde.sprites.elements;
 import zildo.client.sound.BankSound;
 import zildo.fwk.ZMaths;
 import zildo.fwk.bank.SpriteBank;
+import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.context.LocaleVarContext;
 import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.xml.element.TriggerElement;
@@ -44,6 +45,7 @@ import zildo.monde.sprites.elements.ElementImpact.ImpactKind;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
+import zildo.monde.sprites.persos.ia.mover.BasicMoveOrder;
 import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.SoundGetter;
 import zildo.monde.util.Angle;
@@ -76,7 +78,7 @@ public class Element extends SpriteEntity {
 	
 	protected Element burningFire;
 	private int timeBurning;
-	public static final int MAX_TIME_BURNING = 200;	// Beyond this number of frames, element will turn into ashes
+	public static final int MAX_TIME_BURNING = 200;	// Beyond this number of frames, burning element will turn into ashes
 	
 	protected boolean questTrigger;	// TRUE=taking this element leads to a quest accomplishment
 	
@@ -103,6 +105,11 @@ public class Element extends SpriteEntity {
 	
 	public Pointf getDelta() {
 		return new Pointf(x-ancX, y-ancY);
+	}
+	
+	public void setAnc(float x, float y) {
+		ancX = x;
+		ancY = y;
 	}
 	
 	private void initialize() {
@@ -133,8 +140,6 @@ public class Element extends SpriteEntity {
 		fz = 0.0f;
 
 		flying = false;
-
-		// logger.log(Level.INFO, "Creating Element");
 	}
 
 	// Copy constructor
@@ -161,7 +166,6 @@ public class Element extends SpriteEntity {
 		this.floor = original.floor;
 		
 		this.entityType = EntityType.ELEMENT;
-		// logger.log(Level.INFO, "Copying Element");
 
 	}
 
@@ -228,6 +232,7 @@ public class Element extends SpriteEntity {
 					case BROWNSPHERE1:
 					case SEWER_SMOKE1:
 					case SEWER_SMOKE2:
+					case FIRE_SPIRIT1:
 					//case WILL_O_WIST:
 						return false;
 					case WATER_LEAF:
@@ -323,6 +328,7 @@ public class Element extends SpriteEntity {
 				shadow.alpha = alpha;
 			}
 		}
+		zoom += zoomV;
 		
 		if (alpha < 0 && fall()) {
 			die();
@@ -409,7 +415,7 @@ public class Element extends SpriteEntity {
 					} else {
 						// Collision with enemies (only when object is moving)
 						Collision collision = getCollision();
-						if (vx != 0 || vy != 0 || vz != 0 || collision != null) {
+						if (vx != 0 || vy != 0 || vz != 0 || ancX != x || ancY != y || collision != null) {
 							manageCollision();
 						}
 					}
@@ -436,7 +442,7 @@ public class Element extends SpriteEntity {
 		}
 		
 		// Animated sprites
-		if (desc == ElementDescription.CANDLE1) {
+		if (desc == ElementDescription.CANDLE1 || desc == ElementDescription.FIRE_SPIRIT1) {
 			addSpr = (spe++ % (3*8)) / 8;
 		}
 		setAjustedX((int) x);
@@ -896,14 +902,19 @@ public class Element extends SpriteEntity {
 	public DamageType getDamageType() {
 		// NOTE: can't do a proper switch/case because "desc" field could be any implementation of SpriteDescription
 		// which itself isn't an enum class, allowing "switch"
-		if (desc == ElementDescription.PEEBLE) {
-			return DamageType.PEEBLE;
-		} else if (desc == ElementDescription.SEWER_VOLUT1) {
-			return DamageType.POISON;
-		} else if (desc == ElementDescription.STONE_HEAVY) {
-			return DamageType.BIG_BLUNT;
-		} else if (desc == ElementDescription.FIRE_BALL) {
-			return DamageType.FIRE;
+		if (desc instanceof ElementDescription) {
+			switch ((ElementDescription) desc) {
+			case PEEBLE:
+				return DamageType.PEEBLE;
+			case SEWER_VOLUT1:
+				return DamageType.POISON;
+			case STONE_HEAVY:
+				return DamageType.BIG_BLUNT;
+			case FIRE_BALL:
+				return DamageType.FIRE;
+			case FIRE_SPIRIT1:
+				return DamageType.HARMLESS;
+			}
 		}
 		return DamageType.BLUNT;	// Default
 	}
@@ -1027,6 +1038,9 @@ public class Element extends SpriteEntity {
 			}
 			// Alert that a sound happened at this location
 			EngineZildo.mapManagement.getCurrentMap().alertAtLocation(new Point(x, y));
+		} else if (desc == ElementDescription.FIRE_SPIRIT1) {
+			// Particular case of fire spirit: 
+			EngineZildo.spriteManagement.findChainedLeader(this).fall();
 		}
 		return false;
 	}
@@ -1208,5 +1222,12 @@ public class Element extends SpriteEntity {
 	@Override
 	public String getFallScene() {
 		return fallScene;
+	}
+	@Override
+	public void setSpecialEffect(EngineFX specialEffect) {
+		if (specialEffect == EngineFX.BURNING) {
+			addFire();
+		}
+		super.setSpecialEffect(specialEffect);
 	}
 }

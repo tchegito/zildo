@@ -82,7 +82,7 @@ public class ZSpriteLibrary {
 			case EXPLOSMOKE1:
 			case EXPLOSMOKE2:
 			case EXPLOSMOKE3:
-			case QUAD2:	case QUAD3: case QUAD4: case QUAD5:
+			case FIRE_SPIRIT1:	case FIRE_SPIRIT2: case FIRE_SPIRIT3: case QUAD5:
 			case QUAD6:
 			case NOTE: case NOTE2:
 			case WATER_ANIM1: case WATER_ANIM2: case WATER_ANIM3: case WATER_ANIM4:

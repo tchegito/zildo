@@ -20,6 +20,9 @@
 package zildo.fwk.script.logic;
 
 enum Operator { 
+	// Operators works like this: <valueA> <operator> <valueB>
+	// Example "4 min 6", "153 + 96" ...
+	
 	// NOT_EQUALS works only when preceding EQUALS
 	// We can combine test operation like this
 	// a=4 + a=5 : means "a==4 || a==5"

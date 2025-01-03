@@ -101,6 +101,32 @@ public class CheckZSSwitch extends SimpleEngineScript {
 		Assert.assertTrue(cnt1 > 0 && cnt2 > 0);
 	}
 	
+	/**
+	 * Checks an equals operator with a global variable.
+	 */
+	
+	@Test
+	public void conditionalEqual() {
+		ZSSwitch parsed = ZSSwitch.parseForDialog("seqFire=5:NOTE2,NOTE"	);
+		int cnt1 = 0;
+		int cnt2 = 0;
+		EngineZildo.scriptManagement.putVarValue("seqFire", "5");
+		for (int i=0;i<20;i++) {
+			String res = parsed.evaluate();
+			if ("NOTE2".equals(res)) {
+				cnt1++;
+			} else if ("NOTE".equals(res)) {
+				cnt2++;
+			}
+			if (i == 9) {
+				EngineZildo.scriptManagement.putVarValue("seqFire", "7");
+			}
+		}
+		System.out.println(cnt1);
+		System.out.println(cnt2);
+		Assert.assertTrue(cnt1 == 10 && cnt2 == 10);
+	}
+	
 	@Test
 	public void withoutCondition() {
 		ZSSwitch parsed = ZSSwitch.parseForDialog("NOTE2");

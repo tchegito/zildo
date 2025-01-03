@@ -69,7 +69,7 @@ public class ZSExpression {
 		this(p_questName);
 		done = p_done;
 		
-		if (p_questName.indexOf('<') != -1 || p_questName.indexOf('>') != -1) {
+		if (p_questName.indexOf('<') != -1 || p_questName.indexOf('>') != -1 || p_questName.indexOf('=' )!= -1) {
 			floatExpr = new FloatExpression(p_questName);
 		}
 	}

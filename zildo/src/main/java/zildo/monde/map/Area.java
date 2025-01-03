@@ -47,6 +47,7 @@ import zildo.monde.dialog.Behavior;
 import zildo.monde.dialog.MapDialog;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Case.TileLevel;
+import zildo.monde.map.Tile.Slab;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.sprites.Reverse;
 import zildo.monde.sprites.Rotation;
@@ -692,20 +693,32 @@ public class Area implements EasySerializable {
 
 	}
 
-	public void walkSlab(int cx, int cy, int id, boolean pushed) {
+	/**
+	 * Called when hero press or release a slab on a tile.
+	 * @param cx
+	 * @param cy
+	 * @param id
+	 * @param pushed
+	 * @param kind kind of slab if hero is just pressing it. NULL otherwise
+	 */
+	public void walkSlab(int cx, int cy, int id, boolean pushed, Slab kind) {
 		Point loc = walkedSlabs.get(id);
-		if (pushed && loc == null) {
+		if (pushed && loc == null) {	
 			SpriteEntity symbol = getSpriteOnCase(cx, cy);
 			walkedSlabs.put(id,  new Point(cx, cy));
-			writemap(cx, cy, 256*9 + 177);
+			writemap(cx, cy, kind.pressed);
 			EngineZildo.soundManagement.broadcastSound(BankSound.Slab1, loc);
 			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()+1);
-		} if (!pushed && loc != null) {
+		} if (!pushed && loc != null) {	// Is slab already pressed ?
 			SpriteEntity symbol = getSpriteOnCase(loc.x, loc.y);
 			walkedSlabs.remove(id);
-			writemap(loc.x, loc.y, 256*9 + 176);
-			EngineZildo.soundManagement.broadcastSound(BankSound.Slab2, loc);
-			if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()-1);
+			int onmap = readmap(loc.x, loc.y);
+			kind = Slab.fromValue(onmap);
+			if (kind.goBackUp) {
+				writemap(loc.x, loc.y, kind.unpressed);
+				EngineZildo.soundManagement.broadcastSound(BankSound.Slab2, loc);
+				if (symbol != null) symbol.setAjustedY(symbol.getAjustedY()-1);
+			}
 		}
 	}
 

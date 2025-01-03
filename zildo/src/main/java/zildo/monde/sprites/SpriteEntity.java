@@ -92,7 +92,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	protected float alpha = 255; // 0..255 alpha channel (we use float for speed/acceleration calculation)
 	public int light = 0xffffff;	/// 0x0RGB where each color is on 8 bits
 	public int zoom = 255;	//0..255 zoom factor : 255=full size
-	
+	public int zoomV = 0;	// speed on zoom (on each frame, we'll apply zoom = zoom + zoomV)
 	public float alphaV, alphaA;	// Speed and acceleration for alpha
 
 	public byte repeatX=1, repeatY=1;
@@ -341,6 +341,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 		if (alpha < 0 && fall()) {
 			dying = true;
 		}
+		zoom += zoomV;
 		
 		Collision floorColli = getFloorCollision();
 		if (floorColli != null) {

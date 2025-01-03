@@ -36,4 +36,9 @@
 		 
 		<pos who="hooded" pos="loc:freeLoc"/>
 	</scene>
+	
+	<scene id="testTrigo">
+   	    <spawn what="fireSpirit" type="FIRE_SPIRIT1" pos="160, 100" z="10"  alpha="95" chained="3, 4"/>
+		<moveTo what="fireSpirit" pos="50,40" delta="true" way="circular" fx="fun:sin(alpha*2)" fy="fun:cos(alpha*3)" zoom="216+bell*32"/>
+	</scene>
 </adventure>

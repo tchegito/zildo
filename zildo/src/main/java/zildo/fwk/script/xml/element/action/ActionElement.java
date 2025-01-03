@@ -77,12 +77,15 @@ public class ActionElement extends LanguageElement {
 	
 	private ZSSwitch switchExpression;
 
-	public FloatExpression[] v;
-	public FloatExpression[] a;
-	public FloatExpression[] f;
+	public FloatExpression[] v;	// Speed
+	public FloatExpression[] a;	// Acceleration
+	public FloatExpression[] f;	// Friction
+	public FloatExpression functionAngleX;
+	public FloatExpression functionAngleY;
 	public FloatExpression alphaA;
 	public FloatExpression alphaV;
 	public FloatExpression zoom;	// Used in 'moveTo'
+	public FloatExpression zoomV;	// Speed applied on zoom
 	public FloatExpression alpha;
 	public int deltaFloor;	// Only for 'moveTo' action
 	public int pv = DEFAULT_PV;
@@ -127,6 +130,7 @@ public class ActionElement extends LanguageElement {
 			if (strReverse != null) {
 				reverse = ZSSwitch.parseForDialog(strReverse);
 			}
+			alphaV = getFloatExpr("alphaV");
 			String temp = readAttribute("z");
 			if (temp != null) {
 				z = new FloatExpression(temp);
@@ -153,6 +157,7 @@ public class ActionElement extends LanguageElement {
 				chainDelay = new FloatExpression(temp.substring(virgulePos+1));
 			}
 			zoom = getFloatExpr("zoom");
+			zoomV = getFloatExpr("zoomV");
 			impact = readAttribute("impact");
 			temp = readAttribute("light");
 			if (temp != null && temp.startsWith("#")) {
@@ -213,6 +218,8 @@ public class ActionElement extends LanguageElement {
 			zoom = getFloatExpr("zoom");
 			deltaFloor = readInt("deltaFloor", 0);
 			skippable = isTrue("skippable");
+			functionAngleX = getFloatExpr("fx");
+			functionAngleY = getFloatExpr("fy");
 		case pos:
 			// Position
 			if (!strPos.isEmpty()) {
@@ -298,7 +305,11 @@ public class ActionElement extends LanguageElement {
 
 		// As several variables are used for different usage (which is bad),
 		// make specific here
-		if (kind == ActionKind.spawn || kind == ActionKind._throw || kind == ActionKind.perso || kind == ActionKind.sprite) {
+		switch (kind) {
+		case spawn:
+		case _throw:
+		case perso:
+		case sprite:
 			if (text != null) {
 				switchExpression = ZSSwitch.parseForDialog(text);
 			}
@@ -308,6 +319,7 @@ public class ActionElement extends LanguageElement {
 			f = read3Coordinates("f");
 			alphaA = getFloatExpr("alphaA");
 			alpha = getFloatExpr("alpha", "-1");
+		default:
 		}
 	}
 

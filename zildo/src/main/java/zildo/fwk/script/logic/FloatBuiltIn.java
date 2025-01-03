@@ -70,6 +70,12 @@ public class FloatBuiltIn implements FloatASTNode {
 			Point p1 = PointEvaluator.fromFloat(params[0].evaluate(context));
 			Point p2 = PointEvaluator.fromFloat(params[1].evaluate(context));
 			return distance(p1, p2);
+		case "cos":	// Returns cosinus
+			double angle = params[0].evaluate(context);
+			return (float) Math.cos(angle);
+		case "sin":	// Returns cosinus
+			angle = params[0].evaluate(context);
+			return (float) Math.sin(angle);
 		case "loc":
 			float lx = params[0].evaluate(context);
 			float ly = params[1].evaluate(context);

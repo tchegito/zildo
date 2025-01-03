@@ -63,7 +63,12 @@ public class Mover {
 	}
 	
 	public void reachTarget() {
+		float ancX = mobile.x;
+		float ancY = mobile.y;
 		Pointf delta = order.move();
+		if (mobile instanceof Element) {
+			((Element)mobile).setAnc(ancX, ancY);
+		}
 		takePeople(delta);
 	}
 	
