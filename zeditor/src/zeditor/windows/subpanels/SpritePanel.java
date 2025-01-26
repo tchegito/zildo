@@ -254,8 +254,8 @@ public class SpritePanel extends JPanel {
 			reverseVertical.setSelected(p_entity.reverse.isVertical());
 			rotation.setSelectedIndex(p_entity.rotation.value);
 			foreground.setSelected(p_entity.isForeground());
-			repeatX.setValue(p_entity.repeatX);
-			repeatY.setValue(p_entity.repeatY);
+			repeatX.setValue((int) p_entity.repeatX);
+			repeatY.setValue((int) p_entity.repeatY);
 			String name = "";
 			name = p_entity.getName();
 			pushable.setSelected(false);
