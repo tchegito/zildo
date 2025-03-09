@@ -48,11 +48,19 @@ public class Pnj5 extends SpriteBanque {
 			
 			// Attacking
 			new Zone(7, 260, 16, 28), new Zone(40, 262, 16, 26), new Zone(71, 260, 19, 28), new Zone(102, 256, 18, 32),
-			new Zone(134, 257, 26, 31), new Zone(166, 264, 18, 24), new Zone(199, 262, 16, 26) // + sprites already set
+			new Zone(134, 257, 26, 31), new Zone(166, 264, 18, 24), new Zone(199, 262, 16, 26), // + sprites already set
+			
+			// Poulpa (47)
+			new Zone(0, 7, 23, 20), new Zone(25, 8, 24, 19), new Zone(51, 4, 18, 23), new Zone(71, 0, 18, 27),
+			
+			// Ice thrower (51)
+			new Zone(0, 109, 23, 27), new Zone(25, 29, 23, 27), new Zone(50, 109, 23, 27), new Zone(74, 109, 25, 27)
 		};
 			
 		pkmChanges = Arrays.asList(new GraphChange[] { 
-				new GraphChange("hoodedAlpha4", 0, 0, true)
+				new GraphChange("hoodedAlpha4", 0, 0, true),
+				new GraphChange("poulpa", 47, 0, false),
+				new GraphChange("thrower", 51, 0, false)
 		});
 	}
 }

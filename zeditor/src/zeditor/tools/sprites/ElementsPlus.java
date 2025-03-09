@@ -192,8 +192,12 @@ public class ElementsPlus extends SpriteBanque {
 				//new Zone(0, 35, 17, 23), new Zone(17, 35, 17, 23),
 				// Dynamite (half burnt)
 				new Zone(133, 33, 10, 13),	// Following is quad's remaining. Feel free to override them
-				new Zone(34, 35, 17, 23), //new Zone(51, 35, 17, 23),
-				new Zone(68, 35, 17, 23), new Zone(85, 35, 17, 23),
+				// Fire spirit (3 sprites animation)
+				new Zone(119, 108, 12, 11),
+				new Zone(131, 108, 12, 11),
+				new Zone(143, 108, 12, 11),
+				//new Zone(34, 35, 17, 23), //new Zone(51, 35, 17, 23), new Zone(68, 35, 17, 23), 
+				//new Zone(85, 35, 17, 23),
 				new Zone(102, 35, 17, 23), new Zone(119, 35, 17, 23),
 				
 				// From here :Objets.png (123)
@@ -327,7 +331,7 @@ public class ElementsPlus extends SpriteBanque {
 				// Fire ring
 				new Zone(110, 85, 12, 10),
 			    // Purple/Blue firefly
-			    new Zone(197, 59, 6, 6), new Zone(211, 59, 6, 6),
+				new Zone(197, 59, 6, 6), new Zone(211, 59, 6, 6),
 				// Fire ball (for dragon) (245)
 			    new Zone(256,0, 41, 42),
 			    // feu follet (Will_o_wist)
@@ -394,6 +398,7 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem2", 71, 0), 
 				new GraphChange("interia7", 115, 0),
 				new GraphChange("elem2", 117, 0),
+				new GraphChange("elem", 118, 0),
 				new GraphChange("objets", 123, 0),
 				new GraphChange("palace1", 135, 0),
 				new GraphChange("objets", 136, 0),

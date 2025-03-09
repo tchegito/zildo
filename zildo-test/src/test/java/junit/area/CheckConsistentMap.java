@@ -96,6 +96,7 @@ public class CheckConsistentMap {
 					case BIG_RAT:
 					case DRAGON:
 					case FIRE_ELEMENTAL:
+					case ICE_ELEMENTAL:
 					case BITEY:
 					case CACTUS:
 					case SCORPION:

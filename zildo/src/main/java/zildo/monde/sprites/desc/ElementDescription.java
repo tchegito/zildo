@@ -131,7 +131,7 @@ public enum ElementDescription implements SpriteDescription {
 	// 242
 	FIRE_RING, 
 	// 243
-	UNUSED, BLUE_FIREFLY,
+	PURPLE_FIREFLY, BLUE_FIREFLY,
 	// 245
 	FIRE_BALL,	// Fireball for dragon
 	// 246

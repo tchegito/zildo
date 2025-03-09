@@ -116,7 +116,13 @@ public class Palais3 extends Banque {
 				// Rambard vertical
 				{16, 176}, {32, 176}, {48, 176},
 				// Crack in the wall
-				{160, 32}, {176, 32}, {192, 32}
+				{160, 32}, {176, 32}, {192, 32},
+				// Grey dall
+				{208, 32}, {208, 48},
+				// Pillar with sphere
+				{224, 48}, {224, 64}, {240, 48},
+				// Green slabs
+				{176, 48}, {192, 48}
 		};
 				
 		coordsInt = c;

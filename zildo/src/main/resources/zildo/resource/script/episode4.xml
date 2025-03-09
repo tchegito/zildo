@@ -1036,6 +1036,56 @@
    	    </loop>
   	</persoAction>
    	
+   	<!-- ice elemental -->
+	<persoAction id="elemIce">
+	    <loop>
+   			<var name="loc:found" value="0"/>
+   			<!-- Look for hero around him -->
+   	        <lookFor who="self" info="ZILDO" sight="true" radius="6">
+				<var name="loc:found" value="1"/>
+	        </lookFor>
+			<if exp="loc:found=1">
+			    <!-- Blink and get to life -->
+			    <sound name="MenuSelectGame"/>
+			    <for var="loc:i" value="5">
+			        <seq who="self" addSpr="0,1" wait="0"/>
+			    </for>
+				<perso who="self" addSpr="2"/>
+			    <wait value="20"/>
+			    <perso who="self" addSpr="3"/>
+			    <wait value="10"/>
+			    <!-- Attract hero to the elemental -->
+			    <var name="loc:seq" value="0"/>
+			    <sound name="Wind"/>
+			    <loop when="loc:found=1">
+				    <var name="loc:deltaX" value="zildo.x-x"/>
+				    <var name="loc:deltaY" value="zildo.y-y"/>
+	   			    <perso who="zildo" vx="loc:deltaX/70" vy="loc:deltaY/70"/>
+	   			    	   			    
+	   			    <for var="loc:j" value="5">
+		   			    <var name="loc:seq" value="(loc:seq+1) % 3"/>
+		   			    <exec script="suckOut(x,y,loc:seq)"/>
+   	   			    </for>
+	   			   	<!-- If hero is out of sight, stop sucking out and declare it -->		    	   			    	   			    	   			    
+				    <lookFor who="self" info="ZILDO" sight="true" radius="6" negative="true">
+						<var name="loc:found" value="0"/>
+			        </lookFor>
+   			    </loop>
+   			    <sound name="Wind" mute="true"/>
+	   	        <wait value="20"/>
+   			    <perso who="zildo" vx="0" vy="0"/>
+		        <!-- Hero is out of sight, elemental rest in peace -->
+		        <sound name="ElementalSleep"/>
+   				<perso who="self" addSpr="2"/>
+			    <wait value="20"/>
+			    <perso who="self" addSpr="1"/>
+			    <wait value="10"/>
+			    <perso who="self" addSpr="0"/>
+    		</if>
+		    <wait value="5"/>
+	    </loop>
+	</persoAction>
+	
    	<scene id="chainGoBack">	<!-- arg0:hook sprite, arg1:chain sprite, arg2-arg3: hero coordinates, arg4:flag to notify chain is entirely back -->
    	    <if expQuest="E#loc:arg0">
    	        <!-- make hook return if it still exists -->

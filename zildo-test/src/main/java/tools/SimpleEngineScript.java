@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import org.junit.Before;
 
+import zildo.fwk.script.logic.FloatExpression;
 import zildo.fwk.script.xml.ScriptReader;
 import zildo.monde.Game;
 import zildo.server.EngineZildo;
@@ -42,6 +43,7 @@ public abstract class SimpleEngineScript extends EngineUT {
 	@Override
 	@Before
 	public void setUp() {
+		FloatExpression.OPTIMIZE = false;
 		EngineZildo.setGame(new Game(false));
 		scriptMgmt = new ScriptManagement();
 		EngineZildo.scriptManagement = scriptMgmt;

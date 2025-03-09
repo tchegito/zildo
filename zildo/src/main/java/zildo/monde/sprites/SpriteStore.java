@@ -30,6 +30,7 @@ import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Point;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -203,10 +204,7 @@ public class SpriteStore {
 	
 	public void shiftAllEntities(int shiftX, int shiftY) {
 		for (SpriteEntity entity : spriteEntities) {
-			entity.x += shiftX;
-			entity.y += shiftY;
-			entity.setAjustedX(entity.getAjustedX() + shiftX);
-			entity.setAjustedY(entity.getAjustedY() + shiftY);
+			entity.shift(new Point(shiftX, shiftY));
 		}
 	}
 	

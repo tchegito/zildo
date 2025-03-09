@@ -287,6 +287,63 @@ public class CheckMapScroll extends EngineUT {
 
 	}
 	
+	@Test
+	public void allCases() {
+		// Polakyg3 => Polakyg4
+		mapUtils.loadMap("polakyg3");
+		persoUtils.removePerso("bleu");
+		persoUtils.removePerso("bleu");
+		PersoPlayer zildo = spawnZildo(269, 160);
+		zildo.setCountKey(1);
+		waitEndOfScripting();
+		
+		// 1) EAST (polakyg3 => polakyg4)
+		Assert.assertEquals(new Point(0, 0), mapUtils.area.getOffset());
+		simulateDirection(1, 0);
+		renderFrames(50);
+		mapUtils.assertCurrent("polakyg4");
+		Assert.assertEquals(new Point(-320, 0), mapUtils.area.getOffset());
+		waitEndOfScroll();
+		
+		// 2) WEST (polakyg4 = > polakyg3)
+		simulateDirection(-1, 0);
+		Assert.assertEquals(new Point(0, 0), EngineZildo.mapManagement.getCurrentMap().getOffset());
+		renderFrames(50);
+		mapUtils.assertCurrent("polakyg3");
+		Assert.assertEquals(new Point(320, 0),  EngineZildo.mapManagement.getPreviousMap().getOffset());
+		
+		// 3) NORTH (chateaucoucou1 => chateaucoucou2)
+		mapUtils.loadMap("chateaucoucou1");
+		zildo.setPos(new Vector2f(80, 48));
+		waitEndOfScripting();
+		simulateDirection(0, -1);
+		renderFrames(50);
+		mapUtils.assertCurrent("chateaucoucou2");
+		Assert.assertEquals(new Point(0, 38*16), EngineZildo.mapManagement.getPreviousMap().getOffset());
+		waitEndOfScroll();
+		
+		// 4) SOUTH (chateaucoucou2 => chateaucoucou1)
+		simulateDirection(0, 1);
+		renderFrames(50);
+		mapUtils.assertCurrent("chateaucoucou1");
+	}
+	
+	@Test
+	public void natureScrollLeft() {
+		// Nature 3 size (20x15) scrollOffset(19, 0)
+		mapUtils.loadMap("nature3");
+		EngineZildo.scriptManagement.accomplishQuest("nature3opened", false);
+		spawnZildo(9 + 19 * 16, 122);
+		waitEndOfScripting();
+		
+		// Nature4 (20x15) scrollOffset(0, 0)
+		simulateDirection(-1, 0);
+		renderFrames(20);
+		waitEndOfScroll();
+		
+		Assert.assertEquals("nature4",  EngineZildo.mapManagement.getCurrentMap().getName());
+	}
+
 	private Point camera() {
 		return ClientEngineZildo.mapDisplay.getCamera();
 	}

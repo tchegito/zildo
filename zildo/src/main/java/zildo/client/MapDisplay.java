@@ -35,7 +35,7 @@ public class MapDisplay {
 	public static int CENTER_X = 16 * 10;
 	public static int CENTER_Y = 16 * 6;
 	
-    private Point camera;		// Current camera locatino
+    private Point camera;		// Current camera location
     private Point targetCamera;	// Target camera location (if not null, camera moves smoothly to it)
     private final int cameraSpeed=2;
     private SpriteEntity focused;

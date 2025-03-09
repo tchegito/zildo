@@ -899,6 +899,8 @@ public class PersoNJ extends Perso {
 			}
 			break;
 		case FIRE_ELEMENTAL:
+		case ICE_ELEMENTAL:
+		case POULPA:
 		case COAL:
 		case COAL_COLD:
 		case BITEY:
@@ -966,7 +968,6 @@ public class PersoNJ extends Perso {
 				reverse = deltaMoveX<0 ? Reverse.HORIZONTAL : Reverse.NOTHING; 
 			}
 			break;
-			
 		default:
 			add_spr = angle.value * 2 + computeSeq(2) % 2;
 			break;

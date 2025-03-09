@@ -19,8 +19,6 @@ public class CheckScriptVariables extends SimpleEngineScript {
 	/** Check combination test operator "|" and "&" respectively "OR" and "AND" operators. **/ 
 	@Test
 	public void conditionalIf() {
-		FloatExpression.OPTIMIZE = false;
-		
 		FloatExpression expr = new FloatExpression("a=7 | a=14");
 		Assert.assertEquals("OR(EQUALS(a, 7.0), EQUALS(a, 14.0))", expr.toString());
 		

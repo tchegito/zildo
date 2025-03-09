@@ -231,17 +231,9 @@ public abstract class TileEngine {
 
 				int sizeX = theMap.getDim_x();
 				int sizeY = theMap.getDim_y();
-				int dx = sizeX;
-				int dy = sizeY;
 				if (offset.x < 0 && offset.y != 0) {
 					// On transition between "cavef3" and "cavef4", right border of cavef3 was not rendered
 					sizeX += -(offset.x) >> 4;
-				}
-				if (offset.x > 0) {
-					dx = offset.x >> 4; 
-				}
-				if (offset.y > 0) {
-					dy = offset.y >> 4;
 				}
 
 				// AreaAccessor will get only the highest floor, in game rendering
@@ -258,6 +250,8 @@ public abstract class TileEngine {
 						continue;
 					}
 
+					//System.out.print(theMap.getName()+"-"+y);
+
 					for (int ax = 0; ax < sizeX; ax++)
 					{
 						int x = ax + (offset.x >> 4);
@@ -268,13 +262,17 @@ public abstract class TileEngine {
 						int n_motif = 0;
 						// Get corresponding case on the map
 
-						int mapX = (x+dx) % dx;
-						int mapY = (y+dy) % dy;
+						int mapX = ax; //% dx;
+						int mapY = ay; //% dy;
+						if (mapX >= sizeX || mapY >= sizeY || mapX < 0 || mapY < 0) {
+							continue;
+						}
 						AccessedCase accCase = areaAccessor.get_mapcase(mapX, mapY);
 						Case mapCase = accCase.c;
 						int floor = accCase.floor;
 						
 						if (mapCase != null) {
+							//System.out.print(mapX+" ");
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
 							n_motif = Case.getAnimatedMotif(TileLevel.BACK, back, compteur_animation);
@@ -316,6 +314,7 @@ public abstract class TileEngine {
 							mapCase.setModified(false);
 						}
 					}
+					//System.out.println();
 				}
 			}
 			meshBACK.endInitialization();

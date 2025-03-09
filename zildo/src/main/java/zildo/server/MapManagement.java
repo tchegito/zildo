@@ -698,7 +698,10 @@ public class MapManagement {
 			String newMapName = p_changingMapPoint.getMapname();
 			int previousDimX = currentMap.getDim_x();
 			int previousDimY = currentMap.getDim_y();
-			boolean isAlongBorder = p_changingMapPoint.isBorder() && currentMap.isAlongBorder((int) zildo.getX(), (int) zildo.getY());
+			Point scrollOffset = currentMap.getScrollOffset();
+			boolean isAlongBorder = p_changingMapPoint.isBorder() && 
+					currentMap.isAlongBorder((int) zildo.getX() - scrollOffset.x * 16, 
+							(int) zildo.getY() - scrollOffset.y * 16);
 
 			EngineZildo.spriteManagement.notifyLoadingMap(true, isAlongBorder);
 			
@@ -710,6 +713,7 @@ public class MapManagement {
 			ChainingPoint chPointTarget = currentMap.getTarget(previousMapName,
 					orderX, orderY);
 			if (chPointTarget == null || isAlongBorder) {
+				Point newScrollOffset = getCurrentMap().getScrollOffset();
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
 				if (!zildo.isOnPlatform()) {
@@ -729,7 +733,7 @@ public class MapManagement {
 						dest.x = (int) zildo.x - 16;
 						chosen = Angle.OUEST;
 					} else if (zildo.x > previousDimX * 16 - 16) {
-						zildo.setX(8 - 16);
+						zildo.setX(8 - 16 + newScrollOffset.x * 16);
 						dest.x = (int) zildo.x + 16;
 						chosen = Angle.EST;
 					}

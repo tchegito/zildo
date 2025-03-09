@@ -39,7 +39,8 @@ public enum EngineFX {
 	YELLOW_HALO,	// When hero is invulnerable, and for selected items in inventory
 	STAR,
 	CLIP,
-	FIRE;
+	FIRE,	// Replace sprite by a flame
+	BURNING;	// Add a burning flame to the sprite
 	
 	public final Vector4f darkColor;
 	public final Vector4f brightColor;

@@ -1832,7 +1832,7 @@ public class Area implements EasySerializable {
 		Angle angleShift = p_mapScrollAngle.opposite();
 		Point coords = angleShift.coords;
 		Area mapReference = nextMap;
-		Point scrollOffset = mapReference.getScrollOffset().multiply(16);
+		Point scrollOffsetToApply = mapReference.getScrollOffset().multiply(16);
 		switch (angleShift) {
 		case OUEST:
 		case NORD:
@@ -1840,17 +1840,22 @@ public class Area implements EasySerializable {
 		default:
 		}
 		if (!mapBuilder) {
-			scrollOffset = mapReference.getScrollOffset().multiply(16);
+			scrollOffsetToApply = mapReference.getScrollOffset().multiply(16);
 		}
 		
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
 						 	  coords.y * 16 * mapReference.getDim_y());
 		
+		// Particular cases with scroll offset (really tough !)
 		if (p_mapScrollAngle.isVertical()) { //.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
-			scrollOffset.x = 0;
+			scrollOffsetToApply.x = 0;
+		} else if (p_mapScrollAngle.isHorizontal() && getScrollOffset().x != 0) {
+			scrollOffsetToApply.x = getScrollOffset().x * 16;
+		} else if (p_mapScrollAngle.isHorizontal() && nextMap.getScrollOffset().x != 0) {
+			scrollOffsetToApply.x = -nextMap.getScrollOffset().x * 16;
 		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props
-		ret.sub(scrollOffset);
+		ret.sub(scrollOffsetToApply);
 		return ret;
 	}
 	

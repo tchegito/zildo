@@ -6,11 +6,25 @@ import org.junit.Test;
 import tools.EngineScriptUT;
 import zildo.fwk.script.model.point.PointEvaluator;
 import zildo.fwk.script.xml.ScriptReader;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 
+/** JUnit test to validate following built-in functions:
+ * project(<who>, <angle>, <distance>)
+ * collide(<x>, <y>)
+ * persoloc(<who>)
+ * angle(<who>, <who>)
+ * dist(<who>, <loc>)
+ * cos(<alpha>)
+ * sin(<alpha>)
+ * 
+ * @author Tchegito
+ *
+ */
 public class CheckBuiltinScript extends EngineScriptUT {
 	
 	@Test
@@ -46,5 +60,17 @@ public class CheckBuiltinScript extends EngineScriptUT {
 		PersoNJ hooded = (PersoNJ) persoUtils.persoByName("hooded");
 		Assert.assertNotNull(hooded);
 		Assert.assertEquals(new Point(93, 146), new Point(hooded.x, hooded.y));
+	}
+	
+	@Test
+	public void trigo() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/builtin"));
+		waitEndOfScripting();
+		
+		executeScene("testTrigo");
+		waitEndOfScripting();
+		Element fireSpirit = (Element) findEntityByDesc(ElementDescription.FIRE_SPIRIT1);
+		Assert.assertNotNull(fireSpirit);
+		System.out.println(fireSpirit);
 	}
 }
