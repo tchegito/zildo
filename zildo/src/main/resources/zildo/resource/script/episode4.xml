@@ -223,6 +223,10 @@
 			<var name="seqFire" value="0"/>
 		</condition>
 		
+		<condition name="nature4">
+		    <perso who="ice" action="elemIce"/>
+		</condition>
+		
    	</mapScript>
 
    	<quest name="prisonext">
@@ -1060,11 +1064,11 @@
 			    <loop when="loc:found=1">
 				    <var name="loc:deltaX" value="zildo.x-x"/>
 				    <var name="loc:deltaY" value="zildo.y-y"/>
-	   			    <perso who="zildo" vx="loc:deltaX/70" vy="loc:deltaY/70"/>
+	   			    <perso who="zildo" vx="loc:deltaX/60" vy="loc:deltaY/60"/>
 	   			    	   			    
 	   			    <for var="loc:j" value="5">
 		   			    <var name="loc:seq" value="(loc:seq+1) % 3"/>
-		   			    <exec script="suckOut(x,y,loc:seq)"/>
+		   			    <exec script="suckIn(x,y,loc:seq)"/>
    	   			    </for>
 	   			   	<!-- If hero is out of sight, stop sucking out and declare it -->		    	   			    	   			    	   			    
 				    <lookFor who="self" info="ZILDO" sight="true" radius="6" negative="true">
@@ -1086,6 +1090,30 @@
 	    </loop>
 	</persoAction>
 	
+	<!-- Blow wind sprites in 6 directions under ice elemental -->
+	<scene id="suckIn"> <!-- Arguments: x,y, seq (=position in sprite sequence [0..2] -->
+	    <actions>
+		    <if exp="loc:arg2 = 0">
+		        <actions>
+				    <spawn what="loc:air" type="FIREWIND1" pos="loc:arg0-3-6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="-1" fx="0.1" fz="0.1" vz="-8/6" z="12" reverse="192"/>
+			    	<spawn what="loc:air2" type="FIREWIND1" pos="loc:arg0+3+6,loc:arg1+2+8" alpha="130+80*random" alphaA="-1" vx="1" fx="0.1" fz="0.1" vz="-8/6" z="12" reverse="64"/>
+		        </actions>
+			</if>
+		    <if exp="loc:arg2 = 1">
+		        <actions>
+	     	   		<spawn what="loc:air" type="FIREWIND2" pos="loc:arg0+1-4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="-2/3" fx="0.1" fz="0.1" vz="-2" z="14" />
+				    <spawn what="loc:air2" type="FIREWIND2" pos="loc:arg0+1+4,loc:arg1+2+12" alpha="130+80*random" alphaA="-1" vx="2/3" fx="0.1" fz="0.1" vz="-2" z="14" reverse="64"/>
+				</actions>
+		   	</if>
+		    <if exp="loc:arg2 = 2">
+		        <actions>
+			    	<spawn what="loc:air" type="FIREWIND3" pos="loc:arg0-1-2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="-1/3" fx="0.1" fz="0.1" vz="-15/6" z="16" reverse="192"/>
+			    	<spawn what="loc:air2" type="FIREWIND3" pos="loc:arg0+1+2,loc:arg1+2+20" alpha="130+80*random" alphaA="-1" vx="1/3" fx="0.1" fz="0.1" vz="-15/6" z="16" reverse="192"/>
+		        </actions>
+		    </if>
+	    </actions>
+   	</scene>
+   	
    	<scene id="chainGoBack">	<!-- arg0:hook sprite, arg1:chain sprite, arg2-arg3: hero coordinates, arg4:flag to notify chain is entirely back -->
    	    <if expQuest="E#loc:arg0">
    	        <!-- make hook return if it still exists -->
