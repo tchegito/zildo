@@ -1,9 +1,9 @@
 package junit.perso;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 import tools.EngineUT;
 import zildo.fwk.input.KeyboardHandler.Keys;
@@ -363,6 +363,35 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(maxVy < 0.5);
 	}
 	
+	@Test
+	public void princessPushedByIceElemental() {
+		mapUtils.loadMap("nature4");
+		PersoPlayer hero = spawnZildo(235,107);
+		waitEndOfScripting();
+		
+		// TODO: le perso sera sûrement déplacé par la suite, mais il faudra conserver l'idée de ce test
+		Perso ice = persoUtils.persoByName("ice");
+		while (ice.getAddSpr() == 0) {
+			renderFrames(1);
+		}
+		// Wait for elemental animation sequence before he blows on hero
+		renderFrames(63);
+		Assert.assertTrue(hero.getVx() != 0);
+		
+		// Go to the next map
+		simulateDirection(2, 0);
+		waitChangingMap();
+		simulateDirection(0, 0);
+		renderFrames(15);
+		// Wait for end of scroll and check that we're in the expected map
+		waitEndOfScroll();
+		mapUtils.assertCurrent("nature3");
+		
+		// Now check if hero is still pushed by an absent breath
+		renderFrames(5);
+		Assert.assertTrue(hero.getVx() == 0);
+		
+	}
 	private Perso preparePersoAction() throws Exception {
 		loadXMLAsString(guyScript);
 		EngineZildo.scriptManagement.accomplishQuest("findDragonPortalKey", false);
