@@ -205,6 +205,46 @@
         <herospecial value="2"/>		
 	</scene>
 	
+	<scene id="shortStairsDownLeft">
+        <herospecial value="1"/>
+		<sound name="ZildoDescend" />
+		<moveTo who="zildo" pos="zildo.x - zildo.x % 16 + 8, zildo.y-2"/>
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="-3,-5" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="-4,-3" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
+	<scene id="shortStairsDownRightEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="2,-16" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="1,2" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="2,8" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
+		<scene id="shortStairsUpRight">
+        <herospecial value="1"/>
+		<sound name="ZildoDescend" />
+		<moveTo who="zildo" pos="zildo.x - zildo.x % 16 + 8, zildo.y-2"/>
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="3,-5" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="4,-3" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
+	<scene id="shortStairsUpRightEnd">
+        <herospecial value="1"/>
+        <pos who="zildo" pos="4,-2" delta="true" />
+		<sound name="ZildoDescend" />
+		<fadeIn type="2" />
+		<moveTo who="zildo" pos="-6,2" delta="true" unstoppable="true" speed="0.1" />
+		<moveTo who="zildo" pos="-2,10" delta="true" unstoppable="true" speed="0.1" />
+        <herospecial value="2"/>		
+	</scene>
+	
 	<scene id="death">
         <herospecial value="1"/> <!-- Block everyone but hero -->
 		<music name="ZildoMort"/>

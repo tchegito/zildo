@@ -167,7 +167,8 @@ public enum ElementDescription implements SpriteDescription {
 	HOOKCHAIN, HOOK, 
 	// Symbols on slabs
 	SLABS1, SLABS2, SLABS3, SLABS4, SLABS5, SLABS6, SLABS7, SLABS8, SLABS9, SLABS10,
-	BUNCH_LEAVESFORK;
+	BUNCH_LEAVESFORK,
+	WOODEN_BAR;
 	
 	Boolean damage;
 	

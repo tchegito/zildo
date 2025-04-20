@@ -223,10 +223,31 @@
 			<var name="seqFire" value="0"/>
 		</condition>
 		
-		<condition name="nature4">
-		    <perso who="ice" action="elemIce"/>
-		</condition>
-		
+		<condition name="natureb1">
+		    <wait value="150"/> <!-- time for going down the stairs -->
+		    <sound name="MenuSelect"/>
+		    <wait value="10"/>
+		    <sound name="MenuSelect"/>
+		    <wait value="14"/>
+		    <sound name="MenuSelect"/>
+		    <music name=""/>
+		    <wait value="100"/>
+		    <moveTo who="zildo" pos="78,87" speed="1"/>
+		    <wait value="50"/>
+		    <speak who="zildo" text="natureb1.roxy"/>
+		    <angle who="zildo" value="3"/>
+		    <wait value="30"/>
+		    <angle who="zildo" value="1"/>
+		    <wait value="12"/>
+		    <sound name="MenuSelect"/>
+		    <wait value="7"/>
+		    <moveTo who="zildo" pos="64,93" speed="1"/>
+		    <wait value="18"/>
+		    <sound name="MenuSelect"/>
+		    <wait value="60"/>		    
+		    <speak who="zildo" text="natureb1.roxy2"/>
+		    <music name="Nature"/>
+   		</condition>
    	</mapScript>
 
    	<quest name="prisonext">

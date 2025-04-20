@@ -133,7 +133,7 @@ public class AreaChecker {
 			} else if (ch.isVertical()) {
 				mustBeMasked = horizontal_mustBeMasked;
 				x -= 3;
-			} else {
+			} else if (!ch.isSingle()) {
 				mustBeMasked = vertical_mustBeMasked;
 				// Ok we got an horizontal one => find the walkable side
 				y += 2;

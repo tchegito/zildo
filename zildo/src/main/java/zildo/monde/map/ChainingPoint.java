@@ -51,7 +51,10 @@ public class ChainingPoint implements EasySerializable {
 
 		PIT("fallPit", ""),
 		WOODSTAIRS_CORNER_LEFT("woodStairsUpCornerLeft", "woodStairsDownEnd"),
-		WOODSTAIRS_END("woodStairsDown", "woodStairsUpEnd");
+		WOODSTAIRS_END("woodStairsDown", "woodStairsUpEnd"),
+		// Stairs in nature palace
+		STAIRS_SINGLE_CORNER_LEFT("shortStairsDownLeft", "shortStairsDownRightEnd"),
+		STAIRS_SINGLE_CORNER_RIGHT("shortStairsUpRight", "shortStairsUpRightEnd");
 		
 		public final String scriptIn, scriptOut;
 		
@@ -168,6 +171,10 @@ public class ChainingPoint implements EasySerializable {
 		case 10*256 + 129:
 		case 10*256 + 130:
 			return MapLink.STAIRS_SHORT_CORNER_RIGHT;
+		case 256*9 + 192:
+			return MapLink.STAIRS_SINGLE_CORNER_LEFT;
+		case 256*9 + 191:
+			return MapLink.STAIRS_SINGLE_CORNER_RIGHT;
 		default:
 			return MapLink.REGULAR;
 		}

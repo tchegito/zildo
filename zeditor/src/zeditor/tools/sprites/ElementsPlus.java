@@ -390,6 +390,7 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 515, 13, 12), new Zone(14, 515, 13, 12), new Zone(28, 515, 13, 12),
 				new Zone(42, 515, 13, 12), new Zone(56, 515, 13, 12),
 				new Zone(282, 108, 19, 12),	// Bunch of leaves on a fork
+				new Zone(0, 317, 8, 52)	// Big wooden bar
 				
 				
 		};

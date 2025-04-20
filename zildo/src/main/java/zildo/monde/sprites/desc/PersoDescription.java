@@ -144,7 +144,7 @@ public enum PersoDescription implements SpriteDescription {
 	HOODED(/*Idle face*/ 469, 470, 471, 472, /*Walking*/ 473, 474, 475, 476,
 			/* Attacking */509, 510, 511, 512, 513, 514, 
 			/* Bouncing */ 491, 492, 493, 494, 495, 496, 497, 498),
-	POULPA(516, 517, 518, 519),
+	POULPA(516, 517, 518, 519, 523, 524, 525, 526),
 	ICE_ELEMENTAL(520, 521, 522, 523),
 	
 	// 22

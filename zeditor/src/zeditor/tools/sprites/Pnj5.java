@@ -54,7 +54,9 @@ public class Pnj5 extends SpriteBanque {
 			new Zone(0, 7, 23, 20), new Zone(25, 8, 24, 19), new Zone(51, 4, 18, 23), new Zone(71, 0, 18, 27),
 			
 			// Ice thrower (51)
-			new Zone(0, 109, 23, 27), new Zone(25, 109, 23, 27), new Zone(50, 109, 23, 27), new Zone(74, 109, 25, 27)
+			new Zone(0, 109, 23, 27), new Zone(25, 109, 23, 27), new Zone(50, 109, 23, 27), new Zone(74, 109, 25, 27),
+			// Poulpa suite (55)
+			new Zone(0, 38, 23, 22), new Zone(24, 36, 20, 24), new Zone(45, 33, 16, 27), new Zone(62, 30, 15, 30)
 		};
 			
 		pkmChanges = Arrays.asList(new GraphChange[] { 
