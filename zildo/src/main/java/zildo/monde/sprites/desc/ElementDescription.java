@@ -222,6 +222,7 @@ public enum ElementDescription implements SpriteDescription {
 		case BAGSAND:
 		case FLOWERVASE:
 		case CHAIR:
+		case WOODEN_BAR:
 			return true;
 		default:
 			return false;

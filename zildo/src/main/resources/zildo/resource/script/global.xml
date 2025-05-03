@@ -17,6 +17,7 @@
 	   	<nameReplace who="isidore" name="???"/>
 	    <nameReplace who="tony" name="bandit"/>
 	    <nameReplace who="emissaire" name="gard"/>
+	    <nameReplace who="poulpa" name="???"/>
 	    
 	    <var name="BilelIgorVillage" type="_string" value="[[EMPTY_BAG, 1], 100, 2], [[BLUEDROP, 1], 15, -1], [[DYNAMITE, 1], 100, 2]"/>
 	    <var name="Dizzie" type="_string" value="[[DYNAMITE, 1], 15, 20]"/>

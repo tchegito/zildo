@@ -186,29 +186,31 @@ public class PathFinder {
         MouvementPerso mvt=mobile.getQuel_deplacement();
         Zone zone=mobile.getZone_deplacement();
         
-		while (true) {
-			target=new Pointf(x, y);
-	
-			// On déplace le perso soit horizontalement, soit verticalement,
-			// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
-			if (j%2==0 || mvt.isDiagonal() )
-				target.x+= (16*Math.random()*j) - 8*j;
-	
-			if (!mvt.isOnlyHorizontal() && (j%2==1 || mvt.isDiagonal()) )
-				target.y+= (16*Math.random()*j) - 8*j;
-	
-			j--; // On diminue le rayon jusqu'à être dans la zone
-	
-			if ((target.x>=zone.x1 && target.y>=zone.y1 &&
-				 target.x<=zone.x2 && target.y<=zone.y2) ||
-				(j==-1) )
-				break;
-		}
-	
-	    if (j==-1) {  // En cas de pépin
-			target.x=zone.x1;
-			target.y=zone.y1;
-	    }
+        if (zone != null) {
+			while (true) {	// TODO: inelegant. We'd rather try a fixed amount of times
+				target=new Pointf(x, y);
+		
+				// On déplace le perso soit horizontalement, soit verticalement,
+				// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
+				if (j%2==0 || mvt.isDiagonal() )
+					target.x+= (16*Math.random()*j) - 8*j;
+		
+				if (!mvt.isOnlyHorizontal() && (j%2==1 || mvt.isDiagonal()) )
+					target.y+= (16*Math.random()*j) - 8*j;
+		
+				j--; // On diminue le rayon jusqu'à être dans la zone
+		
+				if ((target.x>=zone.x1 && target.y>=zone.y1 &&
+					 target.x<=zone.x2 && target.y<=zone.y2) ||
+					(j==-1) )
+					break;
+			}
+		
+		    if (j==-1) {  // En cas de pépin
+				target.x=zone.x1;
+				target.y=zone.y1;
+		    }
+        }
 	}
 
 	public boolean hasReachedTarget() {

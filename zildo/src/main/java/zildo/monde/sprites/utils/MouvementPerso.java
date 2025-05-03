@@ -46,6 +46,7 @@ public enum MouvementPerso {
 	MOBILE_WAIT(17),	// Character will wait if something is on his way (contrary to default mode, where target becomes NULL when he's blocked)
 						// Plus: he ask blocking people to leave, except if it's the hero
 	//IMMATERIAL(18),	// No collision and untouchable (removed in favor of FlagPerso.F_IMMATERIAL)
+	PHYSIC(18),		// Subjected to physics move (speed and acceleration)
 	SPITFIRE(19),	// For dragon
 	RETRACTED(20),	// For dragon too, when he's diving into lava
 	FREEFLY(21),	// For vulture, with z as target

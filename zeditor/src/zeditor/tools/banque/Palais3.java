@@ -122,7 +122,11 @@ public class Palais3 extends Banque {
 				// Pillar with sphere
 				{224, 48}, {224, 64}, {240, 48},
 				// Green slabs
-				{176, 48}, {192, 48}
+				{176, 48}, {192, 48},
+				// Stairs
+				{288, 0}, {288, 16}, 
+				// Edge
+				{64, 144}, {80, 144}
 		};
 				
 		coordsInt = c;

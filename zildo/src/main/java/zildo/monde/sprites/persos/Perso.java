@@ -831,8 +831,10 @@ public abstract class Perso extends Element {
 			case 14 + 256 * 10:
 				coeffWhiteLight = tileLight.forRotatedTile(1, x, y, tile.rotation);
 				break;
-			case 162 + 256 * 9:
+			case 162 + 256 * 9:	// Light before alcova in Nature palace
 			case 163 + 256 * 9:
+			case 87 + 256 * 9: case 88 + 256 * 9:
+			case 58 + 256 * 9: case 59 + 256 * 9:
 				setLight(0xFFDD7D); // 241 221 125
 				coeffWhiteLight = -1;
 				break;
@@ -869,8 +871,10 @@ public abstract class Perso extends Element {
 				// Water
 				if (!flying && mouvement != MouvementZildo.TOMBE) {
 					inWater = true;
-					snd = footWater.getSound();
-					repeatSound = true;
+					if (z == 0) {
+						snd = footWater.getSound();
+						repeatSound = true;
+					}
 				}
 				break;
 			case 857:
@@ -1017,7 +1021,7 @@ public abstract class Perso extends Element {
 			onmap = area.get_mapcase(cx, cy).getBackTile().getValue();
 			if (onmap == 108) { // Ponton
 				diveAndWound();
-			} else {
+			} else if (z == 0) {
 				// Fall slipping forward
 				vx = deltaMoveX / 20;
 				vy = deltaMoveY / 20;
@@ -1325,6 +1329,10 @@ public abstract class Perso extends Element {
 				break;
 			case BOTTOMLESS:
 				walkTile(false); // Make hero fall if his feet are not feeling the ground
+				if (!ghost) {
+					// Just the sound
+					EngineZildo.soundManagement.broadcastSound(BankSound.ZildoAtterit, this);
+				}
 				break;
 			case WATER_MUD:
 				inWater = true; // no break => we want explicitly that player lands on ground

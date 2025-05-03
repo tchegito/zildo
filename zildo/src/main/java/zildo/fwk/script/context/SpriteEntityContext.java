@@ -56,6 +56,12 @@ public class SpriteEntityContext extends LocaleVarContext {
 			} else if ("z".equals(key)) {
 				return entity.z;
 			}
+		} else if (key.length() == 10) {
+			if ("deltaMoveX".equals(key)) {
+				return ((Perso)entity).deltaMoveX;
+			} else if ("deltaMoveY".equals(key)) {
+				return ((Perso)entity).deltaMoveY;
+			}
 		} else {
 			if ("attente".equals(key)) {
 				return perso.getAttente();

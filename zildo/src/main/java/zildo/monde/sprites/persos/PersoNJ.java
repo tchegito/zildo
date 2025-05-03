@@ -285,7 +285,7 @@ public class PersoNJ extends Perso {
 			walkTile(true);
 		} else {
 			Area area = EngineZildo.mapManagement.getCurrentMap();
-			if (!isAlerte() && quel_deplacement.isAlertable() && area.isAnAlertAtLocation(x, y)) {
+			if (!isAlerte() && info != PersoInfo.ZILDO && quel_deplacement.isAlertable() && area.isAnAlertAtLocation(x, y)) {
 				setAlerte(true);
 			}
 			// Common moves
@@ -403,6 +403,9 @@ public class PersoNJ extends Perso {
 					Pointf p = pathFinder.reachDestination(0);
 					x=p.x;
 					y=p.y;
+					break;
+				case PHYSIC:
+					physicMoveWithCollision();
 					break;
 				default:
 					break;
