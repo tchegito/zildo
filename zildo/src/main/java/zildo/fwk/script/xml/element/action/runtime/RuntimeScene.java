@@ -35,7 +35,7 @@ import zildo.server.state.ScriptCall;
 public class RuntimeScene extends RuntimeModifiableElement {
 
 	public final String id;
-	public boolean locked;	// TODO: See if it could be final
+	public final boolean locked;
 	
 	public final List<RuntimeAction> actions;
 	public final SceneElement model;

@@ -207,10 +207,11 @@ public class ScriptManagement {
     public void execute(List<LanguageElement> p_actions, boolean p_finalEvent, QuestElement p_quest, boolean p_topPriority, 
     		IEvaluationContext p_context, boolean p_locked, ScriptProcess p_caller) {
     	// Create a RuntimeScene from the given actions
-		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, p_locked, null);
+    	boolean locked = p_locked;
 		if (p_caller != null) {	// Sub process locking should match with main one
-			scene.locked = p_caller.scene.locked;
+			locked = p_caller.scene.locked;
 		}
+		RuntimeScene scene=new RuntimeScene(p_actions, p_quest, locked, null);
 		// And execute this list
 		scriptExecutor.execute(scene, p_finalEvent, p_topPriority, p_context, p_caller);
 		cached_isScripting = null;

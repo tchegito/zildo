@@ -252,7 +252,21 @@
 		    <markQuest name="hearPoulpa" value="true"/>
 		    <exec script="backupGame"/>
    		</condition>
-   	</mapScript>
+   		
+		<condition name="natureb1" exp="slabPoulpa">
+		    <activate what="poulporte" value="true"/>
+		    <if expQuest="!poulpaWood1">
+				<spawn who="poulpa" type="POULPA" info="ZILDO" pos="116,134"/>
+				<perso who="poulpa" action="poulpa"/>
+				<if expQuest="talkPoulpa">
+				    <pos who="poulpa" pos="268,150"/>
+				</if>
+			</if>
+		    <if expQuest="poulpaWood1">
+		        <pos what="bar" pos="0,32" delta="true"/>
+		    </if>
+   		</condition>
+	</mapScript>
 
    	<quest name="prisonext">
    	    <trigger>
@@ -623,9 +637,52 @@
 	       	<moveTo who="poulpa" pos="116,134" unstoppable="false"/>
 	       	<speak who="poulpa" text="natureb1.poulpa2"/>
    		</action>
+        <history>
+            <!-- History is triggered AFTER this quest is over -->
+			<nameReplace who="poulpa" name="poulpa"/>
+        </history>
+	</quest>
+   	
+   	<quest name="talkPoulpa" locked="false">
+   	    <trigger>
+   	        <location name="natureb1" tilePos="7,5"/>
+   	        <questDone name="slabPoulpa"/>
+   	    </trigger>
+   	    <action>
+	       	<speak who="poulpa" text="natureb1.poulpa3"/>
+	       	<moveTo who="poulpa" pos="10,0" delta="true"/>
+	       	<wait value="20"/>
+	       	<speak who="poulpa" text="natureb1.poulpa4"/>
+	       	<moveTo who="poulpa" pos="268,150" unblock="true"/>
+	    </action>
+   	</quest>
+
+   	<quest name="poulpaWood1">
+   	    <trigger>
+   	        <location name="natureb1" pos="261,71" radius="1"/>
+   	        <questDone name="talkPoulpa"/>
+   	    </trigger>
+   	    <action>
+   	        <moveTo who="poulpa" pos="267,130"/>
+   	        <perso who="poulpa" action=""/>
+			<seq who="poulpa" addSpr="4,5,6,7" wait="4"/>
+   	        <moveTo who="poulpa" pos="0,-16" delta="true" speed="0.3" unstoppable="true"/>
+			<seq who="poulpa" addSpr="6,7,6,7" wait="5"/>
+   	        			
+   	        <actions>
+	        	<sound name="ZildoPousse"/>
+   	        	<moveTo who="poulpa" pos="0,32" delta="true" speed="0.4" unstoppable="true" />
+	        	<moveTo what="bar" pos="0,32" delta="true" speed="0.4" unblock="true"/>
+		    </actions>
+		    <wait value="10"/>
+			<seq who="poulpa" addSpr="7,6,5,4,3" wait="4"/>
+   	        <perso who="poulpa" action="poulpa"/>
+   	        <speak who="poulpa" text="natureb1.poulpa5"/>
+		</action>
    	</quest>
    	
    	<scene id="spawnFireSpirit">
+   	    <sound name="Lighting"/>	  
   	    <spawn what="fireSpirit" type="FIRE_SPIRIT1" pos="160, 100" z="10" alpha="95" chained="3, 4"/>
 		<loop>
 			<actions>
@@ -640,7 +697,7 @@
    	    <trigger>
    	        <location name="nature6"/>
 			<fall type="FIRE_SPIRIT1" name="fireSpirit_0"/>
-			<questDone name="slabNature6_both"/>   	    
+			<questDone name="slabNature6_both"/>
    	    </trigger>
    	    <action>
    	        <exec script="spawnLetter"/>
@@ -657,6 +714,7 @@
    	    <spawn what="letter" type="seqFire=0:SLABS9,seqFire=1:SLABS4,seqFire=2:SLABS1,SLABS10" pos="162,110" z="10" az="0.01" 
    	        zoom="255" zoomV="2" 
    	        alphaV="-0.8" light="#e6a61e"/>
+		<sound name="Sort"/>	  
    	    <var name="seqFire" value="(seqFire+1) % 4"/>
    	    <markQuest name="slabNature6_green1" value="false"/>
 	    <markQuest name="slabNature6_green2" value="false"/>

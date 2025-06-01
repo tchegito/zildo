@@ -62,7 +62,8 @@ public class Pnj5 extends SpriteBanque {
 		pkmChanges = Arrays.asList(new GraphChange[] { 
 				new GraphChange("hoodedAlpha4", 0, 0, true),
 				new GraphChange("poulpa", 47, 0, false),
-				new GraphChange("thrower", 51, 0, false)
+				new GraphChange("thrower", 51, 0, false),
+				new GraphChange("poulpa", 55, 0, false)
 		});
 	}
 }

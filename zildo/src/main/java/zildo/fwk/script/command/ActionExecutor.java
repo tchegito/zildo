@@ -194,6 +194,8 @@ public class ActionExecutor extends RuntimeExecutor {
 				} else {
 					SpriteEntity entity = getNamedEntity(p_action.what);
 					if (location != null) {
+						entity.setAjustedX((int) (entity.getAjustedX() + location.x - entity.x));
+						entity.setAjustedY((int) (entity.getAjustedY() + location.y - entity.y));
 						entity.x = location.x;
 						entity.y = location.y;
 					}

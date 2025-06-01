@@ -172,12 +172,16 @@ public abstract class AnyElement {
     }
     
     protected Point readPoint(String p_attrName) {
+    	try {
     	String strPos = readAttribute(p_attrName);
 		if (strPos != null) {
 			return Point.fromString(strPos);
 		} else {
 			return null;
 		}
+    	} catch (Exception e) {
+    		throw new RuntimeException("Unable to read attribute "+p_attrName, e);
+    	}
     }
     
     /**
