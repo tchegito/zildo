@@ -256,7 +256,7 @@
 		<condition name="natureb1" exp="slabPoulpa">
 		    <activate what="poulporte" value="true"/>
 		    <if expQuest="!poulpaWood1">
-				<spawn who="poulpa" type="POULPA" info="ZILDO" pos="116,134"/>
+				<spawn who="poulpa" type="POULPA" info="NEUTRAL" pos="116,134"/>
 				<perso who="poulpa" action="poulpa"/>
 				<if expQuest="talkPoulpa">
 				    <pos who="poulpa" pos="268,150"/>
@@ -629,8 +629,10 @@
    		</trigger>
    		<action>
 	       	<activate what="poulporte" value="true"/>
+	       	<music name=""/>
 	       	<wait value="50"/>
-	       	<spawn who="poulpa" type="POULPA" info="ZILDO" pos="0,175"/>
+	       	<music name="Poulpa"/>
+	       	<spawn who="poulpa" type="POULPA" info="NEUTRAL" pos="0,175"/>
 	       	<perso who="poulpa" action="poulpa"/>
 	       	<moveTo who="poulpa" pos="80,0" delta="true" unstoppable="true"/>
 	       	<speak who="poulpa" text="natureb1.poulpa"/>
