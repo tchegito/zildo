@@ -998,7 +998,7 @@
 			<markQuest name="cavef6_platef6_up" value="false"/>
 	    </condition>
 		<condition name="cavef7" exp="cavef7_lever">
-		    <tile pos="15,39" back2="135+256*10"/>
+		    <tile pos="15,25" back2="135+256*10"/>
 		    <activate what="door1" value="true" unblock="true"/>
 	        <activate what="door2" value="true" unblock="true"/>
 			<markQuest name="cavef6_platef6_forward" value="false"/>

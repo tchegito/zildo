@@ -207,8 +207,8 @@ public class TriggerElement extends AnyElement {
 					return mover.equals(p_another.mover) ^ negate;
 				} else if (tileLocation != null && p_another.location != null) {
 					Area area = EngineZildo.mapManagement.getCurrentMap();
-					int gridX = p_another.location.x / 16 - area.getScrollOffset().x;
-					int gridY = p_another.location.y / 16 - area.getScrollOffset().y;
+					int gridX = p_another.location.x / 16; //- area.getScrollOffset().x;
+					int gridY = p_another.location.y / 16; // - area.getScrollOffset().y;
 					boolean onIt = tileLocation.x == gridX && tileLocation.y == gridY;
 					if (onIt && !pressed) {
 						if (gearType != null) {
@@ -295,7 +295,7 @@ public class TriggerElement extends AnyElement {
 				// Mover ?
 				boolean ok = true;
 				if (location != null) {
-					ok = zildo != null && locationPos(new Point(zildo.x, zildo.y));
+					ok = zildo != null && (done || locationPos(new Point(zildo.x, zildo.y)));
 				}
 				if (tileLocation != null || tileValue != -1) {
 					return done;

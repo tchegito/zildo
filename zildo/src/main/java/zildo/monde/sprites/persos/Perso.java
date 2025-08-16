@@ -825,7 +825,7 @@ public abstract class Perso extends Element {
 				break;
 			case 256 * 9 + 176: // Slab in nature palace
 			case 256 * 9 + 189:
-				area.walkSlab(cx, cy, id, true, Slab.fromValue(onmap));
+				area.walkSlab(cx, cy, id, z == 0, Slab.fromValue(onmap));
 				break;
 			case 13 + 256 * 10:
 			case 14 + 256 * 10:
@@ -1050,7 +1050,7 @@ public abstract class Perso extends Element {
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = area.getName();
-			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x, y), null, onmap, floor);
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x - area.getScrollOffset().x*16, y - area.getScrollOffset().y*16), null, onmap, floor);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 		if (shadow != null) {
@@ -1338,6 +1338,7 @@ public abstract class Perso extends Element {
 				inWater = true; // no break => we want explicitly that player lands on ground
 			default:
 				landOnGround();
+				walkTile(false);
 			}
 		} else {
 			landOnGround();

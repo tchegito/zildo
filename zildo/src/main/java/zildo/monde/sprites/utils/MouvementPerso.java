@@ -133,6 +133,6 @@ public enum MouvementPerso {
 	public boolean isAlertable() {
 		return this != RAT && this != ELECTRIC && this != BEE && this != IMMOBILE && 
 				this != SPITFIRE && this != RETRACTED && this != MOLE && this != CHAIN_FOLLOW && this != MOBILE_WAIT &&
-				this != FREEFLY && this != HOODED_ATTACK && this != OBSERVE;
+				this != FREEFLY && this != HOODED_ATTACK && this != OBSERVE && this != PHYSIC;
 	}
 }
