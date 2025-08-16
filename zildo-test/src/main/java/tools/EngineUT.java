@@ -476,29 +476,35 @@ public abstract class EngineUT {
 
 	/** Useful to pass a cutscene **/
 	public void waitEndOfScriptingPassingDialog() {
-		waitEndOfScripting(new ScriptAction(null) {
-			int timeToWait = 0;
-			@Override
-			public void launchAction(ClientState p_clientState) {
-				if (p_clientState.dialogState.isDialoguing()) {
-					if (timeToWait == 0) {
-						simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
-						timeToWait = 1;
-					} else {
-						timeToWait--;
-						if (timeToWait == 0) {
-							//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
-							simulateKeyPressed();
-						}
-					}
-				}
-			}
-		});
+		waitEndOfScripting(new PassingDialogScriptAction(null));
 		// Release buttons
 		simulateKeyPressed();
 		renderFrames(1);
 	}
 
+	// Declare here to be overridable in tests, for example to add a check on something
+	protected class PassingDialogScriptAction extends ScriptAction {
+		public PassingDialogScriptAction(String p_key) {
+			super(p_key);
+		}
+		int timeToWait = 0;
+		@Override
+		public void launchAction(ClientState p_clientState) {
+			if (p_clientState.dialogState.isDialoguing()) {
+				if (timeToWait == 0) {
+					simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+					timeToWait = 1;
+				} else {
+					timeToWait--;
+					if (timeToWait == 0) {
+						//simulateKeyPressed(KeysConfiguration.PLAYERKEY_ACTION.code);
+						simulateKeyPressed();
+					}
+				}
+			}
+		}
+	};
+	
 	/** Useful to pass a cutscene **/
 	public void waitEndOfScriptingRandomlyPressingButtons() {
 		waitEndOfScripting(new ScriptAction(null) {

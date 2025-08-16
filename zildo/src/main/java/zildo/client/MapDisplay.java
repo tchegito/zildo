@@ -65,19 +65,17 @@ public class MapDisplay {
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	// centerCamera
+    // smooth: TRUE => we'll use target camera to move smoothly to the target
 	///////////////////////////////////////////////////////////////////////////////////////
-	public void centerCamera() {
+	public void centerCamera(boolean smooth) {
 		Point precCamera = new Point(camera);
+		Point newCam = new Point(camera);
 		if (focused != null && targetCamera == null) {
 			int x= (int) focused.x;
 			int y= (int) focused.y;
-			
-			camera.x=x - CENTER_X;
-		
-			camera.y=y - CENTER_Y;
+			newCam = new Point(x - CENTER_X, y - CENTER_Y);
 
 		} else if (targetCamera != null) {
-			// Save previous camera location
 			// Move the camera to the target
 			int camSpeed=cameraSpeed;
 			if (scrollingAngle != null) {	// double speed if map is scrolling
@@ -86,46 +84,68 @@ public class MapDisplay {
 			int diffX = camera.x - targetCamera.x;
 			int diffY = camera.y - targetCamera.y;
 			if (diffX < 0) {
-				camera.x+=Math.min(camSpeed, -diffX);
+				newCam.x+=Math.min(camSpeed, -diffX);
 			} else if (diffX > 0) {
-				camera.x-=Math.min(camSpeed, diffX);
+				newCam.x-=Math.min(camSpeed, diffX);
 			}
 			if (diffY < 0) {
-				camera.y+=Math.min(camSpeed, -diffY);
+				newCam.y+=Math.min(camSpeed, -diffY);
 			} else if (diffY > 0) {
-				camera.y-=Math.min(camSpeed, diffY);
+				newCam.y-=Math.min(camSpeed, diffY);
 			}
 
         }
 		// Overflow tests
-		if (scrollingAngle == null) {
-			Point so = currentMap.getScrollOffset();
-			int minX = 16 * so.x;
-			int minY = 16 * so.y;
-			int maxX = 16 * currentMap.getOriginalDim().x + minX;
-			int maxY = 16 * currentMap.getOriginalDim().y + minY;
-			if (camera.x > (maxX - (CENTER_X << 1))) {
-				camera.x=maxX - (CENTER_X << 1);
-			}
-			if (camera.y > (maxY - (CENTER_Y << 1) )) {	// marche avec 17
-				camera.y=maxY - (CENTER_Y << 1) ;
-			}
-			if (camera.x < minX) {
-				camera.x=minX;
-			}
-	        if (camera.y < minY) {
-	            camera.y = minY;
-	        }
+		if (scrollingAngle == null && targetCamera == null) {
+			newCam = calculateMapScroll(newCam);
 		}
         
-        if (targetCamera != null) {
-			if (targetCamera.equals(camera) || camera.equals(precCamera)) {
-				targetCamera=null;
-				scrollingAngle=null;
-			}
-        }
+		if (smooth) {
+			targetCamera = newCam;
+		} else {
+			camera = newCam;
+	        if (targetCamera != null) {
+				if (targetCamera.equals(camera) || camera.equals(precCamera)) {
+					targetCamera=null;
+					scrollingAngle=null;
+				}
+	        }
+		}
+		
         Zildo.pdPlugin.getFilter(CloudFilter.class).setPosition(camera.x, camera.y);
     }
+	
+	public Point calculateMapScroll(Point cam) {
+		Point newCam = new Point(cam);
+		if (focused != null) {
+			int x= (int) focused.x;
+			int y= (int) focused.y;
+			newCam = new Point(x - CENTER_X, y - CENTER_Y);
+		}
+        return cropCamera(newCam);
+	}
+	
+	/** Keep the given camera location inside the map **/
+	private Point cropCamera(Point location) {
+		Point so = currentMap.getScrollOffset();
+		int minX = 16 * so.x;
+		int minY = 16 * so.y;
+		int maxX = 16 * currentMap.getOriginalDim().x + minX;
+		int maxY = 16 * currentMap.getOriginalDim().y + minY;
+		if (location.x > (maxX - (CENTER_X << 1))) {
+			location.x=maxX - (CENTER_X << 1);
+		}
+		if (location.y > (maxY - (CENTER_Y << 1) )) {
+			location.y=maxY - (CENTER_Y << 1) ;
+		}
+		if (location.x < minX) {
+			location.x=minX;
+		}
+        if (location.y < minY) {
+        	location.y = minY;
+        }
+        return location;
+	}
 	
 	public boolean isScrolling() {
 		return targetCamera != null;
@@ -168,7 +188,7 @@ public class MapDisplay {
 	}
 	
 	public void setTargetCamera(Point p_point) {
-		targetCamera=p_point;		
+		targetCamera=cropCamera(p_point);		
 	}
 	
 	/**
@@ -176,7 +196,18 @@ public class MapDisplay {
 	 * @param p_angle 
 	 */
 	public void shiftForMapScroll(Angle p_angle) {
-    	Point cam=getCamera();
+		Point cam = new Point(getCamera());
+		Point computed = calculateMapScroll(cam);
+		if (p_angle.isHorizontal()) {
+			if (computed.x - cam.x != 0) {
+				cam.x = computed.x;
+			}
+		} else {
+			if (computed.y - cam.y != 0) {
+				cam.y = computed.y;
+			}
+		}
+		
     	Point movedCam;
     	switch (p_angle) {
     	case NORD:

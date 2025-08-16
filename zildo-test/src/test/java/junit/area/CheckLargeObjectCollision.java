@@ -270,6 +270,8 @@ public class CheckLargeObjectCollision extends EngineUT{
 	public void npeWhenDyingAfterLeafDisappear() {
 		initIgorLily(new Point(1021, 282));
 		
+		EngineZildo.backUpGame();	// Because hero will die later
+		
 		// Wait end of scripts
 		waitEndOfScripting();
 		

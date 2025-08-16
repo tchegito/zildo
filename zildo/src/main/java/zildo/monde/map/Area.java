@@ -1177,7 +1177,8 @@ public class Area implements EasySerializable {
 
 		boolean zeditor = p_spawn && EngineZildo.game.editing;
 
-		map.setAtmosphere(Atmosphere.values()[p_buffer.readUnsignedByte()]);
+		Atmosphere atmo = Atmosphere.values()[p_buffer.readUnsignedByte()];
+		map.setAtmosphere(atmo);
 		map.setDim_x(p_buffer.readUnsignedByte());
 		map.setDim_y(p_buffer.readUnsignedByte());
 		map.originalDim = new Point(map.dim_x, map.dim_y);
@@ -1188,9 +1189,22 @@ public class Area implements EasySerializable {
 		Point scrollOffset = new Point(p_buffer.readUnsignedByte(), p_buffer.readUnsignedByte());
 		map.scrollOffset = scrollOffset; 
 
+		if (!scrollOffset.equals(new Point(0, 0))) {
+			// Fills gap around map for scroll
+			int empty = atmo.getEmptyTile();
+			int sizeX = scrollOffset.x == 0 ? map.getDim_x() : scrollOffset.x;
+			int sizeY = scrollOffset.y == 0 ? map.getDim_y() : scrollOffset.y;
+			for (int yy = 0; yy < sizeY; yy++) {
+				for (int xx = 0; xx < sizeX; xx++) {
+					map.writemap(xx,  yy,  empty);
+				}
+			}
+		}
+		
 		if (zeditor) {	// If we're in the editor, we don't want map to be shifted
 			scrollOffset = new Point(0, 0);
 		}
+
 		// La map
 		for (int n=nbFloors; n>0; n--) {
 			byte fl = (byte) p_buffer.readUnsignedByte();
@@ -1849,10 +1863,13 @@ public class Area implements EasySerializable {
 		// Particular cases with scroll offset (really tough !)
 		if (p_mapScrollAngle.isVertical()) { //.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
 			scrollOffsetToApply.x = 0;
-		} else if (p_mapScrollAngle.isHorizontal() && getScrollOffset().x != 0) {
-			scrollOffsetToApply.x = getScrollOffset().x * 16;
-		} else if (p_mapScrollAngle.isHorizontal() && nextMap.getScrollOffset().x != 0) {
-			scrollOffsetToApply.x = -nextMap.getScrollOffset().x * 16;
+		} else if (p_mapScrollAngle.isHorizontal()) {
+			if (getScrollOffset().x != 0) {
+				scrollOffsetToApply.x = getScrollOffset().x * 16;
+			} else if (nextMap.getScrollOffset().x != 0) {
+				scrollOffsetToApply.x = -nextMap.getScrollOffset().x * 16;
+			}
+			scrollOffsetToApply.y = 0;
 		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props
 		ret.sub(scrollOffsetToApply);

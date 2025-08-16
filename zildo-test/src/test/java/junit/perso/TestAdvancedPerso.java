@@ -363,7 +363,7 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(maxVy < 0.5);
 	}
 	
-	@Test
+	//@Test	// Disabled for now, waiting for ice elemental to replaced somewhere else
 	public void princessPushedByIceElemental() {
 		mapUtils.loadMap("nature4");
 		PersoPlayer hero = spawnZildo(235,107);

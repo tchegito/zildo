@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zildo.Zildo;
+import zildo.client.ClientEngineZildo;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
@@ -1882,6 +1883,11 @@ public class PersoPlayer extends Perso {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean isGhost() {
+		return super.isGhost() || ClientEngineZildo.mapDisplay.getTargetCamera() != null;
 	}
 	
 	@Override

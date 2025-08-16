@@ -1,5 +1,6 @@
 package junit.area;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
@@ -11,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.Zildo;
 import zildo.client.ClientEngineZildo;
 import zildo.client.sound.Ambient.Atmosphere;
 import zildo.client.sound.BankMusic;
@@ -25,6 +27,7 @@ import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
+import zildo.server.state.ClientState;
 
 public class CheckMapScroll extends EngineUT {
 
@@ -218,7 +221,7 @@ public class CheckMapScroll extends EngineUT {
 		renderFrames(1);
 		waitEndOfScroll();
 		Assert.assertEquals("cavef6",  EngineZildo.mapManagement.getCurrentMap().getName());
-		Assert.assertEquals(216, camera().y);
+		Assert.assertEquals(220, camera().y);
 	}
 		
 	// This test does also an additional check on music switch between maps
@@ -344,6 +347,28 @@ public class CheckMapScroll extends EngineUT {
 		Assert.assertEquals("nature4",  EngineZildo.mapManagement.getCurrentMap().getName());
 	}
 
+	@Test
+	public void cameraOnIntroductionScene() {
+		spawnZildo(160, 100);
+		waitEndOfScripting();
+		EngineZildo.scriptManagement.execute("preintro", true);
+		waitEndOfScriptingPassingDialog();
+		EngineZildo.scriptManagement.execute("intro", true);
+		waitEndOfScripting(new PassingDialogScriptAction(null) {
+			@Override
+			public void launchAction(ClientState p_clientState) {
+				super.launchAction(p_clientState);
+			}
+		});
+		mapUtils.assertCurrent("coucou");
+		int maxCameraX = EngineZildo.mapManagement.getCurrentMap().getDim_x() * 16 - Zildo.viewPortX;
+		for (int i=0;i<20;i++) {
+			renderFrames(1);
+			Point camera = ClientEngineZildo.mapDisplay.getCamera();
+			assertTrue("Camera "+camera+" is too far ! Outside of map is shown.", camera.x <= maxCameraX);
+		}
+	}
+	
 	private Point camera() {
 		return ClientEngineZildo.mapDisplay.getCamera();
 	}

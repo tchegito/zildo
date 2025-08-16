@@ -161,7 +161,7 @@ public class ClientEngineZildo {
 		// Focus camera on player
 		if (!p_editor && client.connected) {
 			if (mapDisplay.getCurrentMap() != null) {
-				mapDisplay.centerCamera();
+				mapDisplay.centerCamera(false);
 			}
 
 			// Is Zildo talking with somebody ?
@@ -319,7 +319,6 @@ public class ClientEngineZildo {
 					if (mapDisplay.getTargetCamera() == null) {
 						// Calculate camera-delta and apply it to the cloud filter
 						Point deltaCam = new Point(mapDisplay.getCamera());
-						mapDisplay.centerCamera();
 						mapDisplay.shiftForMapScroll(p_event.angle);
 						deltaCam.sub( mapDisplay.getCamera());
 						Zildo.pdPlugin.getFilter(CloudFilter.class).addOffset(deltaCam.x, deltaCam.y);
@@ -332,6 +331,7 @@ public class ClientEngineZildo {
 					displayGUI = false;
 					if (!mapDisplay.isScrolling()) {
 						retEvent.nature = ClientEventNature.CHANGINGMAP_SCROLLOVER;
+						mapDisplay.centerCamera(true);
 						// Show GUI sprites back
 						displayGUI = true;
 						//mapDisplay.setPreviousMap(null);
