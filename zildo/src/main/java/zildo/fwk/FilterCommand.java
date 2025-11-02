@@ -37,6 +37,7 @@ import zildo.fwk.gfx.filter.FilterEffect;
 import zildo.fwk.gfx.filter.FitToScreenFilter;
 import zildo.fwk.gfx.filter.LightningFilter;
 import zildo.fwk.gfx.filter.RedFilter;
+import zildo.fwk.gfx.filter.RotativeFilter;
 import zildo.fwk.gfx.filter.ScreenFilter;
 import zildo.resource.Constantes;
 
@@ -245,7 +246,7 @@ public class FilterCommand {
 	 */
 	public void active(Class<? extends ScreenFilter> clazz, boolean activ, FilterEffect effect) {
 		for (ScreenFilter filter : filters) {
-			if (clazz == null || clazz.isAssignableFrom(filter.getClass())) {
+			if (clazz == null || clazz.isAssignableFrom(filter.getClass()) && filter.isActive() != activ) {
 				filter.setActive(activ, effect);
 			}
 		}
@@ -309,6 +310,7 @@ public class FilterCommand {
 		addFilter(new LightningFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(new EarthQuakeFilter(Zildo.pdPlugin.gfxStuff));
 		addFilter(Zildo.pdPlugin.getFilter(BlackBlurFilter.class));
+		addFilter(Zildo.pdPlugin.getFilter(RotativeFilter.class));
 		addFilter(Zildo.pdPlugin.getFilter(BilinearFilter.class));
 		active(BilinearFilter.class, true, null);		
 	}	

@@ -78,6 +78,13 @@ public class Vector4f {
         return this;
     }
     
+    public Vector4f interp(Vector4f target, float scaleZeroToOne) {
+    	return new Vector4f(x + (target.x -x ) * scaleZeroToOne,
+    			y + (target.y - y) * scaleZeroToOne,
+    			z + (target.z - z) * scaleZeroToOne,
+    			w + (target.w - w) * scaleZeroToOne);
+    }
+    
     @Override
 	public String toString() {
     	return "x:"+x+", y:"+y+", z:"+z+", w:"+w;

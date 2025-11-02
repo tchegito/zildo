@@ -54,7 +54,9 @@ public class Shaders {
 		// Blur with fade (used on game loading)
 		blackBlur,
 		// Fire
-		fire;
+		fire,
+		// Grid rotative transition
+		circular;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -229,7 +231,7 @@ public class Shaders {
 	}
 	
 	/** Convenient method to pass a 4-dimension vector via an uniform. **/
-	private void uniform4f(String uniformName, Vector4f v) {
+	public void uniform4f(String uniformName, Vector4f v) {
 		GLES20.glUniform4f(uniformId(uniformName), v.x, v.y, v.z, v.w);
 	}
 	

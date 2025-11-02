@@ -39,7 +39,8 @@ public enum FilterEffect {
 	CIRCLE(CircleFilter.class),
 	CLOUD(CloudFilter.class),
 	STATIC(FitToScreenFilter.class),
-	BLACKBLUR(BlackBlurFilter.class);
+	BLACKBLUR(BlackBlurFilter.class),
+	ROTATIVE(RotativeFilter.class);
 
 	// RedFilter isn't declared here because it doesn't need
 	// to be platform-specific. It's just a red box on whole screen.
@@ -61,6 +62,6 @@ public enum FilterEffect {
 	/** This filter effect can force fadelevel to be reset when launched.
 	 * For example, Blackblur when game is loaded, and beginning fade need this. But semifade absolutely doesn't ! **/
 	public boolean canBeForced() {
-		return (this == BLACKBLUR || this == FADE);
+		return (this == BLACKBLUR || this == ROTATIVE || this == FADE);
 	}
 }

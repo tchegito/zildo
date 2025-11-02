@@ -4,26 +4,24 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import zildo.client.ClientEngineZildo;
 import zildo.fwk.gfx.GraphicStuff;
-import zildo.fwk.gfx.filter.BlackBlurFilter;
 import zildo.fwk.gfx.filter.FilterEffect;
-import zildo.monde.util.Vector4f;
+import zildo.fwk.gfx.filter.RotativeFilter;
 
-public class LwjglBlackBlurFilter extends BlackBlurFilter {
+public class LwjglRotativeFilter extends RotativeFilter {
 
-	public LwjglBlackBlurFilter(GraphicStuff graphicStuff) {
+	public LwjglRotativeFilter(GraphicStuff graphicStuff) {
 		super(graphicStuff);
 	}
-
+		
 	@Override
 	public void doOnActive(FilterEffect effect) {
 		super.doOnActive(effect);
-
 	}
+
 	@Override
 	public boolean renderFilter() {
-		ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(6));
-		ClientEngineZildo.pixelShaders.setParameter(6, "iFrame", new Vector4f((float) getFadeLevel(), 0, 0, 1));
-
+		ARBShaderObjects.glUseProgramObjectARB(ClientEngineZildo.pixelShaders.getPixelShader(7));
+		ClientEngineZildo.pixelShaders.setParameter(7, "alpha", computeValue());
 		// End render on buffered texture, and draw it on screen using blackBlur shader
 		filter.renderFilter();
 		
@@ -36,4 +34,5 @@ public class LwjglBlackBlurFilter extends BlackBlurFilter {
 		// Start to render on a buffered texture
 		filter.preFilter();
 	}
+
 }
