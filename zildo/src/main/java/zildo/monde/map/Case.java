@@ -196,6 +196,10 @@ public class Case implements EasySerializable {
 			break;
 			case BACK2:
 				switch (bank) {
+				case 3:
+					if (motif==78)
+						motif=78+comptModulo3;
+				break;
 					case 6:	// FORET4.DEC
 						if (motif == 215 || motif == 218 || motif == 221 ||
 							(motif >= 0 && motif <= 2) ) {

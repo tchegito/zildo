@@ -1,4 +1,4 @@
-package shader;
+package zildo.fwk.file;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,8 +35,8 @@ public class ShaderReader {
 	 * Constructs the shader reader.
 	 * @param filename file name without the extension (.shader)
 	 */
-	public ShaderReader(String shadername) {
-        String filename = "shader/essl/"+shadername+".shader";
+	public ShaderReader(String folder, String shadername) {
+        String filename = "shader/" + folder + "/"+shadername+".shader";
         InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
         if (stream == null) {
         	stream = ScriptReader.class.getClassLoader().getResourceAsStream(filename);
@@ -73,8 +73,8 @@ public class ShaderReader {
             	throw new RuntimeException("Can't close shader file :"+filename);
         	}
         }
-        if (check != 0) {
-        	throw new RuntimeException("Shader's code should provide 2 sections : [VERTEX] and [FRAGMENT].");
+        if (fragmentCode == null && vertexCode == null) {
+        	throw new RuntimeException("Shader's code should provide 2 sections : [VERTEX] and [FRAGMENT], or at least [FRAGMENT].");
         }
 	}
 	

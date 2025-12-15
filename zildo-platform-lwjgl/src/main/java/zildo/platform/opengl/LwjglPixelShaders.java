@@ -24,14 +24,13 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
+import static org.lwjgl.opengl.ARBShaderObjects.*;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.Util;
 
-import shader.ShaderReader;
-
 import zildo.fwk.ZUtils;
+import zildo.fwk.file.ShaderReader;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.util.Vector4f;
 
@@ -54,7 +53,9 @@ public class LwjglPixelShaders extends PixelShaders {
 		// Fade rotation
 		blackBlur,
 		// Grid rotating fade
-		circular
+		circular,
+		// double texture
+		watered;
 	}
 	
 	@Override
@@ -88,28 +89,21 @@ public class LwjglPixelShaders extends PixelShaders {
 		if (!pixel) {
 			type = ARBVertexShader.GL_VERTEX_SHADER_ARB;
 		}
-		int vertexShader= ARBShaderObjects.glCreateShaderObjectARB(type);
-		ARBShaderObjects.glShaderSourceARB(vertexShader, shaderPro);
+		int shader = glCreateShaderObjectARB(type);
+		glShaderSourceARB(shader, shaderPro);
 		
 		// Compile, link, validate
-		ARBShaderObjects.glCompileShaderARB(vertexShader);
-		
-		int programObject  = ARBShaderObjects.glCreateProgramObjectARB();
-		ARBShaderObjects.glAttachObjectARB(programObject, vertexShader);
-		
-		ARBShaderObjects.glLinkProgramARB(programObject);
-		ARBShaderObjects.glValidateProgramARB(programObject);
-		
-		printLogInfo(vertexShader);
-		
-		return programObject;
+		glCompileShaderARB(shader);
+
+		printLogInfo(shader);
+		return shader;
 	}
 	
 	
 	private void printLogInfo(int obj)
 	{
 		IntBuffer iVal = ZUtils.createIntBuffer(1);
-		ARBShaderObjects.glGetObjectParameterARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB, iVal);
+		glGetObjectParameterARB(obj, GL_OBJECT_INFO_LOG_LENGTH_ARB, iVal);
  
 		int length = iVal.get();
 		if (length > 0)
@@ -117,7 +111,7 @@ public class LwjglPixelShaders extends PixelShaders {
 			// We have some info we need to output.
 			ByteBuffer infoLog = ZUtils.createByteBuffer(length);
 			iVal.flip();
-			ARBShaderObjects.glGetInfoLogARB(obj,  iVal, infoLog);
+			glGetInfoLogARB(obj,  iVal, infoLog);
 			byte[] infoBytes = new byte[length];
 			infoLog.get(infoBytes);
 			String out = new String(infoBytes);
@@ -130,13 +124,13 @@ public class LwjglPixelShaders extends PixelShaders {
 	
 	@Override
 	protected void doSetParameter(int psId, ByteBuffer name, Vector4f color) {
-		int location = ARBShaderObjects.glGetUniformLocationARB(psId, name);
-		ARBShaderObjects.glUniform4fARB(location, color.x, color.y, color.z, color.w);
+		int location = glGetUniformLocationARB(psId, name);
+		glUniform4fARB(location, color.x, color.y, color.z, color.w);
 	}
 
 	@Override
 	protected void deletePixelShader(int id) {
-		ARBShaderObjects.glDeleteObjectARB(id);
+		glDeleteObjectARB(id);
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -145,16 +139,30 @@ public class LwjglPixelShaders extends PixelShaders {
 	@Override
 	public void preparePixelShader() {
 		for (GLShaders sh : GLShaders.values()) {
-			String shaderCode = new ShaderReader(sh.toString()).getFragmentCode();
-			addPixelShader(shaderCode);
+			ShaderReader reader = new ShaderReader("glsl", sh.toString());
+			addPixelShader(reader);
 		}
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
 	// addPixelShader
 	// /////////////////////////////////////////////////////////////////////////////////////
-	private void addPixelShader(String strData) {
-		int programObject = doCreateShader(strData, true);
+	private void addPixelShader(ShaderReader reader) {
+		int vertexShader = -1;
+		if (reader.getVertexCode() != null) {
+			vertexShader = doCreateShader(reader.getVertexCode(), false);
+		}
+		int fragmentShader = doCreateShader(reader.getFragmentCode(), true);
+		
+		int programObject  = glCreateProgramObjectARB();
+		if (vertexShader != -1 ) {
+			glAttachObjectARB(programObject, vertexShader);
+		}
+		glAttachObjectARB(programObject, fragmentShader);
+		
+		glLinkProgramARB(programObject);
+		glValidateProgramARB(programObject);
+
 		// Uniform values
 
 		tabPixelShaders[n_PixelShaders] = programObject;

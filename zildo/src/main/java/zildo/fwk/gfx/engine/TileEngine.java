@@ -100,6 +100,7 @@ public abstract class TileEngine {
 	protected TileGroupPrimitive meshFORE;
 	protected TileGroupPrimitive meshBACK;
 	protected TileGroupPrimitive meshBACK2;
+	protected TileGroupPrimitive meshBACK2Shader;	// Following back2, with watered shader enabled
 
 	AreaAccessor areaAccessor;
 	
@@ -133,9 +134,10 @@ public abstract class TileEngine {
 		cameraX = -1;
 		cameraY = -1;
 
-		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
-		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
-		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK);
+		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
+		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
+		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
+		meshBACK2Shader = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, true);
 
 		// Load graphs
 		motifBanks = new ArrayList<TileBank>();
@@ -152,6 +154,7 @@ public abstract class TileEngine {
 		meshFORE.cleanUp();
 		meshBACK.cleanUp();
 		meshBACK2.cleanUp();
+		meshBACK2Shader.cleanUp();
 
 		initialized = false;
 	}
@@ -192,6 +195,7 @@ public abstract class TileEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles() {
 		initialized=true;
+		meshBACK2Shader.clearBuffers();
 		meshBACK2.clearBuffers();
 		meshBACK.clearBuffers();
 		meshFORE.clearBuffers();
@@ -206,6 +210,7 @@ public abstract class TileEngine {
 
 			meshBACK.startInitialization();
 			meshBACK2.startInitialization();
+			meshBACK2Shader.startInitialization();
 			meshFORE.startInitialization();
 			
 			int previousX = cameraX >> 4;
@@ -218,6 +223,7 @@ public abstract class TileEngine {
 			if (previousX != tileStartX || previousY != tileStartY) {
 				meshBACK.initFreeBuffer(cameraNew);
 				meshBACK2.initFreeBuffer(cameraNew);
+				meshBACK2Shader.initFreeBuffer(cameraNew);
 				meshFORE.initFreeBuffer(cameraNew);
 			}
 			for (Area theMap : p_areas) {
@@ -272,7 +278,6 @@ public abstract class TileEngine {
 						int floor = accCase.floor;
 						
 						if (mapCase != null) {
-							//System.out.print(mapX+" ");
 							boolean changed = mapCase.isModified();
 							Tile back = mapCase.getBackTile();
 							n_motif = Case.getAnimatedMotif(TileLevel.BACK, back, compteur_animation);
@@ -295,13 +300,15 @@ public abstract class TileEngine {
 							
 							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
+								TileGroupPrimitive mesh = back2.bank == 3 && back2.index == 78 ? meshBACK2Shader : meshBACK2;
 								n_motif =  Case.getAnimatedMotif(TileLevel.BACK2, back2, compteur_animation);
 								if (n_motif != back2.renderedIndex) {
 									changed = true;
 									back2.renderedIndex = n_motif;
 								}
-								meshBACK2.updateTile(back2, x, y, floor, n_motif, changed);
+								updateTile(mesh, back2, x, y, floor, n_motif, changed);
 							} else if (mapCase.isBack2Removed()) {
+								// TODO: il faudra gérer aussi le removeTile pour meshBACK2Shader
 								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y, floor);
 								mapCase.clearBack2Removed();
 							}
@@ -319,6 +326,7 @@ public abstract class TileEngine {
 			}
 			meshBACK.endInitialization();
 			meshBACK2.endInitialization();
+			meshBACK2Shader.endInitialization();
 			meshFORE.endInitialization();
 		}
 
@@ -326,6 +334,9 @@ public abstract class TileEngine {
 		cameraY = cameraNew.y;
 	}
 
+	private void updateTile(TileGroupPrimitive mesh, Tile tile, int x, int y, int floor, int n_motif, boolean changed) {
+		mesh.updateTile(tile, x, y, floor, n_motif, changed);
+	}
 	/**
 	 * Return the bank's index in loaded ones from a given name
 	 * 

@@ -34,10 +34,13 @@ import zildo.resource.Constantes;
  */
 public class TileGroupPrimitive {
 
+	boolean shaderAvailable;
+	
 	protected TilePrimitive[][] meshes;
 	
-	public TileGroupPrimitive(int nbGroup) {
+	public TileGroupPrimitive(int nbGroup, boolean shaderAvailable) {
 		meshes = new TilePrimitive[Constantes.TILEENGINE_FLOOR][nbGroup];
+		this.shaderAvailable = shaderAvailable;
 	}
 	
 	public void startInitialization() {
@@ -129,7 +132,7 @@ public class TileGroupPrimitive {
     public void render(int floor, ActionNthRunner action) {
     	for (int i=0;i<meshes[floor].length;i++) {
     		if (meshes[floor][i] != null && !meshes[floor][i].isEmpty()) {
-    			action.execute(i);
+    			action.execute(i, shaderAvailable);
     			meshes[floor][i].render();
     		}
     	}
@@ -140,6 +143,6 @@ public class TileGroupPrimitive {
      * from outside, and all job is done here.
      */
     public interface ActionNthRunner {
-    	void execute(int i);
+    	void execute(int numTexture, boolean shaderAvailable);
     }
 }
