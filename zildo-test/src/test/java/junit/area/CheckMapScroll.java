@@ -369,6 +369,24 @@ public class CheckMapScroll extends EngineUT {
 		}
 	}
 	
+	@Test
+	public void scrollOnMapWithOffsetX() {
+		mapUtils.loadMap("nature4");
+		spawnZildo(278, 120);
+		waitEndOfScripting();
+		// Get out of the room
+		simulateDirection(1, 0);
+		renderFrames(50);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("nature3");
+		renderFrames(5);
+		// Now get back on previous map
+		simulateDirection(-1, 0);
+		renderFrames(30);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("nature4");
+	}
+
 	private Point camera() {
 		return ClientEngineZildo.mapDisplay.getCamera();
 	}

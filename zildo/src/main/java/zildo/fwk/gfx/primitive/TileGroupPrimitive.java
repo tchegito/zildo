@@ -21,6 +21,7 @@
 package zildo.fwk.gfx.primitive;
 
 import zildo.Zildo;
+import zildo.fwk.file.ShaderReader.TileShader;
 import zildo.fwk.opengl.compatibility.VBOBuffers;
 import zildo.monde.map.Tile;
 import zildo.monde.util.Point;
@@ -34,11 +35,11 @@ import zildo.resource.Constantes;
  */
 public class TileGroupPrimitive {
 
-	boolean shaderAvailable;
+	TileShader shaderAvailable;
 	
 	protected TilePrimitive[][] meshes;
 	
-	public TileGroupPrimitive(int nbGroup, boolean shaderAvailable) {
+	public TileGroupPrimitive(int nbGroup, TileShader shaderAvailable) {
 		meshes = new TilePrimitive[Constantes.TILEENGINE_FLOOR][nbGroup];
 		this.shaderAvailable = shaderAvailable;
 	}
@@ -143,6 +144,6 @@ public class TileGroupPrimitive {
      * from outside, and all job is done here.
      */
     public interface ActionNthRunner {
-    	void execute(int numTexture, boolean shaderAvailable);
+    	void execute(int numTexture, TileShader shader);
     }
 }

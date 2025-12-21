@@ -41,7 +41,7 @@ public abstract class PixelShaders {
 	public PixelShaders()
 	{
 		n_PixelShaders=0;
-		tabPixelShaders=new int[9];
+		tabPixelShaders=new int[10];
 	}
 	
 	public void cleanUp() {

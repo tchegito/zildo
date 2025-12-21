@@ -74,6 +74,7 @@ public class ClientEngineZildo {
 
 	private static ClientEvent askedEvent;
 	
+	private static float time;
 
 	
 	public static boolean editing;
@@ -151,11 +152,18 @@ public class ClientEngineZildo {
 		waitingScene = 0;
 	}
 
+	public static float getTime() {
+		return time;
+	}
+	
 	public void renderFrame(boolean p_editor) {
 		if (waitingScene != 0) {
 			return;
 		}
 
+		// Number of frames, useful for everyone needing a regular incrementation
+		time++;
+		
 		//long t1 = ZUtils.getTime();
 		
 		// Focus camera on player

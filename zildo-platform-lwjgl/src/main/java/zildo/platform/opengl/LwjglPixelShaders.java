@@ -54,8 +54,10 @@ public class LwjglPixelShaders extends PixelShaders {
 		blackBlur,
 		// Grid rotating fade
 		circular,
-		// double texture
-		watered;
+		// reflection
+		watered,
+		// distortion
+		underWater;
 	}
 	
 	@Override

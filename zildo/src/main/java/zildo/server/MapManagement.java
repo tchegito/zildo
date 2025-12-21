@@ -735,7 +735,8 @@ public class MapManagement {
 						dest.x = (int) zildo.x - 16;
 						chosen = Angle.OUEST;
 					} else if (zildo.x > previousDimX * 16 - 16) {
-						zildo.setX(8 - 16 + newScrollOffset.x * 16);
+						// Note: that's weird to add 1, but it's not right without it on nature4 => nature3
+						zildo.setX(8 - 16 + (newScrollOffset.x+1) * 16);
 						dest.x = (int) zildo.x + 16;
 						chosen = Angle.EST;
 					}

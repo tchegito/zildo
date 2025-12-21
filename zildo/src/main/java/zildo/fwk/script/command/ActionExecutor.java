@@ -149,7 +149,12 @@ public class ActionExecutor extends RuntimeExecutor {
 				location = new Pointf(p_action.location.getPoint());
 				if (!p_action.delta) {
 					// If we don't use scrollOffset, stairs script fails (example:natureb1)
-					location.add(EngineZildo.mapManagement.getCurrentMap().getScrollOffset().multiply(16));
+					Point offset = EngineZildo.mapManagement.getCurrentMap().getScrollOffset();
+					if (p_action.kind == ActionKind.tile) {	// Tile coordinates
+						location.add(offset);
+					} else {
+						location.add(offset.multiply(16));
+					}
 				}
 			}
 			if (p_action.delta && location != null) {

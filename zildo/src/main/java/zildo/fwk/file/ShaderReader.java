@@ -31,6 +31,11 @@ public class ShaderReader {
 	
 	List<String> uniforms = new ArrayList<String>();
 	
+	public enum TileShader {
+		water,
+		underwater
+	}
+	
 	/**
 	 * Constructs the shader reader.
 	 * @param filename file name without the extension (.shader)

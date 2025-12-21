@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.file.ShaderReader.TileShader;
 import zildo.fwk.gfx.effect.CloudGenerator;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
@@ -53,8 +54,6 @@ public class LwjglTileEngine extends TileEngine {
 		super(texEngine);
 	}
 	
-	float alpha = 0f;
-	
 	private TextureBinder texBinder = new TextureBinder();
 	
 	@Override
@@ -77,6 +76,8 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glEnable(GL11.GL_BLEND);
 				meshBACK.render(floor, texBinder);
+				meshBACKShader.render(floor, texBinder);
+				// BACKGROUND 2
 				meshBACK2.render(floor, texBinder);
 				GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 				GL14.glBlendColor(0f, 0f, 0f, 0.5f);
@@ -105,18 +106,26 @@ public class LwjglTileEngine extends TileEngine {
 	}
 
 	private class TextureBinder implements ActionNthRunner {
-		public void execute(final int numTexture, boolean shaderAvailable) {
+		public void execute(final int numTexture, TileShader shader) {
 			// Configure right texture on first texturer
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEngine.getNthTexture(numTexture));
-			if (shaderAvailable) {
+			if (shader != null) {
 				// Enable water shader and pass uniform values
-				int shaderProgram = ClientEngineZildo.pixelShaders.getPixelShader(8);
-				ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
-				GL20.glUniform1f(GL20.glGetUniformLocation(shaderProgram, "alpha"), alpha);
-				Point camera = ClientEngineZildo.mapDisplay.getCamera();
-				GL20.glUniform2f(GL20.glGetUniformLocation(shaderProgram, "camera"), camera.x, -camera.y);
-				alpha += 0.06f;
+				float alpha = ClientEngineZildo.getTime() * 0.06f;
+				switch (shader) {
+				case water:
+					int shaderProgram = ClientEngineZildo.pixelShaders.getPixelShader(8);
+					ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
+					GL20.glUniform1f(GL20.glGetUniformLocation(shaderProgram, "alpha"), alpha);
+					Point camera = ClientEngineZildo.mapDisplay.getCamera();
+					GL20.glUniform2f(GL20.glGetUniformLocation(shaderProgram, "camera"), camera.x, -camera.y);
+					break;
+				case underwater:
+					shaderProgram = ClientEngineZildo.pixelShaders.getPixelShader(9);
+					ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
+					GL20.glUniform1f(GL20.glGetUniformLocation(shaderProgram, "alpha"), alpha);
+				}
 			} else {
 				ARBShaderObjects.glUseProgramObjectARB(0);
 			}

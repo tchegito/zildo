@@ -26,6 +26,7 @@ import java.util.List;
 
 import zildo.Zildo;
 import zildo.fwk.bank.TileBank;
+import zildo.fwk.file.ShaderReader.TileShader;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive;
 import zildo.monde.map.Area;
 import zildo.monde.map.Case;
@@ -99,9 +100,12 @@ public abstract class TileEngine {
 	// 3D Objects (vertices and indices per bank)
 	protected TileGroupPrimitive meshFORE;
 	protected TileGroupPrimitive meshBACK;
+	protected TileGroupPrimitive meshBACKShader;
 	protected TileGroupPrimitive meshBACK2;
 	protected TileGroupPrimitive meshBACK2Shader;	// Following back2, with watered shader enabled
 
+	List<TileGroupPrimitive> allGroups;
+	
 	AreaAccessor areaAccessor;
 	
 	protected boolean initialized = false;
@@ -134,11 +138,18 @@ public abstract class TileEngine {
 		cameraX = -1;
 		cameraY = -1;
 
-		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
-		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
-		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, false);
-		meshBACK2Shader = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, true);
-
+		meshFORE = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, null);
+		meshBACK = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, null);
+		meshBACKShader = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, TileShader.underwater);
+		meshBACK2 = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, null);
+		meshBACK2Shader = new TileGroupPrimitive(Constantes.NB_MOTIFBANK, TileShader.water);
+		allGroups = new ArrayList<>();
+		allGroups.add(meshFORE);
+		allGroups.add(meshBACK);
+		allGroups.add(meshBACKShader);
+		allGroups.add(meshBACK2);
+		allGroups.add(meshBACK2Shader);
+		
 		// Load graphs
 		motifBanks = new ArrayList<TileBank>();
 
@@ -151,10 +162,7 @@ public abstract class TileEngine {
 	
 	public void cleanUp()
 	{
-		meshFORE.cleanUp();
-		meshBACK.cleanUp();
-		meshBACK2.cleanUp();
-		meshBACK2Shader.cleanUp();
+		allGroups.forEach(o -> o.cleanUp());
 
 		initialized = false;
 	}
@@ -195,10 +203,7 @@ public abstract class TileEngine {
 	// Prepare vertices and indices for drawing tiles
 	public void prepareTiles() {
 		initialized=true;
-		meshBACK2Shader.clearBuffers();
-		meshBACK2.clearBuffers();
-		meshBACK.clearBuffers();
-		meshFORE.clearBuffers();
+		allGroups.forEach(o -> o.clearBuffers());
 	}
 	
 	// Redraw tiles with updating VertexBuffers, only in the visible area.
@@ -208,10 +213,7 @@ public abstract class TileEngine {
 
 		if (meshBACK != null && cameraX != -1 && cameraY != -1) {
 
-			meshBACK.startInitialization();
-			meshBACK2.startInitialization();
-			meshBACK2Shader.startInitialization();
-			meshFORE.startInitialization();
+			allGroups.forEach(o -> o.startInitialization());
 			
 			int previousX = cameraX >> 4;
 			int previousY = cameraY >> 4;
@@ -221,10 +223,7 @@ public abstract class TileEngine {
 			int tileEndY = tileStartY + (Zildo.viewPortY >> 4);
 			
 			if (previousX != tileStartX || previousY != tileStartY) {
-				meshBACK.initFreeBuffer(cameraNew);
-				meshBACK2.initFreeBuffer(cameraNew);
-				meshBACK2Shader.initFreeBuffer(cameraNew);
-				meshFORE.initFreeBuffer(cameraNew);
+				allGroups.forEach(o -> o.initFreeBuffer(cameraNew));
 			}
 			for (Area theMap : p_areas) {
 				if (theMap == null) {
@@ -288,19 +287,20 @@ public abstract class TileEngine {
 							// Only in game (SpecificFloorAccessor is for ZEditor), we exclude BACK tile from an upper floor
 							// This allows us to draw floor above the lower one
 							int value = back.getValue();
+							Tile back2 = mapCase.getBackTile2();
+							TileGroupPrimitive mesh = (back2 != null && (back2.bank == 3 && back2.index == 78)) ? meshBACKShader : meshBACK;
 							if (!(areaAccessor instanceof SpecificFloorAreaAccesor) && (Tile.isBottomJump(value) || Tile.isBottomNoJump(value)) ) {
 								Case c = theMap.get_mapcase(mapX, mapY, floor-1);
 								if (c != null) {
 									back = c.getBackTile();
-									meshBACK.updateTile(back, x, y, floor-1, back.getValue(), changed);
+									updateTile(mesh, back, x, y, floor-1, back.getValue(), changed);
 								}
 							} else {
-								meshBACK.updateTile(back, x, y, floor, n_motif, changed);
+								updateTile(mesh, back, x, y, floor, n_motif, changed);
 							}
 							
-							Tile back2 = mapCase.getBackTile2();
 							if (back2 != null) {
-								TileGroupPrimitive mesh = back2.bank == 3 && back2.index == 78 ? meshBACK2Shader : meshBACK2;
+								mesh = back2.bank == 3 && back2.index == 78 ? meshBACK2Shader : meshBACK2;
 								n_motif =  Case.getAnimatedMotif(TileLevel.BACK2, back2, compteur_animation);
 								if (n_motif != back2.renderedIndex) {
 									changed = true;
@@ -321,13 +321,9 @@ public abstract class TileEngine {
 							mapCase.setModified(false);
 						}
 					}
-					//System.out.println();
 				}
 			}
-			meshBACK.endInitialization();
-			meshBACK2.endInitialization();
-			meshBACK2Shader.endInitialization();
-			meshFORE.endInitialization();
+			allGroups.forEach(o -> o.endInitialization());
 		}
 
 		cameraX = cameraNew.x;

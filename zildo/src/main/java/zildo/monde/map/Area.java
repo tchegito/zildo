@@ -1191,12 +1191,14 @@ public class Area implements EasySerializable {
 
 		if (!scrollOffset.equals(new Point(0, 0))) {
 			// Fills gap around map for scroll
+			// TODO: see if it's really useful. It leaded to a bug during shifting from nature3 to nature4
+			// So I've disabled it for now.
 			int empty = atmo.getEmptyTile();
 			int sizeX = scrollOffset.x == 0 ? map.getDim_x() : scrollOffset.x;
 			int sizeY = scrollOffset.y == 0 ? map.getDim_y() : scrollOffset.y;
 			for (int yy = 0; yy < sizeY; yy++) {
 				for (int xx = 0; xx < sizeX; xx++) {
-					map.writemap(xx,  yy,  empty);
+					//map.writemap(xx,  yy,  empty);
 				}
 			}
 		}
@@ -1216,7 +1218,7 @@ public class Area implements EasySerializable {
 	
 					if (temp != null) {
 						map.set_mapcase(j, i, fl, temp);
-		
+						
 						if (p_spawn && !EngineZildo.game.editing) {
 							
 							if (temp.getOneValued(256 + 99) != null) {
