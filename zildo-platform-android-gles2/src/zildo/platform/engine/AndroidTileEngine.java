@@ -20,8 +20,11 @@
 
 package zildo.platform.engine;
 
+import android.opengl.GLES20;
 import shader.Shaders;
+import shader.Shaders.GLShaders;
 import zildo.client.ClientEngineZildo;
+import zildo.fwk.file.ShaderReader.TileShader;
 import zildo.fwk.gfx.engine.TextureEngine;
 import zildo.fwk.gfx.engine.TileEngine;
 import zildo.fwk.gfx.primitive.TileGroupPrimitive.ActionNthRunner;
@@ -29,7 +32,6 @@ import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.monde.util.Vector3f;
 import zildo.platform.opengl.AndroidPixelShaders;
-import android.opengl.GLES20;
 
 // V1.0
 // --------------------------------------------
@@ -99,8 +101,12 @@ public class AndroidTileEngine extends TileEngine {
 				GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 				GLES20.glEnable(GLES20.GL_BLEND);
 				meshBACK.render(floor, texBinder);
+				meshBACKShader.render(floor, texBinder);
 				meshBACK2.render(floor, texBinder);
-
+				GLES20.glBlendFunc(GLES20.GL_CONSTANT_ALPHA, GLES20.GL_ONE_MINUS_CONSTANT_ALPHA);
+				GLES20.glBlendColor(0f, 0f, 0f, 0.5f);
+				meshBACK2Shader.render(floor, texBinder);
+				GLES20.glUseProgram(0);
 				GLES20.glDisable(GLES20.GL_BLEND);
 			}
 			else {
@@ -118,9 +124,28 @@ public class AndroidTileEngine extends TileEngine {
 	}
 	
 	private class TextureBinder implements ActionNthRunner {
-		public void execute(final int i) {
+		public void execute(final int i, TileShader shader) {
+			
+			// Configure right texture on first texturer
 			GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureEngine.getNthTexture(i)); 
+			if (shader != null) {
+				// Enable water shader and pass uniform values
+				float alpha = ClientEngineZildo.getTime() * 0.06f;
+				switch (shader) {
+				case water:
+			        GLES20.glUseProgram(GLShaders.watered.id);
+			        AndroidPixelShaders.shaders.uniform1f("alpha", alpha);
+					Point camera = ClientEngineZildo.mapDisplay.getCamera();
+			        AndroidPixelShaders.shaders.uniform2f("camera", new Vector2f(camera.x, -camera.y));
+					break;
+				case underwater:
+			        GLES20.glUseProgram(GLShaders.underWater.id);
+			        AndroidPixelShaders.shaders.uniform1f("alpha", alpha);
+				}
+			} else {
+		        GLES20.glUseProgram(0);
+			}
 		}
 	}
 

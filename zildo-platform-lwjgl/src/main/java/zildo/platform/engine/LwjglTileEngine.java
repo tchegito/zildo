@@ -82,7 +82,8 @@ public class LwjglTileEngine extends TileEngine {
 				GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 				GL14.glBlendColor(0f, 0f, 0f, 0.5f);
 				meshBACK2Shader.render(floor, texBinder);
-				disableWaterShader();
+				// Reset to "no shader" and disable blend
+				ARBShaderObjects.glUseProgramObjectARB(0);
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 			else {
@@ -98,11 +99,6 @@ public class LwjglTileEngine extends TileEngine {
 			// GL11.glColor3f(1f, 1f, 1f);
 			GL11.glPopMatrix();
 		}
-	}
-	
-	private void disableWaterShader() {
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		ARBShaderObjects.glUseProgramObjectARB(0);
 	}
 
 	private class TextureBinder implements ActionNthRunner {

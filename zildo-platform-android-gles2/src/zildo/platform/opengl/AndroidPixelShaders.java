@@ -22,9 +22,9 @@ package zildo.platform.opengl;
 
 import java.nio.ByteBuffer;
 
-import shader.ShaderReader;
 import shader.Shaders;
 import shader.Shaders.GLShaders;
+import zildo.fwk.file.ShaderReader;
 import zildo.fwk.gfx.PixelShaders;
 import zildo.monde.util.Vector4f;
 import android.opengl.GLES20;
@@ -101,7 +101,7 @@ public class AndroidPixelShaders extends PixelShaders {
 	 */
 	public void loadCompleteShader(GLShaders sh) {
 		String shaderName = sh.toString();
-		ShaderReader sr = new ShaderReader(shaderName);
+		ShaderReader sr = new ShaderReader("essl", shaderName);
 		
 		// Init shaders
         Log.d("shaders", "shader: "+shaderName);

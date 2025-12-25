@@ -56,7 +56,11 @@ public class Shaders {
 		// Fire
 		fire,
 		// Grid rotative transition
-		circular;
+		circular,
+		// reflection
+		watered,
+		// distortion
+		underWater;
 		
 		public int id;	// program id
 		// One map for all shaders
@@ -236,7 +240,7 @@ public class Shaders {
 	}
 	
 	/** Convenient method to pass a 2-dimension vector via an uniform. **/
-	private void uniform2f(String uniformName, Vector2f v) {
+	public void uniform2f(String uniformName, Vector2f v) {
 		GLES20.glUniform2f(uniformId(uniformName), v.x, v.y);
 	}
 
