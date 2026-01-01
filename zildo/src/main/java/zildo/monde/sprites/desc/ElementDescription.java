@@ -223,7 +223,7 @@ public enum ElementDescription implements SpriteDescription {
 		case FLOWERVASE:
 		case CHAIR:
 		case WOODEN_BAR:
-		case AMPHORA:
+		//case AMPHORA:	// if I enable this, it fails test CheckDisplaySorter#carryingItem
 			return true;
 		default:
 			return false;
@@ -386,6 +386,14 @@ public enum ElementDescription implements SpriteDescription {
 		return 7;
 	}
 	
+	public int getZ() {	// For flying object, they will collide with this element if their Z is below this one
+		switch (this) {
+		case SEWER_BARH: case SEWER_BARV:
+			return 5;
+		default:
+			return 0;
+		}
+	}
 	@Override
 	public boolean isOnGround() {
 		return false;

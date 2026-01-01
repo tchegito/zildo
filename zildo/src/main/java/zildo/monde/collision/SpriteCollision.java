@@ -26,6 +26,9 @@ import zildo.fwk.collection.CycleIntBuffer;
 import zildo.monde.map.Area;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.desc.EntityType;
+import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementBoomerang;
 import zildo.monde.sprites.elements.ElementGoodies;
@@ -186,6 +189,19 @@ public class SpriteCollision {
 				if (id != 0 && id != refId) {
 					// Check if element is linked to entityRef
 					SpriteEntity entity = SpriteEntity.fromId(SpriteEntity.class, id);
+					// For flying elements, check if they're below the collided element's Z
+					if (entityRef.getEntityType() == EntityType.ELEMENT) {
+						Element elementRef = (Element) entityRef;
+						if (elementRef.flying) {
+							SpriteDescription desc = entity.getDesc();
+							if (desc instanceof ElementDescription) {
+								ElementDescription elemDesc = (ElementDescription) desc;
+								if (elemDesc.getZ() <= elementRef.z) {
+									continue;
+								}
+							}
+						}
+					}
 					found = true;
 
 					if (entity == null) {	// Entity doesn't exist anymore

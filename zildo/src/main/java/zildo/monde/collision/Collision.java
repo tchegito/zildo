@@ -22,6 +22,7 @@ package zildo.monde.collision;
 
 import zildo.monde.Trigo;
 import zildo.monde.sprites.elements.Element;
+import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
@@ -78,13 +79,19 @@ public class Collision {
     
     // Special case: dragon cause damage whatever the floor is
     public boolean isMultifloor() {
-    	if (perso != null && perso.getDesc() != null) {
+    	if (weapon != null) {
+    		if (weapon instanceof ElementArrow) {
+    			return true;
+    		}
+    	} else if (perso != null && perso.getDesc() != null) {
 	    	switch (perso.getDesc()) {
 	    	case CHAUVESOURIS:
 	    	case DRAGON:
 	    		return true;
+    		default:
+    			return false;
 	    	}
-    	}
+    	} 
     	return false;
     }
     

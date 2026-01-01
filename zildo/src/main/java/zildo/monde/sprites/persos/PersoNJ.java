@@ -362,7 +362,7 @@ public class PersoNJ extends Perso {
 							if (angle != previousAngle) getEn_bras().animate();
 							// First, assure that no obstacle is on the way
 							Point deltaCheck = angle.coords.multiply(16);
-							ElementArrow simulatedArrow = new ElementArrow(angle, (int)getEn_bras().x, (int)getEn_bras().y, 0, this);
+							ElementArrow simulatedArrow = new ElementArrow(angle, (int)getEn_bras().x, (int)getEn_bras().y, floor*16 + (int) z, this);
 							Point arrowPrevisionPos = new Point(simulatedArrow.x, simulatedArrow.y);
 							boolean obstacle = false;
 							arrowPrevisionPos.y -= (getSprModel().getTaille_y() >> 1) / 2;	// Adjust arrow hitbox
@@ -371,7 +371,7 @@ public class PersoNJ extends Perso {
 								if (arrowPrevisionPos.distance(new Point(zildo.getX(), zildo.getY())) < 8) {
 									break;
 								}
-								if (EngineZildo.mapManagement.collide(arrowPrevisionPos.x, arrowPrevisionPos.y, this)) {
+								if (EngineZildo.mapManagement.collide(arrowPrevisionPos.x, arrowPrevisionPos.y, simulatedArrow)) {
 									obstacle = true;
 								}
 							}

@@ -958,6 +958,9 @@ public class MapManagement {
 															81, 83, 86,
 															93, 95); // 17, 15,
 																	// 841, 15);
+	private final static IntSet rightIncreaseZ = new IntSet(
+			256*3+145, 256*3+132, 256*3+147,
+			256*3+140, 256*3+251, 256*3+152, 256*3+154);
 	private final static IntSet rightDecreaseZ = new IntSet(102, 103, 104,
 															24, 25, 26,
 															80, 82, 85,
@@ -994,6 +997,9 @@ public class MapManagement {
 						currentZ++;
 					}
 					tabZ[j][i] = currentZ;
+					if (rightIncreaseZ.contains(onmap)) {
+						currentZ++;
+					}
 					if (rightDecreaseZ.contains(onmap)) {
 						currentZ--;
 					}
