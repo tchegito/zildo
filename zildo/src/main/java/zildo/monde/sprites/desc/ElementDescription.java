@@ -391,7 +391,7 @@ public enum ElementDescription implements SpriteDescription {
 		case SEWER_BARH: case SEWER_BARV:
 			return 5;
 		default:
-			return 0;
+			return 16;	// Arbitrary too high value
 		}
 	}
 	@Override

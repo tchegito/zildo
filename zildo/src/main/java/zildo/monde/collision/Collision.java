@@ -83,7 +83,8 @@ public class Collision {
     		if (weapon instanceof ElementArrow) {
     			return true;
     		}
-    	} else if (perso != null && perso.getDesc() != null) {
+    	}
+    	if (perso != null && perso.getDesc() != null) {
 	    	switch (perso.getDesc()) {
 	    	case CHAUVESOURIS:
 	    	case DRAGON:
