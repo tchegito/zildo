@@ -117,7 +117,7 @@ public class ActionElement extends LanguageElement {
 		speed = Float.valueOf("0" + readOrEmpty("speed"));
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");
-		floor = getFloatExpr("floor", "1.0");
+		floor = getFloatExpr("floor");
 		String strReverse = readAttribute("reverse");
 		// Read less common ones
 		String strPos = readOrEmpty("pos");

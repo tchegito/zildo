@@ -289,10 +289,11 @@ public abstract class TileEngine {
 							int value = back.getValue();
 							Tile back2 = mapCase.getBackTile2();
 							TileGroupPrimitive mesh = (back2 != null && (back2.bank == 3 && back2.index == 78)) ? meshBACKShader : meshBACK;
+							Case lowerCase = null;
 							if (!(areaAccessor instanceof SpecificFloorAreaAccesor) && (Tile.isBottomJump(value) || Tile.isBottomNoJump(value)) ) {
-								Case c = theMap.get_mapcase(mapX, mapY, floor-1);
-								if (c != null) {
-									back = c.getBackTile();
+								lowerCase = theMap.get_mapcase(mapX, mapY, floor-1);
+								if (lowerCase != null) {
+									back = lowerCase.getBackTile();
 									updateTile(mesh, back, x, y, floor-1, back.getValue(), changed);
 								}
 							} else {
@@ -307,6 +308,8 @@ public abstract class TileEngine {
 									back2.renderedIndex = n_motif;
 								}
 								updateTile(mesh, back2, x, y, floor, n_motif, changed);
+							} else if (lowerCase != null) {
+								updateTile(mesh, lowerCase.getBackTile2(), x, y, floor, lowerCase.getBackTile2().index, changed);
 							} else if (mapCase.isBack2Removed()) {
 								// TODO: il faudra gérer aussi le removeTile pour meshBACK2Shader
 								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y, floor);

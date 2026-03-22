@@ -486,7 +486,8 @@ public class MapManagement {
 			int scaledX = mx / 16;
 			int scaledY = my / 16;
 			// Don't collide if case is bottom less (example: lava tile)
-			TileNature nature = currentMap.getCaseNature(mx, my);
+			int whichFloor = quelElement != null ? quelElement.getFloor() : -1;
+			TileNature nature = currentMap.getCaseNature(mx, my, whichFloor);
 			if (allowOverBottomLess &&
 					(nature == TileNature.BOTTOMFLOOR || nature == TileNature.BOTTOMLESS)) {
 				continue;

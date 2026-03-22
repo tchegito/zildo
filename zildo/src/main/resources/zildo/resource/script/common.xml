@@ -327,7 +327,9 @@
 	    <sound name="ZildoFall"/>
 	    <script who="zildo" text="TOMBE"/>
 	    <zoom who="zildo" value="200"/>
-	    <wait value="20"/>
+	    <wait value="5"/>
+	    <perso who="zildo" floor="zildo.floor-1"/>
+	    <wait value="15"/>
 	   	<perso who="zildo" vx="zildo.vx*0.4" vy="zildo.vy*0.4"/>
 	    <zoom who="zildo" value="170"/>
 	    <wait value="10"/>

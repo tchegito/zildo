@@ -329,6 +329,10 @@ public class Area implements EasySerializable {
 		
 		// 1: bottom less (we have to read the BACK tile
 		int val = temp.getBackTile().getValue();
+		// Special case: no back tile, because real one is on lower floor
+		if (Tile.isBottomNoJump(val) && floor > 0) {
+			val = this.get_mapcase(x,  y, floor - 1).getBackTile().getValue();
+		}
 		Tile back2 = temp.getBackTile2();
 		int back2Val = back2 == null ? -1 : back2.getValue();
 		if (Tile.isBottomFloor(val)) {
@@ -397,6 +401,9 @@ public class Area implements EasySerializable {
 			return false;
 		}
 		int val = temp.getBackTile().getValue();
+		if (Tile.isBottomNoJump(val) && floor > 0) {
+			val = this.get_mapcase(x,  y, floor - 1).getBackTile().getValue();
+		}
 		// As a temporary feature : 108 means water coast, to allow smarter 'ponton' collision
 		if (Tile.isBottomLess(val, -1) || val == 108) {
 			return true;
