@@ -72,9 +72,9 @@ public class MapUtils {
 	
 	public void displayAltitude() {
 		System.out.println("altitude");
-		for (int y=0;y<area.getDim_x();y++) {
+		for (int y=0;y<area.getDim_y();y++) {
 			System.out.print("y="+String.format("%02d",y)+" ");
-			for (int x=0;x<area.getDim_y();x++) {
+			for (int x=0;x<area.getDim_x();x++) {
 				int alt = area.readAltitude(x, y);
 				System.out.print(alt);
 			}

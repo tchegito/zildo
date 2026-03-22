@@ -42,4 +42,16 @@ public class CheckAltitude extends EngineUT {
 		Assert.assertTrue(mapUtils.area.readAltitude(0, 41) == 0);
 		Assert.assertTrue(mapUtils.area.readAltitude(0, 42) == 0);
 	}
+	
+	@Test
+	public void prison12() {
+		mapUtils.loadMap("prison12");
+		
+		mapUtils.displayAltitude();
+		
+		Assert.assertTrue(mapUtils.area.readAltitude(16, 7) == 0);
+		Assert.assertTrue(mapUtils.area.readAltitude(17, 7) == 1);
+		Assert.assertTrue(mapUtils.area.readAltitude(15, 1) == 1);
+		Assert.assertTrue(mapUtils.area.readAltitude(13, 13) == 1);
+	}
 }

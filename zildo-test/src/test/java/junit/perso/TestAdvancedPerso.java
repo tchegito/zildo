@@ -363,6 +363,34 @@ public class TestAdvancedPerso extends EngineUT {
 		Assert.assertTrue(maxVy < 0.5);
 	}
 	
+	// Before, when hero fall, he was projected before him, and collision was undetected
+	// If he reaches upper tile.
+	@Test
+	public void heroFallWithoutOverlapping() {
+		EngineZildo.scriptManagement.accomplishQuest("hearPoulpa", false);
+		EngineZildo.scriptManagement.accomplishQuest("poulpaWood1", false);
+		//EngineZildo.scriptManagement.accomplishQuest("hero_princess", false);
+		mapUtils.loadMap("natureb1");
+		
+		int offsetY = mapUtils.area.getScrollOffset().y * 16;
+		PersoPlayer zildo = spawnZildo(246, 52 + offsetY);
+		waitEndOfScripting();
+		// In order to respawn propertly
+		EngineZildo.backUpGame();
+		EngineZildo.mapManagement.setStartLocation(mapUtils.area.getName(), new Point(246,52 + offsetY), Angle.NORD, 1);
+
+		simulateDirection(-1, 0);
+		while (zildo.getMouvement() != MouvementZildo.TOMBE) {
+			renderFrames(1);
+		}
+		System.out.println("Falling");
+		// Hero is falling !
+		while (zildo.isAlive()) {
+			System.out.println(zildo);
+			renderFrames(1);
+		}
+	}
+	
 	//@Test	// Disabled for now, waiting for ice elemental to replaced somewhere else
 	public void princessPushedByIceElemental() {
 		mapUtils.loadMap("nature4");
