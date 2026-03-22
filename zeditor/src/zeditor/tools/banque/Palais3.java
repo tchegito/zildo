@@ -126,7 +126,7 @@ public class Palais3 extends Banque {
 				// Stairs
 				{288, 0}, {288, 16}, 
 				// Edge
-				{64, 144}, {80, 144}
+				{64, 144}, {80, 144}, {64, 176}, {80, 176}, {96, 176}
 		};
 				
 		coordsInt = c;
