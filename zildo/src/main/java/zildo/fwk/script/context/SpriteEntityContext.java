@@ -20,6 +20,7 @@
 package zildo.fwk.script.context;
 
 import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 
 /**
@@ -55,6 +56,12 @@ public class SpriteEntityContext extends LocaleVarContext {
 				return entity.y;
 			} else if ("z".equals(key)) {
 				return entity.z;
+			}
+		} else if (key.length() == 2) {
+			if ("vx".equals(key)) {
+				return ((Element)entity).vx;
+			} else if ("vy".equals(key)) {
+				return ((Element)entity).vy;
 			}
 		} else if (key.length() == 10) {
 			if ("deltaMoveX".equals(key)) {

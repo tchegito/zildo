@@ -47,38 +47,43 @@ public class PersoSpider extends PersoShadowed {
 	
 	@Override
 	public void move() {
-		if (pathFinder.getTarget() == null) {
-			// Look for a random point
-			attackSpeed = 0.5f + Math.random() * 0.1f;
-			if (opposite) {
-				attackAngle = attackAngle + Math.PI/4;
-				attackSpeed += 1f;
-				opposite = false;
-			} else {
-				// Look for Zildo
-				Perso zildo = EngineZildo.persoManagement.lookForOne(this, 5, PersoInfo.ZILDO, false);
-				if (zildo != null) {
-					attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
-					attackAngle += EngineZildo.hasard.intervalle((float) (Math.PI / 4f));
-					attackSpeed += Math.random() * 1.2f;
+		if (action == null) {
+			if (pathFinder.getTarget() == null) {
+				// Look for a random point
+				attackSpeed = 0.5f + Math.random() * 0.1f;
+				if (opposite) {
+					attackAngle = attackAngle + Math.PI/4;
+					attackSpeed += 1f;
+					opposite = false;
 				} else {
-					attackAngle = Math.random() * 2 * Math.PI;
+					// Look for Zildo
+					Perso zildo = EngineZildo.persoManagement.lookForOne(this, 5, PersoInfo.ZILDO, false);
+					if (zildo != null) {
+						attackAngle = Trigo.getAngleRadian(x, y, zildo.x, zildo.y);
+						attackAngle += EngineZildo.hasard.intervalle((float) (Math.PI / 4f));
+						attackSpeed += Math.random() * 1.2f;
+					} else {
+						attackAngle = Math.random() * 2 * Math.PI;
+					}
 				}
-			}
-			Pointf target = new Pointf(x + 6 * attackSpeed * Math.cos(attackAngle),
-								       y + 6 * attackSpeed * Math.sin(attackAngle) );
-			pathFinder.setTarget(target);
-		} else {
-			if (pathFinder.move((float) attackSpeed, MoveAlgo.APPROACH)) {
-				attackSpeed *= 0.95f;
-				if (attackSpeed <= 0.1f) {
-					pathFinder.setTarget(null);
-				}
+				Pointf target = new Pointf(x + 6 * attackSpeed * Math.cos(attackAngle),
+									       y + 6 * attackSpeed * Math.sin(attackAngle) );
+				pathFinder.setTarget(target);
 			} else {
-				opposite = true;	// Collision, so go in the opposite next time
+				if (pathFinder.move((float) attackSpeed, MoveAlgo.APPROACH)) {
+					attackSpeed *= 0.95f;
+					if (attackSpeed <= 0.1f) {
+						pathFinder.setTarget(null);
+					}
+				} else {
+					opposite = true;	// Collision, so go in the opposite next time
+				}
+				walkTile(true);
 			}
+		} else {	// For the 'fallInPit' script
+			x += vx;
+			y += vy;
 		}
-
 	}
 	
 	boolean lastFrameCollide;

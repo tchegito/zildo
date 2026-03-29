@@ -472,4 +472,23 @@
 	<persoAction id="moveCharacterUnstoppable">
 	    <moveTo who="self" pos="loc:arg0,loc:arg1" speed="1.1" unstoppable="true"/>
 	</persoAction>
+	<persoAction id="persoFallInPit">
+	    <sound name="ZildoFall"/>
+	    <script who="self" text="TOMBE"/>
+	    <perso who="self" vx="vx*0.9" vy="vy*0.9"/>
+	   	<wait value="10"/>
+	    <zoom who="self" value="200"/>
+	    <wait value="5"/>
+	    <zoom who="self" value="170"/>
+	    <wait value="10"/>
+	    <zoom who="self" value="140"/>
+	    <wait value="10"/>
+	    <zoom who="self" value="100"/>
+	    <perso who="self" vx="0" vy="0"/>
+	    <wait value="10"/>
+	    <visible who="self" value="false"/>
+	    <animation who="self" pos="-3,2" type="STAR_SHINE" />
+	    <wait value="30"/>
+	    <remove who="self"/>
+   	</persoAction>
 </adventure>

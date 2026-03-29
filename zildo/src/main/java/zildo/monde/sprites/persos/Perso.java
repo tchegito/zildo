@@ -26,6 +26,7 @@ import java.util.List;
 import zildo.client.sound.BankSound;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
+import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.items.Item;
 import zildo.monde.map.Area;
@@ -46,6 +47,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.magic.Affection.AffectionKind;
 import zildo.monde.sprites.magic.PersoAffections;
 import zildo.monde.sprites.persos.action.PersoAction;
+import zildo.monde.sprites.persos.action.ScriptedPersoAction;
 import zildo.monde.sprites.persos.ia.PathFinder;
 import zildo.monde.sprites.persos.ia.PathFinderChainFollow;
 import zildo.monde.sprites.persos.ia.PathFinderFollow;
@@ -543,10 +545,14 @@ public abstract class Perso extends Element {
 		// Death !
 		EngineZildo.spriteManagement.spawnSpriteGeneric(SpriteAnimation.DEATH, (int) x, (int) y, floor, 0,
 				p_link ? this : null, null);
-		TriggerElement trig = TriggerElement.createDeathTrigger(name);
-		EngineZildo.scriptManagement.trigger(trig);
+		triggerDead();
 		setSpecialEffect(EngineFX.PERSO_HURT);
 		dieSceneLaunched = true;
+	}
+	
+	public void triggerDead() {
+		TriggerElement trig = TriggerElement.createDeathTrigger(name);
+		EngineZildo.scriptManagement.trigger(trig);
 	}
 
 	/**
@@ -955,7 +961,7 @@ public abstract class Perso extends Element {
 				}
 				break;
 			default:
-				if (isZildo() && bottomLess) {
+				if (bottomLess && canFallInPit() && action == null ) {
 					// Make hero fall if he reach the border of the hill
 					if (tileCollision.collide((int) x % 16, (int) y % 16, onmap, tile.reverse, Rotation.NOTHING, 0)) {
 						fall = true;
@@ -1027,11 +1033,16 @@ public abstract class Perso extends Element {
 				vy = deltaMoveY / 20;
 				stopBeingWounded(); // Stop potential projection
 				setCompte_dialogue(0); // Stop Zildo blink
-				if (isZildo() && ((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY) {
-					// Adapt fall for hero as a princess)
-					EngineZildo.scriptManagement.execute("princessDieInPit", true);
-				} else {
-					EngineZildo.scriptManagement.execute("dieInPit", true);
+				if (isZildo()) {
+					if (((PersoPlayer) this).who == ControllablePerso.PRINCESS_BUNNY) {
+						// Adapt fall for hero as a princess)
+						EngineZildo.scriptManagement.execute("princessDieInPit", true);
+					} else {
+						EngineZildo.scriptManagement.execute("dieInPit", true);
+					}
+				} else {	// Perso fall
+					setAction(new ScriptedPersoAction(this, "persoFallInPit", new SpriteEntityContext(this)));
+					shadow.die();
 				}
 			}
 		}
@@ -1539,6 +1550,11 @@ public abstract class Perso extends Element {
 		this.flagBehavior = flagBehavior;
 	}
 
+	public boolean canFallInPit() {
+		// For now, only hero and spider can fall
+		return isZildo() || desc == PersoDescription.STONE_SPIDER;
+	}
+	
 	@Override
 	public void shift(Point p_offset) {
 		super.shift(p_offset);

@@ -457,7 +457,7 @@ public class MapManagement {
 			foreground = quelElement.isForeground();
 			if (quelElement.getEntityType() == EntityType.PERSO) {
 				perso = (Perso) quelElement;
-				allowOverBottomLess = quelElement.flying || quelElement.isZildo();
+				allowOverBottomLess = quelElement.flying || perso.canFallInPit();
 			} else if (quelElement.getEntityType() == EntityType.ELEMENT) {
 				// allow water leaf to reach the bridges
 				allowOverBottomLess = quelElement.getDesc().isSliping();

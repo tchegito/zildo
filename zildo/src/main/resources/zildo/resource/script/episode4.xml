@@ -266,6 +266,10 @@
 		        <pos what="bar" pos="0,32" delta="true"/>
 		    </if>
    		</condition>
+   		
+		<condition name="natureb2" exp="natureb2Door">
+		    <activate what="doorRoxy" value="true"/>
+		</condition>
 	</mapScript>
 
    	<quest name="prisonext">
@@ -681,6 +685,19 @@
    	        <perso who="poulpa" action="poulpa"/>
    	        <speak who="poulpa" text="natureb1.poulpa5"/>
 		</action>
+   	</quest>
+   	
+   	<quest name="natureb2Door">
+   	    <trigger>
+   	        <location name="natureb2"/>
+   	        <dead who="s1,s2,s3,s4"/>
+   	    </trigger>
+   	    <action>
+   	        <focus what="doorRoxy" delta="true" unblock="false"/>
+   	        <activate what="doorRoxy" value="true"/>
+   	        <wait value="40"/>
+   	        <focus who="zildo" delta="true"/>
+   	    </action>
    	</quest>
    	
    	<scene id="spawnFireSpirit">
