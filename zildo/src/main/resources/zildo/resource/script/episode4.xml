@@ -267,8 +267,12 @@
 		    </if>
    		</condition>
    		
-		<condition name="natureb2" exp="natureb2Door">
-		    <activate what="doorRoxy" value="true"/>
+		<condition name="natureb2" exp="natureb2DoorPoulpa">
+		    <activate what="doorPoulpa" value="true"/>
+		</condition>
+		<condition name="natureb2" exp="!natureb2DoorPoulpa">
+		    <spawn who="poulpa" type="POULPA" info="NEUTRAL" pos="255,345"/>
+		    <perso who="poulpa" action="poulpa"/>
 		</condition>
 	</mapScript>
 
@@ -687,15 +691,17 @@
 		</action>
    	</quest>
    	
-   	<quest name="natureb2Door">
+   	<quest name="natureb2DoorPoulpa" locked="false">
    	    <trigger>
    	        <location name="natureb2"/>
    	        <dead who="s1,s2,s3,s4"/>
    	    </trigger>
    	    <action>
-   	        <focus what="doorRoxy" delta="true" unblock="false"/>
-   	        <activate what="doorRoxy" value="true"/>
-   	        <wait value="40"/>
+   	        <focus what="doorPoulpa" delta="true" unblock="false"/>
+   	        <activate what="doorPoulpa" value="true"/>
+   	        <wait value="20"/>
+   	        <speak who="poulpa" text="natureb2.poulpa"/>
+   	        <moveTo who="poulpa" pos="255,-10" unstoppable="true" unblock="true"/>
    	        <focus who="zildo" delta="true"/>
    	    </action>
    	</quest>

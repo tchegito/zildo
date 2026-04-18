@@ -12,6 +12,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.persos.action.ScriptedPersoAction;
+import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Vector2f;
 import zildo.server.EngineZildo;
@@ -58,12 +59,13 @@ public class TestThrow extends EngineUT {
 		mapUtils.assertCurrent("prison12");
 		simulateDirection(0, 0);
 		Perso garde = EngineZildo.persoManagement.getNamedPerso("noir1");
+		garde.setQuel_deplacement(MouvementPerso.IMMOBILE, true);
 		waitEndOfScroll();
 		garde.setAngle(Angle.OUEST);
 		garde.attack();
 		renderFrames(10);
 		simulateDirection(new Vector2f(-0.1f, 0f));
-		renderFrames(30 + 20);
+		renderFrames(30 + 20 - 5);
 		Element arrow = (Element) findEntityByDesc(ElementDescription.ARROW_LEFT);
 		Assert.assertNotNull(arrow);
 		simulateDirection(-1,0);
@@ -72,6 +74,22 @@ public class TestThrow extends EngineUT {
 		mapUtils.assertCurrent("prison13");
 	}
 
+	@Test
+	public void canShootArrowOnHigherFloor() {
+		mapUtils.loadMap("prison12");
+		persoUtils.removePerso("noir1");
+		PersoPlayer zildo = spawnZildo(135, 126);
+		waitEndOfScripting();
+		
+		// Wait for guard on the platform to shoot an arrow
+		while (findEntityByDesc(ElementDescription.ARROW_RIGHT) == null) {
+			renderFrames(1);
+		}
+		// Make sure it will damage our hero
+		renderFrames(20);
+		Assert.assertTrue(zildo.isWounded());
+	}
+	
 	@Test
 	public void dynamiteHitWall() {
 		mapUtils.loadMap("prisonext");

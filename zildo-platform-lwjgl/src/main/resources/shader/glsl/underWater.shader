@@ -2,7 +2,7 @@ uniform sampler2D tex;
 uniform float alpha;
 
 void main (void) {
-	vec2 pos = mod(gl_FragCoord.xy, 16);
+	vec2 pos = mod(gl_FragCoord.xy, 16.0);
 	
 	vec2 texCoord = gl_TexCoord[0].st;
 	
