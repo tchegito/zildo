@@ -497,6 +497,10 @@ public abstract class Perso extends Element {
 		double norme = Pointf.pythagore(diffx, diffy);
 		if (norme == 0.0f) {
 			norme = 1.0f; // To avoid 'divide by zero'
+			if (diffx == 0 && diffy == 0) {
+				diffx = EngineZildo.hasard.intervalle(0.7f);
+				diffy = -0.4f;
+			}
 		}
 		// Then throw it !
 		setPx((float) (p_speed * (diffx / norme)));
@@ -940,8 +944,8 @@ public abstract class Perso extends Element {
 					fall = true;
 				}
 				break;
-			case 1277: // Knives
-				if (isZildo()) {
+			case 1024 + 253: case 1024+155: // Knives
+				if (isZildo() && !isWounded()) {
 					beingWounded(x + deltaMoveX, y + deltaMoveY, null, 1);
 				}
 				break;

@@ -553,6 +553,8 @@ public class ActionExecutor extends RuntimeExecutor {
 							p_action.location.getPoint(), p_action.action,
 							!p_action.unblock);
 				}
+				// Call walkTile if ever tile becomes a damager under hero
+				EngineZildo.persoManagement.getZildo().walkTile(false);
 				achieved = true;
 				break;
 			case filter:

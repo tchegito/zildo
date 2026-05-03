@@ -49,7 +49,6 @@ public enum BankSound implements AudioBank {
 	ZildoUnlock("doorUnlock"),
 	ZildoUnlockDouble("doorDouble"),
 	ZildoAccomplishQuest("queteEpuree"),
-	ZildoElectric("electric"),	// To replace
 	ZildoDying("dying"),
 	ZildoFall("chute"),
 	

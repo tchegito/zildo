@@ -77,7 +77,7 @@ public class Foret2 extends Banque {
 				new Point(288, 32), new Point(304, 32), new Point(256, 48),
 				new Point(272, 48), new Point(288, 48), new Point(304, 48),
 				new Point(256, 64), new Point(272, 64), new Point(288, 64),
-				new Point(240, 80), new Point(256, 80), new Point(272, 80),
+				new Point(240, 80), new Point(256, 80), new Point(96, 32),
 				new Point(288, 80), new Point(304, 80), new Point(240, 96),
 				new Point(256, 96), new Point(272, 96), new Point(288, 96),
 				new Point(304, 96), new Point(240, 112), new Point(256, 112),
@@ -121,7 +121,8 @@ public class Foret2 extends Banque {
 				new Point(96, 160), new Point(112, 160),
 				
 				/* Knives */
-				new Point(0, 80)
+				new Point(0, 80),
+				new Point(96, 48), new Point(96, 64)
 		};
 
 		pkmChanges = Arrays.asList(new GraphChange[] { new GraphChange("exteria5", 0, 0),

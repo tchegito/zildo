@@ -629,7 +629,8 @@ public class ScriptManagement {
 			    		System.out.println(condi);
 			    	}
 					// Execute the 'mapscript' before all, with topPriority=TRUE
-					execute(condi.getActions(), false, null, true, null, true);
+			    	// I added recentely a SceneContext instead of NULL for scenes able to execute in condition tag
+					execute(condi.getActions(), false, null, true, new SceneContext(), true);
 				}
 			}
 		}

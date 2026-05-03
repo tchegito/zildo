@@ -85,4 +85,42 @@
 	    <!-- Will spawn a rabbit whith the name received by call (here 'pinpin') -->
 	    <spawn who="loc:arg2" type="RABBIT" pos="100,100" />
 	</scene>
+	
+	<!-- Pattern of script about spikes in nature palace -->
+	<scene id="loopThenScript">
+   	    <loop>
+   	        <wait value="50"/>
+			<exec script="forActionsExec(1)"/>
+	        <wait value="50"/>
+			<exec script="forActionsExec(0)"/>
+		   	<wait value="50"/>
+			<exec script="forActionsExec(2)"/>
+   	    </loop>
+   	</scene>
+   	
+	<scene id="forActionsExec">
+	   	<for var="loc:j" value="4">
+	  	    <var name="loc:x" value="12+loc:arg0-3*loc:j"/>
+  	        <actions>
+	      	    <exec script="tileAct(loc:x,5)"/>
+	      	    <exec script="tileAct(loc:x,6)"/>
+	       	    <exec script="tileAct(loc:x,7)"/>
+	       	    <exec script="tileAct(loc:x,8)"/>
+	   	    </actions>
+		</for>
+	   	<for var="loc:k" value="4">
+	     	<var name="loc:y" value="12+loc:arg0-3*loc:k"/>
+  	        <actions>
+	     	    <exec script="tileAct(loc:y,10)"/>
+	      	    <exec script="tileAct(loc:y,11)"/>
+	       	    <exec script="tileAct(loc:y,12)"/>
+	       	    <exec script="tileAct(loc:y,13)"/>
+	   	    </actions>
+		</for>
+   	</scene>
+   	
+	<scene id="tileAct">
+	   	<tile pos="loc:arg0, loc:arg1" back2="256*4+253"/>"/>
+   	</scene>
+   	
 </adventure>

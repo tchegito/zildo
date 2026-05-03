@@ -80,7 +80,7 @@ public class ScriptExecutor {
 		}
 		ScriptProcess sp = new ScriptProcess(p_script, this, p_finalEvent, p_topPriority, ctx, p_caller);
 		if (p_caller != null) {
-			p_caller.setSubProcess(sp);
+			p_caller.addSubProcess(sp);
 		} else {
 			if (!PROCESSING_SCRIPTS) {
 				if (sp.topPriority) {	// Add priority scripts first
@@ -99,14 +99,19 @@ public class ScriptExecutor {
 		StringBuilder sb = new StringBuilder();
 		sb.append(scripts.size()).append(" scripts running {[");
 		for (ScriptProcess process : scripts) {
-			ScriptProcess s = process;
-			while (s != null) {
-				sb.append(s.scene.id).append(s).append(",");
-				s = s.subProcess;
-			}
+			verboseRecursive(sb, process);
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+
+	private void verboseRecursive(StringBuilder sb, ScriptProcess process) {
+		for (ScriptProcess sp: process.subProcess) {
+			if (!sp.subProcess.isEmpty()) {
+				verboseRecursive(sb, sp);
+			}
+			sb.append(sp.scene.id).append(sp).append(",");
+		}
 	}
 	/**
 	 * Execute a frame inside the current locking script, and all non locking ones.
@@ -129,7 +134,9 @@ public class ScriptExecutor {
 				while (shouldGoOn) { // || process.subProcess != null) {
 					shouldGoOn = renderProcess(process);
 				}
-
+				
+				// Clean subprocesses
+				checkAllSubProcess(process);
 				
 				// Did the last action finished ? So we'll avoid GUI blinking with 1-frame long script. (issue 28)
 				if (process.getCurrentNode() == null && process.currentActions.isEmpty()) {
@@ -161,21 +168,36 @@ public class ScriptExecutor {
 		toExecute.clear();
 	}
 
-	// TODO: don't modify input variable
+	private void checkAllSubProcess(ScriptProcess process) {
+		ScriptProcess parent = process;
+		while (!process.subProcess.isEmpty()) {
+			parent = process;
+			process = process.subProcess.iterator().next();
+		}
+		for (Iterator<ScriptProcess> it = parent.subProcess.iterator();it.hasNext();) {
+			ScriptProcess sub = it.next();
+			if (subScriptsEnded.contains(sub)) {
+				// This sub process has recently ended, so we cut the link from the parent
+				sub.terminate();
+				subScriptsEnded.remove(sub);
+				it.remove();
+				break;
+			} else if (sub.getCurrentNode() == null) {
+				if (sub.currentActions.isEmpty() && sub.subProcess.isEmpty()) {
+					toTerminate.add(process);
+					sub.terminate();
+					it.remove();
+				}
+			}
+			checkAllSubProcess(sub);
+		}
+	}
+	
 	private boolean renderProcess(ScriptProcess process) {
 		
-		// Does this process have a sub process ? Check recursively
-		ScriptProcess parent = null;
-		while (process.subProcess != null) {
-			if (subScriptsEnded.contains(process.subProcess)) {
-				// This sub process has recently ended, so we cut the link from the parent
-				process.subProcess.terminate();
-				subScriptsEnded.remove(process.subProcess);
-				process.subProcess = null;
-				break;
-			}
-			parent = process;
-			process = process.subProcess;
+		// Does this process have a sub process ? Check recursively to run the first of the deepest
+		while (!process.subProcess.isEmpty()) {
+			process = process.subProcess.iterator().next();
 		}
 		
 		boolean shouldGoOn = false;
@@ -199,27 +221,9 @@ public class ScriptExecutor {
 			}
 		}
 		
-		if (process.getCurrentNode() == null) {
-			if (parent != null) {
-				// TODO: isn't parent.subProcess supposed to be equals to process ??? 
-				if (parent.subProcess.currentActions.isEmpty() && parent.subProcess.subProcess == null) {
-					parent.subProcess.terminate();
-					parent.subProcess = null;
-				}
-			} else if (process.currentActions.isEmpty()){
-				toTerminate.add(process);
-			}
+		if (process.getCurrentNode() == null && process.currentActions.isEmpty()){
+			toTerminate.add(process);
 		}
-		/*
-		while (process.subProcess != null) {
-			// TODO: pass only process to this sub function
-			process = process.subProcess;
-			//renderElement(process, process.getCurrentNode(), true);
-			// Special case of process with just one line
-			if (process.getCurrentNode() == null) {
-				toTerminate.add(process);
-			}
-		} */
 	
 		return shouldGoOn;
 	}
@@ -309,7 +313,7 @@ public class ScriptExecutor {
 		RuntimeAction node = currentNode;
 		boolean shouldGoOn = true;
 		while (node != null) {
-			boolean hadSubprocess = process.subProcess != null;
+			boolean hadSubprocess = !process.subProcess.isEmpty();
 			boolean wasWaiting = node.waiting;
 			if (!node.var) {
 				//System.out.print("action => "+node);
@@ -358,7 +362,7 @@ public class ScriptExecutor {
 				shouldGoOn = false;
 			}
 			if (!shouldGoOn) {
-				if (!hadSubprocess && process.subProcess != null) {
+				if (!hadSubprocess && !process.subProcess.isEmpty()) {
 					shouldGoOn = true;
 				}
 				break;

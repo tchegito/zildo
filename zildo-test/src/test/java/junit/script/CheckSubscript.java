@@ -244,6 +244,15 @@ public class CheckSubscript extends EngineScriptUT {
 		Assert.assertEquals("1.0", scriptMgmt.getVarValue("varB"));
 	}
 	
+	@Test
+	public void multipleSubsAndIdRemoving() {
+		scriptMgmt.getAdventure().merge(ScriptReader.loadScript("junit/script/subscript"));
+		waitEndOfScripting();
+
+		scriptMgmt.execute("loopThenScript", false);
+		renderFrames(1000);
+	}
+	
 	private int countSprites() {
 		return EngineZildo.spriteManagement.getSpriteEntities(null).size();
 	}

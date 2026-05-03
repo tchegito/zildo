@@ -43,7 +43,7 @@ public class ScriptProcess {
 	public boolean finalEvent;	// TRUE=send NOEVENT at the end of the script execution / FALSE=nothing
 	boolean topPriority;
 	
-	ScriptProcess subProcess;	// When this script executes another one
+	List<ScriptProcess> subProcess = new ArrayList<>();	// When this script executes another one
 	
 	PersoPlayer duplicateZildo;
 	
@@ -66,8 +66,8 @@ public class ScriptProcess {
 		}
 	}
 	
-	public void setSubProcess(ScriptProcess subProcess) {
-		this.subProcess = subProcess;
+	public void addSubProcess(ScriptProcess subProcess) {
+		this.subProcess.add(subProcess);
 	}
 	/**
 	 * Return the current node, based on the cursor value.
@@ -102,7 +102,11 @@ public class ScriptProcess {
 			return true;
 		}
 		if (subProcess != null) {
-			return subProcess.isNameProcessing(p_name);
+			for (ScriptProcess sp: subProcess) {
+				if (sp.isNameProcessing(p_name)) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
