@@ -284,10 +284,6 @@
 		    <moveTo who="poulpa" pos="325,198"/>
            	<markQuest name="splitPoulpa" value="true"/>
 		</condition>
-		
-		<condition name="natureb5">
-		    <exec script="natureSpikesMovingLeft" unblock="true"/>
-		</condition>
 	</mapScript>
 
    	<quest name="prisonext">
@@ -723,6 +719,15 @@
    	        <speak who="poulpa" text="natureb2.poulpa2"/>
    	        <moveTo who="poulpa" pos="255,-10" unblock="true"/>
    	        <focus who="zildo" delta="true"/>
+   	    </action>
+   	</quest>
+   	
+   	<quest name="natureb5" repeat="true" locked="false">
+   	    <trigger>
+   	        <location name="natureb5"/>
+   	    </trigger>
+   	    <action>
+   	      	<exec script="natureSpikesMovingLeft" unblock="true"/>
    	    </action>
    	</quest>
    	

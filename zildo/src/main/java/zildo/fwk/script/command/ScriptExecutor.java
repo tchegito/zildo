@@ -196,7 +196,9 @@ public class ScriptExecutor {
 	private boolean renderProcess(ScriptProcess process) {
 		
 		// Does this process have a sub process ? Check recursively to run the first of the deepest
+		ScriptProcess parent = null;
 		while (!process.subProcess.isEmpty()) {
+			parent = process;
 			process = process.subProcess.iterator().next();
 		}
 		
@@ -221,8 +223,16 @@ public class ScriptExecutor {
 			}
 		}
 		
-		if (process.getCurrentNode() == null && process.currentActions.isEmpty()){
-			toTerminate.add(process);
+		if (process.getCurrentNode() == null) {
+			if (parent != null) {
+				ScriptProcess sub = parent.subProcess.iterator().next();
+				if (sub.currentActions.isEmpty() && sub.subProcess.isEmpty()) {
+					sub.terminate();
+					parent.subProcess.remove(sub);
+				}
+			} else if (process.currentActions.isEmpty()){
+				toTerminate.add(process);
+			}
 		}
 	
 		return shouldGoOn;

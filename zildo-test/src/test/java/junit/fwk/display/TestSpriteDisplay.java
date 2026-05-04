@@ -118,7 +118,7 @@ public class TestSpriteDisplay extends EngineUT {
 		mapUtils.loadMap("coucou");
 		spawnZildo(368, 985);
 		simulateDirection(0, 1);
-		renderFrames(100);
+		renderFrames(99);
 		Assert.assertEquals("prisonext", EngineZildo.mapManagement.getCurrentMap().getName());
 		Perso darkGuy = (Perso) findEntityByDesc(PersoDescription.DARKGUY);
 		Assert.assertNotNull(darkGuy);
@@ -157,10 +157,10 @@ public class TestSpriteDisplay extends EngineUT {
 				if (ent != null) {
 					if (ent == first) {
 						posFirst = i;
-						System.out.println("First: "+ent.y);
+						//System.out.println("First: "+ent.y);
 					} else if (ent == second) {
 						posSecond = i;
-						System.out.println("Second: "+ent.y);
+						//System.out.println("Second: "+ent.y);
 					}
 				}
 			}
