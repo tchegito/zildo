@@ -35,8 +35,6 @@ public class QuestElement extends AnyElement {
 	List<LanguageElement> actions = ZUtils.arrayList();
 	List<LanguageElement> history = null;
 
-	boolean both; // TRUE=each trigger element must be done AT THE SAME TIME to
-					// launch the actions
 	boolean repeat; // TRUE=can be accomplished unlimited time
 	public boolean locked;	// TRUE=block the game (default) / FALSE=player can move during script
 
@@ -49,7 +47,6 @@ public class QuestElement extends AnyElement {
 		
 		name = readOrEmpty("name");
 
-		both = isTrue("both");
 		repeat = isTrue("repeat");
 		locked = !"false".equals(readAttribute("locked"));	// Default is false
 	}
@@ -84,10 +81,6 @@ public class QuestElement extends AnyElement {
 
 	public List<LanguageElement> getHistory() {
 		return history;
-	}
-
-	public boolean isTriggersBoth() {
-		return both;
 	}
 
 	public boolean isRepeatable() {

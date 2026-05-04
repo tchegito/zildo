@@ -271,11 +271,6 @@ public class ScriptManagement {
     			// Particular case : no triggers at all IS NOT considered as achieved
     			if (achieved) {
     				accomplishQuest(quest, true);
-    			} else if (quest.isTriggersBoth()) {
-    				// All trigger are not activated at the same time ==> then we reset them to 'undone'
-    				for (TriggerElement trig : quest.getTriggers()) {
-    					trig.done=false;
-    				}
     			} else {
     				// Reset only the 'location','dialog', 'use' and 'fall' trigger to 'undone' 
     				// (because they have to be immediate)
