@@ -23,6 +23,7 @@ package zildo.fwk.script.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import zildo.fwk.script.context.IEvaluationContext;
 
@@ -40,6 +41,8 @@ public class ZSCondition {
 	static final String FALSE = "-999"; // Value which means "expression is false"
 	public static final String TRUE = "1";
 	
+	Pattern splitCond = Pattern.compile("(?<!loc):");
+
 	public ZSCondition(int p_result) {
 		result = "" + p_result;
 		expressions = new ArrayList<ZSExpression>();
@@ -58,7 +61,7 @@ public class ZSCondition {
 	 */
 	public ZSCondition(String p_parseableString) {
 		// Exclude ':' if they're in a local variable definition ("loc:")
-		String[] strExpr = p_parseableString.split("(?<!loc):");
+		String[] strExpr = splitCond.split(p_parseableString);
 		if (strExpr.length != 2) {
 			throw new RuntimeException(
 					"Condition should be <expression>:<value>");

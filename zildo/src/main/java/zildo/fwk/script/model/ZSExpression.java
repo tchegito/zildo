@@ -60,6 +60,9 @@ public class ZSExpression {
 	
 	FloatExpression floatExpr = null;
 	
+	// Any string containing either <, or >, or =, or loc:arg not preceded by #
+	static public Pattern needToParseFloatExpr = Pattern.compile("<|>|=|(?<!#)loc:");
+	
 	public ZSExpression(String p_questName) {
 		questName = p_questName.trim();
 		done = true;
@@ -69,7 +72,7 @@ public class ZSExpression {
 		this(p_questName);
 		done = p_done;
 		
-		if (p_questName.indexOf('<') != -1 || p_questName.indexOf('>') != -1 || p_questName.indexOf('=' )!= -1) {
+		if (needToParseFloatExpr.matcher(p_questName).find()) {
 			floatExpr = new FloatExpression(p_questName);
 		}
 	}

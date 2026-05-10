@@ -162,7 +162,8 @@ public enum BankSound implements AudioBank {
 	PoulpaCry("poulpaPlainte"),
 	PoulpaCry2("poulpaPlainte2"),
 	
-	Chain("chain");
+	Chain("chain"),
+	Pikes("pikesFinal");
 	
 	String filename;
 	

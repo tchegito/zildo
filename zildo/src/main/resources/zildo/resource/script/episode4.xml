@@ -1469,7 +1469,7 @@
 		<var name="loc:reset1" value="(loc:arg0 + 1) % 3"/>
 		<var name="loc:reset2" value="(loc:arg0 + 2) % 3"/>
 		<actions>
-		    <sound name="BoomerangTape"/>
+		    <sound name="Pikes" pos="157,115"/>
       	    <var name="loc:x" value="12+loc:arg0"/>
 	   	    <exec script="_spikeRow(loc:x, 5)" unblock="true"/>
 	   	    <exec script="_spikeRow(loc:x-3, 5)" unblock="true"/>
@@ -1499,23 +1499,25 @@
    	</scene>
    	
    	<tileAction id="_spikeOn">
-   		<tile pos="x, y" back2="256*4+255"/>
+   	    <var name="loc:impair" value="y%2=0:0,128"/>
+   		<tile pos="x, y" reverse="loc:impair" back2="256*4+255"/>
    		<wait value="2"/>
-   		<tile pos="x, y" back2="256*4+254"/>
+   		<tile pos="x, y" reverse="loc:impair" back2="256*4+254"/>
    		<wait value="2"/>
-  		<tile pos="x, y" back2="256*4+155"/>
+  		<tile pos="x, y" reverse="loc:impair" back2="256*4+155"/>
    		<wait value="2"/>
-  		<tile pos="x, y" back2="256*4+253"/>
+  		<tile pos="x, y" reverse="loc:impair" back2="256*4+253"/>
   	</tileAction>
   	
    	<tileAction id="_spikeOff">
-   		<tile pos="x, y" back2="256*4+253"/>
+   	    <var name="loc:impair" value="y%2=0:0,128"/>
+   	    <tile pos="x, y" reverse="loc:impair" back2="256*4+253"/>
    		<wait value="2"/>
-   		<tile pos="x, y" back2="256*4+155"/>
+   		<tile pos="x, y" reverse="loc:impair" back2="256*4+155"/>
    		<wait value="2"/>
-  		<tile pos="x, y" back2="256*4+254"/>
+  		<tile pos="x, y" reverse="loc:impair" back2="256*4+254"/>
    		<wait value="2"/>
-  		<tile pos="x, y" back2="256*4+255"/>
+  		<tile pos="x, y" reverse="loc:impair" back2="256*4+255"/>
    		<wait value="2"/>
   		<tile pos="x, y" back2="-1"/>
   	</tileAction>

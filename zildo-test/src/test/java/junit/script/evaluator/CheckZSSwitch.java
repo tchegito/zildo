@@ -20,6 +20,7 @@
 
 package junit.script.evaluator;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,18 +31,22 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.SimpleEngineScript;
+import zildo.fwk.script.context.LocaleVarContext;
+import zildo.fwk.script.context.SceneContext;
 import zildo.fwk.script.logic.FloatVariable;
 import zildo.fwk.script.model.ZSCondition;
 import zildo.fwk.script.model.ZSSwitch;
 import zildo.monde.items.Item;
 import zildo.monde.items.ItemKind;
 import zildo.monde.map.Area;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Angle;
 import zildo.server.EngineZildo;
 import zildo.server.MapManagement;
 import zildo.server.PersoManagement;
+import zildo.server.SpriteManagement;
 
 /**
  * Checks the {@link ZSSwitch} and linked classes.
@@ -245,10 +250,49 @@ public class CheckZSSwitch extends SimpleEngineScript {
 		Assert.assertTrue(sw2.evaluateInt() == 1);
 	}
 
+	@Test
+	public void localVariablesinESharp() {
+		// GIVEN
+		ZSSwitch sw = ZSSwitch.parseForScript("E#loc:arg0");
+		SceneContext ctx = new SceneContext();
+		ctx.registerVariable("loc:arg0");
+		EngineZildo.scriptManagement.putVarValue("loc:0", "poulpa");
+		SpriteManagement mockedSprMgmt = mock(SpriteManagement.class);
+		when(mockedSprMgmt.getNamedElement(eq("poulpa"))).thenReturn(new Element());
+		EngineZildo.spriteManagement = mockedSprMgmt;
+
+		// WHEN
+		String res = sw.evaluate(ctx);
+		
+		// THEN
+		Assert.assertEquals(ZSCondition.TRUE, res);
+	}
+
+	@Test
+	public void localVariables_parseForScript() {
+		// GIVEN
+		ZSSwitch sw1 = ZSSwitch.parseForScript("loc:arg0");
+		ZSSwitch sw2 = ZSSwitch.parseForScript("loc:arg1");
+		SceneContext ctx = new SceneContext();
+		ctx.registerVariable("loc:arg0");
+		ctx.registerVariable("loc:arg1");
+		EngineZildo.scriptManagement.putVarValue("loc:0", "0");
+		EngineZildo.scriptManagement.putVarValue("loc:1", "1");
+		
+		// WHEN
+		String res1 = sw1.evaluate(ctx);
+		String res2 = sw2.evaluate(ctx);
+		
+		// THEN
+		Assert.assertEquals("0", res1);
+		Assert.assertEquals("1", res2);
+	}
+	
 	@Override
 	@After
 	public void tearDown() {
 		EngineZildo.persoManagement = null;
 		EngineZildo.scriptManagement = null;
+		LocaleVarContext.clean();
 	}
 }

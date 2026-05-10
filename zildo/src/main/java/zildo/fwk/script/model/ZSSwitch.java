@@ -22,6 +22,7 @@ package zildo.fwk.script.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import zildo.fwk.script.context.IEvaluationContext;
 
@@ -93,6 +94,9 @@ public class ZSSwitch {
 		return new ZSSwitch(p_parseableString);
 	}
 	
+	static Pattern replaceForScript = Pattern.compile("(?<!\\([0-9]{1,3}),");
+	static Pattern replaceMapCond = Pattern.compile("([a-z|A-Z|0-9]+)");
+	
 	/**
 	 * Add ":1" to each condition, and "0" at the end.
 	 * @param p_parseableString
@@ -100,13 +104,13 @@ public class ZSSwitch {
 	 */
 	public static ZSSwitch parseForScript(String p_parseableString) {
 		// Replace all "," which is not preceded by a 3 digits max number
-		String replacement = p_parseableString.replaceAll("(?<!\\([0-9]{1,3}),", ":1,");
+		String replacement = replaceForScript.matcher(p_parseableString).replaceAll(":1,");
 		return new ZSSwitch(replacement + ":1,0");
 	}
 	
 	public static ZSSwitch parseForMapCondition(String p_parseableString) {
 		// Prefix all map name with a predictable sequence "M#"
-		String str = p_parseableString.replaceAll("([a-z|A-Z|0-9]+)", "M#$1");
+		String str = replaceMapCond.matcher(p_parseableString).replaceAll("M#$1");
 		return parseForScript(str);
 	}
 

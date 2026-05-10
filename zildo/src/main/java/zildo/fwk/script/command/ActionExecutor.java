@@ -1316,6 +1316,6 @@ public class ActionExecutor extends RuntimeExecutor {
 	}
 
 	private Reverse reverseFromAction(ActionElement p_action) {
-		return Reverse.fromInt(p_action.reverse.evaluateInt(context));
+		return Reverse.fromInt((int) p_action.reverse.evaluate(context));
 	}
 }

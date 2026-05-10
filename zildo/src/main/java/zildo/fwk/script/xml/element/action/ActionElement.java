@@ -54,7 +54,7 @@ public class ActionElement extends LanguageElement {
 	public String way; // For 'launch' action
 	public int val;
 	public int flag = -1;	// Only for 'perso' action
-	public ZSSwitch reverse;
+	public FloatExpression reverse;
 	public int rotation = -1;
 	public int attente = DEFAULT_ATTENTE;
 	public FloatExpression floor;
@@ -128,7 +128,7 @@ public class ActionElement extends LanguageElement {
 			targetScene = readAttribute("targetScene");
 			fallScene = readAttribute("fallScene");
 			if (strReverse != null) {
-				reverse = ZSSwitch.parseForDialog(strReverse);
+				reverse = new FloatExpression(strReverse);
 			}
 			alphaV = getFloatExpr("alphaV");
 			String temp = readAttribute("z");
@@ -144,7 +144,7 @@ public class ActionElement extends LanguageElement {
 			if (strReverse == null) {
 				reverse = null;
 			} else {
-				reverse = ZSSwitch.parseForDialog(strReverse);
+				reverse = new FloatExpression(strReverse);
 			}
 
 			shadow = readAttribute("shadow");
@@ -191,7 +191,7 @@ public class ActionElement extends LanguageElement {
 				z = new FloatExpression(temp);
 			}
 			if (strReverse != null) {
-				reverse = ZSSwitch.parseForDialog(strReverse);
+				reverse = new FloatExpression(strReverse);
 			}
 			pv = readInt("pv", DEFAULT_PV);
 			rotation = readInt("rotation", -1);
@@ -279,7 +279,7 @@ public class ActionElement extends LanguageElement {
 			fore = (int) evaluateFloat("fore", -2);
 			action = readAttribute("action"); // Empty string means "no action"
 			if (strReverse != null) {
-				reverse = ZSSwitch.parseForDialog(strReverse);
+				reverse = new FloatExpression(strReverse);
 			}
 			break;
 		case remove:

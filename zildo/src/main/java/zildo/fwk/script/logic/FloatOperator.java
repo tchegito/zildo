@@ -72,7 +72,15 @@ public class FloatOperator implements FloatASTNode{
 				return Math.max(f1,  f2);
 			case ROUND:
 				return (int) f1;
-
+			case SEPARATOR:
+				if (operand1 instanceof FloatOperator) {
+					FloatOperator op1 = (FloatOperator)operand1;
+					// Comparison operators
+					if (op1.op == Operator.EQUALS || op1.op == Operator.GREATER || op1.op == Operator.LESSER) {
+						return f1 == 1 ? op1.operand2.evaluate(c) : f2;
+					}
+				}
+				throw new RuntimeException("Unable to evaluate "+op+" in this case.");
 		}
 	}
 
