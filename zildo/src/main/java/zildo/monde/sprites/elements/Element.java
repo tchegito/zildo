@@ -330,7 +330,7 @@ public class Element extends SpriteEntity {
 		}
 		zoom += zoomV;
 		
-		if (alpha < 0 && fall()) {
+		if (alpha < 0 && getLinkedPerso() == null && fall()) {
 			die();
 		}
 		if (mover != null && mover.isActive()) {

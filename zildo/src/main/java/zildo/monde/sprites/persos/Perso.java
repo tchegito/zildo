@@ -567,12 +567,24 @@ public abstract class Perso extends Element {
 	 * @param compteur_animation
 	 */
 	public void finaliseComportement(int compteur_animation) {
-		feet.setVisible(pv > 0 && (inWater || inDirt));
+		boolean newVisible = pv > 0 && (inWater || inDirt) && z == 0;
+		// For character jumping in water, clears the puddle smoothly
+		if (feet.isVisible() && !newVisible) {
+			feet.alphaA = -3;
+		}
+		feet.setAddSpr((compteur_animation / 6) % 3);
+		if (z > 0) {
+			return;
+		} else {
+			feet.alphaA = 0;
+			feet.alphaV = 0;
+			feet.setAlpha(255f);
+		}
+		feet.setVisible(newVisible);
 		if (inWater || inDirt) {
 			feet.setX(x);
 			feet.setY(y + 9 + 1);
 			feet.setZ(3);
-			feet.setAddSpr((compteur_animation / 6) % 3);
 			if (inWater) {
 				feet.setNSpr(ZildoDescription.WATFEET1.getNSpr());
 			} else if (inDirt) {

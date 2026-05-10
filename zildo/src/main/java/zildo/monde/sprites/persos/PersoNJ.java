@@ -805,7 +805,6 @@ public class PersoNJ extends Perso {
 			break;
 		case PANNEAU:
 		case PAPER_NOTE:
-		case STONE_SPIDER:
 		case FOX:
 		case FALCOR:
 		case SLEEPING_KING:
@@ -908,6 +907,7 @@ public class PersoNJ extends Perso {
 		case COAL_COLD:
 		case BITEY:
 		case MOLE:
+		case STONE_SPIDER:
 			add_spr = getAddSpr();
 			break;
 		case DARKGUY:

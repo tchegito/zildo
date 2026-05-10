@@ -279,7 +279,7 @@
 		<condition name="natureb4" exp="!splitPoulpa">
 		    <spawn who="poulpa" type="POULPA" info="NEUTRAL" pos="254,223"/>
 		    <perso who="poulpa" action="poulpa"/>
-		    <wait value="20"/>
+		    <wait value="70"/> <!-- Waiting for scroll being over -->
 		    <speak who="poulpa" text="natureb4.poulpa"/>
 		    <moveTo who="poulpa" pos="325,198"/>
            	<markQuest name="splitPoulpa" value="true"/>
