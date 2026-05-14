@@ -775,9 +775,11 @@ public class ActionExecutor extends RuntimeExecutor {
 					}
 					if (p_action.floor != null) {
 						int expectedFloor = (int) p_action.floor.evaluate(context);
-						Case otherFloorCase = EngineZildo.mapManagement.getCurrentMap().get_mapcase((int) perso.x/16, (int) perso.y/16, expectedFloor);
-						if (otherFloorCase != null) { // Be sure to change perso's floor only if it exists at this place
-							perso.setFloor(expectedFloor);
+						if (expectedFloor >= 0 && expectedFloor <= 2) {
+							Case otherFloorCase = EngineZildo.mapManagement.getCurrentMap().get_mapcase((int) perso.x/16, (int) perso.y/16, expectedFloor);
+							if (otherFloorCase != null) { // Be sure to change perso's floor only if it exists at this place
+								perso.setFloor(expectedFloor);
+							}
 						}
 					}
 					if (p_action.action != null) {

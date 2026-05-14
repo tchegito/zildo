@@ -95,6 +95,10 @@ public class TileCollision {
     	return result;
     }
     
+    public boolean isVoid(int p_nTile) {
+    	return tileInfos[p_nTile].template == Template.WALKABLE;
+    }
+    
     public boolean collide(int p_posX, int p_posY, int p_nTile, Reverse p_reverse, Rotation p_rotate, int p_z) {
     	int px = p_posX;
     	int py = p_posY;

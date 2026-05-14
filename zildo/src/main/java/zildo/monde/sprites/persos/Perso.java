@@ -979,7 +979,7 @@ public abstract class Perso extends Element {
 			default:
 				if (bottomLess && canFallInPit() && action == null ) {
 					// Make hero fall if he reach the border of the hill
-					if (tileCollision.collide((int) x % 16, (int) y % 16, onmap, tile.reverse, Rotation.NOTHING, 0)) {
+					if (tileCollision.isVoid(onmap) || tileCollision.collide((int) x % 16, (int) y % 16, onmap, tile.reverse, Rotation.NOTHING, 0)) {
 						fall = true;
 					}
 					break;
@@ -1056,6 +1056,7 @@ public abstract class Perso extends Element {
 					} else {
 						EngineZildo.scriptManagement.execute("dieInPit", true);
 					}
+					shadow.die();
 				} else {	// Perso fall
 					setAction(new ScriptedPersoAction(this, "persoFallInPit", new SpriteEntityContext(this)));
 					shadow.die();
@@ -1150,6 +1151,10 @@ public abstract class Perso extends Element {
 	public void askVisible(boolean p_visible) {
 		if (!askedVisible && p_visible) { // Gets out of his invisibility
 			setVisible(true);
+		}
+		if (p_visible && shadow.dying) {
+			// Respawn shadow
+			addShadow(ElementDescription.SHADOW);
 		}
 		askedVisible = p_visible;
 

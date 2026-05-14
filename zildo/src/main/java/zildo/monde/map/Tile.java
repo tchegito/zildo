@@ -184,7 +184,10 @@ public class Tile implements Cloneable {
 		switch (value) {
 		case 256 * 3 + 217:
 			// Void in nature palace
-		case 39 + 256 * 9: case 40 + 256 * 9: 		case 41 + 256 * 9:
+		case 34 + 256 * 9: 
+		case 39 + 256 * 9: 
+		case 40 + 256 * 9:
+		case 41 + 256 * 9:
 		case T_LAVA:
 			// Rock forming moutains on top of lava
 		case 256*10 + 7:
@@ -229,6 +232,10 @@ public class Tile implements Cloneable {
 	public static boolean isBottomNoJump(int value) {
 		// Means that hero will fall on another map's floor
 		return value == 256 * 6 + 36;
+	}
+	
+	public static boolean isCaveWater(int value) {
+		return value == 256 * 3 + 78;
 	}
 	
 	/** Returns TRUE if given tile value could raise/lower hero from one floor to another (ex:ladder)

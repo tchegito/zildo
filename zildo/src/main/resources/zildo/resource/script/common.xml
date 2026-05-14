@@ -323,14 +323,14 @@
     </scene>
 	
 	<scene id="princessFallPit">
-	   	<perso who="zildo" vx="zildo.vx*9" vy="0.2+zildo.vy*9"/>
+	   	<perso who="zildo" vx="zildo.vx*8" vy="0.2+zildo.vy*8" z="-1" az="-0.01" shadow="null"/>
 	    <sound name="ZildoFall"/>
 	    <script who="zildo" text="TOMBE"/>
 	    <zoom who="zildo" value="200"/>
 	    <wait value="5"/>
 	    <perso who="zildo" floor="zildo.floor-1"/>
 	    <wait value="15"/>
-	   	<perso who="zildo" vx="zildo.vx*0.4" vy="zildo.vy*0.4"/>
+	   	<perso who="zildo" vx="zildo.vx*0.3" vy="zildo.vy*0.3"/>
 	    <zoom who="zildo" value="170"/>
 	    <wait value="10"/>
 	    <zoom who="zildo" value="140"/>

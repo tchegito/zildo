@@ -288,7 +288,7 @@ public abstract class TileEngine {
 							// This allows us to draw floor above the lower one
 							int value = back.getValue();
 							Tile back2 = mapCase.getBackTile2();
-							TileGroupPrimitive mesh = (back2 != null && (back2.bank == 3 && back2.index == 78)) ? meshBACKShader : meshBACK;
+							TileGroupPrimitive mesh = (back2 != null && Tile.isCaveWater(back2.getValue())) ? meshBACKShader : meshBACK;
 							Case lowerCase = null;
 							if (!(areaAccessor instanceof SpecificFloorAreaAccesor) && (Tile.isBottomJump(value) || Tile.isBottomNoJump(value)) ) {
 								lowerCase = theMap.get_mapcase(mapX, mapY, floor-1);
@@ -301,7 +301,7 @@ public abstract class TileEngine {
 							}
 							
 							if (back2 != null) {
-								mesh = back2.bank == 3 && back2.index == 78 ? meshBACK2Shader : meshBACK2;
+								mesh = Tile.isCaveWater(back2.getValue()) ? meshBACK2Shader : meshBACK2;
 								n_motif =  Case.getAnimatedMotif(TileLevel.BACK2, back2, compteur_animation);
 								if (n_motif != back2.renderedIndex) {
 									changed = true;
@@ -309,7 +309,11 @@ public abstract class TileEngine {
 								}
 								updateTile(mesh, back2, x, y, floor, n_motif, changed);
 							} else if (lowerCase != null) {
-								updateTile(mesh, lowerCase.getBackTile2(), x, y, floor, lowerCase.getBackTile2().index, changed);
+								if (lowerCase.getBackTile2() != null) {
+									updateTile(mesh, lowerCase.getBackTile2(), x, y, floor, lowerCase.getBackTile2().index, changed);
+								} else {
+									updateTile(mesh, lowerCase.getBackTile(), x, y, floor, lowerCase.getBackTile().index, changed);
+								}
 							} else if (mapCase.isBack2Removed()) {
 								// TODO: il faudra gérer aussi le removeTile pour meshBACK2Shader
 								meshBACK2.removeTile(mapCase.getBack2Removed(), x, y, floor);
