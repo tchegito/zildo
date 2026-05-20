@@ -288,6 +288,11 @@
 		<condition name="natureb6">
 		    <perso who="iceGuy" action="elemIce"/>
 		</condition>
+		
+		<condition name="natureb7">
+		    <perso who="bitey1" action="bitey"/>
+		    <perso who="bitey2" action="bitey"/>
+		</condition>
 	</mapScript>
 
    	<quest name="prisonext">

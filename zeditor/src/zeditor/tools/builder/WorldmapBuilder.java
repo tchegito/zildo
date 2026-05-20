@@ -164,6 +164,11 @@ public class WorldmapBuilder {
 				mapLoc.sub(shifted);
 			}
 			
+			Point scrollOffset = nextMap.getScrollOffset();
+			if (scrollOffset.norme() != 0f) {
+				mapLoc.add(scrollOffset.multiply(16f));
+			}
+			
 			worldMaps.put(mapName, new WorldMap(nextMap, mapLoc));
 			
 			for (ChainingPoint ch : nextMap.getChainingPoints()) {
