@@ -1152,7 +1152,7 @@ public abstract class Perso extends Element {
 		if (!askedVisible && p_visible) { // Gets out of his invisibility
 			setVisible(true);
 		}
-		if (p_visible && shadow.dying) {
+		if (p_visible && shadow != null && shadow.dying) {
 			// Respawn shadow
 			addShadow(ElementDescription.SHADOW);
 		}
