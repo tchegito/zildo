@@ -541,7 +541,9 @@ public class Area implements EasySerializable {
 					continue;	// This point is only a landing position
 				}
 				// Area's borders
-				border = isAlongBorder((int) x - scrollOffset.x*16, (int) y - scrollOffset.y*16);
+				Point considerScrollOffset = new Point(Math.max(scrollOffset.x, 0), Math.max(scrollOffset.y, 0));
+				border = isAlongBorder((int) x - considerScrollOffset.x*16, 
+						               (int) y - considerScrollOffset.y*16);
 				int chFloor = chPoint.getFloor();	// 255 (or -1 in ZEditor) means on any floor
 				if (chPoint.isCollide(ax, ay, border) && (chFloor == 255 || chFloor == fromFloor)) {
 					candidates.add(chPoint);
@@ -1193,7 +1195,7 @@ public class Area implements EasySerializable {
 		int n_persos = p_buffer.readUnsignedByte();
 		int n_sprites = p_buffer.readUnsignedByte();
 		int n_pe = p_buffer.readUnsignedByte();
-		Point scrollOffset = new Point(p_buffer.readUnsignedByte(), p_buffer.readUnsignedByte());
+		Point scrollOffset = new Point(p_buffer.readByte(), p_buffer.readByte());
 		map.scrollOffset = scrollOffset; 
 
 		if (!scrollOffset.equals(new Point(0, 0))) {
@@ -1215,12 +1217,13 @@ public class Area implements EasySerializable {
 		}
 
 		// La map
+		Point efficientScrollOffset = new Point(Math.max(0, scrollOffset.x), Math.max(0, scrollOffset.y));
 		for (int n=nbFloors; n>0; n--) {
 			byte fl = (byte) p_buffer.readUnsignedByte();
 			for (int ii = 0; ii < map.getDim_y(); ii++) {
-				int i = ii + scrollOffset.y;
+				int i = ii + efficientScrollOffset.y;
 				for (int jj = 0; jj < map.getDim_x(); jj++) {
-					int j = jj + scrollOffset.x;
+					int j = jj + efficientScrollOffset.x;
 					Case temp = Case.deserialize(p_buffer);
 	
 					if (temp != null) {
@@ -1863,7 +1866,12 @@ public class Area implements EasySerializable {
 		default:
 		}
 		if (!mapBuilder) {
-			scrollOffsetToApply = mapReference.getScrollOffset().multiply(16);
+			if (scrollOffsetToApply.x >= 0 && scrollOffsetToApply.y >= 0) {
+				scrollOffsetToApply = mapReference.getScrollOffset().multiply(16);
+			}
+			if (scrollOffset.x < 0) {
+				scrollOffsetToApply = scrollOffset.multiply(-16);
+			}
 		}
 		
 		Point ret = new Point(coords.x * 16 * mapReference.getDim_x(),
@@ -1871,7 +1879,9 @@ public class Area implements EasySerializable {
 		
 		// Particular cases with scroll offset (really tough !)
 		if (p_mapScrollAngle.isVertical()) { //.getScrollOffset().x != 0 && getScrollOffset().x != 0) {
-			scrollOffsetToApply.x = 0;
+			if (scrollOffsetToApply.x > 0 && scrollOffset.x > 0) {
+				scrollOffsetToApply.x = 0;
+			}
 		} else if (p_mapScrollAngle.isHorizontal()) {
 			if (getScrollOffset().x != 0) {
 				scrollOffsetToApply.x = getScrollOffset().x * 16;

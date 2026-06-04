@@ -720,6 +720,9 @@ public class MapManagement {
 				// chPointTarget should never be null !
 				// But there is a map (polaky, left border) which fails...
 				if (!zildo.isOnPlatform()) {
+					// Translate everyone but Zildo because we just did it
+					shiftPreviousMap(mapScrollAngle, false);
+
 					Pointf dest = new Pointf(zildo.x, zildo.y);
 					zildo.y = (int) zildo.y;
 					Angle chosen = null;
@@ -741,8 +744,6 @@ public class MapManagement {
 						dest.x = (int) zildo.x + 16;
 						chosen = Angle.EST;
 					}
-					// Translate everyone but Zildo because we just did it
-					shiftPreviousMap(mapScrollAngle, false);
 					if (collide(dest.x, dest.y, zildo) && chosen != null) {
 						// Hero will be on a unreachable location after the scroll
 						// So we try to move him laterally
@@ -911,6 +912,16 @@ public class MapManagement {
 		Point offset = previousMap.getNextMapOffset(currentMap, p_mapScrollAngle, false);
 		previousMap.setOffset(offset);
 
+		// Shift Zildo in case of negative X scroll offset
+		int shiftX = 0;
+		if (currentMap.getScrollOffset().x < 0) {
+			shiftX = -currentMap.getScrollOffset().x;
+		} else if (previousMap.getScrollOffset().x < 0) {
+			shiftX = previousMap.getScrollOffset().x;
+		}
+		if (shiftX != 0) {
+			EngineZildo.persoManagement.getZildo().shift(new Point(shiftX * 16, 0));
+		}
 		// And shift all entities (except Zildo) with same offset
 		EngineZildo.spriteManagement.translateEntities(offset, p_translateZildo);
 	}
