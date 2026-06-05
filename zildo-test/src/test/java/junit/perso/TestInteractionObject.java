@@ -195,19 +195,19 @@ public class TestInteractionObject extends EngineUT {
 	@Test
 	public void burnCreepers() {
 		mapUtils.loadMap("nature1");
-		PersoPlayer hero = spawnZildo(152, 122);
-		hero.setWeapon(new Item(ItemKind.SPADE));
-		hero.setAngle(Angle.EST);
+		zildo.setPos(new Vector2f(152, 122));
+		zildo.setWeapon(new Item(ItemKind.SPADE));
+		zildo.setAngle(Angle.EST);
 		waitEndOfScripting();
 		
 		// 1) Grab leaves with his fork
 		simulatePressButton(KeysConfiguration.PLAYERKEY_ATTACK.code, 1);
-		Assert.assertFalse(hero.canFork());
+		Assert.assertFalse(zildo.canFork());
 		
 		// 2) Walk to the flames in the alcove
 		simulateDirection(0, -1);
 		renderFrames(5);
-		while (hero.deltaMoveY != 0) {
+		while (zildo.deltaMoveY != 0) {
 			renderFrames(5);
 		}
 		Element leaves = (Element) findEntityByDesc(ElementDescription.BUNCH_LEAVESFORK);
@@ -225,7 +225,7 @@ public class TestInteractionObject extends EngineUT {
 		// 4) Wait for elements to finish burning
 		renderFrames(Element.MAX_TIME_BURNING);
 		Assert.assertEquals(0,  getBurningElements().size());
-		Assert.assertTrue(hero.canFork());
+		Assert.assertTrue(zildo.canFork());
 	}
 	
 	private List<ElementFire> getBurningElements() {

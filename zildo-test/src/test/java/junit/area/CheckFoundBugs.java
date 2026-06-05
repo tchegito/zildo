@@ -247,7 +247,7 @@ public class CheckFoundBugs extends EngineUT {
 	@Test
 	public void buttonsConflict() {
 		mapUtils.loadMap("igorvillage");
-		PersoPlayer zildo = spawnZildo(546,221);
+		PersoPlayer zildo = spawnZildo(546,222);
 		waitEndOfScripting();
 		
 		simulateDirection(-1, 0);

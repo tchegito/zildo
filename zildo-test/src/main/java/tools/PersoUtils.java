@@ -10,6 +10,8 @@ public class PersoUtils {
 	}
 	
 	public void removePerso(String name) {
-		EngineZildo.persoManagement.removePerso(persoByName(name));
+		Perso perso = persoByName(name);
+		EngineZildo.spriteManagement.deleteSprite(persoByName(name));
+		EngineZildo.persoManagement.removePerso(perso);
 	}
 }

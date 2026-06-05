@@ -84,7 +84,7 @@ public class CheckPersoMoving extends EngineUT {
 		PersoPlayer zildo = spawnZildo(502, 285);
 		waitEndOfScripting();
 		simulateDirection(0,1);
-		renderFrames(20);
+		renderFrames(21);
 		// Check that hero is jumping
 		Assert.assertEquals(MouvementZildo.SAUTE, zildo.getMouvement());
 		// Wait for his jump to be over

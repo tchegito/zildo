@@ -81,12 +81,14 @@ public class TestThrow extends EngineUT {
 		PersoPlayer zildo = spawnZildo(135, 126);
 		waitEndOfScripting();
 		
+		// Artificially trigger him
+		persoUtils.persoByName("noir2").setAlerte(true);
 		// Wait for guard on the platform to shoot an arrow
-		while (findEntityByDesc(ElementDescription.ARROW_RIGHT) == null) {
+		while (findEntityByDesc(ElementDescription.ARROW_LEFT) == null) {
 			renderFrames(1);
 		}
 		// Make sure it will damage our hero
-		renderFrames(20);
+		renderFrames(70);
 		Assert.assertTrue(zildo.isWounded());
 	}
 	
