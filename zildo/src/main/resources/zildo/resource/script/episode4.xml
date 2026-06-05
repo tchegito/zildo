@@ -285,7 +285,11 @@
            	<markQuest name="splitPoulpa" value="true"/>
 		</condition>
 		
-		<condition name="natureb6">
+		<condition name="natureb4" locked="false">
+	        <tile pos="9,4" action="blueRain" unblock="true"/>
+	    </condition>
+
+				<condition name="natureb6">
 		    <perso who="iceGuy" action="elemIce"/>
 		</condition>
 		
@@ -293,6 +297,17 @@
 		    <perso who="bitey1" action="bitey"/>
 		    <perso who="bitey2" action="bitey"/>
 		</condition>
+		
+		<condition name="natureb9">
+		    <pos who="turtle1" pos="328+352, 120-20"/>
+		    <pos who="turtle2" pos="328+352+20, 120"/>
+		    <pos who="turtle3" pos="328+352, 120+20"/>
+		    <pos who="turtle4" pos="328+352-20, 120"/>
+		    <perso who="turtle1" action="turtleRotation(0)"/>
+  		    <perso who="turtle2" action="turtleRotation(1)"/>
+   		    <perso who="turtle3" action="turtleRotation(2)"/>
+  		    <perso who="turtle4" action="turtleRotation(3)"/>
+   		</condition>
 	</mapScript>
 
    	<quest name="prisonext">
@@ -730,6 +745,17 @@
    	        <focus who="zildo" delta="true"/>
    	    </action>
    	</quest>
+   	
+   	<quest name="natureb4_blueRain" locked="false">
+	    <trigger>
+	        <location name="natureb4" tilePos="9,4"/>
+	    </trigger>
+	    <action>
+	        <take item="BLUEDROP"/>
+	        <wait value="50"/>
+	        <markQuest name="natureb4_blueRain" value="false"/>
+	    </action>
+	</quest>
    	
    	<quest name="natureb5" repeat="true" locked="false">
    	    <trigger>
@@ -1291,6 +1317,32 @@
 	        </if>
 	    </loop>
 	</persoAction>
+	
+	<!-- Turtle turning around a case. arg0: position at the beginning 0..3 -->
+	<persoAction id="turtleRotation">
+	   <script who="self" value="17"/>
+	   <perso who="self" addSpr="4"/>
+	   <var name="loc:seqPos" value="loc:arg0"/>
+	   <loop>
+	       <if exp="loc:seqPos = 0">
+			   <moveTo who="self" pos="20,0" delta="true"/>
+			   <moveTo who="self" pos="0,20" delta="true"/>
+			</if>
+	       <if exp="loc:seqPos = 1">
+       		   <moveTo who="self" pos="0,20" delta="true"/>
+			   <moveTo who="self" pos="-20,0" delta="true"/>
+			</if>
+	       <if exp="loc:seqPos = 2">
+       		   <moveTo who="self" pos="-20,0" delta="true"/>
+		   	   <moveTo who="self" pos="0,-20" delta="true"/>
+		   </if>
+		   <if exp="loc:seqPos = 3">
+		   	   <moveTo who="self" pos="0,-20" delta="true"/>
+			   <moveTo who="self" pos="20,0" delta="true"/>
+		   </if>
+		   <var name="loc:seqPos" value="(loc:seqPos + 1) % 4"/>
+   	   </loop>
+   	</persoAction>
 	
 	<!-- Blow wind sprites in 6 directions under ice elemental -->
 	<scene id="suckIn"> <!-- Arguments: x,y, seq (=position in sprite sequence [0..2] -->
