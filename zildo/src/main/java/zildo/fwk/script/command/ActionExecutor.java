@@ -499,7 +499,7 @@ public class ActionExecutor extends RuntimeExecutor {
 						// bunch of leaves
 						toRemove = getNamedEntities(p_action.what);
 					} else {
-						perso.triggerDead();
+						if (perso != null) perso.triggerDead();
 						toRemove.add(perso);
 					}
 					for (SpriteEntity remo : toRemove) {
