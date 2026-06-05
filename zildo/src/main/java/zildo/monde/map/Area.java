@@ -1291,8 +1291,8 @@ public class Area implements EasySerializable {
 		List<SpriteEntity> addedEntities = new ArrayList<SpriteEntity>();
 		if (n_sprites != 0) {
 			for (int i = 0; i < n_sprites; i++) {
-				int x = p_buffer.readInt() + scrollOffset.x * 16;
-				int y = p_buffer.readInt() + scrollOffset.y * 16;
+				int x = p_buffer.readInt() + efficientScrollOffset.x * 16;
+				int y = p_buffer.readInt() + efficientScrollOffset.y * 16;
 				floor = 1;
 				if (nbFloors > 1) {
 					floor = p_buffer.readByte();
@@ -1393,8 +1393,8 @@ public class Area implements EasySerializable {
 		// Characters (Persos)
 		if (n_persos != 0) {
 			for (int i = 0; i < n_persos; i++) {
-				int x = p_buffer.readInt() + scrollOffset.x * 16;
-				int y = p_buffer.readInt() + scrollOffset.y * 16;
+				int x = p_buffer.readInt() + efficientScrollOffset.x * 16;
+				int y = p_buffer.readInt() + efficientScrollOffset.y * 16;
 				int z = p_buffer.readInt();
 				
 				floor = 1;
