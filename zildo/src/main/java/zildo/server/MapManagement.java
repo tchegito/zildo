@@ -239,13 +239,14 @@ public class MapManagement {
 	 * @param quelElement
 	 * @return
 	 */
-	public boolean collide(float tx, float ty, Element quelElement) {
-		return collide(Math.round(tx), Math.round(ty), quelElement);
-	}
+	//public boolean collide(float tx, float ty, Element quelElement) {
+	//	return collide(Math.round(tx), Math.round(ty), quelElement);
+	//}
 
 	/** Returns TRUE if there's a collision at given map coordinates, except for the given element. 
 	 * We suppose it is the moving element. **/
-	public boolean collide(int tx, int ty, Element quelElement) {
+	public boolean collide(float tx, float ty, Element quelElement) {
+		//System.out.println("Trying collide at "+tx+","+ty+" for "+ (quelElement == null ? null : quelElement.getName()));
 		int modx, mody;
 		int on_map; // La case où se déplace le joueur
 
@@ -263,7 +264,7 @@ public class MapManagement {
 			ghost = p.isGhost();
 		}
 		
-		if (currentMap.isOutside(tx, ty)) {
+		if (currentMap.isOutside((int) tx, (int) ty)) {
 			// Detect element out of the map, except for 3 cases : Zildo, ghosts and single pleyer
 			if (quelElement != null && !quelElement.isOutsidemapAllowed()) {
 				return !ghost && (!quelElement.isZildo() || EngineZildo.game.multiPlayer);
@@ -277,13 +278,13 @@ public class MapManagement {
 				Angle angleFlying = quelElement.getAngle();
 	
 				ty -= quelElement.z;
-				int cx = (tx / 16);
-				int cy = (ty / 16);
+				int cx = (int) (tx / 16);
+				int cy = (int) (ty / 16);
 				int caseZ = currentMap.readAltitude(cx, cy);
 				int elemAltitude = quelElement.relativeZ + (int) quelElement.getZ() / 16;
 	
-				modx = tx % 16;
-				mody = ty % 16;
+				modx = (int) tx % 16;
+				mody = (int) ty % 16;
 				if (caseZ < elemAltitude) { // We are too high => no collision
 					return false;
 				} else if (caseZ == elemAltitude && getAngleJump(angleFlying, cx, cy, -1) != null) {
@@ -292,7 +293,7 @@ public class MapManagement {
 					return true; // Obstacle
 				}
 	
-				TileNature nature = currentMap.getCaseNature(tx, ty);
+				TileNature nature = currentMap.getCaseNature((int) tx, (int) ty);
 				if (nature == TileNature.BOTTOMFLOOR || nature == TileNature.BOTTOMLESS) {
 					return false;
 				}
@@ -306,13 +307,13 @@ public class MapManagement {
 				if (tileCollision.collide(modx, mody, tile, (int) quelElement.z)) {
 					return true;
 				}
-				return EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement);
+				return EngineZildo.spriteManagement.collideSprite((int) tx, (int) ty, quelElement);
 			} else {
 				// Flying perso : HEN, DUCK, FISH
-				int cx = (tx / 16);
-				int cy = (ty / 16);
-				modx = tx % 16;
-				mody = ty % 16;
+				int cx = (int) (tx / 16);
+				int cy = (int) (ty / 16);
+				modx = (int) tx % 16;
+				mody = (int) ty % 16;
 				Tile tile = currentMap.readmap(cx, cy, quelElement.isForeground());
 				if (tile == null) {
 					return false;
@@ -333,7 +334,7 @@ public class MapManagement {
 		}
 
 		// 1) Check collision on tile level
-		boolean collideTile = collideTile(tx, ty, ghost, size, quelElement);
+		boolean collideTile = collideTile((int) tx, (int) ty, ghost, size, quelElement);
 
 		if (collideTile) {
 			return true;
@@ -343,6 +344,7 @@ public class MapManagement {
 		if (p != null && (p.getFlagBehavior() & FlagPerso.F_UNDERGROUND) == 0) {
 			Perso collidingPerso = EngineZildo.persoManagement.collidePerso(tx, ty, quelElement);
 			if (collidingPerso != null) {
+				//System.out.println("Found perso");
 				if (p != null) {
 					// If zildo crosses an enemy, this is not a collision, but a wound ! (except if he's blinking)
 					if (p.isZildo() && collidingPerso.getInfo() == PersoInfo.ENEMY) {
@@ -368,7 +370,7 @@ public class MapManagement {
 			}
 		}
 		// 3) Collision with sprites
-		if (EngineZildo.spriteManagement.collideSprite(tx, ty, quelElement))
+		if (EngineZildo.spriteManagement.collideSprite((int) tx, (int) ty, quelElement))
 			return true;
 
 		// 4) Collision with chaining point for NPC (aka PNJ in french)

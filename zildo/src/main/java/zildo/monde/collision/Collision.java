@@ -122,10 +122,10 @@ public class Collision {
     // It's called with potential location in a move. Usually, if this method returns true,
     // previous coordinates will be kept.
     // /////////////////////////////////////////////////////////////////////////////////////
-    public static boolean checkCollisionCircles(int x, int y, int a, int b, int r, int rayon) {
+    public static boolean checkCollisionCircles(float x, float y, float a, float b, int r, int rayon) {
         // Juste des maths...
-        int c = Math.abs(x - a);
-        int d = Math.abs(y - b);
+    	float c = Math.abs(x - a);
+    	float d = Math.abs(y - b);
         if (c < 50 && d < 50) {
             c = c * c;
             c += d * d;

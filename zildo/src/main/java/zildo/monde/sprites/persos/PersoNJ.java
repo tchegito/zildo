@@ -472,6 +472,7 @@ public class PersoNJ extends Perso {
 						Pointf loc = pathFinder.reachDestination(vitesse);
 						// Check for infinite movement (A => B => A => B ...) or immobile since too long
 						boolean hasCollided = loc.x == x && loc.y == y;
+						//System.out.println(hasCollided);
 						if (deltaMoveX == 0 && deltaMoveY == 0) {
 							framesImmobile++;
 						} else {

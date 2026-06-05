@@ -101,6 +101,10 @@ public class Pointf {
     	return (float) pythagore(c, d);
     }
     
+    public float distance(Pointf other) {
+    	return distance(other.x, other.y);
+    }
+    
     public boolean equals(Pointf p) {
     	return x == p.x && y == p.y;
     }
@@ -117,8 +121,15 @@ public class Pointf {
     	return Math.abs((x-other.x)) < 0.001 && Math.abs((y-other.y)) < 0.001; 
     }
     
+    /**
+     * Returns Point applying Math.round on each coordinates
+     * Beware of this, because we may need Math.floor, like a simple (int) cast.
+     */
     public Point toPoint() {
     	return new Point(Math.round(x), Math.round(y));
+    }
+    public Point toIntPoint() {
+    	return new Point((int) x, (int) y);
     }
 
     public Pointf translate(float addX, float addY) {

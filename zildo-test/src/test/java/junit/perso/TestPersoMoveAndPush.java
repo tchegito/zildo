@@ -145,7 +145,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		// Check with circles (both radius = 7)
 		Assert.assertTrue( Collision.checkCollisionCircles((int) turtle.x, (int) turtle.y, (int) hero.x, (int) hero.y, 7, 7));
 		// Check with circle and zone
-		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Point(hero.x, hero.y), 7) );
+		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Pointf(hero.x, hero.y), 7) );
 		
 		Assert.assertFalse(EngineZildo.mapManagement.collide(hero.x, hero.y, hero));
 	}
@@ -277,4 +277,31 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Assert.assertEquals(MouvementZildo.VIDE,  zildo.getMouvement());
 	}
 
+	@Test
+	public void turtleWaitAndKeepGoing() {
+		mapUtils.loadMap("natureb9");
+		PersoPlayer hero = spawnZildo(381, 140);
+		waitEndOfScripting();
+		persoUtils.removePerso("turtle1");
+		persoUtils.removePerso("turtle3");
+		persoUtils.removePerso("turtle4");
+		Perso turtle = persoUtils.persoByName("turtle2");
+		System.out.println(turtle);
+		Pointf initialTarget = new Pointf(turtle.x, turtle.y+20);
+		renderFrames(5);
+		System.out.println(turtle);
+		Assert.assertEquals(initialTarget, turtle.getTarget());
+		for (int i=0;i<150;i++) {
+			renderFrames(1);
+			System.out.println(turtle);
+		}
+		// Ensure that turtle is blocked
+		Assert.assertEquals(turtle.getDelta(), new Pointf(0, 0));
+		// Then move hero to let it pass
+		simulateDirection(1, 0);
+		renderFrames(20);
+		System.out.println(turtle);
+		System.out.println(hero);
+		Assert.assertNotEquals(turtle.getDelta(), new Pointf(0, 0));
+	}
 }

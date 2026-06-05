@@ -238,6 +238,7 @@ public class TestAdvancedPerso extends EngineUT {
 		PersoPlayer roxy = spawnZildo(116, 430);
 		roxy.setAppearance(ControllablePerso.PRINCESS_BUNNY);
 		waitEndOfScripting();
+		renderFrames(10);
 		simulateDirection(-1, 0);
 		renderFrames(80);
 		Assert.assertEquals(0, (int) roxy.z);

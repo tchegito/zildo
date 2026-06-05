@@ -386,6 +386,26 @@ public class CheckMapScroll extends EngineUT {
 		waitEndOfScroll();
 		mapUtils.assertCurrent("nature4");
 	}
+	
+	@Test
+	public void scrollOnMapWithNegativeOffsetX() {
+		mapUtils.loadMap("natureb5");
+		PersoPlayer hero = spawnZildo(152, 205);
+		waitEndOfScripting();
+		simulateDirection(0, 1);
+		renderFrames(50);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("natureb9");
+		renderFrames(5);
+		Assert.assertEquals(20 * 16 + 152d, hero.x, 0.5d);
+		// Get back
+		simulateDirection(0, -1);
+		renderFrames(50);
+		waitEndOfScroll();
+		mapUtils.assertCurrent("natureb5");
+		Assert.assertEquals(152d, hero.x, 0.5d);
+
+	}
 
 	private Point camera() {
 		return ClientEngineZildo.mapDisplay.getCamera();

@@ -199,8 +199,8 @@ public abstract class Ortho {
 	public abstract void setColor(float r, float g, float b);
 	
 	public void box(Rectangle p_rect, int palColor, Vector4f color) {
-		Point cornerTopLeft = p_rect.getCornerTopLeft();
-		Point size = p_rect.getSize();
+		Point cornerTopLeft = p_rect.getCornerTopLeft().toPoint();
+		Point size = p_rect.getSize().toPoint();
 		box(cornerTopLeft.x, cornerTopLeft.y, size.x, size.y, palColor, color);
 	}
 

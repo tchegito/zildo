@@ -41,6 +41,7 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.FlagPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.state.ClientState;
 
 public class CollideManagement {
@@ -224,8 +225,8 @@ public class CollideManagement {
 	    	Rectangle rect=new Rectangle(center, size);
 	    	
 	    	rect.multiply(1/16f);	// Adapt tile coordinate (one tile is 16x16 sized)
-	    	Point cornerTopLeft=rect.getCornerTopLeft();
-	    	Point cornerBottomRight=rect.getCornerBottomRight();
+	    	Point cornerTopLeft=rect.getCornerTopLeft().toIntPoint();
+	    	Point cornerBottomRight=rect.getCornerBottomRight().toIntPoint();
 	    	for (int j=cornerTopLeft.y;j<=cornerBottomRight.y;j++) {
 	    		for (int i=cornerTopLeft.x;i<=cornerBottomRight.x;i++) {
 	    			tilesLocation.add(new Point(i,j));
@@ -365,13 +366,13 @@ public class CollideManagement {
             return Collision.checkCollisionCircles(x1, y1, x2, y2, radius1, radius2);
         } else if (size2 == null) {
             // Collision between 1 rectangle and 1 circle
-            return new Rectangle(new Point(x1, y1), size1).isCrossingCircle(new Point(x2, y2), radius2);
+            return new Rectangle(new Pointf(x1, y1), size1).isCrossingCircle(new Pointf(x2, y2), radius2);
         } else if (size1 == null && size2 != null) {
             // Idem
-            return new Rectangle(new Point(x2, y2), size2).isCrossingCircle(new Point(x1, y1), radius1);
+            return new Rectangle(new Pointf(x2, y2), size2).isCrossingCircle(new Pointf(x1, y1), radius1);
         } else {
             // Collision between 2 rectangles
-            return new Rectangle(new Point(x1, y1), size1).isCrossing(new Rectangle(new Point(x2, y2), size2));
+            return new Rectangle(new Pointf(x1, y1), size1).isCrossing(new Rectangle(new Pointf(x2, y2), size2));
         }
     }
 

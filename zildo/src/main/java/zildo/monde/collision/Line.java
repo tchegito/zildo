@@ -20,14 +20,14 @@
 
 package zildo.monde.collision;
 
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 public class Line {
 
-	Point a;
-	Point b;
+	Pointf a;
+	Pointf b;
 	
-	public Line(Point p_a, Point p_b) {
+	public Line(Pointf p_a, Pointf p_b) {
 		a=p_a;
 		b=p_b;
 	}
@@ -51,7 +51,7 @@ public class Line {
      * @param p_other
      * @return Point (NULL if lines never cross)
      */
-    public Point intersect(Line p_other) {
+    public Pointf intersect(Line p_other) {
         float interX, interY;
         if (isVertical() && p_other.isVertical()) {
             // Two lines are vertical
@@ -82,7 +82,7 @@ public class Line {
             interX = (addOther - add) / (slope - slopeOther);
         }
         interY = interX * slope + add;
-        return new Point((int) interX, (int) interY);
+        return new Pointf(interX, interY);
     }
 	
 }

@@ -25,6 +25,7 @@ import org.junit.Test;
 import zildo.fwk.ZMaths;
 import zildo.monde.collision.Line;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 
 /**
  * @author Tchegito
@@ -47,11 +48,11 @@ public class MathTest {
 	
 	@Test
 	public void intersection() {
-		Line a=new Line(new Point(0,4), new Point(12,1));
-		Line b=new Line(new Point(5,1), new Point(5,4));
+		Line a=new Line(new Pointf(0,4), new Pointf(12,1));
+		Line b=new Line(new Pointf(5,1), new Pointf(5,4));
 		
-		Point inter=a.intersect(b);
-		Assert.assertEquals(new Point(5, 2), inter);
+		Pointf inter=a.intersect(b);
+		Assert.assertEquals(new Pointf(5, 2.75), inter);
 	}
 	
 	@Test

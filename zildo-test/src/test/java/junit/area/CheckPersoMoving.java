@@ -169,4 +169,20 @@ public class CheckPersoMoving extends EngineUT {
 		Assert.assertTrue(gard.isWounded());
 		Assert.assertTrue(gard.getPy() < 0);
 	}
+	
+	@Test
+	public void fallFromNaturePalaceBorder() {
+		mapUtils.loadMap("natureb6");
+		persoUtils.removePerso("iceGuy");
+		PersoPlayer hero = spawnZildo(198, 131);
+		waitEndOfScripting();
+		
+		
+		simulateDirection(0, 1);
+		renderFrames(1);
+		Assert.assertFalse(hero.isGhost());
+		renderFrames(40);
+		
+		System.out.println(hero);
+	}
 }

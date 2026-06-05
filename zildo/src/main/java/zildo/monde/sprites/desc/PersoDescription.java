@@ -230,6 +230,8 @@ public enum PersoDescription implements SpriteDescription {
 			return 10;
 		case COAL_COLD:
 			return 0;
+		case ZILDO:
+			return 7;
 		default:
 			return 6;
 		}

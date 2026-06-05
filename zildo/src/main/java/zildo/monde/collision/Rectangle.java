@@ -21,6 +21,7 @@
 package zildo.monde.collision;
 
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 
 /**
@@ -28,9 +29,9 @@ import zildo.monde.util.Zone;
  */
 public class Rectangle {
 
-	private Point[] coordinates;
-	private Point center;
-	private Point size;
+	private Pointf[] coordinates;
+	private Pointf center;
+	private Pointf size;
 
 	/**
 	 * Create a rectangle with a given center and a size.
@@ -38,18 +39,26 @@ public class Rectangle {
 	 * @param p_center
 	 * @param p_size
 	 */
-	public Rectangle(Point p_center, Point p_size) {
+	public Rectangle(Pointf p_center, Pointf p_size) {
 		center = p_center;
-		Point cornerTopLeft = new Point(p_center.x - p_size.x / 2, p_center.y - p_size.y / 2);
-		Point cornerTopRight = cornerTopLeft.translate(p_size.x, 0);
-		Point cornerBottomLeft = cornerTopLeft.translate(0, p_size.y);
-		Point cornerBottomRight = cornerBottomLeft.translate(p_size.x, 0);
-		coordinates = new Point[4];
+		Pointf cornerTopLeft = new Pointf(p_center.x - p_size.x / 2, p_center.y - p_size.y / 2);
+		Pointf cornerTopRight = cornerTopLeft.translate(p_size.x, 0);
+		Pointf cornerBottomLeft = cornerTopLeft.translate(0, p_size.y);
+		Pointf cornerBottomRight = cornerBottomLeft.translate(p_size.x, 0);
+		coordinates = new Pointf[4];
 		coordinates[0] = cornerTopLeft;
 		coordinates[1] = cornerTopRight;
 		coordinates[2] = cornerBottomLeft;
 		coordinates[3] = cornerBottomRight;
 		size = p_size;
+	}
+	
+	public Rectangle(Point p_center, Point p_size) {
+		this(new Pointf(p_center), new Pointf(p_size));
+	}
+	
+	public Rectangle(Pointf p_center, Point p_size) {
+		this(p_center, new Pointf(p_size));
 	}
 
 	public Rectangle(Zone p_zone) {
@@ -58,13 +67,13 @@ public class Rectangle {
 		zx2 = p_zone.x2;
 		zy1 = p_zone.y1;
 		zy2 = p_zone.y2;
-		coordinates = new Point[4];
-		coordinates[0] = new Point(zx1, zy1);
-		coordinates[1] = new Point(zx2 + zx1, zy1);
-		coordinates[2] = new Point(zx1, zy2 + zy1);
-		coordinates[3] = new Point(zx2 + zx1, zy2 + zy1);
-		center = new Point(zx1 + zx2 / 2, zy1 + zy2 / 2);
-		size = new Point(zx2, zy2);
+		coordinates = new Pointf[4];
+		coordinates[0] = new Pointf(zx1, zy1);
+		coordinates[1] = new Pointf(zx2 + zx1, zy1);
+		coordinates[2] = new Pointf(zx1, zy2 + zy1);
+		coordinates[3] = new Pointf(zx2 + zx1, zy2 + zy1);
+		center = new Pointf(zx1 + zx2 / 2, zy1 + zy2 / 2);
+		size = new Pointf(zx2, zy2);
 	}
 
 	public void translate(int p_shiftX, int p_shiftY) {
@@ -94,17 +103,17 @@ public class Rectangle {
 	 * @param p_factorY
 	 */
 	public void scale(float p_factorX, float p_factorY) {
-		int x, y;
+		float x, y;
 		for (int i = 0; i < 4; i++) {
-			x = (int) ((coordinates[i].x - center.x) * p_factorX) + center.x;
-			y = (int) ((coordinates[i].y - center.y) * p_factorX) + center.y;
+			x = ((coordinates[i].x - center.x) * p_factorX) + center.x;
+			y = ((coordinates[i].y - center.y) * p_factorX) + center.y;
 
-			coordinates[i] = new Point(x, y);
+			coordinates[i] = new Pointf(x, y);
 		}
-		size = new Point(size.x * p_factorX, size.y * p_factorY);
+		size = new Pointf(size.x * p_factorX, size.y * p_factorY);
 	}
 
-	public boolean isInside(Point p_point) {
+	public boolean isInside(Pointf p_point) {
 		if (p_point == null) {
 			return false;
 		}
@@ -139,7 +148,7 @@ public class Rectangle {
 	 * @param p_radius
 	 * @return boolean
 	 */
-	public boolean isCrossingCircle(Point p_center, int p_radius) {
+	public boolean isCrossingCircle(Pointf p_center, int p_radius) {
 		float dist = center.distance(p_center);
 
 		// 1) Very close
@@ -154,7 +163,7 @@ public class Rectangle {
 
 		// 3) Which side of the rectangle should we consider?
 		Line distLine = new Line(p_center, center);
-		int ob = 0, oc = 0;
+		float ob = 0, oc = 0;
 		for (int i = 0; i < 4; i++) {
 			Line side = new Line(coordinates[i], coordinates[(i + 1) % 4]);
 			if (isInside(side.intersect(distLine))) {
@@ -171,20 +180,21 @@ public class Rectangle {
 			}
 		}
 		// Do the Thales theorem
-		int oa = (int) (ob * dist / oc);
+		float oa = (ob * dist / oc);
 
+		//System.out.println("collision rectangle and circle, distance = "+dist+" for "+ (oa + p_radius));
 		return dist <= (oa + p_radius);
 	}
 
-	public Point getSize() {
+	public Pointf getSize() {
 		return size;
 	}
 
-	public Point getCornerTopLeft() {
+	public Pointf getCornerTopLeft() {
 		return coordinates[0];
 	}
 
-	public Point getCornerBottomRight() {
+	public Pointf getCornerBottomRight() {
 		return coordinates[3];
 	}
 	

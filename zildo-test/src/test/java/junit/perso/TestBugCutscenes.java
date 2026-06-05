@@ -237,7 +237,7 @@ public class TestBugCutscenes extends EngineUT {
 		Perso bleu = EngineZildo.persoManagement.getNamedPerso("bleu");
 		bleu.setTarget(new Pointf(hero.x, hero.y));
 		Assert.assertEquals("polakyg3", EngineZildo.mapManagement.getCurrentMap().getName());
-		while (bleu.getY() < 220) {
+		while (bleu.getY() < 218) {
 			renderFrames(1);
 		}
 		simulateDirection(0,1);

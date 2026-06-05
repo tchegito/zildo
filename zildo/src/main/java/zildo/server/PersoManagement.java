@@ -119,11 +119,11 @@ public class PersoManagement {
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Checks wether two characters being collided
 	///////////////////////////////////////////////////////////////////////////////////////
-    public Perso collidePerso(int x, int y, Element quelElement, int rayon) {
+    public Perso collidePerso(float x, float y, Element quelElement, int rayon) {
    		return persoColli.checkCollision(x, y, quelElement, rayon);
     }
 
-    public Perso collidePerso(int x, int y, Element quelPerso) {
+    public Perso collidePerso(float x, float y, Element quelPerso) {
     	int rayon = 7;
     	if (quelPerso != null) {
     		Collision colli = quelPerso.getCollision();

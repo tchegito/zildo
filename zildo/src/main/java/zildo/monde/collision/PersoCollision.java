@@ -30,6 +30,7 @@ import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 
 /**
@@ -92,10 +93,10 @@ public class PersoCollision {
 	 * @param rayon
 	 * @return boolean
 	 */
-	public Perso checkCollision(int x, int y, Element quelElement, int rayon) {
+	public Perso checkCollision(float x, float y, Element quelElement, int rayon) {
 		
-		int gridX = x >> 4;
-		int gridY = y >> 4;
+		int gridX = (int) x >> 4;
+		int gridY = (int) y >> 4;
 		int fromId = quelElement != null ? quelElement.getId() : -1;
 		boolean foreGround = quelElement != null && quelElement.isForeground();
 
@@ -166,15 +167,15 @@ public class PersoCollision {
 	 * @param rayon
 	 * @return Perso
 	 */
-	private boolean checkCollisionOnPerso(int x, int y, Element quelElement, Perso quelPerso, int rayon) {
+	private boolean checkCollisionOnPerso(float x, float y, Element quelElement, Perso quelPerso, int rayon) {
 		if (quelPerso.isZildo() && quelElement != null && quelElement.getDesc() instanceof ElementDescription) {
     		ElementDescription d = (ElementDescription) quelElement.getDesc();
     		if (d.isPushable() && quelElement.vx+quelElement.vy != 0f) {
     			return false;
     		}
     	}
-        int tx = (int) quelPerso.getX();
-        int ty = (int) quelPerso.getY();
+        float tx = quelPerso.getX();
+        float ty = quelPerso.getY();
         SpriteDescription descToCompare = quelPerso.getDesc();
         int rayonPersoToCompare = rayon;
         if (descToCompare != null) {
@@ -195,9 +196,9 @@ public class PersoCollision {
         // TODO: maybe merge this behavior with CollideManagement#checkColli
         boolean colli = false;
         if (size != null) {
-        	colli = new Rectangle(size).isCrossingCircle(new Point(x, y), rayon);
+        	colli = new Rectangle(size).isCrossingCircle(new Pointf(x, y), rayon);
         } else if (size2 != null) {
-        	colli = new Rectangle(size2).isCrossingCircle(new Point(tx, ty), rayonPersoToCompare);
+        	colli = new Rectangle(size2).isCrossingCircle(new Pointf(tx, ty), rayonPersoToCompare);
         } else {
         	colli = Collision.checkCollisionCircles(x, y, tx, ty, rayon, rayonPersoToCompare);
         }

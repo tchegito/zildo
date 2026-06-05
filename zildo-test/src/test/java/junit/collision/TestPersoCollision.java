@@ -10,12 +10,15 @@ import org.junit.Test;
 
 import zildo.monde.collision.Collision;
 import zildo.monde.collision.PersoCollision;
+import zildo.monde.collision.Rectangle;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
+import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 import zildo.server.SpriteManagement;
 
@@ -71,5 +74,11 @@ public class TestPersoCollision {
 		hitPoint = Collision.hitPointOnCircles(p2.cx, p2.cy, p1.cx, p1.cy, p2.cr, p1.cr);
 		Assert.assertEquals(new Point(182, 106), hitPoint);
 		
+	}
+	
+	@Test
+	public void rectangleAndCircles() {
+		Rectangle rect = new Rectangle(new Zone(371, 120, 18, 15));
+		Assert.assertTrue(rect.isCrossingCircle(new Pointf(381, 140), 6));
 	}
 }
