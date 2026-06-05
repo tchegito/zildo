@@ -48,6 +48,7 @@ import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.util.Point;
 import zildo.monde.util.Vector3f;
 import zildo.monde.util.Vector4f;
+import zildo.monde.util.Zone;
 import zildo.resource.KeysConfiguration;
 import zildo.server.EngineZildo;
 
@@ -395,13 +396,13 @@ public class ClientEngineZildo {
 		// Debug collision
 		Point camera = mapDisplay.getCamera();
 		if (EngineZildo.collideManagement != null && Zildo.infoDebugCollision) {
+			Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 0.1f*8);
 			for (Collision c : EngineZildo.collideManagement.getTabColli()) {
 				if (c != null) {
 					int rayon = c.cr;
 					int color = 15;
 					Perso damager = c.perso;
-					Vector4f alphaColor = new Vector4f(0.2f, 0.4f, 0.9f, 0.1f*8);
-					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
+					if (damager != null) { // && damager.getInfo() == PersoInfo.ENEMY) {
 						color = 20;
 					}
 					if (c.size == null) {
@@ -416,13 +417,21 @@ public class ClientEngineZildo {
 					}
 				}
 			}
+			for (Perso p: EngineZildo.persoManagement.tab_perso) {
+				if (!p.isZildo() && p.getInfo() == PersoInfo.NEUTRAL && p.getMover() != null) {
+					Zone zone = p.getMover().getZone();
+					ortho.box(zone.x1 - camera.x, zone.y1 - camera.y, zone.x2, zone.y2, 0, alphaColor);
+				}
+			}
 			// -7, -10
 			int x = (int) zildo.x; // - 4;
 			int y = (int) zildo.y; // - 10;
-			ortho.box(x - 7 -camera.x, y - 17 - camera.y, 14, 14, 12, new Vector4f(0.2f, 0.4f, 0.9f, 0.1f));
+			//ortho.box(x - 7 -camera.x, y - 17 - camera.y, 14, 14, 12, new Vector4f(0.6f, 0.7f, 0.9f, 0.4f));
 
+			Collision c = ((PersoPlayer)zildo).getCollision();
+			ortho.box(c.cx - c.cr / 2 - camera.x,  c.cy - c.cr / 2 - camera.y,  c.cr * 2, c.cr * 2, 12, new Vector4f(0.3f, 0.8f, 0.8f, 0.4f));
 			// Feet
-			ortho.box(x - 4 -camera.x, y - 2 - camera.y, 8, 4, 12, new Vector4f(0.6f, 0.4f, 0.3f, 0.1f));
+			ortho.box(x - 4 -camera.x, y - 2 - camera.y, 8, 4, 12, new Vector4f(0.2f, 0.9f, 0.3f, 0.1f));
 
 		}
 
