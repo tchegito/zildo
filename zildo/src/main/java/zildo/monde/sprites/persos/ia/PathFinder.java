@@ -272,11 +272,11 @@ public class PathFinder {
                 			if (collidingPerso.getTarget() != null && collidingPerso.isUnstoppable()) {
                 			 break;
                 			}
-                			boolean willCross = new Line(new Pointf(mobile.x, mobile.y), mobile.getTarget())
-                					.isCrossingCircle(new Pointf(collidingPerso.x, collidingPerso.y), collidingPerso.getDesc().getRadius());
-                			if (!willCross) {
-                				break;
-                			}
+                			//boolean willCross = new Line(new Pointf(mobile.x, mobile.y), mobile.getTarget())
+                			//		.isCrossingCircle(new Pointf(collidingPerso.x, collidingPerso.y), collidingPerso.getDesc().getRadius());
+                			//if (!willCross) {
+                				//break;
+                			//}
 							Angle a = mobile.getAngle();
 							// First : lateral
 							List<Point> candidatesPos = new ArrayList<Point>(8);
