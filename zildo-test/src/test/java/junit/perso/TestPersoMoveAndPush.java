@@ -161,7 +161,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 		EngineZildo.scriptManagement.accomplishQuest("vactoRequest", false);
 		
 		mapUtils.loadMap("fermem2");
-		PersoPlayer zildo = spawnZildo(new Vector2f(289,53.5));
+		PersoPlayer zildo = spawnZildo(new Vector2f(289,55));
 		Perso christa = EngineZildo.persoManagement.getNamedPerso("christa");
 		Assert.assertNotNull(christa);
 		Assert.assertFalse(EngineZildo.mapManagement.collide(christa.x, christa.y, christa));

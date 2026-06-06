@@ -27,6 +27,7 @@ import java.util.List;
 
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.Trigo;
+import zildo.monde.collision.Line;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;
@@ -178,7 +179,7 @@ public class PathFinder {
 		int j=6+hasard.rand(6);
         float x=mobile.x;
         float y=mobile.y;
-        
+
         if (EntityType.PERSO != mobile.getEntityType()) {
         	return;
         }
@@ -193,10 +194,10 @@ public class PathFinder {
 				// On déplace le perso soit horizontalement, soit verticalement,
 				// ou les 2 si c'est une poule. Car les poules ont la bougeotte.
 				if (j%2==0 || mvt.isDiagonal() )
-					target.x+= (16*Math.random()*j) - 8*j;
+					target.x+= hasard.rand(16*j) - 8*j;
 		
 				if (!mvt.isOnlyHorizontal() && (j%2==1 || mvt.isDiagonal()) )
-					target.y+= (16*Math.random()*j) - 8*j;
+					target.y+= hasard.rand(16*j) - 8*j;
 		
 				j--; // On diminue le rayon jusqu'à être dans la zone
 		
@@ -262,15 +263,20 @@ public class PathFinder {
 							}
 							nbShock=0;
 						}
-					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW) {
+					} else if (dep != MouvementPerso.FOLLOW && dep != MouvementPerso.CHAIN_FOLLOW && mobile.getTarget() != null) {
 						// Freeze during a scene (because moving character is 'ghost')
 						nbShock=0;
 						
                 		Perso collidingPerso = EngineZildo.persoManagement.lookForOne(mobile, 1, null, false);
                 		if (collidingPerso != null) {
-                			 if (collidingPerso.getTarget() != null && collidingPerso.isUnstoppable()) {
-                				 break;
-                			 }
+                			if (collidingPerso.getTarget() != null && collidingPerso.isUnstoppable()) {
+                			 break;
+                			}
+                			boolean willCross = new Line(new Pointf(mobile.x, mobile.y), mobile.getTarget())
+                					.isCrossingCircle(new Pointf(collidingPerso.x, collidingPerso.y), collidingPerso.getDesc().getRadius());
+                			if (!willCross) {
+                				break;
+                			}
 							Angle a = mobile.getAngle();
 							// First : lateral
 							List<Point> candidatesPos = new ArrayList<Point>(8);

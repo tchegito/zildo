@@ -469,9 +469,16 @@ public class PersoNJ extends Perso {
 					}
 */
 					if (!pathFinder.hasNoTarget()) { // Move character if he has a target
+						float distanceBefore = new Pointf(x, y).distance(pathFinder.getTarget());
 						Pointf loc = pathFinder.reachDestination(vitesse);
 						// Check for infinite movement (A => B => A => B ...) or immobile since too long
 						boolean hasCollided = loc.x == x && loc.y == y;
+						if (!hasCollided) {
+							float distanceAfter = loc.distance(pathFinder.getTarget());
+							if (distanceAfter > distanceBefore) {
+								hasCollided = true;
+							}
+						}
 						//System.out.println(hasCollided);
 						if (deltaMoveX == 0 && deltaMoveY == 0) {
 							framesImmobile++;

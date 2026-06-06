@@ -20,6 +20,8 @@
 
 package zildo.monde;
 
+import java.util.Random;
+
 public class Hasard {
 
 	// Note about the hazard in bushes :
@@ -67,8 +69,10 @@ public class Hasard {
 	 * @return int
 	 */
 	public int rand(int max) {
-		return (int) (Math.random() * max);
+		return (int) (predictable.nextDouble() * max);
 	}
+	
+	Random predictable = new Random(); // Use a fixed seed to get predictable numbers (example: new Random(16))
 	
 	// Just to isolate the hazard functionality and make it mockable
 	public double rand() {
