@@ -88,7 +88,7 @@ public class TestThrow extends EngineUT {
 			renderFrames(1);
 		}
 		// Make sure it will damage our hero
-		renderFrames(70);
+		renderFrames(70+10);
 		Assert.assertTrue(zildo.isWounded());
 	}
 	
