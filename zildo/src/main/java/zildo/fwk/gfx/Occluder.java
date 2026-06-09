@@ -90,7 +90,7 @@ public class Occluder {
 		Zone bestZone=null;
 		for (Zone z : available) {
 			if (z.x2 >= width && z.y2 >= height) {	// Enough room
-				int aire = z.x2*z.y2;
+				int aire = (int) z.x2 * (int) z.y2;
 				if (aire < minAire) {
 					minAire = aire;
 					bestZone = z;

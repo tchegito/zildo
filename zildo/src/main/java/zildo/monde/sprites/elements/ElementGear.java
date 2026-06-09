@@ -29,7 +29,7 @@ import zildo.monde.sprites.Rotation;
 import zildo.monde.sprites.desc.GearDescription;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoPlayer;
-import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.server.EngineZildo;
 
 /**
@@ -216,7 +216,7 @@ public class ElementGear extends Element {
 	}
 
 	@Override
-	public Point getCenter() {
+	public Pointf getCenter() {
 		super.getCenter();
 		center.y = (int) y - sprModel.getTaille_y();
 		return center;

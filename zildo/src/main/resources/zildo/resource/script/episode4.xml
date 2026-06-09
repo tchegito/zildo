@@ -299,10 +299,10 @@
 		</condition>
 		
 		<condition name="natureb9">
-		    <pos who="turtle1" pos="328+352, 120-20"/>
-		    <pos who="turtle2" pos="328+352+20, 120"/>
-		    <pos who="turtle3" pos="328+352, 120+20"/>
-		    <pos who="turtle4" pos="328+352-20, 120"/>
+		    <pos who="turtle1" pos="328+352, 120-22"/>
+		    <pos who="turtle2" pos="328+352+22, 120"/>
+		    <pos who="turtle3" pos="328+352, 120+22"/>
+		    <pos who="turtle4" pos="328+352-22, 120"/>
 		    <perso who="turtle1" action="turtleRotation(0)"/>
   		    <perso who="turtle2" action="turtleRotation(1)"/>
    		    <perso who="turtle3" action="turtleRotation(2)"/>
@@ -1325,20 +1325,20 @@
 	   <var name="loc:seqPos" value="loc:arg0"/>
 	   <loop>
 	       <if exp="loc:seqPos = 0">
-			   <moveTo who="self" pos="20,0" delta="true"/>
-			   <moveTo who="self" pos="0,20" delta="true"/>
+			   <moveTo who="self" pos="22,0" delta="true"/>
+			   <moveTo who="self" pos="0,22" delta="true"/>
 			</if>
 	       <if exp="loc:seqPos = 1">
-       		   <moveTo who="self" pos="0,20" delta="true"/>
-			   <moveTo who="self" pos="-20,0" delta="true"/>
+       		   <moveTo who="self" pos="0,22" delta="true"/>
+			   <moveTo who="self" pos="-22,0" delta="true"/>
 			</if>
 	       <if exp="loc:seqPos = 2">
-       		   <moveTo who="self" pos="-20,0" delta="true"/>
-		   	   <moveTo who="self" pos="0,-20" delta="true"/>
+       		   <moveTo who="self" pos="-22,0" delta="true"/>
+		   	   <moveTo who="self" pos="0,-22" delta="true"/>
 		   </if>
 		   <if exp="loc:seqPos = 3">
-		   	   <moveTo who="self" pos="0,-20" delta="true"/>
-			   <moveTo who="self" pos="20,0" delta="true"/>
+		   	   <moveTo who="self" pos="0,-22" delta="true"/>
+			   <moveTo who="self" pos="22,0" delta="true"/>
 		   </if>
 		   <var name="loc:seqPos" value="(loc:seqPos + 1) % 4"/>
    	   </loop>

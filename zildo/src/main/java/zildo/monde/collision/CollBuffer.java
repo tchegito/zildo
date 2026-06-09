@@ -82,12 +82,8 @@ public class CollBuffer {
 	}
 	
 	
-	public int getId(int gridX, int gridY, int fromId) {
-		int id = presences[gridY][gridX][0];
-		if (id == fromId) {
-			id = presences[gridY][gridX][1];
-		}
-		return id;
+	public int[] getIds(int gridX, int gridY, int fromId) {
+		return presences[gridY][gridX];
 	}
 	
 	public static int howManyAround(int gridX, int gridY) {
@@ -146,6 +142,7 @@ public class CollBuffer {
 	}
 	
 	public void applyPatch(int gridX, int gridY, boolean add) {
+		// Iterating over the angles, including NULL, which is location itself
 		for (Angle a : Angle.values()) {
 			Point offset = a.coords;
 			int gx = gridX + offset.x;
@@ -157,11 +154,6 @@ public class CollBuffer {
 					capillarity[gy][gx]--;
 				}
 			}
-		}
-		if (add) {
-			capillarity[gridY][gridX]++;
-		} else {
-			capillarity[gridY][gridX]--;
 		}
 	}
 }

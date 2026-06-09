@@ -20,7 +20,9 @@
 
 package zildo.monde.util;
 
+import java.util.Set;
 
+import zildo.fwk.ZUtils;
 
 public enum Angle {
 	
@@ -34,6 +36,9 @@ public enum Angle {
 	NORDOUEST(7, new Point(-1,-1)),
 	NULL(8, new Point(0, 0));	// A null angle, but serializable
 
+	static Set<Angle> fours;
+	static Set<Angle> eights;
+	
 	public final int value;
 	public final Point coords;
 	public final Pointf coordf;
@@ -168,5 +173,20 @@ public enum Angle {
 		}
 		return ((component.coords.x == ref.coords.x && ref.coords.x != 0) ||
 				(component.coords.y == ref.coords.y && ref.coords.y != 0));
+	}
+	
+	public static Set<Angle> fours() {
+		if (fours == null) {
+			fours = ZUtils.asSet(NORD, EST, SUD, OUEST);
+		}
+		return fours;
+	}
+	
+	public static Set<Angle> eights() {
+		if (eights == null) {
+			eights = ZUtils.asSet(NORD, EST, SUD, OUEST,
+					NORDOUEST, NORDEST, SUDOUEST, SUDEST);
+		}
+		return eights;
 	}
 }

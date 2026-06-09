@@ -475,7 +475,7 @@ public class PersoNJ extends Perso {
 						boolean hasCollided = loc.x == x && loc.y == y;
 						if (!hasCollided) {
 							float distanceAfter = loc.distance(pathFinder.getTarget());
-							if (distanceAfter > distanceBefore) {
+							if (distanceAfter >= distanceBefore) {
 								hasCollided = true;
 							}
 						}
@@ -488,7 +488,9 @@ public class PersoNJ extends Perso {
 						if (framesImmobile >= 10 || 
 								((deltaMoveX != 0 || deltaMoveY != 0) && loc.isSame(new Pointf(x-deltaMoveX, y-deltaMoveY)))) {
 							framesImmobile = 0;
-							pathFinder.setTarget(null);
+							if (quel_deplacement != MouvementPerso.MOBILE_WAIT) {
+								pathFinder.setTarget(null);
+							}
 						} else {
 
 							boolean slowDown = walkTile(true);

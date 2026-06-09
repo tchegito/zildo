@@ -22,17 +22,14 @@ package zildo.monde.sprites.persos.ia.mover;
 import java.util.HashMap;
 import java.util.Map;
 
-import zildo.fwk.script.xml.element.TriggerElement;
 import zildo.monde.sprites.SpriteEntity;
 import zildo.monde.sprites.SpriteModel;
 import zildo.monde.sprites.desc.PersoDescription;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementPlaceHolder;
 import zildo.monde.sprites.persos.Perso;
-import zildo.monde.util.Point;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
-import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -152,14 +149,23 @@ public class Mover {
 	}
 	
 	public Zone getZone() {
-		Point middle = mobile.getCenter();
+		Pointf middle = new Pointf(mobile.x, mobile.y); //mobile.getCenter();
 		SpriteModel model = mobile.getSprModel();
-		Zone zz = new Zone(middle.x, middle.y + getFlatZ(), model.getTaille_x(), model.getTaille_y());
-		if (mobile.getDesc() == PersoDescription.TURTLE) {
-			// Particular case: turtle => only the shell is walkable
-			zz.y1 += 2;
-			zz.y2 -= 5;
+		Pointf size;
+		switch ((PersoDescription) mobile.getDesc()) {
+		case TURTLE:
+			// Hard coded value for Turtle
+			if (((Perso)mobile).getAngle().isVertical()) {
+				size = new Pointf(18, 15);
+			} else {
+				size = new Pointf(28, 11);
+			}
+			break;
+		default:
+			size = new Pointf(model.getTaille_x(), model.getTaille_y());
 		}
+		middle.add(-size.x / 2f,  - size.y);
+		Zone zz = new Zone(middle.x, middle.y + getFlatZ(), size.x, size.y);
 		return zz;
 	}
 }

@@ -27,7 +27,6 @@ import java.util.List;
 
 import zildo.fwk.script.context.SpriteEntityContext;
 import zildo.monde.Trigo;
-import zildo.monde.collision.Line;
 import zildo.monde.sprites.desc.EntityType;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.sprites.persos.PersoNJ;

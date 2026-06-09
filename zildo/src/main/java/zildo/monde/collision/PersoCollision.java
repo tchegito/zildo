@@ -20,6 +20,7 @@
 
 package zildo.monde.collision;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import zildo.fwk.db.Identified;
@@ -101,10 +102,12 @@ public class PersoCollision {
 		boolean foreGround = quelElement != null && quelElement.isForeground();
 
 		// Try on given grid case
-		Perso perso = locatePerso(gridX, gridY, foreGround, fromId);
-		if (perso != null && checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
-			return perso;
-		}				
+		List<Perso> persos = locatePerso(gridX, gridY, foreGround, fromId);
+		for (Perso perso: persos) {
+			if (checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
+				return perso;
+			}
+		}
 		int nbPersoAround = CollBuffer.howManyAround(gridX, gridY);
 		if (nbPersoAround <= 1) {
 			return null;
@@ -115,9 +118,11 @@ public class PersoCollision {
 				Point offset = a.coords;
 				int gx = gridX + offset.x;
 				int gy = gridY + offset.y;
-				perso = locatePerso(gx, gy, foreGround, fromId);
-				if (perso != null && checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
-					return perso;
+				persos = locatePerso(gx, gy, foreGround, fromId);
+				for (Perso perso: persos) {
+					if (checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
+						return perso;
+					}
 				}
 
 			}
@@ -132,29 +137,31 @@ public class PersoCollision {
 	 * @param foreGround
 	 * @return Perso
 	 */
-	private Perso locatePerso(int gridX, int gridY, boolean foreGround, int fromId) {
-		int id = -1;
+	private List<Perso> locatePerso(int gridX, int gridY, boolean foreGround, int fromId) {
+		int[] ids = {};
 		if (!CollBuffer.isOutOfBounds(gridX, gridY)) {
 			if (foreGround) {
-				id = buffers[0].getId(gridX, gridY, fromId);
+				ids = buffers[0].getIds(gridX, gridY, fromId);
 			} else {
-				id = buffers[1].getId(gridX, gridY, fromId);
+				ids = buffers[1].getIds(gridX, gridY, fromId);
 			}
 		}
-		if (id != -1 && id != fromId) {
-			SpriteEntity entity = Identified.fromId(SpriteEntity.class, id);
-			if (entity == null || !entity.getEntityType().isPerso()) {
-				// This entity is not a Perso, and shouldn't have been here. This could happen in a very rare case (not completely identified)
-				Identified.remove(SpriteEntity.class, id);
-				buffers[foreGround ? 0 : 1].resetId(gridX, gridY, id);
-				return null;
-			} else {
-				return (Perso) Identified.fromId(SpriteEntity.class, id);
+		List<Perso> persos = new ArrayList<>();
+		if (ids.length > 0) {
+			for (int id: ids) {
+				if (id != -1 && id != fromId) {
+					SpriteEntity entity = Identified.fromId(SpriteEntity.class, id);
+					if (entity == null || !entity.getEntityType().isPerso()) {
+						// This entity is not a Perso, and shouldn't have been here. This could happen in a very rare case (not completely identified)
+						Identified.remove(SpriteEntity.class, id);
+						buffers[foreGround ? 0 : 1].resetId(gridX, gridY, id);
+					} else {
+						persos.add((Perso) Identified.fromId(SpriteEntity.class, id));
+					}
+				}
 			}
-		} else {
-			return null;
 		}
-		
+		return persos;
 	}
 
 	
@@ -193,9 +200,12 @@ public class PersoCollision {
         if (quelElement != null && quelElement.getMover() != null) {
         	size2 = quelElement.getMover().getZone();
         }
+        Pointf delta = new Pointf(x - quelElement.x, y - quelElement.y);
         // TODO: maybe merge this behavior with CollideManagement#checkColli
         boolean colli = false;
-        if (size != null) {
+        if (size != null && size2 != null) {
+        	colli = new Rectangle(size).isCrossing(new Rectangle(size2).translate(delta.x,  delta.y));
+        } else if (size != null) {
         	colli = new Rectangle(size).isCrossingCircle(new Pointf(x, y), rayon);
         } else if (size2 != null) {
         	colli = new Rectangle(size2).isCrossingCircle(new Pointf(tx, ty), rayonPersoToCompare);

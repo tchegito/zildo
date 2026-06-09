@@ -621,7 +621,7 @@ public abstract class Perso extends Element {
 			}
 			if (action.launchAction()) {
 				action = null;
-				ghost = false; // Allow player movements
+				if (isZildo()) ghost = false; // Allow player movements
 			}
 		}
 

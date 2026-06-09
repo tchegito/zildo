@@ -61,8 +61,12 @@ public class Rectangle {
 		this(p_center, new Pointf(p_size));
 	}
 
+	public Rectangle(Rectangle original) {
+		this(original.center, original.size);
+	}
+	
 	public Rectangle(Zone p_zone) {
-		int zx1, zx2, zy1, zy2;
+		float zx1, zx2, zy1, zy2;
 		zx1 = p_zone.x1;
 		zx2 = p_zone.x2;
 		zy1 = p_zone.y1;
@@ -76,11 +80,10 @@ public class Rectangle {
 		size = new Pointf(zx2, zy2);
 	}
 
-	public void translate(int p_shiftX, int p_shiftY) {
-		for (int i = 0; i < 4; i++) {
-			coordinates[i] = coordinates[i].translate(p_shiftX, p_shiftY);
-		}
-		center = center.translate(p_shiftX, p_shiftY);
+	public Rectangle translate(float p_shiftX, float p_shiftY) {
+		Pointf newCenter = new Pointf(center);
+		newCenter.add(p_shiftX, p_shiftY);
+		return new Rectangle(newCenter, size);
 	}
 
 	/**

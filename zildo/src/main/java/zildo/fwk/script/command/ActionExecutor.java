@@ -160,7 +160,7 @@ public class ActionExecutor extends RuntimeExecutor {
 			if (p_action.delta && location != null) {
 				Point currentPos = null;
             	if (p_action.kind == ActionKind.spawn) {	// Possiblity to spawn relative to zildo
-            		currentPos = EngineZildo.persoManagement.getZildo().getCenter();
+            		currentPos = EngineZildo.persoManagement.getZildo().getCenter().toPoint();
 				} else if (perso != null) {
             		// Given position is a delta with current one (work ONLY with perso, not with camera)
 					currentPos = new Point(perso.x, perso.y);

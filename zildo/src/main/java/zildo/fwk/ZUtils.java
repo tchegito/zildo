@@ -256,4 +256,13 @@ public class ZUtils {
     	}
     	return array;
     }
+    
+    @SafeVarargs
+	public static <K> Set<K> asSet(K... values) {
+    	Set<K> res = new HashSet<K>();
+    	for (K val: values) {
+    		res.add(val);
+    	}
+    	return res;
+    }
 }

@@ -70,6 +70,7 @@ import zildo.monde.sprites.utils.MouvementPerso;
 import zildo.monde.sprites.utils.MouvementZildo;
 import zildo.monde.util.Angle;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
@@ -755,7 +756,7 @@ public class Area implements EasySerializable {
 		}
 		if (crack != null) {
 			
-			Point tileLoc = new Point(crack.getCenter());
+			Point tileLoc = new Pointf(crack.getCenter()).toPoint();
 			tileLoc.x /=16;
 			tileLoc.y /=16;
 			// Remove crack and replace tile with opened wall

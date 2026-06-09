@@ -402,11 +402,11 @@ public class ClientEngineZildo {
 					int rayon = c.cr;
 					int color = 15;
 					Perso damager = c.perso;
-					if (damager != null) { // && damager.getInfo() == PersoInfo.ENEMY) {
+					if (damager != null && damager.getInfo() == PersoInfo.ENEMY) {
 						color = 20;
 					}
 					if (c.size == null) {
-						ortho.box(c.cx - rayon - camera.x, c.cy - rayon
+						ortho.box((int) c.cx - rayon - camera.x, (int) c.cy - rayon
 										- camera.y, rayon * 2, rayon * 2, 0,
 										alphaColor);
 					} else {
@@ -420,7 +420,7 @@ public class ClientEngineZildo {
 			for (Perso p: EngineZildo.persoManagement.tab_perso) {
 				if (!p.isZildo() && p.getInfo() == PersoInfo.NEUTRAL && p.getMover() != null) {
 					Zone zone = p.getMover().getZone();
-					ortho.box(zone.x1 - camera.x, zone.y1 - camera.y, zone.x2, zone.y2, 0, alphaColor);
+					ortho.box((int) zone.x1 - camera.x, (int) zone.y1 - camera.y, (int) zone.x2, (int) zone.y2, 0, alphaColor);
 				}
 			}
 			// -7, -10
@@ -429,7 +429,7 @@ public class ClientEngineZildo {
 			//ortho.box(x - 7 -camera.x, y - 17 - camera.y, 14, 14, 12, new Vector4f(0.6f, 0.7f, 0.9f, 0.4f));
 
 			Collision c = ((PersoPlayer)zildo).getCollision();
-			ortho.box(c.cx - c.cr / 2 - camera.x,  c.cy - c.cr / 2 - camera.y,  c.cr * 2, c.cr * 2, 12, new Vector4f(0.3f, 0.8f, 0.8f, 0.4f));
+			ortho.box((int) c.cx - c.cr / 2 - camera.x,  (int) c.cy - c.cr / 2 - camera.y,  c.cr * 2, c.cr * 2, 12, new Vector4f(0.3f, 0.8f, 0.8f, 0.4f));
 			// Feet
 			ortho.box(x - 4 -camera.x, y - 2 - camera.y, 8, 4, 12, new Vector4f(0.2f, 0.9f, 0.3f, 0.1f));
 

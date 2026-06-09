@@ -34,7 +34,7 @@ public class OccluderArranger {
 		for (Zone z : occ.available) {
 			i++;
 			fillZone(z, i);
-			int size = z.x2 * z.y2;
+			int size = (int) z.x2 * (int) z.y2;
 			if (size > (max.x2 * max.y2)) {
 				max = z;
 			}
@@ -45,7 +45,7 @@ public class OccluderArranger {
 	private void fillZone(Zone z, int id) {
 		for (int x=0;x<z.x2;x++) {
 			for (int y=0;y<z.y2;y++) {
-				surface[z.x1 + x][z.y1 + y] = id;
+				surface[(int) z.x1 + x][(int) z.y1 + y] = id;
 			}
 		}
 	}
@@ -196,7 +196,7 @@ public class OccluderArranger {
 	public void stats(List<Zone> zones) {
 		Zone max = new Zone();
 		for (Zone z : zones) {
-			int size = z.x2 * z.y2;
+			int size = (int) z.x2 * (int) z.y2;
 			if (size > (max.x2 * max.y2)) {
 				max = z;
 			}

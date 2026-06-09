@@ -30,7 +30,7 @@ import zildo.monde.util.Pointf;
 
 public class Collision {
 
-    public int cx, cy;	// Center
+    public float cx, cy;	// Center
     public int cr;		// Radius
     public final Angle cangle; // Shooter's angle
     public final Point size; // Exact object's size (if not null, radius will be ignored)
@@ -46,7 +46,7 @@ public class Collision {
      * @param p_type
      * @param p_weapon TODO
      */
-    public Collision(Point p_center, Point p_size, Perso p_shooter, DamageType p_type, Element p_weapon) {
+    public Collision(Pointf p_center, Point p_size, Perso p_shooter, DamageType p_type, Element p_weapon) {
     	this.cx=p_center.x;
     	this.cy=p_center.y;
     	this.size=p_size;
@@ -54,6 +54,10 @@ public class Collision {
     	this.perso=p_shooter;
     	this.damageType=p_type;
     	this.weapon=p_weapon;
+    }
+    
+    public Collision(Point p_center, Point p_size, Perso p_shooter, DamageType p_type, Element p_weapon) {
+    	this(new Pointf(p_center), p_size, p_shooter, p_type, p_weapon);
     }
     
     /**
@@ -137,17 +141,17 @@ public class Collision {
     }
     
     /** Calculate the middle of intersecting zones between 2 circles **/
-    public static Point hitPointOnCircles(int x, int y, int a, int b, int r, int rayon) {
+    public static Pointf hitPointOnCircles(float x, float y, float a, float b, float r, float rayon) {
     	double angle = Trigo.getAngleRadian(a-x, b-y);
-    	Point e1 = new Pointf(x,y).translate(Trigo.vect(angle, r)).toPoint();
-    	Point e2 = new Pointf(a,b).translate(Trigo.vect(angle, -rayon)).toPoint();
-    	return Point.middle(e1, e2);
+    	Pointf e1 = new Pointf(x,y).translate(Trigo.vect(angle, r));
+    	Pointf e2 = new Pointf(a,b).translate(Trigo.vect(angle, -rayon));
+    	return Pointf.middle(e1, e2);
     }
     
     @Override
     public int hashCode() {
-    	int n = cx << 20;
-    	n |= cy << 10;
+    	int n = (int) cx << 20;
+    	n |= (int) cy << 10;
     	if (size != null) {
     		n |= size.hashCode();
     	} else {

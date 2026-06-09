@@ -39,6 +39,7 @@ import zildo.monde.sprites.persos.ia.mover.MoveOrder;
 import zildo.monde.sprites.persos.ia.mover.Mover;
 import zildo.monde.sprites.utils.Sprite;
 import zildo.monde.util.Point;
+import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
 import zildo.server.EngineZildo;
 
@@ -78,7 +79,7 @@ public class SpriteEntity extends Identified implements Cloneable,
 	protected boolean foreground; // Drawn at last in display sequence. So always
 								// on foreground
 	public boolean dying; // TRUE=we must remove them
-	protected Point center = new Point(); // Defaults : 1) entity : [x/2, y] 2)
+	protected Pointf center = new Pointf(0, 0); // Defaults : 1) entity : [x/2, y] 2)
 											// element : [x/2, y/2]
 	public int floor=1;	// Indicates sprite's floor: 0,1,2
 	
@@ -183,9 +184,9 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public void calculateCenter() {
 	}
 
-	public Point getCenter() {
-		center.x = (int) x - sprModel.getTaille_x() / 2;
-		center.y = (int) y - sprModel.getTaille_y();
+	public Pointf getCenter() {
+		center.x = x - sprModel.getTaille_x() / 2;
+		center.y = y - (float) sprModel.getTaille_y();
 		return center;
 	}
 
