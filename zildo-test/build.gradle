@@ -10,7 +10,7 @@ version = '1.0'
 test {
 	systemProperty "ZILDO_DATA", System.getProperty("ZILDO_DATA")
 	maxParallelForks = 1
-	maxHeapSize = "1280m"
+	maxHeapSize = "2000m"
 	forkEvery 20
 	jvmArgs("-XX:+UseParallelGC")
 }
@@ -46,7 +46,7 @@ gradle.buildFinished {
 dependencies {
 	implementation project(':zildo'), 
 	project(':zildo-platform-lwjgl'),
-	project(':zildo-platform-android-gles2'),
+	//project(':zildo-platform-android-gles2'),
 	//files('../zildo-platform-android-gles2/build/outputs/ZildoPlatformAndroidGles2.jar'),
 	project(':zeditor')
 	implementation "junit:junit:4.12",

@@ -387,7 +387,6 @@ public class TestAdvancedPerso extends EngineUT {
 		System.out.println("Falling");
 		// Hero is falling !
 		while (zildo.isAlive()) {
-			System.out.println(zildo);
 			renderFrames(1);
 		}
 	}
