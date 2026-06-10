@@ -60,7 +60,7 @@ public class Hasard {
 	 * @return int
 	 */
 	public float intervalle(float p_range) {
-		return (float) (Math.random() * p_range) - (p_range / 2.0f);
+		return (float) (predictable.nextDouble() * p_range) - (p_range / 2.0f);
 	}
 	/**
 	 * Returns an integer n where 0 <= n < max.
@@ -76,7 +76,7 @@ public class Hasard {
 	
 	// Just to isolate the hazard functionality and make it mockable
 	public double rand() {
-		return Math.random();
+		return predictable.nextDouble(); //Math.random();
 	}
 	/**
 	 * Returns an integer x as start <= x <= end

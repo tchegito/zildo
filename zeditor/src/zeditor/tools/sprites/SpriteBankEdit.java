@@ -106,14 +106,14 @@ public class SpriteBankEdit extends SpriteBank {
     
     public void addSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
-		addSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
+		int[] sprite = bankEdit.getRectFromImage((int) z.x1, (int) z.y1, (int) z.x2, (int) z.y2);
+		addSpr(p_position, (int) z.x2, (int) z.y2, zoneBorders(z), sprite);
 	}
    
     public void setSprFromImage(int p_position, Zone z) {
 		// Extract sprite from image
-		int[] sprite = bankEdit.getRectFromImage(z.x1, z.y1, z.x2, z.y2);
-		setSpr(p_position, z.x2, z.y2, zoneBorders(z), sprite);
+		int[] sprite = bankEdit.getRectFromImage((int) z.x1, (int) z.y1, (int) z.x2, (int) z.y2);
+		setSpr(p_position, (int) z.x2, (int) z.y2, zoneBorders(z), sprite);
 	}
     
     private Zone zoneBorders(Zone z) {
@@ -153,7 +153,7 @@ public class SpriteBankEdit extends SpriteBank {
             if (offsets == null) {
             	buffer.put((byte) 0);
             } else {
-                buffer.put((byte) (offsets.y1 | 128));
+                buffer.put((byte) ((int) offsets.y1 | 128));
                 buffer.put((byte) offsets.x1);
                 buffer.put((byte) offsets.x2);
             }

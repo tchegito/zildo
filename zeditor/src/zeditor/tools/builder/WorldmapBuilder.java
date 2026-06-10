@@ -165,7 +165,7 @@ public class WorldmapBuilder {
 			}
 			
 			Point scrollOffset = nextMap.getScrollOffset();
-			if (scrollOffset.norme() != 0f) {
+			if (scrollOffset.norme() != 0f && scrollOffset.x >= 0) {
 				mapLoc.add(scrollOffset.multiply(16f));
 			}
 			

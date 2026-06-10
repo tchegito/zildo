@@ -233,13 +233,14 @@ public class AreaChecker {
 	
 	private void checkUnexistentFloor() {
 		boolean found = false;
+		IntSet suspects = new IntSet(256 * 6 + 35, 256 * 6 + 36);
 		for (int floor = 0;floor<=2;floor++) {
 			for (int y = 0; y<area.getDim_y(); y++) {
 				for (int x = 0; x<area.getDim_x(); x++) {
 					Case c = area.get_mapcase(x, y, floor);
 					if (c != null) {
 						Tile back = c.getBackTile();
-						if (floor > 0 && back.getValue() == 256 * 6 + 35) {
+						if (floor > 0 && suspects.contains(back.getValue())) {
 							Case c2 = area.get_mapcase(x, y, floor-1);
 							if (c2 == null) {		
 								found = true;

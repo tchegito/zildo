@@ -35,11 +35,25 @@ public class SpriteBanque {
 	/** List of all picture where sprites should be grabbed **/
 	List<GraphChange> pkmChanges;
 	
+	protected int[][] coordsInt;
+	
 	public Zone[] getZones() {
+		if (zones == null) {
+			int[][] coordsInt = getCoordsInt();
+			zones = new Zone[coordsInt.length];
+			int p=0;
+			for (int[] crds : coordsInt) {
+				zones[p++] = new Zone(crds[0], crds[1], crds[2], crds[3]);
+			}
+		}
 		return zones;
 	}
 	
 	public List<GraphChange> getPkmChanges() {
 		return pkmChanges;
 	}
+	
+    protected int[][] getCoordsInt() {
+    	return coordsInt;
+    }
 }

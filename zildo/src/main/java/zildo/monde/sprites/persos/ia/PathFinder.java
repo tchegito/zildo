@@ -245,7 +245,7 @@ public class PathFinder {
 				((PersoNJ)mobile).destinationReached();
 				break;
 			default:
-				mobile.setAttente(10 + (int) (Math.random()*20));
+				mobile.setAttente(10 + (int) (hasard.rand()*20));
 				if (mobile.isGhost()) {
 					mobile.tryJump(new Pointf(mobile.x, mobile.y));
 				}

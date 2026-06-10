@@ -102,8 +102,8 @@ public class BankEdit {
     public void setRectFromImage(Zone location, int[] sprite) {
 		for (int j = 0; j < location.y2; j++) {
 			for (int i = 0; i < location.x2; i++) {
-				int offsetImg = (location.y1 + j) * img.getWidth() + location.x1 + i;
-				imgPixels[offsetImg] = sprite[j * location.x2 + i];
+				int offsetImg = ((int) location.y1 + j) * img.getWidth() + (int) location.x1 + i;
+				imgPixels[offsetImg] = sprite[j * (int) location.x2 + i];
 			}
 		}
     }
