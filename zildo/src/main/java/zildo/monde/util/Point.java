@@ -106,17 +106,24 @@ public class Point {
      * @return float
      */
     public float distance(Point p_other) {
-        int c = Math.abs(x - p_other.x);
-        int d = Math.abs(y - p_other.y);
-        c = c * c;
-        c += d * d;
-        return (float) Math.sqrt(c);
+        return distance(new Pointf(p_other));
     }
     
     public float norme() {
     	return distance(new Point(0, 0));
     }
     
+    public float distance(Pointf p_other) {
+        float c = Math.abs(x - p_other.x);
+        float d = Math.abs(y - p_other.y);
+        c = c * c;
+        c += d * d;
+        return (float) Math.sqrt(c);
+    }
+    
+    public float distance(float ax, float ay) {
+    	return distance(new Pointf(ax, ay));
+    }
     public static float distance(float ax, float ay, float bx, float by) {
     	return new Pointf(ax, ay).distance(bx, by);
     }

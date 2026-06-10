@@ -227,17 +227,17 @@ public class AWTOpenGLCanvas extends AWTGLCanvas implements Runnable {
 			col.w=sin;
 			for (ChainingPoint ch : chaining) {
 				Zone p=ch.getZone(map);
-			    ortho.boxv(p.x1 - shift.x, p.y1 - shift.y, 
-			    		   p.x2,                p.y2, 0, colChainingPoint);
+			    ortho.boxv((int) p.x1 - shift.x, (int) p.y1 - shift.y, 
+			    		   (int) p.x2,                (int) p.y2, 0, colChainingPoint);
 				if (selected != null && selected ==ch) {
 					ortho.enableBlend();
-				    ortho.box(p.x1 - shift.x+1, p.y1 - shift.y+1, 
-				    		  p.x2-2,                p.y2-2, 0, col);
+				    ortho.box((int) p.x1 - shift.x+1, (int) p.y1 - shift.y+1, 
+				    		  (int) p.x2-2,                (int) p.y2-2, 0, col);
 				    ortho.disableBlend();
 				}
 				// Draw coming angle
-				int centerX = (2*p.x1 + p.x2) / 2;
-				int centerY = (2*p.y1 + p.y2) / 2;
+				int centerX = (int) (2*p.x1 + p.x2) / 2;
+				int centerY = (int) (2*p.y1 + p.y2) / 2;
 				Angle coming = ch.getComingAngle();
 				if (coming != Angle.NULL) {
 					int arrowX = 1 + coming.coords.x * 32;

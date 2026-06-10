@@ -92,8 +92,8 @@ public abstract class ImageSet extends JPanel {
    
                     	Zone z=getObjectOnClick(e.getX(), e.getY());
                     	if (z != null) {
-	                        int x = z.x1;
-	                        int y = z.y1;
+	                        int x = (int) z.x1;
+	                        int y = (int) z.y1;
                             if(startPoint == null){
                                 startPoint = new Point(x,y);
                             }else{
@@ -119,8 +119,8 @@ public abstract class ImageSet extends JPanel {
                         // Click gauche
                     	Zone z=getObjectOnClick(e.getX(), e.getY());
                     	if (z != null) {
-	                        int x = z.x1 + z.x2;
-	                        int y = z.y1 + z.y2;
+	                        int x = (int) (z.x1 + z.x2);
+	                        int y = (int) (z.y1 + z.y2);
 	                        if(stopPoint == null){
 	                            stopPoint = new Point(x,y);
 	                        }else{
@@ -148,8 +148,8 @@ public abstract class ImageSet extends JPanel {
                 if(currentTile != null){
                 	Zone z=getObjectOnClick(e.getX(), e.getY());
                 	if (z != null) {
-	                    int x = z.x1 + z.x2;
-	                    int y = z.y1 + z.y2;
+	                    int x = (int) (z.x1 + z.x2);
+	                    int y = (int) (z.y1 + z.y2);
 	                    if(stopPoint == null){
 	                        stopPoint = new Point(x,y);
 	                    }else{

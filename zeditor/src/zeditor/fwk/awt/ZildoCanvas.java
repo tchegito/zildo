@@ -370,8 +370,8 @@ public class ZildoCanvas extends AWTOpenGLCanvas implements MapCapturer {
 			if (ch != null) {
 			    	// Center view on the chaining point
 				Zone z=ch.getZone(map);
-				p.x=z.x1 - ZildoScrollablePanel.viewSizeX / 2;
-				p.y=z.y1 - ZildoScrollablePanel.viewSizeY / 2;
+				p.x=(int) z.x1 - ZildoScrollablePanel.viewSizeX / 2;
+				p.y=(int) z.y1 - ZildoScrollablePanel.viewSizeY / 2;
 			}
 		}
 		panel.setPosition(p);
@@ -460,7 +460,7 @@ public class ZildoCanvas extends AWTOpenGLCanvas implements MapCapturer {
     	if (p_zone != null) {
     	    filterRect = new Rectangle(p_zone);
     	    filterRect.multiply(16);
-    	    filterRect.translate(-camera.x, -camera.y);
+    	    filterRect = filterRect.translate(-camera.x, -camera.y);
     	} else {
         	p_point.x-=camera.x;
             	p_point.y-=camera.y;

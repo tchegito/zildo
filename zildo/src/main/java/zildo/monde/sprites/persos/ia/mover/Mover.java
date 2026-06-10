@@ -152,16 +152,14 @@ public class Mover {
 		Pointf middle = new Pointf(mobile.x, mobile.y); //mobile.getCenter();
 		SpriteModel model = mobile.getSprModel();
 		Pointf size;
-		switch ((PersoDescription) mobile.getDesc()) {
-		case TURTLE:
+		if (mobile.getDesc() == PersoDescription.TURTLE) {
 			// Hard coded value for Turtle
 			if (((Perso)mobile).getAngle().isVertical()) {
 				size = new Pointf(18, 15);
 			} else {
 				size = new Pointf(28, 11);
 			}
-			break;
-		default:
+		} else {
 			size = new Pointf(model.getTaille_x(), model.getTaille_y());
 		}
 		middle.add(-size.x / 2f,  - size.y);

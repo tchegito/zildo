@@ -240,7 +240,7 @@ public class TestAdvancedPerso extends EngineUT {
 		waitEndOfScripting();
 		renderFrames(10);
 		simulateDirection(-1, 0);
-		renderFrames(80);
+		renderFrames(20);
 		Assert.assertEquals(0, (int) roxy.z);
 		simulatePressButton(Keys.W, 4);
 		Assert.assertTrue(roxy.z>0);

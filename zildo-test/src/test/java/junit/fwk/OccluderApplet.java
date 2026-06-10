@@ -46,7 +46,7 @@ public class OccluderApplet extends JApplet {
         g.setColor(Color.RED);
 		for (Zone z : availableZones) {
 			if (z.y2 >= 12 && z.x2 > 2 && z.y1 <160 && z.x1 > 180) {
-				g.drawRect(z.x1, z.y1, z.x2, z.y2);
+				g.drawRect((int) z.x1, (int) z.y1, (int) z.x2, (int) z.y2);
 				System.out.println(z);
 				System.out.println(z.x2);
 			}

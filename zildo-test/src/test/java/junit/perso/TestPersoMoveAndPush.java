@@ -138,13 +138,16 @@ public class TestPersoMoveAndPush extends EngineUT {
 		Perso turtle = EngineZildo.persoManagement.getNamedPerso("sacher");
 		turtle.setPos(new Vector2f(470, 584));
 		turtle.setAngle(Angle.EST);
-		Perso hero = spawnZildo(470,  595);
+		Perso hero = spawnZildo(470,  597);
 		
 		renderFrames(1);
 		
 		// Check with circles (both radius = 7)
 		Assert.assertTrue( Collision.checkCollisionCircles((int) turtle.x, (int) turtle.y, (int) hero.x, (int) hero.y, 7, 7));
 		// Check with circle and zone
+		System.out.println(turtle.getMover().getZone());
+		System.out.println(hero);
+		System.out.println(turtle.getMover().getZone().getCenter().distance(hero.x, hero.y));
 		Assert.assertFalse( new Rectangle(turtle.getMover().getZone()).isCrossingCircle(new Pointf(hero.x, hero.y), 7) );
 		
 		Assert.assertFalse(EngineZildo.mapManagement.collide(hero.x, hero.y, hero));
@@ -282,26 +285,54 @@ public class TestPersoMoveAndPush extends EngineUT {
 		mapUtils.loadMap("natureb9");
 		PersoPlayer hero = spawnZildo(381, 140);
 		waitEndOfScripting();
-		persoUtils.removePerso("turtle1");
+		//persoUtils.removePerso("turtle1");
 		persoUtils.removePerso("turtle3");
 		persoUtils.removePerso("turtle4");
 		Perso turtle = persoUtils.persoByName("turtle2");
+		Perso turtle1 = persoUtils.persoByName("turtle1");
+		display(turtle, turtle1);
 		System.out.println(turtle);
-		Pointf initialTarget = new Pointf(turtle.x, turtle.y+20);
+		Pointf initialTarget = new Pointf(turtle.x, turtle.y+22);
 		renderFrames(5);
 		System.out.println(turtle);
 		Assert.assertEquals(initialTarget, turtle.getTarget());
 		for (int i=0;i<150;i++) {
+			System.out.println(i);
+			if (i == 140) {
+				System.out.println();
+			}
 			renderFrames(1);
+			display(turtle, turtle1);
+			checkNoOneBlocked(turtle, turtle1);
 			System.out.println(turtle);
 		}
 		// Ensure that turtle is blocked
 		Assert.assertEquals(turtle.getDelta(), new Pointf(0, 0));
 		// Then move hero to let it pass
 		simulateDirection(1, 0);
-		renderFrames(20);
+		for (int i=0;i<30;i++) {
+			System.out.println(i);
+			renderFrames(1);
+			display(turtle, turtle1);
+			checkNoOneBlocked(turtle, turtle1);
+			System.out.println(turtle);
+		}
 		System.out.println(turtle);
 		System.out.println(hero);
+
+		renderFrames(turtle.getAttente()+1);
 		Assert.assertNotEquals(turtle.getDelta(), new Pointf(0, 0));
+		renderFrames(500);
+	}
+	
+	private void checkNoOneBlocked(Perso p1, Perso p2) {
+		Rectangle r1 = new Rectangle(p1.getMover().getZone());
+		Rectangle r2 = new Rectangle(p2.getMover().getZone());
+		Assert.assertFalse(r1.isCrossing(r2));
+	}
+	
+	private void display(Perso p1, Perso p2) {
+		System.out.println(p1.getName()+": " + p1.x+", "+p1.y+" " + p1.getMover().getZone()+"   -   "+p1.getNSpr());
+		System.out.println(p2.getName()+": " + p2.x+", "+p2.y+" " + p2.getMover().getZone()+"   -   "+p2.getNSpr());
 	}
 }

@@ -28,12 +28,10 @@ public class TestGeometry {
 	@Test
 	public void shiftRectangle() {
 		Rectangle original = new Rectangle(new Pointf(382, 112.5), new Pointf(18, 15));
-		System.out.println(original);
 		Rectangle shifted = original.translate(0,  1);
 		Assert.assertEquals(106d, shifted.getCornerTopLeft().y, 0d);
 
 		original = new Rectangle(new Zone(373, 105, 18, 15));
-		System.out.println(original);
 		shifted = original.translate(0,  1);
 		Assert.assertEquals(106d, shifted.getCornerTopLeft().y, 0d);
 	}
@@ -46,7 +44,7 @@ public class TestGeometry {
 		Assert.assertFalse(r2.isCrossing(r1));
 		
 		r2 = r2.translate(0,  0.5f);
-		Assert.assertFalse(r1.isCrossing(r2));
-		Assert.assertFalse(r2.isCrossing(r1));
+		Assert.assertTrue(r1.isCrossing(r2));
+		Assert.assertTrue(r2.isCrossing(r1));
 	}
 }
