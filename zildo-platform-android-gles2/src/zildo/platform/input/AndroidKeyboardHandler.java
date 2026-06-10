@@ -254,7 +254,7 @@ public class AndroidKeyboardHandler extends CommonKeyboardHandler {
 								// For DPAD on moving mode, allow full screen
 								(kLoc == KeyLocation.VP_DPAD && movingCross && infos.movingCrossCenter != null)) {
 							if (kLoc == KeyLocation.VP_DPAD && (!movingCross || idx == infos.idxPointCrossCenter)) {	// Special : d-pad zone
-								int shiftX = leftHanded ? kLoc.zLeftHanded.x1 : 0;	// For left handed, pad is on the right
+								int shiftX = leftHanded ? (int) kLoc.zLeftHanded.x1 : 0;	// For left handed, pad is on the right
 								direction = DPadMovement.compute(translated.x - 50 - shiftX, translated.y - 200);
 							} else {
 								keyStates[kLoc.keyCode] = true;
