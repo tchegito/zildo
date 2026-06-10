@@ -285,44 +285,31 @@ public class TestPersoMoveAndPush extends EngineUT {
 		mapUtils.loadMap("natureb9");
 		PersoPlayer hero = spawnZildo(381, 140);
 		waitEndOfScripting();
-		//persoUtils.removePerso("turtle1");
 		persoUtils.removePerso("turtle3");
 		persoUtils.removePerso("turtle4");
 		Perso turtle = persoUtils.persoByName("turtle2");
 		Perso turtle1 = persoUtils.persoByName("turtle1");
-		display(turtle, turtle1);
-		System.out.println(turtle);
+		//display(turtle, turtle1);
 		Pointf initialTarget = new Pointf(turtle.x, turtle.y+22);
 		renderFrames(5);
-		System.out.println(turtle);
 		Assert.assertEquals(initialTarget, turtle.getTarget());
 		for (int i=0;i<150;i++) {
-			System.out.println(i);
-			if (i == 140) {
-				System.out.println();
-			}
 			renderFrames(1);
-			display(turtle, turtle1);
+			//display(turtle, turtle1);
 			checkNoOneBlocked(turtle, turtle1);
-			System.out.println(turtle);
 		}
 		// Ensure that turtle is blocked
 		Assert.assertEquals(turtle.getDelta(), new Pointf(0, 0));
 		// Then move hero to let it pass
 		simulateDirection(1, 0);
 		for (int i=0;i<30;i++) {
-			System.out.println(i);
 			renderFrames(1);
-			display(turtle, turtle1);
+			//display(turtle, turtle1);
 			checkNoOneBlocked(turtle, turtle1);
-			System.out.println(turtle);
 		}
-		System.out.println(turtle);
-		System.out.println(hero);
 
-		renderFrames(turtle.getAttente()+1);
+		renderFrames(turtle.getAttente()+2);
 		Assert.assertNotEquals(turtle.getDelta(), new Pointf(0, 0));
-		renderFrames(500);
 	}
 	
 	private void checkNoOneBlocked(Perso p1, Perso p2) {
@@ -332,7 +319,7 @@ public class TestPersoMoveAndPush extends EngineUT {
 	}
 	
 	private void display(Perso p1, Perso p2) {
-		System.out.println(p1.getName()+": " + p1.x+", "+p1.y+" " + p1.getMover().getZone()+"   -   "+p1.getNSpr());
-		System.out.println(p2.getName()+": " + p2.x+", "+p2.y+" " + p2.getMover().getZone()+"   -   "+p2.getNSpr());
+		System.out.println(p1.getName()+": " + p1.x+", "+p1.y+" " + p1.getTarget()+" "+p1.getMover().getZone()+"   -   "+p1.getNSpr() + " attente="+p1.getAttente());
+		System.out.println(p2.getName()+": " + p2.x+", "+p2.y+" " + p2.getTarget()+" "+p2.getMover().getZone()+"   -   "+p2.getNSpr() + " attente="+p2.getAttente());
 	}
 }
