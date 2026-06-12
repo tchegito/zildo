@@ -98,29 +98,54 @@ public class TestPersoCollision {
 	public void heroAndTurtles() {
 		PersoPlayer hero = new PersoPlayer(1);
 		hero.setPos(new Vector2f(381, 140));
-		PersoNJ turtle1 = new PersoNJ();
-		turtle1.setPos(new Vector2f(382, 112.75));
-		PersoNJ turtle2 = new PersoNJ();
-		turtle2.setPos(new Vector2f(382, 128.25));
+		PersoNJ turtle1 = spawnTurtle(382f, 112.75f);
+		PersoNJ turtle2 = spawnTurtle(382f, 128.25f);
 		
 		List<Perso> persos = Arrays.asList(hero, turtle1, turtle2);
 		persos.forEach(p -> {
 			p.initializeId(SpriteEntity.class);
 			p.setPv(1);
-			if (!p.isZildo()) {
-				p.setDesc(PersoDescription.TURTLE);
-				p.setSprModel(PersoDescription.TURTLE, 0);
-				p.setAngle(Angle.SUD);
-				p.initMover();
-			}
-
 		});
 		// 1) check howManyAround
-		int gridX = 23;
-		int gridY = 8;
 		colli.initFrame(persos);
-		Assert.assertEquals(3,  CollBuffer.howManyAround(gridX, gridY));
+		Assert.assertEquals(3,  CollBuffer.howManyAround(23, 8));
 		
 		Assert.assertEquals(turtle2, colli.checkCollision(382f, 113.25f, turtle1, 7));
+	}
+	
+	PersoNJ spawnTurtle(float x, float y) {
+		PersoNJ turtle = new PersoNJ();
+		turtle.setPos(new Vector2f(x, y));
+		turtle.setDesc(PersoDescription.TURTLE);
+		turtle.setSprModel(PersoDescription.TURTLE, 0);
+		turtle.setAngle(Angle.SUD);
+		turtle.initMover();
+		return turtle;
+	}
+	
+	@Test
+	public void multiTurtles() {
+		PersoPlayer hero = new PersoPlayer(1);
+		hero.setPos(new Vector2f(392.83, 140.66f));
+		hero.setZ(5f);
+		PersoNJ turtle1 = spawnTurtle(375.25f, 142f);
+		PersoNJ turtle2 = spawnTurtle(357.5f, 98f);
+		PersoNJ turtle3 = spawnTurtle(382f, 110.75f);
+		PersoNJ turtle4 = spawnTurtle(382f, 130.5f);
+		List<Perso> persos = Arrays.asList(hero, turtle1, turtle2, turtle3, turtle4);
+		persos.forEach(p -> {
+			p.initializeId(SpriteEntity.class);
+			p.setPv(1);
+		});
+		colli.initFrame(persos);
+		Assert.assertEquals(3,  CollBuffer.howManyAround(23, 8));
+		Assert.assertEquals(turtle4, colli.checkCollision(382, 118f, turtle3, 7));
+
+		for (int i=0;i<30+5;i++) {
+			turtle3.setY(turtle3.getY() + 0.25f);
+			colli.initFrame(persos);
+		}
+		Assert.assertEquals(4,  CollBuffer.howManyAround(23, 8));
+		Assert.assertEquals(turtle4, colli.checkCollision(382, turtle3.y + 0.25f, turtle3, 7));
 	}
 }

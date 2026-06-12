@@ -37,8 +37,10 @@ public class CollBuffer {
 	CycleIntBuffer indexPerso;
 	static int[][] capillarity;
 	
+	final int PRESENCE_SIZE = 3;
+	
 	public CollBuffer() {
-		presences = new int[SIZE_X][SIZE_Y][2];
+		presences = new int[SIZE_X][SIZE_Y][PRESENCE_SIZE];
 		indexPerso = new CycleIntBuffer(512);
 		
 		capillarity = new int[64][64];
@@ -49,7 +51,7 @@ public class CollBuffer {
 	public void clear() {
 		for (int i=0;i<64;i++) {
 			for (int j=0;j<64;j++) {
-				for (int k=0;k<2;k++) {
+				for (int k=0;k<PRESENCE_SIZE;k++) {
 					presences[i][j][k] = -1;
 				}
 			}
@@ -95,27 +97,27 @@ public class CollBuffer {
 	}
 	
 	private void setId(int gridX, int gridY, int fromId) {
-		int id = presences[gridY][gridX][0];
-		if (id != fromId) {
-			if (id == -1) {
-				presences[gridY][gridX][0] = fromId;
-			} else {
-				// TODO: and what should we do if this room isn't empty ?
-				presences[gridY][gridX][1] = fromId;
+		for (int i=0;i<PRESENCE_SIZE;i++) {
+			int id = presences[gridY][gridX][i];
+			if (id == fromId) break;
+			if (id != fromId && id == -1) {
+				presences[gridY][gridX][i] = fromId;
+				// Increment or decrement capillarity
+				applyPatch(gridX, gridY, fromId != -1);
+				break;
 			}
-			// Increment or decrement capillarity
-			applyPatch(gridX, gridY, fromId != -1);
 		}
 	}
 	
 	public void resetId(int gridX, int gridY, int fromId) {
-		int id = presences[gridY][gridX][0];
-		if (id != fromId) {
-			presences[gridY][gridX][1] = -1;
-		} else {
-			presences[gridY][gridX][0] = -1;
+		for (int i=0;i<PRESENCE_SIZE;i++) {
+			int id = presences[gridY][gridX][i];
+			if (id == fromId) {
+				presences[gridY][gridX][i] = -1;
+				applyPatch(gridX, gridY, false);
+				break;
+			}
 		}
-		applyPatch(gridX, gridY, false);
 	}
 	
 	public void remove(int id) {

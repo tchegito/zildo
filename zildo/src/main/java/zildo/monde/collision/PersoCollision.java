@@ -20,8 +20,9 @@
 
 package zildo.monde.collision;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import zildo.fwk.db.Identified;
 import zildo.monde.sprites.SpriteEntity;
@@ -102,7 +103,7 @@ public class PersoCollision {
 		boolean foreGround = quelElement != null && quelElement.isForeground();
 
 		// Try on given grid case
-		List<Perso> persos = locatePerso(gridX, gridY, foreGround, fromId);
+		Set<Perso> persos = locatePerso(gridX, gridY, foreGround, fromId);
 		for (Perso perso: persos) {
 			if (checkCollisionOnPerso(x, y, quelElement, perso, rayon)) {
 				return perso;
@@ -137,7 +138,7 @@ public class PersoCollision {
 	 * @param foreGround
 	 * @return Perso
 	 */
-	private List<Perso> locatePerso(int gridX, int gridY, boolean foreGround, int fromId) {
+	private Set<Perso> locatePerso(int gridX, int gridY, boolean foreGround, int fromId) {
 		int[] ids = {};
 		if (!CollBuffer.isOutOfBounds(gridX, gridY)) {
 			if (foreGround) {
@@ -146,7 +147,7 @@ public class PersoCollision {
 				ids = buffers[1].getIds(gridX, gridY, fromId);
 			}
 		}
-		List<Perso> persos = new ArrayList<>();
+		Set<Perso> persos = new HashSet<>();
 		if (ids.length > 0) {
 			for (int id: ids) {
 				if (id != -1 && id != fromId) {
