@@ -78,9 +78,9 @@ public class CollBuffer {
 					resetId(ancGridX, ancGridY, id);
 				}
 				indexPerso.set(id, loc);
+				setId(gridX, gridY, id);
 			}
 		}
-		setId(gridX, gridY, id);
 	}
 	
 	
@@ -125,17 +125,13 @@ public class CollBuffer {
 		if (loc != -1) {
 			int gridX = loc & 63;
 			int gridY = loc >> 6;
-			int a = presences[gridY][gridX][0];
-			int b = presences[gridY][gridX][1];
-			if (a == id) {
-				presences[gridY][gridX][0] = b == id ? -1 : b;
-				if (b != -1) {
-					presences[gridY][gridX][1] = -1;
+			for (int i=0;i<PRESENCE_SIZE;i++) {
+				if (presences[gridY][gridX][i] == id) {
+					presences[gridY][gridX][i] = -1;
+					applyPatch(gridX, gridY, false);
+					break;
 				}
-			} else {
-				presences[gridY][gridX][1] = -1;
 			}
-			applyPatch(gridX, gridY, false);
 		}
 	}
 	
