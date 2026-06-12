@@ -163,6 +163,10 @@ public class Mover {
 			size = new Pointf(model.getTaille_x(), model.getTaille_y());
 		}
 		middle.add(-size.x / 2f,  - size.y);
+		if (mobile.repeatY > 1 || mobile.repeatX > 1) {
+			size.x *= mobile.repeatX;
+			size.y *= mobile.repeatY;
+		}
 		Zone zz = new Zone(middle.x, middle.y + getFlatZ(), size.x, size.y);
 		return zz;
 	}

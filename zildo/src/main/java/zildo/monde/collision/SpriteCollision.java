@@ -172,7 +172,7 @@ public class SpriteCollision {
 	 * @param entityRef
 	 * @return boolean
 	 */
-	public boolean checkCollision(int tx, int ty, SpriteEntity entityRef) {
+	public SpriteEntity checkCollision(int tx, int ty, SpriteEntity entityRef) {
 		int refId = -1;
 		boolean isZildo = false;
 		if (entityRef != null) {
@@ -181,6 +181,7 @@ public class SpriteCollision {
 		}
 		boolean found = false;
 		Element elem = null;
+		SpriteEntity entity = null;
 		for (int i=0;i<patchCoords.length && !found;i++) {
 			Point p = patchCoords[i];
 			
@@ -188,15 +189,17 @@ public class SpriteCollision {
 				int id = presences[ty + p.y][tx + p.x];
 				if (id != 0 && id != refId) {
 					// Check if element is linked to entityRef
-					SpriteEntity entity = SpriteEntity.fromId(SpriteEntity.class, id);
+					entity = SpriteEntity.fromId(SpriteEntity.class, id);
 					// For flying elements, check if they're below the collided element's Z
-					if (entityRef.getEntityType() == EntityType.ELEMENT) {
+					if (entityRef.getEntityType() == EntityType.ELEMENT ||
+							entityRef.getEntityType() == EntityType.PERSO) {
 						Element elementRef = (Element) entityRef;
-						if (elementRef.flying) {
+						if (elementRef.flying || elementRef.z > 0) {
 							SpriteDescription desc = entity.getDesc();
 							if (desc instanceof ElementDescription) {
 								ElementDescription elemDesc = (ElementDescription) desc;
 								if (elemDesc.getZ() <= elementRef.z) {
+									entity = null;
 									continue;
 								}
 							}
@@ -255,7 +258,7 @@ public class SpriteCollision {
 				}
 			}
 		}
-		return found;
+		return entity;
 	}
 	
 	/**

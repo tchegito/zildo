@@ -796,10 +796,12 @@ public class PersoPlayer extends Perso {
 				mouvement = MouvementZildo.TOMBE;
 				if (az == 0) az = -0.1f;
 			}
+			SpriteDescription platformDesc = onPlatform != null ? onPlatform.getDesc() : null;
 			shadow.setVisible(true);
 			shadow.setX(x);
 			shadow.setY(y);
-			shadow.setZ(tileBottomZ);
+			// Laying on a rope, shadow should be below
+			shadow.setZ(platformDesc == ElementDescription.ROPE ? 0 : tileBottomZ);
 			int seqPos = 0;
 			
 			shiftWetFeet = -1 + 3;

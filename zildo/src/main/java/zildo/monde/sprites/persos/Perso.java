@@ -98,7 +98,7 @@ public abstract class Perso extends Element {
 										// perso:debout,couché,attaque...
 	protected int cptMouvement; // Un compteur pour les mouvements des PNJ
 	protected int pv, maxpv; // Points de vie du perso
-	private boolean onPlatform = false; // TRUE=character is on a platform
+	protected SpriteEntity onPlatform = null; // platform sprite if character is on one
 
 	protected int money;
 	protected int countArrow;
@@ -685,14 +685,14 @@ public abstract class Perso extends Element {
 						TriggerElement trigger = TriggerElement.createLocationTrigger(mapName, null, entity.getName(),
 								-1, floor);
 						EngineZildo.scriptManagement.trigger(trigger);
-						onPlatform = true;
+						onPlatform = entity;
 					}
 
 					return true;
 				}
-			} else if (onPlatform && vehicle.isOnIt(this)) {
+			} else if (onPlatform != null && vehicle.isOnIt(this)) {
 				vehicle.unlinkEntity(this);
-				onPlatform = false;
+				onPlatform = null;
 			}
 		}
 		return false;
@@ -1321,11 +1321,20 @@ public abstract class Perso extends Element {
 
 	protected void land() {
 		if (!isOnPlatform()) {
-			Perso blocker = EngineZildo.persoManagement.collidePerso((int) x, (int) y, this);
+			SpriteEntity blocker = EngineZildo.persoManagement.collidePerso((int) x, (int) y, this);
+			if (blocker == null) {
+				blocker = EngineZildo.spriteManagement.collidingSprite((int) x,  (int) y,  this);
+			}
 			if (blocker != null) {
 				// Character has fallen but collides with someone => try to project him
 				// (example: turtle)
-				project(blocker.x, blocker.y, 1);
+				Pointf refPoint = new Pointf(blocker.x, blocker.y);
+				if (blocker.repeatY > 1) {
+					refPoint.y = y;
+				} else if (blocker.repeatX > 1) {
+					refPoint.x = x;
+				}
+				project(refPoint.x, refPoint.y, 1);
 				pathFinder.setUnstoppable(true);
 			}
 		}
@@ -1428,7 +1437,7 @@ public abstract class Perso extends Element {
 	}
 
 	public boolean isOnPlatform() {
-		return onPlatform;
+		return onPlatform != null;
 	}
 
 	public boolean isFacing(SpriteEntity p_other) {

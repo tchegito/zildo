@@ -814,6 +814,19 @@
    	        <exec script="spawnLetter"/>
    	    </action>
    	</quest>
+   	
+   	<quest name="natureb9_slab" locked="false">
+   	    <trigger>
+   	        <location name="natureb9" tilePos="42,7"/>
+   	    </trigger>
+   	    <action>
+	    	<moveTo what="platef" pos="-500,0" delta="true" way="easein"/>
+	    	<moveTo what="platef" pos="0,-100" delta="true" way="easein"/>
+	    	<moveTo what="platef" pos="500,0" delta="true" way="easein"/>
+			<moveTo what="platef" pos="0, 100" delta="true" way="easein"/>
+			<markQuest name="nature9_slab" value="false"/>
+	    </action>
+   	</quest>
 
    	<scene id="spawnLetter">
 	    <stop script="spawnFireSpirit"/>

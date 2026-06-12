@@ -572,7 +572,8 @@ public class SpriteEntity extends Identified implements Cloneable,
 
 	// Tells this entity that it could move by a Mover
 	public void initMover() {
-		mover = new Mover(this);
+		int flatZ = desc instanceof ElementDescription ? ((ElementDescription)desc).getZ() : 0;
+		mover = new Mover(this, flatZ);
 	}
 	
 	public void setMover(MoveOrder m) {

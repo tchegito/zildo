@@ -760,7 +760,11 @@ public class SpriteManagement extends SpriteStore {
 	// item...)
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean collideSprite(int tx, int ty, Element elem) {
-		return sprColli.checkCollision(tx, ty, elem);
+		return sprColli.checkCollision(tx, ty, elem) != null;
+	}
+	
+	public SpriteEntity collidingSprite(int tx, int ty, Element elem) {
+		return sprColli.checkCollision(tx,  ty, elem);
 	}
 	
 	/**

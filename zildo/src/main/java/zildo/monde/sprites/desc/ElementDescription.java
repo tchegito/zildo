@@ -168,7 +168,8 @@ public enum ElementDescription implements SpriteDescription {
 	// Symbols on slabs
 	SLABS1, SLABS2, SLABS3, SLABS4, SLABS5, SLABS6, SLABS7, SLABS8, SLABS9, SLABS10,
 	BUNCH_LEAVESFORK,
-	WOODEN_BAR;
+	WOODEN_BAR,
+	NATURE_PLATFORM, ROPE;
 	
 	Boolean damage;
 	
@@ -223,6 +224,7 @@ public enum ElementDescription implements SpriteDescription {
 		case FLOWERVASE:
 		case CHAIR:
 		case WOODEN_BAR:
+		case ROPE:
 		//case AMPHORA:	// if I enable this, it fails test CheckDisplaySorter#carryingItem
 			return true;
 		default:
@@ -379,7 +381,8 @@ public enum ElementDescription implements SpriteDescription {
 	}
 	
 	static public boolean isPlatform(SpriteDescription desc) {
-		return desc == WATER_LEAF || desc == PLATFORM || desc == PersoDescription.TURTLE;
+		return desc == WATER_LEAF || desc == PLATFORM 
+				|| desc == NATURE_PLATFORM || desc == ROPE || desc == PersoDescription.TURTLE;
 	}
 	
 	public int getRadius() {
@@ -388,6 +391,7 @@ public enum ElementDescription implements SpriteDescription {
 	
 	public int getZ() {	// For flying object, they will collide with this element if their Z is below this one
 		switch (this) {
+		case ROPE:
 		case SEWER_BARH: case SEWER_BARV:
 			return 5;
 		default:
