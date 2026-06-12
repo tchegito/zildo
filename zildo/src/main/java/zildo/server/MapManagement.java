@@ -694,7 +694,6 @@ public class MapManagement {
 			zildo.setAngle(mapScrollAngle);
 			int orderX = p_changingMapPoint.getOrderX();
 			int orderY = p_changingMapPoint.getOrderY();
-			zildo.resetPosAvantSaut();	// Reset location before jump (nonsense on a new map)
 			zildo.setVx(0);	// Reset current speed (in case any fire/ice elemental pushes him)
 			zildo.setVy(0);
 			

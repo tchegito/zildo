@@ -108,7 +108,6 @@ public abstract class Perso extends Element {
 	protected Perso shooter; // Last perso who shoot this one
 
 	// Jump
-	private Point posAvantSaut;
 	protected Point posShadowJump;
 	private Angle jumpAngle;
 
@@ -1275,12 +1274,10 @@ public abstract class Perso extends Element {
 	 */
 	protected void jump(Angle p_angle) {
 		// On sauve la position de Zildo avant son saut
-		Point zildoAvantSaut = new Point(x, y);
 		mouvement = MouvementZildo.SAUTE;
 		jumpAngle = p_angle;
 		posShadowJump = p_angle.getLandingPoint().translate((int) x, (int) y);
 		setEn_bras(null);
-		posAvantSaut = zildoAvantSaut;
 		attente = 0;
 		EngineZildo.soundManagement.broadcastSound(BankSound.ZildoTombe, this);
 	}
@@ -1400,19 +1397,6 @@ public abstract class Perso extends Element {
 		}
 	}
 
-	public boolean replaceBeforeJump() {
-		Point beforeJumpPos = getPosAvantSaut();
-		if (beforeJumpPos == null) {
-			return false;
-		} else {
-			x = beforeJumpPos.getX();
-			y = beforeJumpPos.getY();
-			beingWounded(x, y, null, 2);
-			stopBeingWounded();
-			return true;
-		}
-	}
-
 	public void diveAndWound() {
 		if (action == null && !underWater) {
 			// If hero lands in water, put back in his ancient location and removes a moon
@@ -1428,14 +1412,6 @@ public abstract class Perso extends Element {
 	 */
 	public void beingMoved() {
 
-	}
-
-	public Point getPosAvantSaut() {
-		return posAvantSaut;
-	}
-
-	public void resetPosAvantSaut() {
-		posAvantSaut = null;
 	}
 
 	public Angle getJumpAngle() {
