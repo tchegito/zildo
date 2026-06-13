@@ -390,8 +390,9 @@ public class ElementsPlus extends SpriteBanque {
 				new Zone(0, 515, 13, 12), new Zone(14, 515, 13, 12), new Zone(28, 515, 13, 12),
 				new Zone(42, 515, 13, 12), new Zone(56, 515, 13, 12),
 				new Zone(282, 108, 19, 12),	// Bunch of leaves on a fork
-				new Zone(0, 317, 8, 52)	// Big wooden bar
-				
+				new Zone(0, 317, 8, 52),	// Big wooden bar
+				new Zone(286, 33, 32, 26),	// Nature platform
+				new Zone(306, 0, 5, 16)	// Rope
 				
 		};
 		
@@ -427,7 +428,8 @@ public class ElementsPlus extends SpriteBanque {
 				new GraphChange("elem", 288, 0),
 				new GraphChange("butcher", 291, 0),
 				new GraphChange("interia6", 293, 0),
-				new GraphChange("elem", 303, 0)
+				new GraphChange("elem", 303, 0),
+				new GraphChange("palace1", 305, 0)
 		});
 	}
 }
