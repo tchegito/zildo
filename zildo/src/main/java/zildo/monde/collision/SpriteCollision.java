@@ -258,7 +258,7 @@ public class SpriteCollision {
 				}
 			}
 		}
-		return entity;
+		return !found ? null : entity;
 	}
 	
 	/**

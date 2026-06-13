@@ -391,6 +391,10 @@ public enum ElementDescription implements SpriteDescription {
 	
 	public int getZ() {	// For flying object, they will collide with this element if their Z is below this one
 		switch (this) {
+		case PLATFORM:
+		case NATURE_PLATFORM:
+		case WATER_LEAF:
+			return 0;
 		case ROPE:
 		case SEWER_BARH: case SEWER_BARV:
 			return 5;
