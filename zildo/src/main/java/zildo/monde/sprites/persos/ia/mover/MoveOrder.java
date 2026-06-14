@@ -37,4 +37,6 @@ public abstract class MoveOrder {
 		this.wrapper = p_wrapper;
 		this.mobile = wrapper.mobile;
 	}
+	
+	public abstract Pointf getDelta();
 }

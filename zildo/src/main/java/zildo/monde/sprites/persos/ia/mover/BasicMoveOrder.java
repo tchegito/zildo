@@ -46,4 +46,9 @@ public class BasicMoveOrder extends MoveOrder {
 		delta.x = speed * Math.signum( ( target.x - mobile.x));
 		delta.y = speed * Math.signum( ( target.y - mobile.y));
 	}
+	
+	@Override
+	public Pointf getDelta() {
+		return delta;
+	}
 }

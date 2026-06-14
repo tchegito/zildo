@@ -307,7 +307,8 @@
   		    <perso who="turtle2" action="turtleRotation(1)"/>
    		    <perso who="turtle3" action="turtleRotation(2)"/>
   		    <perso who="turtle4" action="turtleRotation(3)"/>
-   		</condition>
+			<perso who="bitey" action="bitey"/>
+  		</condition>
 	</mapScript>
 
    	<quest name="prisonext">
@@ -820,11 +821,10 @@
    	        <location name="natureb9" tilePos="42,7"/>
    	    </trigger>
    	    <action>
+   	       	<sound name="Switch"/>
 	    	<moveTo what="platef" pos="-500,0" delta="true" way="easein"/>
-	    	<moveTo what="platef" pos="0,-100" delta="true" way="easein"/>
 	    	<moveTo what="platef" pos="500,0" delta="true" way="easein"/>
-			<moveTo what="platef" pos="0, 100" delta="true" way="easein"/>
-			<markQuest name="nature9_slab" value="false"/>
+			<markQuest name="natureb9_slab" value="false"/>
 	    </action>
    	</quest>
 
@@ -901,6 +901,8 @@
 			<actions>
 				<if exp="loc:found=1">
 				    <!-- Set angle and reverse -->
+		            <!-- Idle near -->
+		            <seq who="self" addSpr="1,2,3,4,5,6,0,1,2" wait="4"/>
 				    <actions>
 					    <if exp="zildo.x &gt; x">
 						    <perso who="self" reverse="128"/>
@@ -912,8 +914,6 @@
 					    </if>
 				    </actions>
 				    <!-- "Idle near" animation and bite if character is really close -->
-		            <!-- Idle near -->
-		            <seq who="self" addSpr="1,2,3,4,5,6,0,1,2" wait="4"/>
 		            <sound name="WindNoLoop"/>
 		            <!-- Extension to the victim -->
 	            	<seq who="self" addSpr="11,12,13,14,15,16,17,18,19,20,21" wait="1"/>

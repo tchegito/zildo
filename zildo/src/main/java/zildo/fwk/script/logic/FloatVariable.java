@@ -69,9 +69,11 @@ public class FloatVariable implements FloatASTNode {
 				throw new NoContextException();
 			}
 			if (FloatExpression.RESERVED_WORD_ZILDOX.equals(variable)) {
-				return p.x - scrollOffset.x;
+			// We don't want negative offset to be taken into account (example: natureb9)
+			// Because it's applied BEFORE map scroll, and reset to 0 after
+				return p.x - Math.max(0, scrollOffset.x);
 			} else if (FloatExpression.RESERVED_WORD_ZILDOY.equals(variable)) {
-				return p.y - scrollOffset.y;
+				return p.y - Math.max(0, scrollOffset.y);
 			} else if (FloatExpression.RESERVED_WORD_ZILDOZ.equals(variable)) {
 				return p.z;
 			}  else if (FloatExpression.RESERVED_WORD_ZILDOVX.equals(variable)) {

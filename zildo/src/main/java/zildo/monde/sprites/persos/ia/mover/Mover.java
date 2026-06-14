@@ -30,6 +30,7 @@ import zildo.monde.sprites.elements.ElementPlaceHolder;
 import zildo.monde.sprites.persos.Perso;
 import zildo.monde.util.Pointf;
 import zildo.monde.util.Zone;
+import zildo.server.EngineZildo;
 
 /**
  * @author Tchegito
@@ -83,18 +84,25 @@ public class Mover {
 				p.y = result.y;
 			} else {
 				// Move entity on platform according to the integer part of the platform delta
-				int feltX = (int) (Math.floor(mobile.x) - Math.floor(mobile.x-delta.x));
-				int feltY = (int) (Math.floor(mobile.y) - Math.floor(mobile.y-delta.y));
-				entity.x += feltX;
-				entity.y += feltY;
-				entity.setAjustedX(entity.getAjustedX() + feltX);
-				entity.setAjustedY(entity.getAjustedY() + feltY);
-				/* For now, this is not needed. No quest triggers on a character move on a platform.
-				if (entity.isZildo()) {
-					String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
-					TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(entity.x, entity.y), mobile.getName(), -1, entity.floor);
-					EngineZildo.scriptManagement.trigger(trig);
-				} */
+				if (entity.z == flatZ) {
+					double feltX = Math.floor(mobile.x) - Math.floor(mobile.x-delta.x);
+					double feltY = Math.floor(mobile.y) - Math.floor(mobile.y-delta.y);
+					Perso perso = (Perso) entity;
+					if (!EngineZildo.mapManagement.collide((float) (entity.x + feltX), (float) (entity.y + feltY), perso)) {
+						entity.x += feltX;
+						entity.y += feltY;
+						entity.setAjustedX((int) (entity.getAjustedX() + feltX));
+						entity.setAjustedY((int) (entity.getAjustedY() + feltY));
+					} else {
+						perso.walkTile(false);
+					}
+					/* For now, this is not needed. No quest triggers on a character move on a platform.
+					if (entity.isZildo()) {
+						String mapName = EngineZildo.mapManagement.getCurrentMap().getName();
+						TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(entity.x, entity.y), mobile.getName(), -1, entity.floor);
+						EngineZildo.scriptManagement.trigger(trig);
+					} */
+				}
 			}
 		}
 	}
@@ -112,6 +120,7 @@ public class Mover {
 		if (elemPlaceHolder != null && !e.getEntityType().isEntity()) {
 			elemPlaceHolder.setLinkedPerso((Element) e);
 		}
+		System.out.println("on link "+e);
 		return linkedEntities.put(e.getId(), e) == null;
 	}
 	
@@ -120,6 +129,7 @@ public class Mover {
 	 * @param e
 	 */
 	public void unlinkEntity(SpriteEntity e) {
+		System.out.println("Unlink "+e);
 		linkedEntities.remove(e.getId());
 	}
 	
@@ -169,5 +179,9 @@ public class Mover {
 		}
 		Zone zz = new Zone(middle.x, middle.y + getFlatZ(), size.x, size.y);
 		return zz;
+	}
+	
+	public Pointf getSpeed() {
+		return order == null ? new Pointf(0, 0) : order.getDelta();
 	}
 }

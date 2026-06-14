@@ -153,6 +153,7 @@ public class CollisionDialog extends JDialog {
 					dispose();
 				}
 			});
+			setToolTipText(p_info.template.toString());
 		}
 	}
 

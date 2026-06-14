@@ -39,13 +39,15 @@ public class PhysicMoveOrder extends MoveOrder {
 		super(x, y);
 	}
 
+	Pointf delta;
+	
 	@Override
 	protected Pointf move() {
 		Element placeHolder = wrapper.elemPlaceHolder;
 		placeHolder.animate();
 
-		Pointf p = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
-		boolean stopped = (p.x == 0 && p.y == 0);
+		delta = new Pointf(placeHolder.x - mobile.x, placeHolder.y - mobile.y);
+		boolean stopped = (delta.x == 0 && delta.y == 0);
 		mobile.x = placeHolder.x;
 		mobile.y = placeHolder.y;
 		
@@ -55,7 +57,7 @@ public class PhysicMoveOrder extends MoveOrder {
 			placeHolder.vx = 0; placeHolder.vy = 0; placeHolder.vz = 0;
 			active = false;
 		}
-		return p;
+		return delta;
 	}
 	
 	@Override
@@ -75,4 +77,7 @@ public class PhysicMoveOrder extends MoveOrder {
 		placeHolder.fy = 0.03f;
 	}
 	
+	public Pointf getDelta() {
+		return delta;
+	}
 }

@@ -150,4 +150,8 @@ public class CircularMoveOrder extends MoveOrder {
 			};
 		}
 	}
+	
+	public Pointf getDelta() {
+		return new Pointf(mobileElement.vx, mobileElement.vy);
+	}
 }

@@ -1356,7 +1356,8 @@ public abstract class Perso extends Element {
 		}
 
 		boolean platformUnder = checkPlatformUnder();
-
+		vx = 0;
+		vy = 0;
 		if (nature != null) {
 			switch (nature) {
 			case WATER:
