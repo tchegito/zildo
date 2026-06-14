@@ -640,7 +640,8 @@ public class MapManagement {
 	// isChangingMap
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean isChangingMap(PersoPlayer p_zildo) {
-		if (EngineZildo.nFrame - frameLastChangingMap < 100) {
+		// When hero is on a platform (water leaf, for example) we need to wait for it to move
+		if (p_zildo.isOnPlatform() && frameLastChangingMap > 0 && EngineZildo.nFrame - frameLastChangingMap < 8) {
 			return false;
 		}
 		// Get zildo's position
@@ -875,8 +876,6 @@ public class MapManagement {
 			postLoadMap(isAlongBorder);
 			
 			EngineZildo.spriteManagement.notifyLoadingMap(false, isAlongBorder);
-			
-			frameLastChangingMap = EngineZildo.nFrame;
 		}
 		return false;
 	}
@@ -1239,6 +1238,8 @@ public class MapManagement {
 				EngineZildo.persoManagement.getZildo().setUnstoppable(false);
 			}
 		}
+		
+		frameLastChangingMap = EngineZildo.nFrame;
 
 	}
 	

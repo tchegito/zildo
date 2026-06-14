@@ -20,12 +20,9 @@
 package junit.area;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import tools.EngineUT;
@@ -54,11 +51,9 @@ public class CheckLargeObjectCollision extends EngineUT{
 	Perso zildo;
 	
 	/** Init the water leaf at given position. Hero will be at the same location **/
-	private void init(int x, int y) {
-		mapUtils.loadMap("igorvillage");
+	private void init(String mapName, int x, int y) {
+		mapUtils.loadMap(mapName);
 		EngineZildo.persoManagement.clearPersos(true);
-
-		
 
 		// Spawn water lily
 		waterLily = EngineZildo.spriteManagement.spawnSprite(
@@ -67,7 +62,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 				false, Reverse.NOTHING, false); // 113,259
 		waterLily.setName("leaf");
 		
-		zildo = spawnZildo(x, y);
+		zildo = spawnZildo(x, y-8);
 		zildo.walkTile(false);
 		
 		// Wait end of scripts
@@ -93,7 +88,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	}
 	@Test
 	public void testMove() {
-		init(133, 381);
+		init("igorvillage", 133, 381);
 
 		Point location = new Point(0, -16);
 		waterLily.setMover(new PhysicMoveOrder(location.x, location.y));
@@ -103,7 +98,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	
 	@Test
 	public void testMoveOnBorder() {
-		init(15, 242);
+		init("igorvillage", 15, 242);
 
 		Point location = new Point(0, 16);
 		waterLily.setMover(new PhysicMoveOrder(location.x, location.y));
@@ -114,7 +109,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	// This test leads to map switch
 	@Test
 	public void testMoveOnBorderOutside() {
-		init(-2, 242);
+		init("igorvillage", -2, 242);
 
 		Point location = new Point(0, 16);
 		waterLily.setMover(new PhysicMoveOrder(location.x, location.y));
@@ -124,7 +119,6 @@ public class CheckLargeObjectCollision extends EngineUT{
 	
 	/** Check that hero can scroll map when he's on the leaf, attacking with the sword. (Ruben's list: B9) **/
 	@Test
-	@Ignore	// Since I change the way coordinates are rounded in collision, this became obsolete
 	public void testAttackingOnLeaf() {
 		// To reproduce this, we used a "recorded" sequence of sword swinging at precise time, in certain angles
 		// The cause of the bug was an "askedEvent" send with finalEvent. We disabled it when scene has "locked='false'" attribute
@@ -151,6 +145,8 @@ public class CheckLargeObjectCollision extends EngineUT{
 		swingSword.put(746, Angle.EST);
 		swingSword.put(758, Angle.EST);
 		swingSword.put(768, Angle.EST);
+		swingSword.put(778, Angle.EST);
+		swingSword.put(794, Angle.EST);
 
 		mapUtils.loadMap("igorvillage");
 		EngineZildo.persoManagement.clearPersos(true);
@@ -198,32 +194,30 @@ public class CheckLargeObjectCollision extends EngineUT{
 	@Test
 	public void stillLeafAndScrollProblem() {
 		Vector2f initial = new Vector2f(50, 235);
-		init((int) initial.x, (int) initial.y);
+		init("igorvillage", (int) initial.x, (int) initial.y);
 		zildo.setWeapon(new Item(ItemKind.SWORD));
-		zildo.setPos(new Vector2f(198, 224));
-		EngineZildo.backUpGame();
 		zildo.setPos(initial);
 		Assert.assertTrue(zildo.isOnPlatform());
 		zildo.setAngle(Angle.EST);
 		zildo.attack();
-		renderFrames(50);
-		simulateDirection(1, 1);
-		// Wait for changing map
-		renderFrames(10 + 50 + 5);
-		Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
-		simulateDirection(-1,0);
-		Set<String> mapNames = new HashSet<String>();
+		renderFrames(20);
+		simulateDirection(1,0);
+		renderFrames(5);
+		simulateDirection(0, 0);
+		zildo.setAngle(Angle.NORD);
+		zildo.attack();
+		renderFrames(20);
+		// Wait to be sure changing map will happen
 		for (int i=0;i<80*4;i++) {
-			mapNames.add(EngineZildo.mapManagement.getCurrentMap().getName());
+			Assert.assertEquals("igorlily", EngineZildo.mapManagement.getCurrentMap().getName());
 			renderFrames(1);
 		}
-		Assert.assertTrue("Hero shouldn't have travelled to more than 2 maps ! ["+mapNames+"]", mapNames.size() <= 2);
 	}
 	
 	/** After some regression about BOTTOMLESS waterlily couldn't reach the bridge **/
 	@Test
 	public void leafReachTheBridge() {
-		init(414, 378);
+		init("igorvillage", 414, 378);
 		waterLily.setMover(new PhysicMoveOrder(0, -8));
 		renderFrames(16);
 		Assert.assertTrue(waterLily.y < 368);
@@ -232,7 +226,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	// Issue 130#2 swinging midsword didn't move the leaf.
 	@Test
 	public void moveLeafWithMidSword() {
-		init(133, 381);
+		init("igorvillage", 133, 381);
 		Assert.assertTrue(zildo.isOnPlatform());
 		zildo.setWeapon(new Item(ItemKind.MIDSWORD));
 		zildo.setAngle(Angle.NORD);
@@ -244,7 +238,7 @@ public class CheckLargeObjectCollision extends EngineUT{
 	// Issue 130#3 playing flut on igorlily
 	@Test //@InfoPersos
 	public void playFlutOnLeaf() {
-		init(20, 249);
+		init("igorvillage", 20, 249);
 		Assert.assertTrue(zildo.isOnPlatform());
 		zildo.walkTile(false);
 		zildo.setWeapon(new Item(ItemKind.SWORD));
