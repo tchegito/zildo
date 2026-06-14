@@ -79,6 +79,8 @@ public class MapManagement {
 	Point startLocation;
 	int startFloor;
 	
+	int frameLastChangingMap;
+	
 	public MapManagement() {
 		tileCollision = TileCollision.getInstance();
 
@@ -638,6 +640,9 @@ public class MapManagement {
 	// isChangingMap
 	// /////////////////////////////////////////////////////////////////////////////////////
 	public boolean isChangingMap(PersoPlayer p_zildo) {
+		if (EngineZildo.nFrame - frameLastChangingMap < 100) {
+			return false;
+		}
 		// Get zildo's position
 		float x = p_zildo.getX();
 		float y = p_zildo.getY();
@@ -870,6 +875,8 @@ public class MapManagement {
 			postLoadMap(isAlongBorder);
 			
 			EngineZildo.spriteManagement.notifyLoadingMap(false, isAlongBorder);
+			
+			frameLastChangingMap = EngineZildo.nFrame;
 		}
 		return false;
 	}
