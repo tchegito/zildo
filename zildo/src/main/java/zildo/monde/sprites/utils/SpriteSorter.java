@@ -48,6 +48,7 @@ public class SpriteSorter {
 	protected SpriteEntity[][] tab_tri;
 	private int[] num_spritesByLine;
 	private int quadOrder[][];
+	// Only used in orderSprite, but keep it here to avoid reallocation each time
 	private int lastInBank[];
 	
 	private final int SORTY_MAX;

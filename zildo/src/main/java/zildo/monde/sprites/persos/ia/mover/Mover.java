@@ -120,7 +120,6 @@ public class Mover {
 		if (elemPlaceHolder != null && !e.getEntityType().isEntity()) {
 			elemPlaceHolder.setLinkedPerso((Element) e);
 		}
-		System.out.println("on link "+e);
 		return linkedEntities.put(e.getId(), e) == null;
 	}
 	
@@ -129,7 +128,6 @@ public class Mover {
 	 * @param e
 	 */
 	public void unlinkEntity(SpriteEntity e) {
-		System.out.println("Unlink "+e);
 		linkedEntities.remove(e.getId());
 	}
 	

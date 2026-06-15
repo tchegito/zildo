@@ -34,7 +34,6 @@ import zildo.monde.sprites.Rotation;
 public class SpritePrimitive extends QuadPrimitive {
 
 	private int nbQuadsRendered;
-	private int numQuadSynchronizing;	// To know the synchronizeSprite situation
 	public boolean locked;
 
 
@@ -63,7 +62,6 @@ public class SpritePrimitive extends QuadPrimitive {
 		if (!locked) {
 			super.startInitialization();
 			locked=true;
-			numQuadSynchronizing=0;
 		} else {
 			throw new RuntimeException("Unable to start initialization of SpritePrimitive : it is already running.");
 		}
@@ -105,7 +103,6 @@ public class SpritePrimitive extends QuadPrimitive {
 				nPoints-=4;
 				nIndices-=6;
 				super.addSprite(xx, yy, xTex, yTex, sizeX, sizeY, rotation, zoom, normalizeTex);
-				numQuadSynchronizing++;
 				xx+=sx;
 			}
 			yy+=sy;

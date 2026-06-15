@@ -88,6 +88,7 @@ public class ElementPlaceHolder extends Element {
 		wave.vy = -vy / 5f;
 		wave.rotation = Rotation.fromAngle(ang).succ();
 		wave.reverse = Reverse.HORIZONTAL;
+		wave.floor = floor;
 		EngineZildo.spriteManagement.spawnSprite(wave);
 	}
 	
