@@ -4,12 +4,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tools.EngineUT;
+import zildo.monde.sprites.SpriteEntity;
+import zildo.monde.sprites.desc.ElementDescription;
 import zildo.monde.sprites.persos.ControllablePerso;
 import zildo.monde.sprites.persos.PersoPlayer;
 import zildo.monde.sprites.utils.MouvementZildo;
+import zildo.monde.util.Angle;
+import zildo.monde.util.Point;
 import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.resource.KeysConfiguration;
+import zildo.server.EngineZildo;
 
 public class TestSquirrelMove extends EngineUT {
 
@@ -116,5 +121,27 @@ public class TestSquirrelMove extends EngineUT {
 		simulateKeyPressed(KeysConfiguration.PLAYERKEY_ATTACK.code);
 		renderFrames(5);
 		Assert.assertEquals(MouvementZildo.SAUTE, squirrel.getMouvement());
+	}
+	
+	@Test
+	public void fallAndRemoveShadow() {
+		init("natureb9", 515, 78);
+		EngineZildo.backUpGame();
+		EngineZildo.mapManagement.setStartLocation("natureb9", new Point(515, 78), Angle.NORD, 1);
+		waitEndOfScripting();
+		simulateDirection(1, 0);
+		// Wait for hero to fall in abyss
+		while (squirrel.zoom == 255) {
+			renderFrames(1);
+		}
+		while (squirrel.x != 515) {
+			renderFrames(1);
+		}
+		// Hero has respawn, so look for the forgotten shadow
+		SpriteEntity entity = EngineZildo.spriteManagement.getSpriteEntities(null).stream()
+				.filter(e -> e.getDesc()== ElementDescription.SHADOW && e.x > 500)
+				.findFirst().orElse(null);
+		
+		Assert.assertNull("We shouldn't have this shadow here ! ", entity);
 	}
 }
