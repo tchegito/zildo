@@ -71,8 +71,11 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(17,110,16,12),new Zone(33,108,16,14),
 			          // Oiseau vert - 52
 			          new Zone(159,147,16,13), new Zone(175,147,16,16),
+						// Sorcerer from back (54)
+						new Zone(299, 191, 16, 25),
 			          // Volant bleu
-			          new Zone(178, 53, 18, 16), new Zone (196, 53, 26, 15),
+			          //new Zone(178, 53, 18, 16), 
+			          new Zone (196, 53, 26, 15),
 			          new Zone(222, 53, 14, 16), new Zone (236, 53, 16, 15),
 			          new Zone(252, 53, 18, 16), new Zone (270, 53, 24, 14),
 			          // Princesse couchée (60)
@@ -148,7 +151,7 @@ public class Pnj2 extends SpriteBanque {
 			          new Zone(94, 89, 9, 11),
 			          // Sleeping fox
 			          new Zone(299, 149, 14, 14), new Zone(299, 164, 13, 14),
-			          new Zone(314, 149, 5, 6),
+			          new Zone(314, 149, 5, 6)
 		          
 
 		};
@@ -158,8 +161,10 @@ public class Pnj2 extends SpriteBanque {
 				new GraphChange("pnj2", 6, 0), 
 				new GraphChange("pnj", 23, 0),
 				new GraphChange("pnj2", 31, 0),
+				new GraphChange("pnj", 54, 0),
+				new GraphChange("pnj2", 55, 0),
 				new GraphChange("pnj", 122, 0),
-				new GraphChange("pnj2", 125, 0)
+				new GraphChange("pnj2", 125, 0),
 				});
 	}
 }

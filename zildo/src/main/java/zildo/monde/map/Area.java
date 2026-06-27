@@ -1271,8 +1271,8 @@ public class Area implements EasySerializable {
 		if (n_pe != 0) {
 			for (int i = 0; i < n_pe; i++) {
 				ChainingPoint ch = ChainingPoint.deserialize(p_buffer);
-				ch.setPx((short) (ch.getPx() + scrollOffset.x * 2));
-				ch.setPy((short) (ch.getPy() + scrollOffset.y * 2));
+				ch.setPx((short) (ch.getPx() + efficientScrollOffset.x * 2));
+				ch.setPy((short) (ch.getPy() + efficientScrollOffset.y * 2));
 				map.addChainingPoint(ch);
 			}
 		}
@@ -1870,7 +1870,7 @@ public class Area implements EasySerializable {
 			if (scrollOffsetToApply.x >= 0 && scrollOffsetToApply.y >= 0) {
 				scrollOffsetToApply = mapReference.getScrollOffset().multiply(16);
 			}
-			if (scrollOffset.x < 0) {
+			if (scrollOffset.x < 0 || scrollOffset.y < 0) {
 				scrollOffsetToApply = scrollOffset.multiply(-16);
 			}
 		}
@@ -1889,7 +1889,9 @@ public class Area implements EasySerializable {
 			} else if (nextMap.getScrollOffset().x != 0) {
 				scrollOffsetToApply.x = -nextMap.getScrollOffset().x * 16;
 			}
-			scrollOffsetToApply.y = 0;
+			if (scrollOffsetToApply.y > 0 && scrollOffset.y > 0) {
+				scrollOffsetToApply.y = 0;
+			}
 		}
 		// Place the map accordingly to the scroll offset defined in ZEditor props
 		ret.sub(scrollOffsetToApply);

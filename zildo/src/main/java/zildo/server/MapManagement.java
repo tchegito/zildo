@@ -921,13 +921,18 @@ public class MapManagement {
 
 		// Shift Zildo in case of negative X scroll offset
 		int shiftX = 0;
+		int shiftY = 0;
 		if (currentMap.getScrollOffset().x < 0) {
 			shiftX = -currentMap.getScrollOffset().x;
+		} else if (currentMap.getScrollOffset().y < 0) {
+			shiftY = -currentMap.getScrollOffset().y;
 		} else if (previousMap.getScrollOffset().x < 0) {
 			shiftX = previousMap.getScrollOffset().x;
+		} else if (previousMap.getScrollOffset().y < 0) {
+			shiftY = previousMap.getScrollOffset().y;
 		}
-		if (shiftX != 0) {
-			EngineZildo.persoManagement.getZildo().shift(new Point(shiftX * 16, 0));
+		if (shiftX != 0 || shiftY != 0) {
+			EngineZildo.persoManagement.getZildo().shift(new Point(shiftX * 16, shiftY * 16));
 		}
 		// And shift all entities (except Zildo) with same offset
 		EngineZildo.spriteManagement.translateEntities(offset, p_translateZildo);

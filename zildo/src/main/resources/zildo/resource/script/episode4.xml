@@ -215,6 +215,12 @@
 		    </if>
 		</condition>
 		
+		<condition name="nature4">
+   			<if expQuest="nature_sorcerer_power">
+		   	    <activate what="doorSorcerer" value="true"/>
+			</if>
+		</condition>
+		
 		<condition name="nature6">
 			<perso who="hooded" action="hooded"/>
 			<markQuest name="slabNature6_green1" value="false"/>
@@ -299,16 +305,23 @@
 		</condition>
 		
 		<condition name="natureb9">
-		    <pos who="turtle1" pos="328+352, 120-22"/>
-		    <pos who="turtle2" pos="328+352+22, 120"/>
-		    <pos who="turtle3" pos="328+352, 120+22"/>
-		    <pos who="turtle4" pos="328+352-22, 120"/>
+		    <pos who="turtle1" pos="360, 120-22"/>
+		    <pos who="turtle2" pos="360+22, 120"/>
+		    <pos who="turtle3" pos="360, 120+22"/>
+		    <pos who="turtle4" pos="360-22, 120"/>
 		    <perso who="turtle1" action="turtleRotation(0)"/>
   		    <perso who="turtle2" action="turtleRotation(1)"/>
    		    <perso who="turtle3" action="turtleRotation(2)"/>
   		    <perso who="turtle4" action="turtleRotation(3)"/>
 			<perso who="bitey" action="bitey"/>
   		</condition>
+  		
+		<condition name="nature8">
+		    <spawn what="starEffect" type="IMPACT3" pos="158,426" zoom="320" effect="STAR"/> 
+			<if expQuest="nature_sorcerer_power">
+		   	    <activate what="door" value="true"/>
+			</if>
+   		</condition>
 	</mapScript>
 
    	<quest name="prisonext">
@@ -828,6 +841,24 @@
 	    </action>
    	</quest>
 
+   	<quest name="nature_sorcerer">
+   	    <trigger>
+   	        <location name="nature8" pos="160,367" radius="2"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="meetSorcerer"/>
+   	    </action> 
+   	</quest>
+   	
+   	<quest name="nature_sorcerer_power">
+   	    <trigger>
+   	        <location name="nature8" pos="160,423" radius="1"/>
+   	    </trigger>
+   	    <action>
+   	        <exec script="sorcererGivePowerToRoxy"/>
+   	    </action>
+   	</quest>
+   	
    	<scene id="spawnLetter">
 	    <stop script="spawnFireSpirit"/>
 	    <!-- Spirits goes back to the alcove -->
@@ -1598,6 +1629,74 @@
    		<tile pos="loc:arg0, loc:arg1+1" action="_spikeOff"/>
    		<tile pos="loc:arg0, loc:arg1+2" action="_spikeOff"/>
    		<tile pos="loc:arg0, loc:arg1+3" action="_spikeOff"/>
+   	</scene>
+   	
+   	<scene id="meetSorcerer">
+   	    <wait value="10"/>
+   	    <moveTo who="zildo" pos="160,381"/>
+   	    <wait value="20"/>
+   	    <speak who="sorcerer" text="nature8.sorcerer.1"/>
+   	    <nameReplace who="sorcerer" name="hemizia"/>
+   	    <speak who="sorcerer" text="nature8.sorcerer.2"/>
+   	    <speak who="sorcerer" text="nature8.sorcerer.3"/>
+  	</scene>
+   	
+   	<scene id="sorcererGivePowerToRoxy">
+   	    <music />
+   	    <moveTo who="zildo" pos="158, 418" unstoppable="true"/>
+   	    <wait value="20"/>
+   	    <fadeOut type="1"/>
+   	    <angle who="sorcerer" value="2"/>
+   	    <wait value="20"/>
+   	    <sprite what="starEffect" zoomV="10"/>
+   	    <perso who="sorcerer" addSpr="1" flag="2"/>
+   	    <wait value="10"/>
+   	    <sound name="Wind"/>"
+   	    <wait value="5"/>
+   	    <script who="zildo" text="TOMBE"/>
+   	    <perso who="zildo" z="1" az="0.012"/>
+   	    <wait value="30"/>
+   	    <perso who="zildo" az="-0.002"/>
+   	    <wait value="40"/>
+		<angle who="zildo" value="0"/>
+		<wait value="8"/>
+		<angle who="zildo" value="1"/>
+		<wait value="7"/>
+		<angle who="zildo" value="2"/>
+		<wait value="6"/>
+		<angle who="zildo" value="3"/>
+		<wait value="5"/>
+		<angle who="zildo" value="0"/>
+		<wait value="4"/>
+		<angle who="zildo" value="3"/>
+		<wait value="3"/>
+		<for var="loc:i" value="10">
+			<angle who="zildo" value="2"/>
+			<wait value="1"/>
+			<angle who="zildo" value="1"/>
+			<wait value="1"/>
+			<angle who="zildo" value="0"/>
+			<wait value="1"/>
+			<angle who="zildo" value="3"/>
+			<wait value="1"/>
+			<if exp="loc:i=5">
+		   	    <animation pos="158,383" type="STAR_CIRCLE" />
+			</if>
+		</for>				
+   	    <filter type="4"/>
+   	    <sprite what="starEffect" zoomV="-20"/>
+   	    <sound name="Wind" mute="true"/>
+   	    <wait value="2"/>
+   	    <sound name="MoonFusion"/>
+   	    <wait value="10"/>
+   	    <sound name="ZildoOneUp"/>
+   	    <filter type="0"/>
+   	    <wait value="170"/>
+   	    <perso who="sorcerer" addSpr="0" flag="0"/>
+   	    <sprite what="starEffect" zoom="320" zoomV="0"/>
+   	    <fadeIn type="1"/>
+   	    <wait value="30"/>
+   	    <activate what="door" value="true"/>
    	</scene>
    	
    	<tileAction id="_spikeOn">

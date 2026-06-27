@@ -1077,7 +1077,10 @@ public abstract class Perso extends Element {
 		// Trigger "LOCATION" only in single player
 		if (!EngineZildo.game.multiPlayer && isZildo()) {
 			String mapName = area.getName();
-			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x - area.getScrollOffset().x*16, y - area.getScrollOffset().y*16), null, onmap, floor);
+			Point scrollToConsider = new Point(area.getScrollOffset());
+			scrollToConsider.x = Math.max(0, scrollToConsider.x);
+			scrollToConsider.y = Math.max(0, scrollToConsider.y);
+			TriggerElement trig = TriggerElement.createLocationTrigger(mapName, new Point(x - scrollToConsider.x*16, y - scrollToConsider.y*16), null, onmap, floor);
 			EngineZildo.scriptManagement.trigger(trig);
 		}
 		if (shadow != null) {

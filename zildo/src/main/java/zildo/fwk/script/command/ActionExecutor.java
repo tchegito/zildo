@@ -152,7 +152,7 @@ public class ActionExecutor extends RuntimeExecutor {
 					Point offset = EngineZildo.mapManagement.getCurrentMap().getScrollOffset();
 					if (p_action.kind == ActionKind.tile) {	// Tile coordinates
 						location.add(offset);
-					} else {
+					} else if (offset.x > 0 && offset.y > 0){
 						location.add(offset.multiply(16));
 					}
 				}

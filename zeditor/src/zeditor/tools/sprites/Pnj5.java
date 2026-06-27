@@ -56,14 +56,14 @@ public class Pnj5 extends SpriteBanque {
 			// Ice thrower (51)
 			new Zone(0, 109, 23, 27), new Zone(25, 109, 23, 27), new Zone(50, 109, 23, 27), new Zone(74, 109, 25, 27),
 			// Poulpa suite (55)
-			new Zone(0, 38, 23, 22), new Zone(24, 36, 20, 24), new Zone(45, 33, 16, 27), new Zone(62, 30, 15, 30)
+			new Zone(0, 38, 23, 22), new Zone(24, 36, 20, 24), new Zone(45, 33, 16, 27), new Zone(62, 30, 15, 30),
 		};
 			
 		pkmChanges = Arrays.asList(new GraphChange[] { 
 				new GraphChange("hoodedAlpha4", 0, 0, true),
 				new GraphChange("poulpa", 47, 0, false),
 				new GraphChange("thrower", 51, 0, false),
-				new GraphChange("poulpa", 55, 0, false)
+				new GraphChange("poulpa", 55, 0, false),
 		});
 	}
 }

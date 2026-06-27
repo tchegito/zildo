@@ -197,7 +197,7 @@ public class Pnj extends SpriteBanque {
 				new Zone(171, 84, 5, 16), new Zone(160, 78, 16, 5),
 				
 				// Woodcutter
-				new Zone(144, 57, 16, 25)};
+				new Zone(144, 57, 16, 25)};	// Sorcerer from back
 		
 		
 		pkmChanges = Arrays.asList(new GraphChange[]{

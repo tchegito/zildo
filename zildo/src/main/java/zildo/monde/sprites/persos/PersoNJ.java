@@ -711,10 +711,15 @@ public class PersoNJ extends Perso {
 			add_spr = (compteur_animation / 30) % 2;
 			break;
 		case SORCERER:
-			if (((compteur_animation / 30) % 2) == 0) {
-				reverse = Reverse.HORIZONTAL;
+			if (angle == Angle.NORD) {
+				add_spr = 2;
 			} else {
-				reverse = Reverse.NOTHING;
+				add_spr = addSpr;
+				if (((compteur_animation / 30) % 2) == 0) {
+					reverse = Reverse.HORIZONTAL;
+				} else {
+					reverse = Reverse.NOTHING;
+				}
 			}
 			break;
 		case ENFANT:
@@ -1027,6 +1032,7 @@ public class PersoNJ extends Perso {
 		}
 
 		this.setNSpr(d.nth(add_spr));
+		this.setNBank(d.getBank());
 		super.finaliseComportement(compteur_animation);
 	}
 

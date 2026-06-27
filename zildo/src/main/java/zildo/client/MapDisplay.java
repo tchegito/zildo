@@ -131,6 +131,7 @@ public class MapDisplay {
 		int minX = 16 * so.x;
 		int minY = 16 * so.y;
 		if (minX < 0) minX = 0;
+		if (minY < 0) minY = 0;
 		int maxX = 16 * currentMap.getOriginalDim().x + minX;
 		int maxY = 16 * currentMap.getOriginalDim().y + minY;
 		if (location.x > (maxX - (CENTER_X << 1))) {
@@ -198,13 +199,15 @@ public class MapDisplay {
 	 */
 	public void shiftForMapScroll(Angle p_angle) {
 		Point cam = new Point(getCamera());
-		if (currentMap.getScrollOffset().norme() != 0f) {
-			if (currentMap.getScrollOffset().x < 0) {
-				cam.x -= currentMap.getScrollOffset().x * 16;
+		Point currentOff = currentMap.getScrollOffset();
+		Point previousOff = previousMap == null ? null : previousMap.getScrollOffset();
+		if (currentOff.norme() != 0f) {
+			if (currentOff.x < 0 || currentOff.y < 0) {
+				cam.add(currentOff.multiply(-16));
 			}
-		} else if (previousMap != null && previousMap.getScrollOffset().norme() != 0f) {
-			if (previousMap.getScrollOffset().x < 0) {
-				cam.x += previousMap.getScrollOffset().x * 16;
+		} else if (previousMap != null && previousOff.norme() != 0f) {
+			if (previousOff.x < 0 || previousOff.y < 0) {
+				cam.add(previousOff.multiply(16));
 			}
 		}
 		Point computed = calculateMapScroll(cam);

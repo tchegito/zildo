@@ -118,6 +118,7 @@ public class ActionElement extends LanguageElement {
 		unstoppable = isTrue("unstoppable");
 		foreground = readBoolean("foreground");
 		floor = getFloatExpr("floor");
+		zoom = getFloatExpr("zoom");
 		String strReverse = readAttribute("reverse");
 		// Read less common ones
 		String strPos = readOrEmpty("pos");
@@ -130,6 +131,7 @@ public class ActionElement extends LanguageElement {
 			if (strReverse != null) {
 				reverse = new FloatExpression(strReverse);
 			}
+			zoomV = getFloatExpr("zoomV");
 			alphaV = getFloatExpr("alphaV");
 			String temp = readAttribute("z");
 			if (temp != null) {
@@ -156,7 +158,6 @@ public class ActionElement extends LanguageElement {
 				chainCount = Integer.parseInt(temp.substring(0,  virgulePos));
 				chainDelay = new FloatExpression(temp.substring(virgulePos+1));
 			}
-			zoom = getFloatExpr("zoom");
 			zoomV = getFloatExpr("zoomV");
 			impact = readAttribute("impact");
 			temp = readAttribute("light");
@@ -195,7 +196,6 @@ public class ActionElement extends LanguageElement {
 			}
 			pv = readInt("pv", DEFAULT_PV);
 			rotation = readInt("rotation", -1);
-			zoom = getFloatExpr("zoom");
 			flag = readInt("flag", -1);
 			break;
 		case speak:
@@ -215,7 +215,6 @@ public class ActionElement extends LanguageElement {
 			backward = isTrue("backward");
 			open = isTrue("open");
 			text = readAttribute("way");
-			zoom = getFloatExpr("zoom");
 			deltaFloor = readInt("deltaFloor", 0);
 			skippable = isTrue("skippable");
 			functionAngleX = getFloatExpr("fx");
