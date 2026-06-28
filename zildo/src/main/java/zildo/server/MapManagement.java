@@ -733,7 +733,7 @@ public class MapManagement {
 					Pointf dest = new Pointf(zildo.x, zildo.y);
 					zildo.y = (int) zildo.y;
 					Angle chosen = null;
-					if (zildo.y > previousDimY * 16 - 16) {
+					if (zildo.y > previousDimY * 16 - 16 && newScrollOffset.y == 0) {
 						zildo.setY(8 - 8);
 						dest.y = (int) zildo.y + 8;
 						chosen = Angle.SUD;
