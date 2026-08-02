@@ -65,4 +65,13 @@ public class CheckSpawningItems extends EngineUT {
 		Assert.assertEquals(48 + 256 * 2, area.readmap(38, 41));
 		Assert.assertNull("Purse shouldn't be on the map !", findEntityByDesc(ElementDescription.GOLDPURSE1));
 	}
+	
+	@Test
+	public void decorOnLinkableCase() { // Creeper was hidden because overlapping jar case
+		mapUtils.loadMap("nature4");
+		waitEndOfScripting();
+		SpriteEntity entity = findEntityByDesc(ElementDescription.CREEPER3B);
+		Assert.assertNotNull(entity);
+		Assert.assertTrue(entity.isVisible());
+	}
 }

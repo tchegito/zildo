@@ -1329,13 +1329,15 @@ public class Area implements EasySerializable {
 					int ax = x / 16;
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
-					boolean linkable = Tile.isLinkableToItem(tileDesc);
+					SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
+					boolean isItem = (desc instanceof ElementDescription) && 
+							((ElementDescription)desc).getItem() != null;
+					boolean linkable = Tile.isLinkableToItem(tileDesc) && isItem;
 					if (linkable) {
 						map.setCaseItem(ax, ay, nSpr, entName);
 					}
 					boolean openedChest = Tile.isOpenedChest(tileDesc);
 					// We have to see the sprites in ZEditor
-					SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
 					boolean shouldSpawn = (!linkable && !openedChest)|| zeditor;
 					if (desc == GearDescription.GREEN_DOOR ||	// Opened door ?
 						desc == GearDescription.CAVE_KEYDOOR ||
