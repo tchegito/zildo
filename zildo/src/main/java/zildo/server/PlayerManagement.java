@@ -568,6 +568,11 @@ public class PlayerManagement {
 					}
 				}
 			}
+		} else {
+			// Holding the key
+			if (heros.isSquirrel()) {
+				heros.absorbEnergy();
+			}
 		}
 		keysState.key_actionPressed=true;
 	}
@@ -580,6 +585,8 @@ public class PlayerManagement {
 			keysState.key_actionPressed=false;
 			if (heros.getMouvement()==MouvementZildo.TIRE) {
 				heros.setMouvement(MouvementZildo.VIDE);
+			} else if (heros.isSquirrel()) {
+				heros.releaseEnergy();
 			}
 		}
 	}

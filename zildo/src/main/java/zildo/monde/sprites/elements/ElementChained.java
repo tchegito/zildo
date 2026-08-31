@@ -96,6 +96,8 @@ public abstract class ElementChained extends Element {
 		if (mover != null && mover.isActive()) {
 			// Moving is delegated to another object
 			mover.reachTarget();
+		} else if (desc.isNotFixe()) {
+			physicMoveWithCollision();
 		}
 			
 		// Move the burning fire sprite along with this one

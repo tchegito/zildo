@@ -164,6 +164,7 @@ public class Element extends SpriteEntity {
 		this.setDesc(original.desc);
 		this.alpha = original.alpha;
 		this.floor = original.floor;
+		this.flying = original.flying;
 		
 		this.entityType = EntityType.ELEMENT;
 

@@ -99,7 +99,9 @@ public class Tile implements Cloneable {
     public final static int T_LAVA = 256*10 + 34; 
     public final static int T_NATUREPALACE_PLATFORM = 256*9 + 174;
     public final static int T_NATUREPALACE_PLATFORM2 = 256*9 + 175;
-    		
+    public final static int T_FIREALCOVE1 = 256*9 + 83;
+    public final static int T_FIREALCOVE2 = 256*9 + 84;
+    
 	public Tile(int p_bank, int p_index, Case p_parent) {
 		bank = (byte) (p_bank & 15);
 		index = p_index;

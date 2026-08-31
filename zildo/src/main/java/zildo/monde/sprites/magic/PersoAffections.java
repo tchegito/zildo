@@ -49,6 +49,13 @@ public class PersoAffections {
 		}
 	}
 
+	public void remove(AffectionKind kind) {
+		Affection aff = find(kind);
+		if (aff != null) {
+			affections.remove(aff);
+		}
+	}
+	
 	public void render() {
 
 		for (Iterator<Affection> it = affections.iterator(); it.hasNext();) {

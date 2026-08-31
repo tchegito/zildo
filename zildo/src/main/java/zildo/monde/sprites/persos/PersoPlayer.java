@@ -38,6 +38,7 @@ import zildo.monde.items.Item;
 import zildo.monde.items.ItemCircle;
 import zildo.monde.items.ItemKind;
 import zildo.monde.items.StoredItem;
+import zildo.monde.map.Tile;
 import zildo.monde.map.Tile.TileNature;
 import zildo.monde.quest.actions.ScriptAction;
 import zildo.monde.sprites.Reverse;
@@ -50,6 +51,7 @@ import zildo.monde.sprites.desc.SpriteDescription;
 import zildo.monde.sprites.desc.ZildoDescription;
 import zildo.monde.sprites.desc.ZildoOutfit;
 import zildo.monde.sprites.desc.ZildoSprSequence;
+import zildo.monde.sprites.elements.CustomizableElementChained;
 import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.elements.ElementArrow;
 import zildo.monde.sprites.elements.ElementBoomerang;
@@ -113,6 +115,9 @@ public class PersoPlayer extends Perso {
 	
 	public ControllablePerso who;
 	
+	private Boolean roxyPower = null;	// TRUE if Hemizia the sorcerer already gave Roxy the energy power
+	private boolean energyLocked;
+	static final int TIME_TO_CHANNEL_ENERGY = 50;
 	private SpriteEntity boomerang;
 	private Element fork;
 	private Element elementForked;	// Element that hero grabbed on his fork
@@ -498,7 +503,7 @@ public class PersoPlayer extends Perso {
 		// Do we have to cancel the wound ?
 		switch (mouvement) {
 			case TOMBE: // Used when hero jumps from hill, and when squirrel make regular jump
-				if (who == ControllablePerso.PRINCESS_BUNNY && p_shooter != null && p_shooter.getDesc() == PersoDescription.BRAMBLE) {
+				if (isSquirrel() && p_shooter != null && p_shooter.getDesc() == PersoDescription.BRAMBLE) {
 					if (z > p_shooter.getDesc().getSizeZ()) {
 						// Squirrel is above the shooter ==> no damage
 						return;
@@ -795,7 +800,7 @@ public class PersoPlayer extends Perso {
 		
 		// Wet feet are displayed differently for each appearance
 		int shiftWetFeet = angle.isVertical() || angle == Angle.OUEST ? 1 : 0;
-		if (who == ControllablePerso.PRINCESS_BUNNY) {
+		if (isSquirrel()) {
 			// Player is controlling princess, so display her
 			setNSpr(PersoDescription.PRINCESS_BUNNY.nth(0));
 			int tileBottomZ = getBottomZ();
@@ -1844,7 +1849,7 @@ public class PersoPlayer extends Perso {
 	public Collision getCollision() {
         int size = 7;
         int zildoY = (int) y-10;
-        if (who == ControllablePerso.PRINCESS_BUNNY) {
+        if (isSquirrel()) {
         	size = 3;	// Squirrel is tinier
         	zildoY += 4;
         }
@@ -1882,7 +1887,7 @@ public class PersoPlayer extends Perso {
 			Angle angleJump = super.tryJump(loc);
 			if (angleJump != null) {
 				Point landingPoint = angleJump.getLandingPoint().translate((int) x, (int) y);
-				if (who == ControllablePerso.PRINCESS_BUNNY) {
+				if (isSquirrel()) {
 					// Check if squirrel can go on this tile
 					int z = EngineZildo.mapManagement.getTileBottomZ(landingPoint.x, landingPoint.y);
 					if (z != 0) {
@@ -1894,9 +1899,72 @@ public class PersoPlayer extends Perso {
 		return null;
 	}
 	
+	// Powers of Roxy: absorb and relase energy
+	public void absorbEnergy() {
+		if (hasRoxyPower()) {
+			if (energyLocked) {
+				energyLocked = false;
+				// Throw a fireball
+				Point tilePos = new Point(x, y);
+				tilePos.add(angle.coords.multiply(8f));
+				Element fireBall = EngineZildo.spriteManagement.createElement(ElementDescription.SMALL_FIRE_BALL, tilePos.x, tilePos.y , 0, null,  null, this);
+    			Element chain = new CustomizableElementChained(fireBall, 3, 3);
+				chain.vx = angle.coords.x * 2;
+				chain.vy = angle.coords.y * 2;
+    			EngineZildo.spriteManagement.spawnSprite(chain);
+				// COPY/PASTE from releaseEnergy
+				cptMouvement = 0;
+				getEn_bras().alphaA = -1f;
+				affections.remove(AffectionKind.ABSORBING_ENERGY);
+			} else if (cptMouvement == 0) {
+				// Is there an energy source ?
+				Point tilePos = new Point(x, y);
+				tilePos.add(angle.coords.multiply(8f));
+				tilePos = tilePos.multiply(1/16f);
+				int mapValue = EngineZildo.mapManagement.getCurrentMap().readmap(tilePos.x,  tilePos.y);
+				if (mapValue == Tile.T_FIREALCOVE1 || mapValue == Tile.T_FIREALCOVE2) {
+					cptMouvement++;
+					affections.add(AffectionKind.ABSORBING_ENERGY);
+				}
+				energyLocked = false;
+			} else {
+				if (cptMouvement == TIME_TO_CHANNEL_ENERGY ) {
+					// Channeling is done
+					//System.out.println("release !");
+				} else {
+					cptMouvement++;
+				}
+				//System.out.println(cptMouvement);
+			}
+		}
+	}
+	
+	public void releaseEnergy() {
+		if (hasRoxyPower()) {
+			if (cptMouvement == TIME_TO_CHANNEL_ENERGY) {
+				System.out.println("locked");
+				energyLocked = true;
+			} else {
+				cptMouvement = 0;
+				//getEn_bras().alphaA = -1;
+			}
+		}
+	}
+	
 	@Override
 	public boolean isGhost() {
 		return super.isGhost() || ClientEngineZildo.mapDisplay.getTargetCamera() != null;
+	}
+	
+	public boolean isSquirrel() {
+		return who == ControllablePerso.PRINCESS_BUNNY;
+	}
+	
+	private boolean hasRoxyPower() {
+		if (roxyPower == null) {
+			roxyPower = EngineZildo.scriptManagement.isQuestDone("nature_sorcerer_power");
+		}
+		return roxyPower;
 	}
 	
 	@Override

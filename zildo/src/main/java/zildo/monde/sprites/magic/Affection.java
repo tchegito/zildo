@@ -21,7 +21,11 @@ package zildo.monde.sprites.magic;
 
 import zildo.client.sound.BankSound;
 import zildo.monde.items.Item;
+import zildo.monde.sprites.Rotation;
+import zildo.monde.sprites.desc.ElementDescription;
+import zildo.monde.sprites.elements.Element;
 import zildo.monde.sprites.persos.Perso;
+import zildo.monde.util.Vector2f;
 import zildo.resource.Constantes;
 import zildo.server.EngineZildo;
 
@@ -37,9 +41,10 @@ public class Affection {
 	public enum AffectionKind {
 		INVINCIBILITY(500),
 		FIRE_DAMAGE_REDUCED(5000),
-		SLOWNESS(100);
+		SLOWNESS(100),
+		ABSORBING_ENERGY(0);	// Capacity for Roxy (when hero is a squirrel)
 
-		int duration;
+		int duration;	// 0 means infinite
 
 		private AffectionKind(int p_duration) {
 			duration = p_duration;
@@ -50,6 +55,7 @@ public class Affection {
 	final AffectionKind kind;
 	final Perso perso;
 	Item item;
+	int cnt;
 	
 	/** Create an effection with an absolut duration **/
 	public Affection(Perso p_perso, AffectionKind p_kind) {
@@ -101,7 +107,17 @@ public class Affection {
 				perso.setLight(color);
 				perso.setSpeed(0.5f);
 			}
-			default:
+		case ABSORBING_ENERGY:
+			if (perso.getEn_bras() == null) {
+				perso.setEn_bras(EngineZildo.spriteManagement.spawnElement(ElementDescription.PROJ_LAVA, (int) perso.x, (int) perso.y, 8, null, null));
+			}
+			Element energy = perso.getEn_bras();
+			energy.setPos(new Vector2f(perso.x + 2, perso.y));
+			energy.zoom = perso.getCptMouvement() * 2;
+			energy.rotation = Rotation.fromInt((cnt/3) % 4);
+			energy.setAlpha(128);
+			cnt++;
+		default:
 			break;
 		}
 		duration--;
@@ -109,7 +125,7 @@ public class Affection {
 		if (item != null) {	// Synchronize this duration with item's one (mapped on 'level' field)
 			item.level = duration;
 		}
-		return duration <=0;
+		return duration <=0 && kind.duration != 0;
 	}
 	
 	@Override

@@ -144,6 +144,7 @@ public class SpriteManagement extends SpriteStore {
 		element.setZ(z);
 		element.reverse = reverse;
 		element.rotation = rotation;
+		element.setLinkedPerso(issuer);
 		
 		return element;
 	}

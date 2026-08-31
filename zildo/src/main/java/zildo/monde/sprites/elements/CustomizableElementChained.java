@@ -1,10 +1,12 @@
 package zildo.monde.sprites.elements;
 
-
 /** Customizable chain of elements.
  * 
  * It's designed to be used in scripts. Technically, it uses abstract class {@link ElementChained}.
- *  
+ * 
+ * To work properly, this element should be moved by two possible means:
+ * - by a MoveOrder (if its ElementDescription#isNotFixe is false, like WILL_O_WIST)
+ * - by speed (vx/vy/vz) and physicMoveWithCollision() will be called if isNotFixe is true
  * @author Tchegito
  *
  */
@@ -28,6 +30,7 @@ public class CustomizableElementChained extends ElementChained {
 
 	protected Element createOne(int p_x, int p_y) {
 		Element newOne = new Element(matrix);
+		//newOne.setDesc(ElementDescription.fromInt(matrix.getDesc().ordinal()-nbSpawned-1));
 		// Report on matrix attributes received by this virtual chain object
 		newOne.setSpecialEffect(getSpecialEffect());
 		//setSpecialEffect(EngineFX.NO_EFFECT);
