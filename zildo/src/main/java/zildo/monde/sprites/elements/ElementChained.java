@@ -59,6 +59,7 @@ public abstract class ElementChained extends Element {
 	public void animate() {
 		for (Element e : linkeds) {
 			e.setAlpha(e.getAlpha() + alphaV);
+			e.rotationAngle += 0.1d;
 		}
 		
 		if (!endOfChain) {
@@ -97,7 +98,11 @@ public abstract class ElementChained extends Element {
 			// Moving is delegated to another object
 			mover.reachTarget();
 		} else if (desc.isNotFixe()) {
-			physicMoveWithCollision();
+			if (physicMoveWithCollision()) {
+				if (fall()) {
+					die();
+				}
+			}
 		}
 			
 		// Move the burning fire sprite along with this one
@@ -154,7 +159,10 @@ public abstract class ElementChained extends Element {
 	@Override
 	public boolean fall() {
 		if (!linkeds.isEmpty()) {
-			linkeds.get(0).fall();
+			for (Element e : linkeds) {
+				e.fall();
+				e.die();
+			}
 		}
 		return true;
 	}

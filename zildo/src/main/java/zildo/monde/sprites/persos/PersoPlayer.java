@@ -1907,12 +1907,13 @@ public class PersoPlayer extends Perso {
 				// Throw a fireball
 				Point tilePos = new Point(x, y);
 				tilePos.add(angle.coords.multiply(8f));
-				Element fireBall = EngineZildo.spriteManagement.createElement(ElementDescription.SMALL_FIRE_BALL, tilePos.x, tilePos.y , 0, null,  null, this);
-    			Element chain = new CustomizableElementChained(fireBall, 3, 3);
-				chain.vx = angle.coords.x * 2;
+				Element fireBall = EngineZildo.spriteManagement.createElement(ElementDescription.PROJ_LAVA, tilePos.x, tilePos.y , 0, null,  null, this);
+				Element chain = new CustomizableElementChained(fireBall, 3, 3);
+				chain.zoom = 210;
+				EngineZildo.soundManagement.playSound(BankSound.Lighting, this);
+    			chain.vx = angle.coords.x * 2;
 				chain.vy = angle.coords.y * 2;
     			EngineZildo.spriteManagement.spawnSprite(chain);
-				// COPY/PASTE from releaseEnergy
 				cptMouvement = 0;
 				getEn_bras().alphaA = -1f;
 				affections.remove(AffectionKind.ABSORBING_ENERGY);
@@ -1928,25 +1929,28 @@ public class PersoPlayer extends Perso {
 				}
 				energyLocked = false;
 			} else {
-				if (cptMouvement == TIME_TO_CHANNEL_ENERGY ) {
-					// Channeling is done
-					//System.out.println("release !");
-				} else {
-					cptMouvement++;
+				if (cptMouvement < TIME_TO_CHANNEL_ENERGY ) {
+					if (deltaMoveX == 0 && deltaMoveY == 0) {
+						cptMouvement++;
+					} else {
+						releaseEnergy();
+					}
 				}
-				//System.out.println(cptMouvement);
 			}
 		}
 	}
 	
-	public void releaseEnergy() {
+	public void releaseEnergy() {	// Called when player release the ACTION key
 		if (hasRoxyPower()) {
 			if (cptMouvement == TIME_TO_CHANNEL_ENERGY) {
-				System.out.println("locked");
 				energyLocked = true;
 			} else {
 				cptMouvement = 0;
-				//getEn_bras().alphaA = -1;
+				affections.remove(AffectionKind.ABSORBING_ENERGY);
+				if (getEn_bras() != null) {
+					getEn_bras().die();
+				}
+				setEn_bras(null);
 			}
 		}
 	}

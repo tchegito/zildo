@@ -298,6 +298,7 @@ public enum ElementDescription implements SpriteDescription {
 				case STAFF_POUM:
 				case SMALL_FIRE_BALL:
 				case BIG_FIRE_BALL:
+				case PROJ_LAVA:
 				case PEEBLE:
 				case POISON1: case POISON2:
 				case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
@@ -359,7 +360,7 @@ public enum ElementDescription implements SpriteDescription {
 		case CRATE: case WATER_LEAF:
 		case REDSPHERE1: case REDSPHERE2: case REDSPHERE3:
 		case BROWNSPHERE1: case BROWNSPHERE2: case BROWNSPHERE3:
-		case FIRE_BALL:
+		case FIRE_BALL: case PROJ_LAVA:
 		case SEWER_SMOKE1: case SEWER_SMOKE2:
 		case SEWER_VOLUT1: case SEWER_VOLUT2: case SEWER_VOLUT3: case SEWER_VOLUT4:
 		case WATERWAVE1: case WATERWAVE2: case WATERWAVE3:

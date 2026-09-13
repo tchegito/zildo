@@ -22,6 +22,7 @@ package zildo.monde.sprites.elements;
 
 import zildo.client.sound.BankSound;
 import zildo.fwk.ZMaths;
+import zildo.fwk.ZUtils;
 import zildo.fwk.bank.SpriteBank;
 import zildo.fwk.gfx.EngineFX;
 import zildo.fwk.script.context.LocaleVarContext;
@@ -745,6 +746,15 @@ public class Element extends SpriteEntity {
 							return false;
 						}
 						break;
+					case PROJ_LAVA:
+						ElementImpact explosion = new ElementImpact((int) x, (int) y, ImpactKind.FIRESMOKE, null);
+						explosion.alpha = alpha;
+						explosion.reverse = ZUtils.randomRange(4) >= 0 ? Reverse.NOTHING : Reverse.HORIZONTAL;
+						EngineZildo.spriteManagement.spawnSprite(explosion);
+						if (alpha == 255) {
+							EngineZildo.soundManagement.broadcastSound(BankSound.Explosion, this);
+						}
+						return true;
 					case STAFF_POUM:
 						Element e = new ElementImpact((int) x, (int) y, ImpactKind.STAFF_TURNING, null);
 						e.z = z;

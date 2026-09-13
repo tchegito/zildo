@@ -45,13 +45,24 @@ public class PersoAffections {
 	public void add(AffectionKind kind) {
 		if (!isAffectedBy(kind)) {
 			affections.add(new Affection(perso, kind));
-    		EngineZildo.soundManagement.broadcastSound(BankSound.PoisonCloud, perso);
+			switch (kind) {
+			case SLOWNESS:
+				EngineZildo.soundManagement.broadcastSound(BankSound.PoisonCloud, perso);
+				break;
+			case ABSORBING_ENERGY:
+				EngineZildo.soundManagement.broadcastSound(BankSound.Boiling, perso);
+				default:
+			}
 		}
 	}
 
 	public void remove(AffectionKind kind) {
 		Affection aff = find(kind);
 		if (aff != null) {
+			switch (aff.kind) {
+			case ABSORBING_ENERGY:
+				EngineZildo.soundManagement.playSound(BankSound.Boiling, (int) perso.x, (int) perso.y, true);
+			}
 			affections.remove(aff);
 		}
 	}
