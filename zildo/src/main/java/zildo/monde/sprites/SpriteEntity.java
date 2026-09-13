@@ -102,8 +102,10 @@ public class SpriteEntity extends Identified implements Cloneable,
 	public Reverse reverse = Reverse.NOTHING; // Combination of Reverse.HORIZONTAL/VERTICAL (or 0)
 	public Rotation rotation = Rotation.NOTHING;
 	public boolean clientSpecific; // TRUE if this entity should not appear on all client's screen
-
-	private double iota;
+	
+	public double rotationAngle;	// Could make "rotation" enum obsolete
+	
+	private double iota;	// only used for GearDescription.LAVA1/2/3
 	
 	// To identify which type of entity we're dealing with
 	protected EntityType entityType;

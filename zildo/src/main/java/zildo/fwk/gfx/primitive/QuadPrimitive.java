@@ -124,7 +124,7 @@ public class QuadPrimitive {
 		int revY = reverse.isVertical() ? -1 : 1;
 		
         // Move tile
-        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 255, false);
+        addSprite(x, y, u, v, sizeX * revX, sizeY * revY, Rotation.NOTHING, 0d, 255, false);
 
     }
     
@@ -181,15 +181,18 @@ public class QuadPrimitive {
     // Return the quad position in Vertex Buffer
     protected int addQuadSized(int x, int y, float xTex, float yTex, int sizeX, int sizeY) {
         //putQuadSized(x, y, sizeX, sizeY, xTex, yTex);
-        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING, 255, false);
+        addSprite(x, y, xTex, yTex, sizeX, sizeY, Rotation.NOTHING, 0d, 255, false);
         
         return nPoints - 4;
     }
 
     short[][] vertices = new short[4][2];
     byte[][] orders = {{0, 1, 2, 3}, {2, 0, 3, 1}, {3, 2, 1, 0}, {1, 3, 0, 2} };
-    
-    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, int zoom, boolean normalizeTex ) {
+	double[] trigoAnchors = new double[] {3*Math.PI/4, 1*Math.PI/4, 5*Math.PI/4, 7*Math.PI/4};
+
+	static final double ROOT_2 = Math.sqrt(2);
+	
+    protected void addSprite(float x, float y, float xTex, float yTex, float sizeX, float sizeY, Rotation rotation, double rotationAngle, int zoom, boolean normalizeTex ) {
     	
         // 4 bufs.vertices
         if (bufs.vertices.position() == bufs.vertices.limit()) {
@@ -217,9 +220,26 @@ public class QuadPrimitive {
         	pixSizeY*=z;
         }
         
-        for (int i = 0; i < 4; i++) {
-        	vertices[orders[rotation.value][i]][0] = (short) Math.round(startX + pixSizeX * (i % 2));	// x
-        	vertices[orders[rotation.value][i]][1] = (short) Math.round(startY + pixSizeY * (i / 2));	// y
+        if (rotationAngle == 1d) {
+	        for (int i = 0; i < 4; i++) {
+	        	vertices[orders[rotation.value][i]][0] = (short) Math.round(startX + pixSizeX * (i % 2));	// x
+	        	vertices[orders[rotation.value][i]][1] = (short) Math.round(startY + pixSizeY * (i / 2));	// y
+	        }
+        } else {
+        	rotationAngle -= rotation.value * Math.PI/2;
+        	// Crazy evolution in 2026: can rotate a sprite with any angle !!!
+        	float middleX = startX + pixSizeX / 2;
+        	float middleY = startY + pixSizeY / 2;
+        	pixSizeX = (float) ROOT_2*pixSizeX / 2;
+        	pixSizeY = (float) ROOT_2*pixSizeY / 2;
+        	vertices[0][0] = (short) Math.round(middleX + pixSizeX * Math.cos(rotationAngle + trigoAnchors[0]));
+        	vertices[0][1] = (short) Math.round(middleY - pixSizeY * Math.sin(rotationAngle + trigoAnchors[0]));
+        	vertices[1][0] = (short) Math.round(middleX + pixSizeX * Math.cos(rotationAngle + trigoAnchors[1]));
+        	vertices[1][1] = (short) Math.round(middleY - pixSizeY * Math.sin(rotationAngle + trigoAnchors[1]));
+        	vertices[2][0] = (short) Math.round(middleX + pixSizeX * Math.cos(rotationAngle + trigoAnchors[2]));
+        	vertices[2][1] = (short) Math.round(middleY - pixSizeY * Math.sin(rotationAngle + trigoAnchors[2]));
+        	vertices[3][0] = (short) Math.round(middleX + pixSizeX * Math.cos(rotationAngle + trigoAnchors[3]));
+        	vertices[3][1] = (short) Math.round(middleY - pixSizeY * Math.sin(rotationAngle + trigoAnchors[3]));
         }
         
         bufs.vertices.put(vertices[0][0]).put(vertices[0][1]);

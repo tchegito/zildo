@@ -144,8 +144,8 @@ public abstract class SpriteEngine {
 				  									revY * spr.getTaille_y(), 
 				  									entity.repeatX,
 				  									entity.repeatY, 
-													entity.rotation, entity.zoom,
-													normalizeTex);
+													entity.rotation, entity.rotationAngle,
+													entity.zoom, normalizeTex);
 		
 	}
 	

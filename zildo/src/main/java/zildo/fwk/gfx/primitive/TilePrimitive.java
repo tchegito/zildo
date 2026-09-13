@@ -105,7 +105,7 @@ public class TilePrimitive extends QuadPrimitive {
      */
     private void addTile(int x, int y, float xTex, float yTex, int sizeX, int sizeY, Rotation rotation) {
 
-    	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 255, false);
+    	addSprite(x, y, xTex, yTex, sizeX, sizeY, rotation, 0d, 255, false);
     	
         // Get the highest indices
         adjustCamera();
@@ -144,7 +144,7 @@ public class TilePrimitive extends QuadPrimitive {
     	int n = nIndices;
 		reuseIndex(gridX, gridY);
 		nIndices = n;
-		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 255, false);
+		addSprite(0, -32, 0, 0, 16, 16, Rotation.NOTHING, 0d, 255, false);
     }
     
     /**
@@ -184,7 +184,7 @@ public class TilePrimitive extends QuadPrimitive {
 				// Really remove the tile concerning vertices/textures informations (Ruben bug B1)
 				bufs.vertices.position(index*2);
 				bufs.textures.position(index*2);
-				addSprite(-32, -32, 0, 0, 16, 16, Rotation.NOTHING, 0, false);
+				addSprite(-32, -32, 0, 0, 16, 16, Rotation.NOTHING, 0d, 0, false);
     		}
     	}
     	freeIndex.rewind();
