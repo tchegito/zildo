@@ -43,7 +43,8 @@ public abstract class ElementChained extends Element {
 	private int count = 0;
 	protected int delay = 0;
 	protected boolean follow = false;	// True means the whole chain follow the leader (first one created)
-	
+	protected boolean dieInstantly;	// Remove all elements instantly in fall() method (example:fireball)
+		
 	List<Point> leadLocations;	// For following (trail effect)
 	List<Element> linkeds;
 
@@ -55,6 +56,11 @@ public abstract class ElementChained extends Element {
 		visible = false;
 	}
 
+	/** When element's must disappear, do all linked elements should die instantly ? **/
+	public void askToDieInstantly() {
+		dieInstantly = true;
+	}
+	
 	@Override
 	public void animate() {
 		for (Element e : linkeds) {
@@ -159,9 +165,13 @@ public abstract class ElementChained extends Element {
 	@Override
 	public boolean fall() {
 		if (!linkeds.isEmpty()) {
-			for (Element e : linkeds) {
-				e.fall();
-				e.die();
+			if (!dieInstantly) {
+				linkeds.get(0).fall();
+			} else {
+				for (Element e : linkeds) {
+					e.fall();
+					e.die();
+				}
 			}
 		}
 		return true;

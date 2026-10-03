@@ -1908,7 +1908,8 @@ public class PersoPlayer extends Perso {
 				Point tilePos = new Point(x, y);
 				tilePos.add(angle.coords.multiply(8f));
 				Element fireBall = EngineZildo.spriteManagement.createElement(ElementDescription.PROJ_LAVA, tilePos.x, tilePos.y , 0, null,  null, this);
-				Element chain = new CustomizableElementChained(fireBall, 3, 3);
+				CustomizableElementChained chain = new CustomizableElementChained(fireBall, 3, 3);
+				chain.askToDieInstantly();
 				chain.zoom = 210;
 				EngineZildo.soundManagement.playSound(BankSound.Lighting, this);
     			chain.vx = angle.coords.x * 2;

@@ -1330,8 +1330,13 @@ public class Area implements EasySerializable {
 					int ay = (y-1) / 16;
 					int tileDesc = map.readmap(ax, ay);
 					SpriteDescription desc = SpriteDescription.Locator.findSpr(nBank, nSpr);
-					boolean isItem = (desc instanceof ElementDescription) && 
-							((ElementDescription)desc).getItem() != null;
+					ElementDescription elemDesc = (desc instanceof ElementDescription) ? 
+							(ElementDescription)desc : null;
+					boolean isItem = false;
+					if (elemDesc != null) {
+						isItem = elemDesc.getItem() != null || elemDesc.isGoodies();
+					}
+
 					boolean linkable = Tile.isLinkableToItem(tileDesc) && isItem;
 					if (linkable) {
 						map.setCaseItem(ax, ay, nSpr, entName);

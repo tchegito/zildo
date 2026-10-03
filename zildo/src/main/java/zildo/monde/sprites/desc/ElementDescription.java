@@ -234,20 +234,26 @@ public enum ElementDescription implements SpriteDescription {
 
 	public Element createElement() {
 		Element elem = null;
-		switch (this) {
-		case DROP_FLOOR:
-		case BOMBS3:
-		case ARROW_UP:
-		case HEART_FRAGMENT:
+		if (isGoodies()) {
 			elem =  new ElementGoodies();
-			break;
-		default:
+		} else {
 			elem =new Element();
 		}
 		elem.setDesc(this);
 		return elem;
 	}
 
+	public boolean isGoodies() {
+		switch (this) {
+		case DROP_FLOOR:
+		case BOMBS3:
+		case ARROW_UP:
+		case HEART_FRAGMENT:
+			return true;
+		default:
+			return false;
+		}
+	}
 	public boolean isShadow() {
 		switch (this) {
 		case SHADOW:
