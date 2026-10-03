@@ -333,10 +333,10 @@ public class CheckMapScroll extends EngineUT {
 	
 	@Test
 	public void natureScrollLeft() {
-		// Nature 3 size (20x15) scrollOffset(19, 0)
+		// Nature 3 size (20x15) scrollOffset(20, 0)
 		mapUtils.loadMap("nature3");
 		EngineZildo.scriptManagement.accomplishQuest("nature3opened", false);
-		spawnZildo(9 + 19 * 16, 122);
+		spawnZildo(9 + 20 * 16, 122);
 		waitEndOfScripting();
 		
 		// Nature4 (20x15) scrollOffset(0, 0)
@@ -345,6 +345,12 @@ public class CheckMapScroll extends EngineUT {
 		waitEndOfScroll();
 		
 		Assert.assertEquals("nature4",  EngineZildo.mapManagement.getCurrentMap().getName());
+		
+		simulateDirection(1,0);
+		renderFrames(20);
+		waitEndOfScroll();
+		Assert.assertEquals("nature3",  EngineZildo.mapManagement.getCurrentMap().getName());
+		
 	}
 
 	@Test

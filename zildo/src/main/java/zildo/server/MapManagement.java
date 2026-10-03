@@ -741,7 +741,7 @@ public class MapManagement {
 						zildo.setY(currentMap.getDim_y() * 16);
 						dest.y = (int) zildo.y - 8;
 						chosen = Angle.NORD;
-					} else if (zildo.x < 4) {
+					} else if (zildo.x < 4 + scrollOffset.x * 16) {
 						zildo.setX(currentMap.getDim_x() * 16);
 						dest.x = (int) zildo.x - 16;
 						chosen = Angle.OUEST;
